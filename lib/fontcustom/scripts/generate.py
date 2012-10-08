@@ -30,7 +30,7 @@ f.generate(fontfile + '.otf',flags=('opentype',))
 f.generate(fontfile + '.ttf')
 
 scriptPath = os.path.dirname(os.path.realpath(__file__))
-call([scriptPath + '/vendor/sfnt2woff', fontfile + '.ttf'])
-call(scriptPath + '/vendor/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
+call([scriptPath + '/sfnt2woff', fontfile + '.ttf'])
+call(scriptPath + '/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
 print 'fontcustom-' + hashStr

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'fontcustom'
+
+if ARGV.empty? || ARGV[0] == '--h' || ARGV[0] == '-h' || ARGV[0] == 'help'
+  puts 'USAGE: fontcustom path/to/svgs path/to/other/svgs'
+else
+  ARGV.each do |dir|
+    puts "Compiling fonts in #{dir}!"
+    Fontcustom::Base.compile dir
+  end
+end
