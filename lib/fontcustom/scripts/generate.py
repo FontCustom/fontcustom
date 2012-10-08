@@ -2,6 +2,7 @@ import fontforge
 import os
 import argparse
 import md5
+import json
 from subprocess import call
 
 parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
@@ -10,17 +11,22 @@ args = parser.parse_args()
 
 f = fontforge.font()
 m = md5.new()
+cp = 0xf000
+files = []
 
 for dirname, dirnames, filenames in os.walk(args.dir[0]):
-    for filename in filenames:
-    	name, ext = os.path.splitext(filename)
-    	filePath = os.path.join(dirname, filename)
-    	size = os.path.getsize(filePath)
+	for filename in filenames:
+		name, ext = os.path.splitext(filename)
+		filePath = os.path.join(dirname, filename)
+		size = os.path.getsize(filePath)
 
-    	if ext in ['.svg', '.eps']:
-	        m.update(filename + str(size) + ';')
-	        glyph = f.createChar(-1, name)
-	        glyph.importOutlines(filePath)
+		if ext in ['.svg', '.eps']:
+			m.update(filename + str(size) + ';')
+			glyph = f.createChar(cp)
+			glyph.importOutlines(filePath)
+
+			files.append(name)
+			cp += 1
 
 hashStr = m.hexdigest()
 fontfile = 'fontcustom-' + hashStr
@@ -33,4 +39,4 @@ scriptPath = os.path.dirname(os.path.realpath(__file__))
 call([scriptPath + '/sfnt2woff', fontfile + '.ttf'])
 call(scriptPath + '/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
-print 'fontcustom-' + hashStr
+print json.dumps({'font': 'fontcustom-' + hashStr, 'files': files})
