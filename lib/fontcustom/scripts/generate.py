@@ -39,4 +39,4 @@ scriptPath = os.path.dirname(os.path.realpath(__file__))
 call([scriptPath + '/sfnt2woff', fontfile + '.ttf'])
 call(scriptPath + '/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
-print json.dumps({'font': 'fontcustom-' + hashStr, 'files': files})
+print json.dumps({'font': fontfile, 'files': files})
