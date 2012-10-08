@@ -6,6 +6,7 @@ __Automated glyph font generator. Stop building glyph fonts by hand and FontCust
 Requirements
 ------------
 * FontForge
+  * On OS X: ``brew install fontforge``
 
 Usage
 -----
