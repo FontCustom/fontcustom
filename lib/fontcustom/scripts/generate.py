@@ -29,7 +29,7 @@ for dirname, dirnames, filenames in os.walk(args.dir[0]):
 			cp += 1
 
 hashStr = m.hexdigest()
-fontfile = 'fontcustom-' + hashStr
+fontfile = args.dir[1] + '/fontcustom-' + hashStr
 
 f.fontname = 'fontcustom'
 f.generate(fontfile + '.otf',flags=('opentype',))
