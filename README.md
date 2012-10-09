@@ -20,5 +20,5 @@ Usage
 -----
 
 ```sh
-fontcustom path/to/svgs path/to/more/svgs
+fontcustom path/to/vectors
 ```
