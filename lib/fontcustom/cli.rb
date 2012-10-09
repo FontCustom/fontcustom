@@ -6,8 +6,8 @@ module Fontcustom
     desc 'compile INPUT_DIR [OUTPUT_DIR]', 'Generates icon webfonts and a corresponding CSS file from a collection of vector images.'
     #method_options :alias => 'c'
     def compile(input, output)
-      names = Fontcustom::Generators::Font.generate(input)
-      Fontcustom::Generators::CSS.generate(names)
+      names = Fontcustom::FontGenerator.start(input, output)
+      Fontcustom::StylesheetGenerator.start(names, output)
     end
   end
 end

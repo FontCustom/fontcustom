@@ -1,30 +1,35 @@
 require 'json'
-require 'fileutils'
+require 'thor/group'
 
 module Fontcustom
-  class FontGenerator
-    def self.generate(input_dir, output_dir = File.join(File.dirname(input_dir), 'fontcustom'))
-      verify_or_create_directories(input_dir, output_dir)
+  class FontGenerator < Thor::Group
+    include Thor::Actions
 
-      file_path = File.expand_path(File.join(File.dirname(__FILE__)))
-      output = %x| fontforge -script #{file_path}/scripts/generate.py #{input_dir} #{output_dir} 2>&1 /dev/null |
+    desc 'Generates webfonts from given directory of vectors.'
 
-      parse_script_output(output)
+    argument :input_dir, :type => :string
+    argument :output_dir, :type => :string
+
+    def self.source_root
+      File.dirname(__FILE__)
     end
 
-    def self.verify_or_create_directories(input_dir, output_dir)
+    def verify_and_create_directories
       if ! File.directory?(input_dir)
-        raise "#{input_dir} does not exist. Did you mistype it?"
+        raise "#{input_dir} doesn't exist or isn't a directory."
       end
 
-      if ! File.directory?(output_dir)
-        FileUtils.mkdir_p output_dir
-      end
+      empty_directory output_dir
     end
 
-    def self.parse_script_output(output)
-      output = JSON.parse(output.split("\n").last)
-      output['files']
+    def generate
+      gem_file_path = File.expand_path(File.join(File.dirname(__FILE__)))
+      @output = %x| fontforge -script #{gem_file_path}/scripts/generate.py #{input_dir} #{output_dir} 2>&1 /dev/null |
+    end
+
+    def return_icon_names
+      @output = JSON.parse(@output.split("\n").last)
+      @output['files']
     end
   end
 end
