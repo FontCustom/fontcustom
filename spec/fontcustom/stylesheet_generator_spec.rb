@@ -4,7 +4,7 @@ describe Fontcustom::StylesheetGenerator do
   let(:icon_names) { ['walrus', 'giraffe', 'mongoose'] }
   let(:output_dir) { 'spec/tmp' }
 
-  before { @names = Fontcustom::StylesheetGenerator.start([icon_names, output_dir]) }
+  before { Fontcustom::StylesheetGenerator.start([icon_names, output_dir]) }
 
   it 'must create a stylesheet' do
     File.exists?(output_dir + '/fontcustom.css').must_equal true
