@@ -29,7 +29,7 @@ describe Fontcustom do
       end
 
       files.each do |file|
-        stylesheet.must_include(file)
+        stylesheet.must_include(File.basename(file))
       end
     end
 
