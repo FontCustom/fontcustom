@@ -10,8 +10,13 @@ describe Fontcustom do
   end
 
   describe Fontcustom::FontGenerator do
-    it 'must create fonts in output_dir' do
+    it 'must create webfonts in output_dir' do
+      exts = %w( .woff .eot .ttf .svg )
+      fonts = Dir[output_dir + '/*'].delete_if { |file| File.extname(file) == '.css' }
 
+      fonts.each do |font|
+        exts.include?(File.extname(font)).must_equal true
+      end
     end
   end
 
