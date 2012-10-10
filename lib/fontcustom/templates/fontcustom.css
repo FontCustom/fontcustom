@@ -17,7 +17,7 @@ Bootstrap Overrides
 */
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: fontcustom;
+  font-family: "fontcustom";
   font-weight: normal;
   font-style: normal;
   display: inline-block;
@@ -32,12 +32,12 @@ a [class^="icon-"], a [class*=" icon-"] {
 /* makes the font 33% larger relative to the icon container */
 .icon-large:before {
   vertical-align: top;
-  font-size: 1.3333333333333333em;
+  font-size: 1.333em;
 }
 
 /* keeps button heights with and without icons the same */
 .btn [class^="icon-"], .btn [class*=" icon-"] {
-  line-height: .9em;
+  line-height: 0.9em;
 }
 
 li [class^="icon-"], li [class*=" icon-"] {
@@ -62,11 +62,11 @@ li[class^="icon-"]:before, li[class*=" icon-"]:before {
 }
 
 li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
-  text-indent: -1.3333333333333333em;
+  text-indent: -1.333em;
 }
 
 /*
 Icon Classes
 */
 <% opts[:icons].each_with_index do |name, index| %>
-.icon-<%= name.downcase %> { content: "\<%= index.to_s.rjust(4, '0') %>" }<% end %>
+.icon-<%= name.downcase %> { content: "\<%= index.to_s.rjust(4, '0') %>"; }<% end %>

@@ -17,7 +17,7 @@ module Fontcustom
 
     stylesheet_options = {
       :icons => font['files'],
-      :font => font['font'],
+      :font => File.basename(font['font']),
       :output => font_options[:output],
       :verbose => font_options[:verbose]
     }
