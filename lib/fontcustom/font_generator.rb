@@ -37,6 +37,9 @@ module Fontcustom
       end
     end
 
+    ##
+    # Thor group returns an array of each method's return value
+    # Access this with: catpured_output.last
     def return_output
       @output
     end

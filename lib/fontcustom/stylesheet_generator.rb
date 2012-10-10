@@ -7,8 +7,8 @@ module Fontcustom
     desc 'Generates a stylesheet with @font-face includes and ".icon-#{name}" classes.'
 
     argument :icon_names, :type => :array
+    argument :font_name, :type => :string
     argument :output_dir, :type => :string
-    argument :bootstrap, :type => :string, :default => 'true' # thor doesn't support boolean arguments
 
     def self.source_root
       File.dirname(__FILE__)

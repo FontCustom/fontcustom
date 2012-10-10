@@ -9,7 +9,7 @@ Font Custom - icon webfonts made simple
   font-weight: normal;
   font-style: normal;
 }
-<% if bootstrap == 'true' %>
+
 /*
 Bootstrap Overrides
 */
@@ -62,9 +62,9 @@ li[class^="icon-"]:before, li[class*=" icon-"]:before {
 li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
   text-indent: -1.3333333333333333em;
 }
-<% end %>
+
 /*
 Icon Classes
 */
 <% icon_names.each_with_index do |name, index| %>
-.icon-<%= name %> { content: "\<%= index.to_s.rjust(4, '0') %>" }<% end %>
+.icon-<%= name.downcase %> { content: "\<%= index.to_s.rjust(4, '0') %>" }<% end %>
