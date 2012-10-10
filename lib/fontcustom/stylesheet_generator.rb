@@ -6,20 +6,18 @@ module Fontcustom
 
     desc 'Generates a stylesheet with @font-face includes and ".icon-#{name}" classes.'
 
-    argument :icon_names, :type => :array
-    argument :font_name, :type => :string
-    argument :output_dir, :type => :string
+    argument :opts, :type => :hash
 
     def self.source_root
       File.dirname(__FILE__)
     end
 
     def create_directory
-      empty_directory output_dir
+      empty_directory(opts[:output], :verbose => opts[:verbose])
     end
 
     def create_stylesheet
-      template('templates/fontcustom.css', output_dir + '/fontcustom.css')
+      template('templates/fontcustom.css', opts[:output] + '/fontcustom.css', :verbose => opts[:verbose])
     end
   end
 end
