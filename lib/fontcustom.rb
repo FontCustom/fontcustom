@@ -1,6 +1,7 @@
 require 'fontcustom/version'
 require 'fontcustom/font_generator'
 require 'fontcustom/stylesheet_generator'
+require 'fontcustom/watcher'
 
 module Fontcustom
   def compile(input, *args)
@@ -27,4 +28,8 @@ module Fontcustom
     Fontcustom::StylesheetGenerator.start([stylesheet_options])
   end
   module_function :compile
+
+  def watch(input, *args)
+    Fontcustom::Watcher.start([input])
+  end
 end

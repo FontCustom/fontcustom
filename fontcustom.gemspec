@@ -22,6 +22,10 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
-  gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'guard-minitest'
+  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'fakefs'
+  gem.add_development_dependency 'spork'
+  gem.add_development_dependency 'guard-spork'
+  gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'rb-fsevent', '~> 0.9.1'
 end
