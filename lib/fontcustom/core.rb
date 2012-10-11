@@ -4,28 +4,21 @@ require 'fontcustom/watcher'
 
 module Fontcustom
   class Core
-    def self.compile(input, *args)
-      font_options = {
-        :input => input,
-        :output => File.join(File.dirname(input), 'fontcustom'),
-        :verbose => true
-      }
-
-      if args.last.is_a?(::Hash) && args.last.instance_of?(::Hash)
-        font_options.merge!(args.pop)
-      end
+    def self.compile(*args)
+      config = args.last.is_a?(::Hash) ? args.pop : {}
 
       # Thor::Group returns an array of each task's return value
       # We want the last one: a hash of the generated font's data
-      font = Fontcustom::FontGenerator.start([font_options]).last
+      font = Fontcustom::FontGenerator.start(args, config).last
+      Fontcustom::StylesheetGenerator.start([font], config)
+    end
 
-      stylesheet_options = {
-        :icons => font['files'],
-        :font => File.basename(font['font']),
-        :output => font_options[:output],
-        :verbose => font_options[:verbose]
-      }
-      Fontcustom::StylesheetGenerator.start([stylesheet_options])
+    def self.watch(input, *args)
+      Fontcustom::Watcher.watch(input, *args)
+    end
+
+    def self.stop
+      Fontcustom::Watcher.stop
     end
   end
 end

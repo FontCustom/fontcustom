@@ -5,16 +5,17 @@ describe Fontcustom do
   let(:output_dir) { 'tmp' }
 
   before(:all) do
-    Fontcustom.compile(input_dir, :output => output_dir, :verbose => false)
+    Fontcustom.compile(input_dir, output_dir, :verbose => false)
   end
 
   context '#compile' do
-    it 'should create 4 webfonts in output_dir' do
+    it 'should create webfonts in output_dir' do
       exts = %w( .woff .eot .ttf .svg )
       fonts = Dir[output_dir + '/*'].delete_if { |file| File.extname(file) == '.css' }
+      fonts.map! { |font| File.extname(font) }
 
-      fonts.each do |font|
-        exts.include?(File.extname(font)).should be_true
+      exts.each do |type|
+        fonts.should include(type)
       end
     end
 

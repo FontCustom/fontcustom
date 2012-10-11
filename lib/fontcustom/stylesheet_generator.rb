@@ -13,11 +13,13 @@ module Fontcustom
     end
 
     def create_directory
-      empty_directory(opts[:output], :verbose => opts[:verbose])
+      empty_directory(opts[:output])
     end
 
     def create_stylesheet
-      template('templates/fontcustom.css', opts[:output] + '/fontcustom.css', :verbose => opts[:verbose])
+      @always_force = true
+      template('templates/fontcustom.css', opts[:output] + '/fontcustom.css')
+      @always_force = nil
     end
   end
 end

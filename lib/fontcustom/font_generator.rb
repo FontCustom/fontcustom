@@ -7,41 +7,43 @@ module Fontcustom
 
     desc 'Generates webfonts from given directory of vectors.'
 
-    argument :opts, :type => :hash
+    argument :input, :type => :string
+    argument :output, :type => :string, :optional => true
 
     def self.source_root
       File.dirname(__FILE__)
     end
 
     def verify_input_dir
-      if ! File.directory?(opts[:input])
-        raise ArgumentError, "#{opts[:input]} doesn't exist or isn't a directory."
+      if ! File.directory?(input)
+        raise ArgumentError, "#{input} doesn't exist or isn't a directory."
       end
     end
 
     def create_output_dir
-      empty_directory(opts[:output], :verbose => opts[:verbose])
+      @output = output.nil? ? File.join(File.dirname(input), 'fontcustom') : output
+      empty_directory(@output)
     end
 
     def generate
       gem_file_path = File.expand_path(File.join(File.dirname(__FILE__)))
-      @font_info = %x| fontforge -script #{gem_file_path}/scripts/generate.py #{opts[:input]} #{opts[:output]} 2>&1 /dev/null |
-      @font_info = JSON.parse(@font_info.split("\n").last)
+      @font = %x| fontforge -script #{gem_file_path}/scripts/generate.py #{input} #{@output} 2>&1 /dev/null |
+      @font = JSON.parse(@font.split("\n").last)
     end
 
     def show_paths
-      return unless opts[:verbose]
-      path = @font_info['font']
+      path = @font['file']
       ['woff','otf','ttf','eot'].each do |type|
         say_status(:create, path + '.' + type)
       end
     end
 
     ##
-    # Thor group returns an array of each method's return value
+    # Thor::Group returns an array of each method's return value
     # Access this with: catpured_output.last
-    def return_output
-      @font_info
+    def return_info
+      @font['file'] = File.basename(@font['file'])
+      @font.merge!(:output => @output)
     end
   end
 end
