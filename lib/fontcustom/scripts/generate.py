@@ -43,7 +43,6 @@ hashStr = m.hexdigest()
 fontfile = args.dir[1] + '/fontcustom-' + hashStr
 
 f.fontname = 'fontcustom'
-f.generate(fontfile + '.otf',flags=('opentype',))
 f.generate(fontfile + '.ttf')
 f.generate(fontfile + '.svg')
 
