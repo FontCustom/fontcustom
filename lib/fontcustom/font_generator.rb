@@ -33,7 +33,7 @@ module Fontcustom
 
     def show_paths
       path = @font['file']
-      ['woff','otf','ttf','eot'].each do |type|
+      ['woff','ttf','eot','svg'].each do |type|
         say_status(:create, path + '.' + type)
       end
     end
