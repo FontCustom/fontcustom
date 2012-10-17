@@ -18,12 +18,16 @@ module Fontcustom
       begin
         puts "Fontcustom is watching your icons at " + dir
         @listener.start()
+
+      # Catches Cmd/Ctrl + C
+      # Does listen gem have a better way of handling this?
       rescue SignalException
         stop
       end
     end
 
     def self.stop
+      # Newline exists so message is not prepended with ^C on SIGTERM
       puts "\nFontcustom is signing off. Goodnight and good luck."
       @listener.stop
     end

@@ -6,9 +6,8 @@ require 'fontcustom/watcher'
 module Fontcustom
   # Both .compile and .watch take the following arguments:
   #
-  # @input (string)
-  # @opts (hash)
-  #   :output =>
+  # @param [String] the input dir
+  # @param [String] the output dir (optional, defaults to fontcustom/ adjacent to the input dir)
   class Core
     def self.compile(*args)
       config = args.last.is_a?(::Hash) ? args.pop : {}
