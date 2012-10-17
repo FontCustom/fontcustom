@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Fontcustom::FontGenerator do
+describe Fontcustom::Generator do
   let(:input_dir) { 'spec/fixtures/vectors' }
   let(:output_dir) { 'tmp' }
 
   context 'normally' do
-    before(:all) { Fontcustom::FontGenerator.start([input_dir, output_dir]) }
+    before(:all) { Fontcustom::Generator.start([input_dir, output_dir]) }
     after(:all) { cleanup(output_dir) }
 
     it 'should create webfonts' do
@@ -39,7 +39,7 @@ describe Fontcustom::FontGenerator do
     let(:fake_input_dir) { 'does/not/exist' }
 
     it 'should raise an error' do
-      results = capture(:stderr) { Fontcustom::FontGenerator.start([fake_input_dir, output_dir]) }
+      results = capture(:stderr) { Fontcustom::Generator.start([fake_input_dir, output_dir]) }
       results.should =~ /doesn't exist or isn't a directory/
     end
   end
@@ -48,7 +48,7 @@ describe Fontcustom::FontGenerator do
     let(:empty_input_dir) { 'spec/fixtures/empty' }
 
     it 'should raise an error' do
-      results = capture(:stderr) { Fontcustom::FontGenerator.start([empty_input_dir, output_dir]) }
+      results = capture(:stderr) { Fontcustom::Generator.start([empty_input_dir, output_dir]) }
       results.should =~ /doesn't contain any vectors/
     end
   end

@@ -2,7 +2,7 @@ require 'json'
 require 'thor/group'
 
 module Fontcustom
-  class FontGenerator < Thor::Group
+  class Generator < Thor::Group
     include Thor::Actions
 
     desc 'Generates webfonts from given directory of vectors.'
