@@ -13,9 +13,7 @@ describe Fontcustom::FontGenerator do
       files = Dir[output_dir + '/*']
       files.map! { |file| File.extname(file) }
 
-      exts.each do |ext|
-        files.should include(ext)
-      end
+      exts.each { |ext| files.should include(ext) }
     end
   end
 

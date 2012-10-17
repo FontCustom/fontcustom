@@ -13,7 +13,7 @@ module Fontcustom
     end
 
     def create_directory
-      empty_directory(opts[:output])
+      empty_directory(opts[:output]) unless File.directory?(opts[:output])
     end
 
     def create_stylesheet

@@ -22,9 +22,16 @@ module Fontcustom
       end
     end
 
-    def create_output_dir
+    def verify_or_create_output_dir
       @output = output.nil? ? File.join(File.dirname(input), 'fontcustom') : output
-      empty_directory(@output)
+      empty_directory(@output) unless File.directory?(@output)
+    end
+
+    def cleanup_output_dir
+      originals = Dir[File.join(@output, 'fontcustom*.{css,woff,ttf,eot,svg}')]
+      originals.each do |file|
+        remove_file file
+      end
     end
 
     def generate
@@ -40,7 +47,6 @@ module Fontcustom
       end
     end
 
-    ##
     # Thor::Group returns an array of each method's return value
     # Access this with: captured_output.last
     def return_info
