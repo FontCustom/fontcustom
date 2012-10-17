@@ -4,10 +4,10 @@ Font Custom - icon webfonts made simple
 
 @font-face {
   font-family: "fontcustom";
-  src: url("<%= opts['file'] %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= opts['file'] %>.woff") format("woff"),
-       url("<%= opts['file'] %>.ttf") format("truetype"),
-       url("<%= opts['file'] %>.svg#fontcustom") format("svg");
+  src: url("<%= @font['file'] %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @font['file'] %>.woff") format("woff"),
+       url("<%= @font['file'] %>.ttf") format("truetype"),
+       url("<%= @font['file'] %>.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -68,5 +68,5 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 /*
 Icon Classes
 */
-<% opts['names'].each_with_index do |name, index| %>
+<% @font['names'].each_with_index do |name, index| %>
 .icon-<%= name.downcase %>:before { content: "\<%= (61440+index).to_s(16) %>"; }<% end %>

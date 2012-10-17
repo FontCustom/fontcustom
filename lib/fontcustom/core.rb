@@ -1,6 +1,5 @@
 require 'fontcustom/thor_extension'
 require 'fontcustom/font_generator'
-require 'fontcustom/stylesheet_generator'
 require 'fontcustom/watcher'
 
 module Fontcustom
@@ -12,11 +11,7 @@ module Fontcustom
   class Core
     def self.compile(*args)
       config = args.last.is_a?(::Hash) ? args.pop : {}
-
-      # Thor::Group returns an array of each task's return value
-      # We want the last one: a hash of the generated font's data
-      output = Fontcustom::FontGenerator.start(args, config)
-      Fontcustom::StylesheetGenerator.start([output.last], config) if output.is_a? Array
+      Fontcustom::FontGenerator.start(args, config)
     end
 
     def self.watch(*args)

@@ -47,11 +47,9 @@ module Fontcustom
       end
     end
 
-    # Thor::Group returns an array of each method's return value
-    # Access this with: captured_output.last
-    def return_info
+    def create_stylesheet
       @font['file'] = File.basename(@font['file'])
-      @font.merge!(:output => @output)
+      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
     end
   end
 end
