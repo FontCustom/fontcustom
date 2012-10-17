@@ -1,3 +1,4 @@
+require 'fontcustom/thor_extension'
 require 'fontcustom/font_generator'
 require 'fontcustom/stylesheet_generator'
 require 'fontcustom/watcher'

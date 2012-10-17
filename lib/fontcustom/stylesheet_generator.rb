@@ -17,9 +17,7 @@ module Fontcustom
     end
 
     def create_stylesheet
-      @always_force = true
       template('templates/fontcustom.css', opts[:output] + '/fontcustom.css')
-      @always_force = nil
     end
   end
 end
