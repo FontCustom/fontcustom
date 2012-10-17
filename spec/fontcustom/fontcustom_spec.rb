@@ -4,9 +4,7 @@ describe Fontcustom do
   let(:input_dir) { 'spec/fixtures/vectors' }
   let(:output_dir) { 'tmp' }
 
-  before(:all) do
-    Fontcustom.compile(input_dir, output_dir, :verbose => false)
-  end
+  before(:all) { Fontcustom.compile(input_dir, output_dir) }
 
   context '#compile' do
     it 'should create webfonts in output_dir' do
