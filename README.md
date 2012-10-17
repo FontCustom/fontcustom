@@ -20,8 +20,11 @@ Usage
 -----
 
 ```sh
-fontcustom path/to/vectors
+fontcustom compile path/to/vectors  # Compile icons and css to path/to/fontcustom/*
+fontcustom watch path/to/vectors    # Listen for changes
 ```
+
+Options second parameter allows you to specify an output directory.
 
 TODO
 ----

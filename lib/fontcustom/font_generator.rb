@@ -16,7 +16,9 @@ module Fontcustom
 
     def verify_input_dir
       if ! File.directory?(input)
-        raise ArgumentError, "#{input} doesn't exist or isn't a directory."
+        raise Thor::Error, "#{input} doesn't exist or isn't a directory."
+      elsif Dir[File.join(input, '*.{svg,eps}')].empty?
+        raise Thor::Error, "#{input} doesn't contain any vectors (*.svg or *.eps files)."
       end
     end
 
@@ -40,7 +42,7 @@ module Fontcustom
 
     ##
     # Thor::Group returns an array of each method's return value
-    # Access this with: catpured_output.last
+    # Access this with: captured_output.last
     def return_info
       @font['file'] = File.basename(@font['file'])
       @font.merge!(:output => @output)
