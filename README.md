@@ -22,3 +22,10 @@ Usage
 ```sh
 fontcustom path/to/vectors
 ```
+
+TODO
+----
+
+* Watcher should clean up old files (ideally without adding any dotfiles to preserve state)
+* Cleaner thor messages (avoid extra dir exists messages)
+* Less awkward tests
