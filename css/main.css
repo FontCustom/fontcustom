@@ -2,10 +2,13 @@ p {
     line-height: 1.5;
 }
 
-.container.hero {
+#overview {
     padding: 0 0 60px;
-    margin-top: -1px;
 }
+
+    #overview .hero-unit > div {
+        float: left;
+    }
 
 .hero-unit {
     background: transparent;
@@ -44,6 +47,95 @@ p {
 footer {
     padding: 50% 0 30px;
 }
+
+/* From: http://www.paulrhayes.com/experiments/cube-3d/touch.html */
+.viewport {
+    float: left;
+    margin: 0 40px 0 0;
+
+    -webkit-perspective: 800;
+    -webkit-perspective-origin: 50% 50px;
+    -webkit-transform: scale(0.75,0.75);
+
+    -moz-perspective: 800;
+    -moz-perspective-origin: 50% 50px;
+    -moz-transform: scale(0.75,0.75);
+}
+
+.cube {
+    position: relative;
+    margin: 0 auto;
+    height: 100px;
+    width: 100px;
+    -webkit-transition: -webkit-transform 50ms linear;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform: rotateX(-10deg) rotateY(20deg);
+
+    -moz-transition: -moz-transform 50ms linear;
+    -moz-transform-style: preserve-3d;
+    -moz-transform: rotateX(-10deg) rotateY(20deg);
+}
+
+    .cube h2 {
+        color: #fff;
+        padding-top: 0;
+        margin-top: 0;
+    }
+
+    .cube a {
+        color: #fff;
+    }
+
+    .cube > div {
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        padding: 20px;
+        background-color: rgba(50, 50, 50, 0.85);
+        font-size: 1em;
+        line-height: 1em;
+        color: #fff;
+        border: 1px solid #555;
+        border-radius: 3px;
+    }
+
+    .cube > div:first-child  {
+        -webkit-transform: rotateX(90deg) translateZ(50px);
+        -moz-transform: rotateX(90deg) translateZ(50px);
+    }
+
+    .cube > div:nth-child(2) {
+        -webkit-transform: translateZ(50px);
+        -moz-transform: translateZ(50px);
+    }
+
+    .cube > div:nth-child(3) {
+        -webkit-transform: rotateY(90deg) translateZ(50px);
+        -moz-transform: rotateY(90deg) translateZ(50px);
+        text-align: center;
+    }
+
+    .cube > div:nth-child(4) {
+        -webkit-transform: rotateY(180deg) translateZ(50px);
+        -moz-transform: rotateY(180deg) translateZ(50px);
+    }
+
+    .cube > div:nth-child(5) {
+        -webkit-transform: rotateY(-90deg) translateZ(50px);
+        -moz-transform: rotateY(-90deg) translateZ(50px);
+    }
+
+    .cube > div:nth-child(5) p {
+        text-align: center;
+        font-size: 2.77em;
+        margin: 40px;
+        line-height: 60px;
+    }
+
+    .cube > div:nth-child(6) {
+        -webkit-transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
+        -moz-transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
+    }
 
 @media (max-width: 767px) {
     body {
