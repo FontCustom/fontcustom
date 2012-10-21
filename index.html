@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>FontCustom</title>
+    <title>Font Custom</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
 
     <style>
 	    .hero-unit {
@@ -29,7 +31,7 @@
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
   </head>
 
-  <body>
+  <body onload="prettyPrint()">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -42,30 +44,21 @@
           <a class="brand" href="#">Font Custom</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
+              <li class="active"><a href="#overview">Overview</a></li>
+              <li><a href="#usage">Usage</a></li>
+              <li><a href="#installation">Installation</a></li>
+              <li><a href="#output">Output</a></li>
+              <li><a href="#code">Code</a></li>
+              <li><a href="#results">Todo</a></li>
+              <li><a href="#results">License</a></li>
+              <li><a href="#results">About</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
+    <div id="overview" class="container hero">
       <div class="hero-unit">
         <h1>Font Custom</h1>
         <p>Generates icon webfonts and a corresponding CSS file from a collection of vector images.</p>
@@ -75,38 +68,136 @@
         </p>
       </div>
 
-      <!-- Example row of columns -->
-      <div class="row">
+      <div class="overview row">
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <h3>Generates fonts automatically</h3>
+          <p>Images are automatically packed together into a font file. No messing with outdated font software or confusing scripting APIs.</p>
         </div>
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-       </div>
+          <h3>Cross-browser</h3>
+          <p>Font Custom generates font files for every browser. Whether its ttf, woff, eot, or svg, you're covered.</p>
+        </div>
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <h3>Outputs CSS file</h3>
+          <p>No need to worry about what character each image is mapped too. The CSS file is mapped by filename; if you know the glyph's filename, you know the CSS class to use it.</p>
         </div>
       </div>
+      <div class="overview row">
+        <div class="span4">
+          <h3>Screen reader compatible</h3>
+          <p>Some glyph fonts use letters or alphanumeric characters, which will be read out by screen readers. Font Custom fonts are prepared in such a way that this won't happen. </p>
+        </div>
+        <div class="span4">
+          <h3>Use any vector images</h3>
+          <p>Rather than being restricted to a pre-defined set of images, use whatever vector images you would like. It doesn't matter whether they're from <a href="http://glyphicons.com/">Glyphicons</a> or <a href="http://thenounproject.com">The Noun Project</a>.</p>
+        </div>
+        <div class="span4">
+          <h3>Infinite scalability</h3>
+          <p>Because they're stored in the font as vectors, each glyph is infinitely scalable. No more @2x.</p>
+        </div>
+      </div>
+      <div class="overview row">
+        <div class="span4">
+          <h3>Style with CSS</h3>
+          <p>Modify colors, add shadows, rotate, flip&mdash;modify and style icons however you like with just a little CSS.</p>
+        </div>
+        <div class="span4">
+          <h3>Smaller glyph fonts</h3>
+          <p>Fonts like <a href="http://pictos.cc/font/">Pictos</a> and <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a> are great, but the number of included icons bloat filesizes and can be overkill. Font Custom only includes the icons you choose.</p>
+        </div>
+        <div class="span4">
+          <h3>Updates instantly</h3>
+          <p>Add an icon? Remove an icon? Fonts and the CSS file are regenerated instantly as long as Font Custom is watching.</p>
+        </div>
+      </div>
+    </div>
 
-      <hr>
+    <div id="usage" class="section-wrap">
+      <div class="container">
+        <section>
+          <div class="page-header">
+            <h1>Usage</h1>
+          </div>
+          <div class="content">
+            <p>Using <strong>Font Custom</strong> is incredibly easy. Just create a directory for your <strong>svg</strong> and <strong>eps</strong> files. Then, on the command line, run:
+            <pre class="prettyprint">fontcustom watch ~/path/to/vectors</pre>
+            <p>Font Custom will create the font files and accompanying CSS file. It will also continue to run and watch the folder for changes, so you don't have to manually re-run it each time you update the image set.</p>
+          </div>
+          <div id="svg-folder"><img src="img/svgs.png" width="100%"></div>
+        </section>
+      </div>
+    </div>
 
-      <footer>
-        <p>Designed with care by <a href="http://github.com/ezYZ">Yifei Zhang</a> and <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
-      </footer>
+    <div id="installation" class="section-wrap">
+      <div class="container">
+        <section>
+          <div class="page-header">
+            <h1>Installation</h1>
+          </div>
+          <p>Ready to get started with Font Custom? We've made sure that installation is incredibly easy. You'll need Ruby and <strong><a href="http://rubygems.org/pages/download">RubyGems</a></strong> before you get started.</p>
 
-    </div> <!-- /container -->
+          <p>To install on <strong>OS X</strong> using <strong><a href="http://mxcl.github.com/homebrew/">Homebrew</a></strong> simply run:</p>
+          <pre class="prettyprint linenums">
+brew install fontforge
+gem install fontcustom</pre>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+          <p>On <strong>Linux</strong>? No problem*:</p>
+          <pre class="prettyprint linenums">
+sudo apt-get install fontforge
+gem install fontcustom</pre>
+
+          <p><small>* We haven't tested on Linux. Theoretically, it should work but please <a href="http://github.com/endtwist/fontcustom/issues">let us know</a> if it doesn't.</small></p>
+        </section>
+      </div>
+    </div>
+
+    <div id="output" class="section-wrap">
+      <div class="container">
+        <section>
+          <div class="page-header">
+            <h1>Output</h1>
+          </div>
+          <p>To be written.</p>
+        </section>
+      </div>
+    </div>
+
+    <div id="code" class="section-wrap">
+      <div class="container">
+        <section>
+          <div class="page-header">
+            <h1>Code</h1>
+          </div>
+          <p>To be written.</p>
+        </section>
+      </div>
+    </div>
+
+    <div class="container">
+        <footer>
+          <p>Designed with care by <a href="http://github.com/ezYZ">Yifei Zhang</a> and <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
+        </footer>
+    </div>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
     <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/prettify.js"></script>
+    <script src="js/vendor/jquery.smooth-scroll.min.js"></script>
+    <script src="js/vendor/waypoints.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( '.navbar a' ).smoothScroll();
+
+        var activateTab = function() {
+            $( '.navbar li.active' ).removeClass( 'active' );
+            console.log( this );
+            $( '.navbar a[href="#' + $( this ).closest( '.hero, .section-wrap' ).attr( 'id' ) + '"]' ).closest( 'li' ).addClass( 'active' );
+        };
+
+        $( '.section-wrap, .hero' ).waypoint( activateTab );
+        $( '.hero h1' ).waypoint( activateTab );
+      } );
+    </script>
   </body>
 </html>

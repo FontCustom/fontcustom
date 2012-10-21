@@ -1,0 +1,74 @@
+p {
+    line-height: 1.5;
+}
+
+.container.hero {
+    padding: 0 0 60px;
+    margin-top: -1px;
+}
+
+.hero-unit {
+    background: transparent;
+    padding: 60px 0;
+}
+
+.section-wrap {
+    /*background: #f0f0f0;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;*/
+    border-top: 1px solid #dedede;
+    -webkit-box-shadow: inset 0 5px 10px -3px #dedede;
+    -moz-box-shadow: inset 0 5px 10px -3px #dedede;
+    box-shadow: inset 0 5px 10px -3px #dedede;
+    padding: 60px 0;
+}
+
+#usage {
+    padding-bottom: 0;
+}
+
+#usage #svg-folder {
+    width: 50%;
+    min-width: 320px;
+    height: 400px;
+    float: right;
+    overflow: hidden;
+}
+
+#usage .content {
+    float: left;
+    width: 40%;
+    margin-top: 40px;
+}
+
+footer {
+    padding: 50% 0 30px;
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .container.hero, .section-wrap {
+        padding: 0 20px;
+    }
+
+    .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #usage #svg-folder {
+        width: 100%;
+        height: 200px;
+        float: none;
+    }
+
+    #usage .content {
+        margin: 0;
+        width: auto;
+        float: none;
+    }
+}
