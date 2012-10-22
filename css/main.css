@@ -45,13 +45,13 @@ p {
 }
 
 footer {
-    padding: 50% 0 30px;
+    padding: 10% 0 30px;
 }
 
 /* From: http://www.paulrhayes.com/experiments/cube-3d/touch.html */
 .viewport {
     float: left;
-    margin: 0 40px 0 0;
+    margin: 20px 40px 0 0;
 
     -webkit-perspective: 800;
     -webkit-perspective-origin: 50% 50px;
@@ -91,13 +91,19 @@ footer {
         height: 60px;
         width: 60px;
         padding: 20px;
-        background-color: rgba(50, 50, 50, 0.85);
-        font-size: 1em;
-        line-height: 1em;
+        background-color: rgba(50, 50, 50, 0.6);
+        font-size: 64px;
+        line-height: 60px;
+        text-align: center;
         color: #fff;
         border: 1px solid #555;
         border-radius: 3px;
     }
+
+        .cube > div span {
+            font-size: 50px;
+            line-height: 60px;
+        }
 
     .cube > div:first-child  {
         -webkit-transform: rotateX(90deg) translateZ(50px);

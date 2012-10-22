@@ -15,11 +15,7 @@ $(function(){
         }
     }
 
-    var mouse = { 
-            start : {}
-        },
-        touch = document.ontouchmove !== undefined,
-        viewport = {
+    var viewport = {
             x: -10, 
             y: 20, 
             el: $('.cube')[0],
@@ -37,9 +33,8 @@ $(function(){
         };
         
     viewport.duration = function() {
-        var d = touch ? 50 : 500;
-        viewport.el.style[transitionDurationProp] = d + "ms";
-        return d;
+        viewport.el.style[transitionDurationProp] = 500 + "ms";
+        return 500;
     }();
     
     $(document).keydown(function(evt) {
@@ -72,4 +67,7 @@ $(function(){
         };  
     });
     
+    setInterval( function() {
+        viewport.move({y: viewport.y - 2});
+    }, 100 );
 });
