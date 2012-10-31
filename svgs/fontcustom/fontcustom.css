@@ -4,10 +4,10 @@ Font Custom - icon webfonts made simple
 
 @font-face {
   font-family: "fontcustom";
-  src: url("fontcustom-667d7bef79258e6893e61f8af1a58c51.eot?#iefix") format("embedded-opentype"),
-       url("fontcustom-667d7bef79258e6893e61f8af1a58c51.woff") format("woff"),
-       url("fontcustom-667d7bef79258e6893e61f8af1a58c51.ttf") format("truetype"),
-       url("fontcustom-667d7bef79258e6893e61f8af1a58c51.svg#fontcustom") format("svg");
+  src: url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot?#iefix") format("embedded-opentype"),
+       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff") format("woff"),
+       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf") format("truetype"),
+       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -69,7 +69,16 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 Icon Classes
 */
 
-.icon-graffiti:before { content: "\f000"; }
-.icon-star:before { content: "\f001"; }
-.icon-walk:before { content: "\f002"; }
-.icon-windmill:before { content: "\f003"; }
+.icon-browser:before { content: "\f000"; }
+.icon-customize:before { content: "\f001"; }
+.icon-factory:before { content: "\f002"; }
+.icon-glasses:before { content: "\f003"; }
+.icon-graffiti:before { content: "\f004"; }
+.icon-lightning:before { content: "\f005"; }
+.icon-outlet:before { content: "\f006"; }
+.icon-pen:before { content: "\f007"; }
+.icon-pinch:before { content: "\f008"; }
+.icon-scale:before { content: "\f009"; }
+.icon-star:before { content: "\f00a"; }
+.icon-walk:before { content: "\f00b"; }
+.icon-windmill:before { content: "\f00c"; }

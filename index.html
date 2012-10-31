@@ -75,51 +75,51 @@
           <h1>Font Custom</h1>
           <p>Generates icon webfonts and a corresponding CSS file from a collection of vector images.</p>
           <p>
-          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=watch" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
-          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
+          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
+          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
           </p>
         </div>
       </div>
 
       <div class="overview row">
         <div class="span4">
-          <h3>Generates fonts automatically</h3>
+          <h3 class="icon-outlet">Generate fonts automatically</h3>
           <p>Images are automatically packed together into a font file. No messing with outdated font software or confusing scripting APIs.</p>
         </div>
         <div class="span4">
-          <h3>Cross-browser</h3>
+          <h3 class="icon-browser">Cross-browser</h3>
           <p>Font Custom generates font files for every browser. Whether its ttf, woff, eot, or svg, you're covered.</p>
         </div>
         <div class="span4">
-          <h3>Outputs CSS file</h3>
-          <p>No need to worry about what character each image is mapped too. The CSS file is mapped by filename; if you know the glyph's filename, you know the CSS class to use it.</p>
+          <h3 class="icon-factory">Outputs CSS file</h3>
+          <p>The CSS file is mapped by filename; if you know the glyph's filename, you know the CSS class to use it.</p>
         </div>
       </div>
       <div class="overview row">
         <div class="span4">
-          <h3>Screen reader compatible</h3>
+          <h3 class="icon-glasses">Screen reader compatible</h3>
           <p>Some glyph fonts use letters or alphanumeric characters, which will be read out by screen readers. Font Custom fonts are prepared in such a way that this won't happen. </p>
         </div>
         <div class="span4">
-          <h3>Use any vector images</h3>
+          <h3 class="icon-pen">Use any vector images</h3>
           <p>Rather than being restricted to a pre-defined set of images, use whatever vector images you would like. It doesn't matter whether they're from <a href="http://glyphicons.com/">Glyphicons</a> or <a href="http://thenounproject.com">The Noun Project</a>.</p>
         </div>
         <div class="span4">
-          <h3>Infinite scalability</h3>
+          <h3 class="icon-scale">Infinite scalability</h3>
           <p>Because they're stored in the font as vectors, each glyph is infinitely scalable. No more @2x.</p>
         </div>
       </div>
       <div class="overview row">
         <div class="span4">
-          <h3>Style with CSS</h3>
+          <h3 class="icon-customize">Style with CSS</h3>
           <p>Modify colors, add shadows, rotate, flip&mdash;modify and style icons however you like with just a little CSS.</p>
         </div>
         <div class="span4">
-          <h3>Smaller glyph fonts</h3>
+          <h3 class="icon-pinch">Smaller glyph fonts</h3>
           <p>Fonts like <a href="http://pictos.cc/font/">Pictos</a> and <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a> are great, but the number of included icons bloat filesizes and can be overkill. Font Custom only includes the icons you choose.</p>
         </div>
         <div class="span4">
-          <h3>Updates instantly</h3>
+          <h3 class="icon-lightning">Updates instantly</h3>
           <p>Add an icon? Remove an icon? Fonts and the CSS file are regenerated instantly as long as Font Custom is watching.</p>
         </div>
       </div>
@@ -133,11 +133,11 @@
           </div>
           <div class="content">
             <p>Using <strong>Font Custom</strong> is incredibly easy. Just create a directory for your <strong>svg</strong> and <strong>eps</strong> files. Then, on the command line, run:
-            <pre class="prettyprint">fontcustom watch ~/path/to/vectors</pre>
+            <pre class="prettyprint">fontcustom watch /path/to/vectors</pre>
             <p>Font Custom will create the font files and accompanying CSS file. It will also continue to run and watch the folder for changes, so you don't have to manually re-run it each time you update the image set.</p>
             <br>
             <p>Want to just run it once, without watching the folder?</p>
-            <pre class="prettyprint">fontcustom compile ~/path/to/vectors</pre>
+            <pre class="prettyprint">fontcustom compile /path/to/vectors</pre>
           </div>
           <div id="svg-folder"><img src="img/svgs.png" width="100%"></div>
         </section>
@@ -169,11 +169,42 @@ gem install fontcustom</pre>
 
     <div id="output" class="section-wrap">
       <div class="container">
-        <section>
+        <section class="row-fluid">
           <div class="page-header">
             <h1>Output</h1>
           </div>
-          <p>To be written.</p>
+          <div class="span6 files">
+            <h2>Files</h2>
+            <p>After compiling a font from your vectors, Font Custom spits out a number of files, including CSS and all font files as follows:</p>
+            <pre class="prettyprint">
+fontcustom.css
+fontcustom-UNIQUEHASH.ttf
+fontcustom-UNIQUEHASH.eot
+fontcustom-UNIQUEHASH.woff
+fontcustom-UNIQUEHASH.svg</pre>
+            <p>The <code>UNIQUEHASH</code> is generated based on the filenames and sizes of all of the vector files. This way, when new font files are generated, the old font won&rsquo;t be cached by the browser.</p>
+          </div>
+          <div class="span6">
+            <h2>CSS</h2>
+            <p>The CSS file contains some Twitter Bootstrap-compatible boilerplate selectors and then some classes for each icon. The icon classes are at the bottom of the file, like this:</p>
+            <pre class="prettyprint linenums">
+/*
+Icon Classes
+*/
+
+.icon-graffiti:before { content: "\f000"; }
+.icon-star:before { content: "\f001"; }
+.icon-walk:before { content: "\f002"; }
+.icon-windmill:before { content: "\f003"; }</pre>
+          </div>
+          <div class="span12">
+            <h2>Using the CSS</h2>
+            <p>To use the generated CSS is easy. First, include the CSS file (there are multiple ways to do this, of course).</p>
+            <pre class="prettyprint">
+&lt;link href="path/to/fontcustom/fontcustom.css" rel="stylesheet"&gt;</pre>
+            <p>Then, to add an icon to a selector, simply add the class:</p>
+            <pre class="prettyprint">
+&lt;span class="icon-star"&gt;Mary had a little lamb.&lt;/span&gt;</pre>
         </section>
       </div>
     </div>
@@ -187,22 +218,31 @@ gem install fontcustom</pre>
           
           <div class="row">
             <div class="dropdown clearfix span3">
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
-                <li><a tabindex="-1" href="#">Action</a></li>
-                <li><a tabindex="-1" href="#">Another action</a></li>
-                <li><a tabindex="-1" href="#">Something else here</a></li>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px; min-width: 185px;">
+                <li><a tabindex="-1" href="#" class="icon-lightning">Action</a></li>
+                <li><a tabindex="-1" href="#" class="icon-pen">Another action</a></li>
+                <li><a tabindex="-1" href="#" class="icon-graffiti">Something else here</a></li>
                 <li class="divider"></li>
-                <li><a tabindex="-1" href="#">Separated link</a></li>
+                <li><a tabindex="-1" href="#" class="icon-star">Separated link</a></li>
               </ul>
             </div>
 
-            <div class="code span9">etc etc etc</div>
+            <div class="code span9">
+              <pre class="prettyprint linenums">
+&lt;ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#" class="icon-lightning"&gt;Action&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#" class="icon-pen"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#" class="icon-graffiti"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="divider"&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#" class="icon-star"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+            </div>
           </div>
 
           <div class="row">
             <div class="btn-toolbar span3">
                 <div class="btn-group">
-                  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+                  <button class="btn btn-primary dropdown-toggle icon-lightning" data-toggle="dropdown">Action <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -212,7 +252,18 @@ gem install fontcustom</pre>
                   </ul>
                 </div><!-- /btn-group -->
                 <div class="btn-group">
-                  <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">Danger <span class="caret"></span></button>
+                  <button class="btn btn-danger dropdown-toggle icon-lightning" data-toggle="dropdown">Danger <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <br>
+                <div class="btn-group">
+                  <button class="btn btn-warning dropdown-toggle icon-lightning" data-toggle="dropdown">Warning <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -222,7 +273,18 @@ gem install fontcustom</pre>
                   </ul>
                 </div><!-- /btn-group -->
                 <div class="btn-group">
-                  <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Warning <span class="caret"></span></button>
+                  <button class="btn btn-success dropdown-toggle icon-lightning" data-toggle="dropdown">Success <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <br>
+                <div class="btn-group">
+                  <button class="btn btn-info dropdown-toggle icon-lightning" data-toggle="dropdown">Info <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -232,27 +294,7 @@ gem install fontcustom</pre>
                   </ul>
                 </div><!-- /btn-group -->
                 <div class="btn-group">
-                  <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Success <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div><!-- /btn-group -->
-                <div class="btn-group">
-                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Info <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div><!-- /btn-group -->
-                <div class="btn-group">
-                  <button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">Inverse <span class="caret"></span></button>
+                  <button class="btn btn-inverse dropdown-toggle icon-lightning" data-toggle="dropdown">Inverse <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -263,14 +305,25 @@ gem install fontcustom</pre>
                 </div><!-- /btn-group -->
               </div>
 
-              <div class="code span9">etc etc etc</div>
+              <div class="code span9">
+                <pre class="prettyprint linenums">
+&lt;div class="btn-group"&gt;
+  &lt;a class="btn dropdown-toggle icon-lightning" data-toggle="dropdown" href="#"&gt;
+    Action
+    &lt;span class="caret"&gt;&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;ul class="dropdown-menu"&gt;
+    &lt;!-- dropdown menu links --&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+              </div>
             </div>
 
             <div class="row">
               <div class="span3">
                 <div class="btn-toolbar">
                   <div class="btn-group">
-                    <button class="btn btn-large">Large action</button>
+                    <button class="btn btn-large"><span class="icon-star"></span> Large action</button>
                     <button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><a href="#">Action</a></li>
@@ -283,7 +336,7 @@ gem install fontcustom</pre>
                 </div><!-- /btn-toolbar -->
                 <div class="btn-toolbar">
                   <div class="btn-group">
-                    <button class="btn btn-small">Small action</button>
+                    <button class="btn btn-small"><span class="icon-star"></span> Small action</button>
                     <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><a href="#">Action</a></li>
@@ -296,7 +349,7 @@ gem install fontcustom</pre>
                 </div><!-- /btn-toolbar -->
                 <div class="btn-toolbar">
                   <div class="btn-group">
-                    <button class="btn btn-mini">Mini action</button>
+                    <button class="btn btn-mini"><span class="icon-star"></span> Mini action</button>
                     <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><a href="#">Action</a></li>
@@ -309,17 +362,35 @@ gem install fontcustom</pre>
                 </div><!-- /btn-toolbar -->
               </div>
 
-              <div class="code span9">etc etc etc</div>
+              <div class="code span9">
+                <pre class="prettyprint linenums">
+&lt;div class="btn-group"&gt;
+  &lt;button class="btn btn-mini"&gt;&lt;span class="icon-star"&gt;&lt;/span&gt; Action&lt;/button&gt;
+  &lt;button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"&gt;
+    &lt;span class="caret"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;ul class="dropdown-menu"&gt;
+    &lt;!-- dropdown menu links --&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+              </div>
           </div>
 
           <div class="row">
             <div class="btn-group span3">
-              <button class="btn">Left</button>
-              <button class="btn">Middle</button>
-              <button class="btn">Right</button>
+              <button class="btn"><span class="icon-scale"></span> Resize</button>
+              <button class="btn"><span class="icon-customize"></span> Edit</button>
+              <button class="btn"><span class="icon-pen"></span> Draw</button>
             </div>
 
-            <div class="code span9">etc etc etc</div>
+            <div class="code span9">
+              <pre class="prettyprint linenums">
+&lt;div class="btn-group"&gt;
+  &lt;button class="btn"&gt;&lt;span class="icon-scale"&gt;&lt;/span&gt; 1&lt;/button&gt;
+  &lt;button class="btn"&gt;&lt;span class="icon-customize"&gt;&lt;/span&gt; 2&lt;/button&gt;
+  &lt;button class="btn"&gt;&lt;span class="icon-pen"&gt;&lt;/span&gt; 3&lt;/button&gt;
+&lt;/div&gt;</pre>
+            </div>
           </div>
         </section>
       </div>
@@ -331,7 +402,10 @@ gem install fontcustom</pre>
           <div class="page-header">
             <h1>Todo</h1>
           </div>
-          <p>To be written.</p>
+          <ul>
+            <li>Integrate with Rails asset pipeline</li>
+            <li>Ligature substitution, like Symbolset</li>
+          </ul>
         </section>
       </div>
     </div>
@@ -343,13 +417,18 @@ gem install fontcustom</pre>
             <div class="page-header">
               <h1>License</h1>
             </div>
-            <p>To be written.</p>
+            <p>This project is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a> and &copy; 2012 Yifei Zhang, Joshua Gross. You can find a copy of all of the licenses in the projects LICENSE.txt file.</p>
           </div>
           <div class="span6">
             <div class="page-header">
               <h1>About</h1>
             </div>
-            <p>To be written.</p>
+            <p>This project was lovingly hand-crafted by <a href="http://github.com/endtwist">Joshua Gross</a> and <a href="http://github.com/ezYZ">Yifei Zhang</a> in New York City.</p>
+            <p>
+              You should follow us on Twitter, if that&rsquo;s your thing:<br>
+              <a href="https://twitter.com/endtwist" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @endtwist</a>&nbsp;
+              <a href="https://twitter.com/ezYZ" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @ezYZ</a>
+            </p>
           </div>
         </section>
       </div>
@@ -357,7 +436,7 @@ gem install fontcustom</pre>
 
     <div class="container">
         <footer>
-          <p>Designed with care by <a href="http://github.com/ezYZ">Yifei Zhang</a> and <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
+          <p>Copyright &copy; 2012 <a href="http://github.com/ezYZ">Yifei Zhang</a>, <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
         </footer>
     </div>
 
@@ -368,6 +447,7 @@ gem install fontcustom</pre>
     <script src="js/vendor/jquery.smooth-scroll.min.js"></script>
     <script src="js/vendor/waypoints.min.js"></script>
     <script src="js/cube.js"></script>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     <script>
       $( document ).ready( function() {
         $( '.navbar a' ).smoothScroll();

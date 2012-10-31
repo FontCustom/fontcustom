@@ -26,6 +26,28 @@ p {
     padding: 60px 0;
 }
 
+button[class^="icon-"]::before, button[class*="icon-"]::before,
+a[class^="icon-"]::before, a[class*="icon-"]::before {
+    margin-right: 10px;
+}
+
+#overview h3::before {
+    margin-right: 10px;
+}
+
+#overview h3.icon-browser::before {
+    position: relative;
+    top: 2px;
+}
+
+#overview h3.icon-scale::before, #overview h3.icon-customize::before, #overview h3.icon-pinch::before {
+    font-size: 0.8em;
+}
+
+#overview .row {
+    margin-bottom: 20px;
+}
+
 #usage {
     padding-bottom: 0;
 }
@@ -42,6 +64,14 @@ p {
     float: left;
     width: 40%;
     margin-top: 40px;
+}
+
+#output .files, #output .span12 {
+    margin-left: 0;
+}
+
+.twitter-follow-button {
+    margin-top: 5px;
 }
 
 footer {
