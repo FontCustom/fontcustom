@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Font Custom</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Generate custom icon webfonts from vector images. All from the comfort of the command line.">
+    <meta name="author" content="Yifei Zhang and Joshua Gross">
 
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -14,9 +14,7 @@
     <link href="css/fontcustom/fontcustom.css" rel="stylesheet">
 
     <style>
-	    .hero-unit {
-	    	margin-top: 60px;
-	    }
+	    .hero-unit { margin-top: 60px; }
     </style>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -73,7 +71,7 @@
 
         <div>
           <h1>Font Custom</h1>
-          <p>Generates icon webfonts and a corresponding CSS file from a collection of vector images.</p>
+          <p>Generate flexible icon webfonts from regular vector images. All from the comfort of the command line.</p>
           <p>
           	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
           	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
@@ -83,44 +81,44 @@
 
       <div class="overview row">
         <div class="span4">
-          <h3 class="icon-outlet">Generate fonts automatically</h3>
-          <p>Images are automatically packed together into a font file. No messing with outdated font software or confusing scripting APIs.</p>
-        </div>
-        <div class="span4">
           <h3 class="icon-browser">Cross-browser</h3>
-          <p>Font Custom generates font files for every browser. Whether its ttf, woff, eot, or svg, you're covered.</p>
+          <p>Output multiple font formats and a <a href="http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax">bulletproof</a> stylesheet with one command. Works on modern browsers, quirky mobile flavors, and even your old friend IE8.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-factory">Outputs CSS file</h3>
-          <p>The CSS file is mapped by filename; if you know the glyph's filename, you know the CSS class to use it.</p>
-        </div>
-      </div>
-      <div class="overview row">
-        <div class="span4">
-          <h3 class="icon-glasses">Screen reader compatible</h3>
-          <p>Some glyph fonts use letters or alphanumeric characters, which will be read out by screen readers. Font Custom fonts are prepared in such a way that this won't happen. </p>
+          <h3 class="icon-factory">Bootstrap-ready</h3>
+          <p>Font Custom builds its styles using Bootstrap's <code>.icon-{{your-file-name}}</code> naming convention. Just include <strong>fontcustom.css</strong> and you're set.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-pen">Use any vector images</h3>
-          <p>Rather than being restricted to a pre-defined set of images, use whatever vector images you would like. It doesn't matter whether they're from <a href="http://glyphicons.com/">Glyphicons</a> or <a href="http://thenounproject.com">The Noun Project</a>.</p>
-        </div>
-        <div class="span4">
-          <h3 class="icon-scale">Infinite scalability</h3>
-          <p>Because they're stored in the font as vectors, each glyph is infinitely scalable. No more @2x.</p>
+          <h3 class="icon-outlet">Plug and play</h3>
+          <p>No configuration or navigating confusing APIs. Just place your vectors in a folder, link a CSS file, and let Font Custom take care of the rest.</p>
         </div>
       </div>
       <div class="overview row">
         <div class="span4">
-          <h3 class="icon-customize">Style with CSS</h3>
-          <p>Modify colors, add shadows, rotate, flip&mdash;modify and style icons however you like with just a little CSS.</p>
+          <h3 class="icon-pen">Infinite options</h3>
+          <p>Why limit yourself to generic, overused icon sets? Create your own vectors or check out <a href="http://glyphicons.com/">Glyphicons</a> and <a href="http://thenounproject.com">The Noun Project</a> for a buffet of possibilities.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-pinch">Smaller glyph fonts</h3>
-          <p>Fonts like <a href="http://pictos.cc/font/">Pictos</a> and <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a> are great, but the number of included icons bloat filesizes and can be overkill. Font Custom only includes the icons you choose.</p>
+          <h3 class="icon-scale">Flexible sizes</h3>
+          <p>Resize icons to your heart's content. Since they're vector, Font Custom icons appear crisp at any size. (Also, no more <code>@2x</code> icon assets.)</p>
         </div>
         <div class="span4">
-          <h3 class="icon-lightning">Updates instantly</h3>
-          <p>Add an icon? Remove an icon? Fonts and the CSS file are regenerated instantly as long as Font Custom is watching.</p>
+          <h3 class="icon-graffiti">Just add CSS</h3>
+          <p>Change colors, add shadows, rotate, transmogrify &mdash; style icons however you want with just a little CSS. Tweaking icon designs has never been easier.</p>
+        </div>
+      </div>
+      <div class="overview row">
+        <div class="span4">
+          <h3 class="icon-pinch">Smaller file sizes</h3>
+          <p>Icon font sets like <a href="http://pictos.cc/font/">Pictos</a> and <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a> require browsers to download hundreds of icons you'll never use. Font Custom only includes the icons you choose.</p>
+        </div>
+        <div class="span4">
+          <h3 class="icon-glasses">Screen reader friendly</h3>
+          <p>Some icon fonts use letters or alphanumeric characters which are read out by screen readers. Font Custom uses Unicode's <a href="http://en.wikipedia.org/wiki/Private_Use_(Unicode)#Private_Use_Areas">PUA</a> so this won't ever be an issue.</p>
+        </div>
+        <div class="span4">
+          <h3 class="icon-lightning">Automatic regeneration</h3>
+          <p>Add an icon? Remove an icon? Fonts and styles are regenerated instantly thanks to Font Custom's handy command line watcher.</p>
         </div>
       </div>
     </div>
@@ -132,9 +130,9 @@
             <h1>Usage</h1>
           </div>
           <div class="content">
-            <p>Using <strong>Font Custom</strong> is incredibly easy. Just create a directory for your <strong>svg</strong> and <strong>eps</strong> files. Then, on the command line, run:
+            <p>Just create a directory for your <strong>svg</strong> and <strong>eps</strong> files. Then, on the command line, run:
             <pre class="prettyprint">fontcustom watch /path/to/vectors</pre>
-            <p>Font Custom will create the font files and accompanying CSS file. It will also continue to run and watch the folder for changes, so you don't have to manually re-run it each time you update the image set.</p>
+            <p>Font Custom will create the font files and accompanying CSS file. It will also continue to run and watch the folder for changes, so you don't have to manually re-run it each time you update the vector set.</p>
             <br>
             <p>Want to just run it once, without watching the folder?</p>
             <pre class="prettyprint">fontcustom compile /path/to/vectors</pre>
@@ -150,7 +148,7 @@
           <div class="page-header">
             <h1>Installation</h1>
           </div>
-          <p>Ready to get started with Font Custom? We've made sure that installation is incredibly easy. You'll need Ruby and <strong><a href="http://rubygems.org/pages/download">RubyGems</a></strong> before you get started.</p>
+          <p>Ready to start using Font Custom? You just need Ruby and <strong><a href="http://rubygems.org/pages/download">RubyGems</a></strong> to get started.</p>
 
           <p>To install on <strong>OS X</strong> using <strong><a href="http://mxcl.github.com/homebrew/">Homebrew</a></strong> simply run:</p>
           <pre class="prettyprint linenums">
@@ -175,7 +173,7 @@ gem install fontcustom</pre>
           </div>
           <div class="span6 files">
             <h2>Files</h2>
-            <p>After compiling a font from your vectors, Font Custom spits out a number of files, including CSS and all font files as follows:</p>
+            <p>Font Custom generates a number of files, including CSS and all font files as follows:</p>
             <pre class="prettyprint">
 fontcustom.css
 fontcustom-UNIQUEHASH.ttf
@@ -186,7 +184,7 @@ fontcustom-UNIQUEHASH.svg</pre>
           </div>
           <div class="span6">
             <h2>CSS</h2>
-            <p>The CSS file contains some Twitter Bootstrap-compatible boilerplate selectors and then some classes for each icon. The icon classes are at the bottom of the file, like this:</p>
+            <p>The CSS file contains Bootstrap-compatible boilerplate selectors and classes for each icon. The icon classes can be found at the bottom of the file, like this:</p>
             <pre class="prettyprint linenums">
 /*
 Icon Classes
@@ -198,13 +196,13 @@ Icon Classes
 .icon-windmill:before { content: "\f003"; }</pre>
           </div>
           <div class="span12">
-            <h2>Using the CSS</h2>
-            <p>To use the generated CSS is easy. First, include the CSS file (there are multiple ways to do this, of course).</p>
+            <h2>Including Font Custom in your project</h2>
+            <p>First, include the CSS file (there are multiple ways to do this, of course).</p>
             <pre class="prettyprint">
 &lt;link href="path/to/fontcustom/fontcustom.css" rel="stylesheet"&gt;</pre>
-            <p>Then, to add an icon to a selector, simply add the class:</p>
+            <p>To add an icon to a selector, simply add the class that corresponds to the vector's file name:</p>
             <pre class="prettyprint">
-&lt;span class="icon-star"&gt;Mary had a little lamb.&lt;/span&gt;</pre>
+&lt;span class="icon-sheep"&gt;Mary had a little lamb.&lt;/span&gt;</pre>
         </section>
       </div>
     </div>
@@ -215,7 +213,7 @@ Icon Classes
           <div class="page-header">
             <h1>Examples</h1>
           </div>
-          
+
           <div class="row">
             <div class="dropdown clearfix span3">
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px; min-width: 185px;">
@@ -423,7 +421,7 @@ Icon Classes
             <div class="page-header">
               <h1>About</h1>
             </div>
-            <p>This project was lovingly hand-crafted by <a href="http://github.com/endtwist">Joshua Gross</a> and <a href="http://github.com/ezYZ">Yifei Zhang</a> in New York City.</p>
+            <p>This project was lovingly hand-crafted by <a href="http://github.com/endtwist">Joshua Gross</a> and <a href="http://yifei.co">Yifei Zhang</a> in New York City.</p>
             <p>
               You should follow us on Twitter, if that&rsquo;s your thing:<br>
               <a href="https://twitter.com/endtwist" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @endtwist</a>&nbsp;
@@ -436,7 +434,7 @@ Icon Classes
 
     <div class="container">
         <footer>
-          <p>Copyright &copy; 2012 <a href="http://github.com/ezYZ">Yifei Zhang</a>, <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
+          <p>Copyright &copy; 2012 <a href="http://yifei.co">Yifei Zhang</a>, <a href="http://github.com/endtwist">Joshua Gross</a>.</p>
         </footer>
     </div>
 
