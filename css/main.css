@@ -3,11 +3,21 @@ p {
 }
 
 #overview {
-    padding: 0 0 60px;
+    padding: 60px 0;
 }
 
     #overview .hero-unit > div {
         float: left;
+    }
+
+#github-ribbon {
+    position: relative;
+}
+
+    #github-ribbon a {
+        position: absolute;
+        top: 40px;
+        right: 0;
     }
 
 .hero-unit {
@@ -173,14 +183,25 @@ footer {
         -moz-transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
     }
 
+@media (max-width: 979px) {
+    #github-ribbon a {
+        top: -20px;
+    }
+}
+
 @media (max-width: 767px) {
     body {
         padding-right: 0;
         padding-left: 0;
     }
 
-    .container.hero, .section-wrap {
+    #overview, .container {
         padding: 0 20px;
+    }
+
+    .hero-unit {
+        margin-top: 20px;
+        padding: 0;
     }
 
     .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
