@@ -1,9 +1,10 @@
-FontCustom
+FontCustom v0.0.1
 ==========
 
-(Pre-release)
+**Generate custom icon webfonts from the comfort of the command line.**
 
-__Automated glyph font generator. Stop building glyph fonts by hand and FontCustom-ize.__
+[Full documentation](http://endtwist.github.com/fontcustom/)
+[Feedback and issues](https://github.com/endtwist/fontcustom/issues)
 
 
 Installation
@@ -21,14 +22,7 @@ Usage
 
 ```sh
 fontcustom compile path/to/vectors  # Compile icons and css to path/to/fontcustom/*
-fontcustom watch path/to/vectors    # Listen for changes
+fontcustom watch path/to/vectors    # Watch for changes
 ```
 
-Options second parameter allows you to specify an output directory.
-
-TODO
-----
-
-* Watcher should clean up old files (ideally without adding any dotfiles to preserve state)
-* Cleaner thor messages (avoid extra dir exists messages)
-* Less awkward tests
+Optional second parameter allows you to specify an output directory.
