@@ -100,6 +100,10 @@ footer {
     -moz-perspective: 800;
     -moz-perspective-origin: 50% 50px;
     -moz-transform: scale(0.75,0.75);
+
+    perspective: 800;
+    perspective-origin: 50% 50px;
+    transform: scale(0.75,0.75);
 }
 
 .cube {
@@ -114,6 +118,10 @@ footer {
     -moz-transition: -moz-transform 50ms linear;
     -moz-transform-style: preserve-3d;
     -moz-transform: rotateX(-10deg) rotateY(20deg);
+
+    transition: transform 50ms linear;
+    transform-style: preserve-3d;
+    transform: rotateX(-10deg) rotateY(20deg);
 }
 
     .cube h2 {
@@ -148,27 +156,32 @@ footer {
     .cube > div:first-child  {
         -webkit-transform: rotateX(90deg) translateZ(50px);
         -moz-transform: rotateX(90deg) translateZ(50px);
+        transform: rotateX(90deg) translateZ(50px);
     }
 
     .cube > div:nth-child(2) {
         -webkit-transform: translateZ(50px);
         -moz-transform: translateZ(50px);
+        transform: translateZ(50px);
     }
 
     .cube > div:nth-child(3) {
         -webkit-transform: rotateY(90deg) translateZ(50px);
         -moz-transform: rotateY(90deg) translateZ(50px);
+        transform: rotateY(90deg) translateZ(50px);
         text-align: center;
     }
 
     .cube > div:nth-child(4) {
         -webkit-transform: rotateY(180deg) translateZ(50px);
         -moz-transform: rotateY(180deg) translateZ(50px);
+        transform: rotateY(180deg) translateZ(50px);
     }
 
     .cube > div:nth-child(5) {
         -webkit-transform: rotateY(-90deg) translateZ(50px);
         -moz-transform: rotateY(-90deg) translateZ(50px);
+        transform: rotateY(-90deg) translateZ(50px);
     }
 
     .cube > div:nth-child(5) p {
@@ -181,6 +194,7 @@ footer {
     .cube > div:nth-child(6) {
         -webkit-transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
         -moz-transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
+        transform: rotateX(-90deg) rotate(180deg) translateZ(50px);
     }
 
 @media (max-width: 979px) {
