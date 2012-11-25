@@ -2,6 +2,10 @@ p {
     line-height: 1.5;
 }
 
+h1, h2, h3, h4 {
+    line-height: 1.25;
+}
+
 #overview {
     padding: 60px 0;
 }
@@ -211,6 +215,10 @@ footer {
 
     #overview, .container {
         padding: 0 20px;
+    }
+
+    #overview .span4 {
+        margin-bottom: 20px;
     }
 
     .hero-unit {
