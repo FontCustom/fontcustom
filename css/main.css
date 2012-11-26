@@ -41,7 +41,7 @@ h1, h2, h3, h4 {
 }
 
 button[class^="icon-"]::before, button[class*="icon-"]::before,
-a[class^="icon-"]::before, a[class*="icon-"]::before {
+a [class^="icon-"]::before, a [class*="icon-"]::before {
     margin-right: 10px;
 }
 
