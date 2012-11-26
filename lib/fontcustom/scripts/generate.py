@@ -13,7 +13,7 @@ f = fontforge.font()
 f.encoding = 'UnicodeFull'
 
 m = md5.new()
-cp = 0xf000
+cp = 0xf100
 files = []
 
 KERNING = 15

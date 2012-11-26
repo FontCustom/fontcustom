@@ -69,4 +69,4 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 Icon Classes
 */
 <% @font['names'].each_with_index do |name, index| %>
-.icon-<%= name.downcase %>:before { content: "\<%= (61440+index).to_s(16) %>"; }<% end %>
+.icon-<%= name.downcase %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
