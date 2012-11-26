@@ -452,7 +452,6 @@ Icon Classes
 
         var activateTab = function() {
             $( '.navbar li.active' ).removeClass( 'active' );
-            console.log( this );
             $( '.navbar a[href="#' + $( this ).closest( '#overview, .section-wrap' ).attr( 'id' ) + '"]' ).closest( 'li' ).addClass( 'active' );
         };
 
