@@ -7,6 +7,7 @@ from subprocess import call
 
 parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
 parser.add_argument('dir', metavar='directory', type=unicode, nargs='+', help='directory of vector files')
+parser.add_argument('--name', metavar='fontname', type=unicode, nargs=1, default='fontcustom', help='reference name of the font (no spaces)')
 parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 args = parser.parse_args()
 
@@ -46,7 +47,9 @@ else:
 	hashStr = m.hexdigest()
 	fontfile = args.dir[1] + '/fontcustom-' + hashStr
 
-f.fontname = 'fontcustom'
+f.fontname = args.name[0]
+f.familyname = args.name[0]
+f.fullname = args.name[0]
 f.generate(fontfile + '.ttf')
 f.generate(fontfile + '.svg')
 
