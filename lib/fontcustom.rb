@@ -1,6 +1,4 @@
-require 'fontcustom/version'
-require 'fontcustom/generator'
-require 'fontcustom/watcher'
+%w(version generator watcher).each { |file| require "fontcustom/#{file}" }
 
 module Fontcustom
   # Both .compile and .watch take the following arguments:
