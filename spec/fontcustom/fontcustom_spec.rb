@@ -12,13 +12,13 @@ describe Fontcustom do
       FileUtils.touch(fake_file, :verbose => true)
       @original_fonts = Dir[output_dir + '/fontcustom-*.{woff,eot,ttf,svg}']
       @original_css = File.read(output_dir + '/fontcustom.css')
-      FileUtils.mv(input_dir + '/B.svg', input_dir + '/E.svg', :verbose => true)
+      FileUtils.mv(input_dir + '/C.svg', input_dir + '/E.svg', :verbose => true)
       Fontcustom.compile(input_dir, '-o', output_dir)
     end
 
     after(:all) do
       cleanup(output_dir)
-      FileUtils.mv(input_dir + '/E.svg', input_dir + '/B.svg', :verbose => true)
+      FileUtils.mv(input_dir + '/E.svg', input_dir + '/C.svg', :verbose => true)
     end
 
     it 'should delete previous fontcustom generated files' do

@@ -27,7 +27,7 @@ describe Fontcustom::Generator do
 
     it 'should print icon-* CSS classes in fontcustom.css' do
       stylesheet = File.read(output_dir + '/fontcustom.css')
-      icon_names = Dir[input_dir + '/*'].map { |file| File.basename(file, '.svg').downcase }
+      icon_names = Dir[input_dir + '/*'].map { |file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
 
       icon_names.each do |name|
         stylesheet.should include('.icon-' + name)
@@ -54,16 +54,22 @@ describe Fontcustom::Generator do
   end
 
   context 'when flags are passed' do
-    it 'should rename the output files' do
+    it 'should save output files with a custom name' do
+      Fontcustom::Generator.start([input_dir, '-o', output_dir, '-n', 'customname'])
+
+      file = Dir[File.join(output_dir, 'customname-*.ttf')].first
+      File.exists?(file).should be_true
+
+      cleanup(output_dir)
     end
 
-    it 'should exclude bootstrap CSS' do
-    end
+    it 'should exclude the filename hash' do
+      Fontcustom::Generator.start([input_dir, '-o', output_dir, '--nohash'])
 
-    it 'should not use the unicode PUA' do
-    end
+      file = File.join(output_dir, 'fontcustom.ttf')
+      File.exists?(file).should be_true
 
-    it 'should exclude the digest / work with sprockets' do
+      cleanup(output_dir)
     end
   end
 end

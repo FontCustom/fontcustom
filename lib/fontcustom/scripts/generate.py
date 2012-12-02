@@ -6,8 +6,8 @@ import json
 from subprocess import call
 
 parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
-parser.add_argument('dir', metavar='directory', type=unicode, nargs='+', help='directory of vector files')
-parser.add_argument('--name', metavar='fontname', type=unicode, nargs=1, default='fontcustom', help='reference name of the font (no spaces)')
+parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
+parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
 parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 args = parser.parse_args()
 
@@ -42,14 +42,14 @@ for dirname, dirnames, filenames in os.walk(args.dir[0]):
 			cp += 1
 
 if args.nohash:
-	fontfile = args.dir[1] + '/fontcustom'
+	fontfile = args.dir[1] + '/' + args.name
 else:
 	hashStr = m.hexdigest()
-	fontfile = args.dir[1] + '/fontcustom-' + hashStr
+	fontfile = args.dir[1] + '/' + args.name + '-' + hashStr
 
-f.fontname = args.name[0]
-f.familyname = args.name[0]
-f.fullname = args.name[0]
+f.fontname = args.name
+f.familyname = args.name
+f.fullname = args.name
 f.generate(fontfile + '.ttf')
 f.generate(fontfile + '.svg')
 

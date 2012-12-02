@@ -1,19 +1,19 @@
 /*
-Font Custom - icon webfonts made simple
+  Font Custom - icon webfonts made simple
 */
 
 @font-face {
   font-family: "fontcustom";
-  src: url("<%= @font['file'] %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @font['file'] %>.woff") format("woff"),
-       url("<%= @font['file'] %>.ttf") format("truetype"),
-       url("<%= @font['file'] %>.svg#fontcustom") format("svg");
+  src: url("<%= @font %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @font %>.woff") format("woff"),
+       url("<%= @font %>.ttf") format("truetype"),
+       url("<%= @font %>.svg#<%= @font %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
 /*
-Bootstrap Overrides
+  Bootstrap Overrides
 */
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
@@ -66,7 +66,7 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 }
 
 /*
-Icon Classes
+  Icon Classes
 */
-<% @font['names'].each_with_index do |name, index| %>
-.icon-<%= name.downcase %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+<% @classes.each_with_index do |name, index| %>
+.icon-<%= name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

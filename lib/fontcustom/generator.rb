@@ -8,7 +8,9 @@ module Fontcustom
     desc 'Generates webfonts from given directory of vectors.'
 
     argument :input, :type => :string
-    class_option :output, :aliases => '-o', :type => :string
+    class_option :output, :aliases => '-o'
+    class_option :name, :aliases => '-n'
+    class_option :nohash, :type => :boolean, :default => false
 
     def self.source_root
       File.dirname(__FILE__)
@@ -35,26 +37,34 @@ module Fontcustom
 
     def cleanup_output_dir
       originals = Dir[File.join(@output, 'fontcustom*.{css,woff,ttf,eot,svg}')]
-      originals.each do |file|
-        remove_file file
-      end
+      originals.each {|file| remove_file file }
     end
 
     def generate
       gem_file_path = File.expand_path(File.join(File.dirname(__FILE__)))
-      @font = %x| fontforge -script #{gem_file_path}/scripts/generate.py #{input} #{@output} 2>&1 /dev/null |
-      @font = JSON.parse(@font.split("\n").last)
+      name = options.name ? ' --name ' + options.name : ''
+      nohash = options.nohash ? ' --nohash' : ''
+
+      # suppress fontforge message
+      # TODO get font name and classes from script (without showing fontforge message)
+      `fontforge -script #{gem_file_path}/scripts/generate.py #{input} #{@output + name + nohash} > /dev/null 2>&1`
     end
 
     def show_paths
-      path = @font['file']
+      name = options.name || 'fontcustom'
+      file = Dir[File.join(@output, name + '*.ttf')].first
+      @font_path = file.chomp('.ttf')
+
       ['woff','ttf','eot','svg'].each do |type|
-        say_status(:create, path + '.' + type)
+        say_status(:create, @font_path + '.' + type)
       end
     end
 
     def create_stylesheet
-      @font['file'] = File.basename(@font['file'])
+      files = Dir[File.join(input, '*.{svg,eps}')]
+      @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
+      @font = File.basename(@font_path)
+
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
     end
   end
