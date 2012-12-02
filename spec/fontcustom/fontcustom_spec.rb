@@ -8,12 +8,12 @@ describe Fontcustom do
   context 'when ouput_dir already contains files' do
     # Compile, add non-fontcustom file, change input vectors, recompile
     before(:all) do
-      Fontcustom.compile(input_dir, output_dir)
+      Fontcustom.compile(input_dir, '-o', output_dir)
       FileUtils.touch(fake_file, :verbose => true)
       @original_fonts = Dir[output_dir + '/fontcustom-*.{woff,eot,ttf,svg}']
       @original_css = File.read(output_dir + '/fontcustom.css')
       FileUtils.mv(input_dir + '/B.svg', input_dir + '/E.svg', :verbose => true)
-      Fontcustom.compile(input_dir, output_dir)
+      Fontcustom.compile(input_dir, '-o', output_dir)
     end
 
     after(:all) do

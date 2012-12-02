@@ -3,14 +3,10 @@ require 'fontcustom/generator'
 require 'fontcustom/watcher'
 
 module Fontcustom
-  # Both .compile and .watch take the following arguments:
-  #
-  # @param [String] the input dir
-  # @param [String] the output dir (optional, defaults to fontcustom/ adjacent to the input dir)
-  # @param [Hash] options for Thor (not working)
+  # Usage:
+  # Fontcustom.compile 'path/to/vectors', '-o', 'path/to/output'
   def compile(*args)
-    config = args.last.is_a?(::Hash) ? args.pop : {}
-    Fontcustom::Generator.start(args, config)
+    Fontcustom::Generator.start(args) # as array
   end
 
   def watch(*args)

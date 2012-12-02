@@ -8,10 +8,16 @@ module Fontcustom
     desc 'Generates webfonts from given directory of vectors.'
 
     argument :input, :type => :string
-    argument :output, :type => :string, :optional => true
+    class_option :output, :aliases => '-o', :type => :string
 
     def self.source_root
       File.dirname(__FILE__)
+    end
+
+    def verify_fontforge
+      if `which fontforge` == ''
+        raise Thor::Error, 'Please install fontforge first.'
+      end
     end
 
     def verify_input_dir
@@ -23,7 +29,7 @@ module Fontcustom
     end
 
     def verify_or_create_output_dir
-      @output = output.nil? ? File.join(File.dirname(input), 'fontcustom') : output
+      @output = options.output.nil? ? File.join(File.dirname(input), 'fontcustom') : options.output
       empty_directory(@output) unless File.directory?(@output)
     end
 

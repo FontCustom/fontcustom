@@ -5,7 +5,7 @@ describe Fontcustom::Generator do
   let(:output_dir) { 'tmp' }
 
   context 'normally' do
-    before(:all) { Fontcustom::Generator.start([input_dir, output_dir]) }
+    before(:all) { Fontcustom::Generator.start([input_dir, '-o', output_dir]) }
     after(:all) { cleanup(output_dir) }
 
     it 'should create webfonts' do
@@ -39,7 +39,7 @@ describe Fontcustom::Generator do
     let(:fake_input_dir) { 'does/not/exist' }
 
     it 'should raise an error' do
-      results = capture(:stderr) { Fontcustom::Generator.start([fake_input_dir, output_dir]) }
+      results = capture(:stderr) { Fontcustom::Generator.start([fake_input_dir, '-o', output_dir]) }
       results.should =~ /doesn't exist or isn't a directory/
     end
   end
@@ -50,6 +50,20 @@ describe Fontcustom::Generator do
     it 'should raise an error' do
       results = capture(:stderr) { Fontcustom::Generator.start([empty_input_dir, output_dir]) }
       results.should =~ /doesn't contain any vectors/
+    end
+  end
+
+  context 'when flags are passed' do
+    it 'should rename the output files' do
+    end
+
+    it 'should exclude bootstrap CSS' do
+    end
+
+    it 'should not use the unicode PUA' do
+    end
+
+    it 'should exclude the digest / work with sprockets' do
     end
   end
 end
