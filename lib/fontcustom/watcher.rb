@@ -17,6 +17,7 @@ module Fontcustom
 
       begin
         puts "Fontcustom is watching your icons at " + dir
+        Fontcustom.compile(*args)
         @listener.start()
 
       # Catches Cmd/Ctrl + C

@@ -3,11 +3,11 @@
 */
 
 @font-face {
-  font-family: "fontcustom";
-  src: url("<%= @font %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @font %>.woff") format("woff"),
-       url("<%= @font %>.ttf") format("truetype"),
-       url("<%= @font %>.svg#<%= @font %>") format("svg");
+  font-family: "<%= @name %>";
+  src: url("<%= @path %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @path %>.woff") format("woff"),
+       url("<%= @path %>.ttf") format("truetype"),
+       url("<%= @path %>.svg#<%= @name %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -17,7 +17,7 @@
 */
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontcustom";
+  font-family: "<%= @name %>";
   font-weight: normal;
   font-style: normal;
   display: inline-block;

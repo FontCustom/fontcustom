@@ -35,14 +35,31 @@ module Fontcustom
       empty_directory(@output) unless File.directory?(@output)
     end
 
+    def normalize_name
+      @name = if options.name
+        options.name.gsub(/\W/, '-').downcase
+      else
+        'fontcustom'
+      end
+    end
+
     def cleanup_output_dir
-      originals = Dir[File.join(@output, 'fontcustom*.{css,woff,ttf,eot,svg}')]
-      originals.each {|file| remove_file file }
+      css = File.join(@output, 'fontcustom.css')
+      old_name = if File.exists? css
+                   line = IO.readlines(css)[5]                           # font-family: "Example Font";
+                   line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
+                 else
+                   'fontcustom'
+                 end
+
+      old_files = Dir[File.join(@output, old_name + '-*.{woff,ttf,eot,svg}')]
+      old_files << css if File.exists?(css)
+      old_files.each {|file| remove_file file }
     end
 
     def generate
       gem_file_path = File.expand_path(File.join(File.dirname(__FILE__)))
-      name = options.name ? ' --name ' + options.name : ''
+      name = options.name ? ' --name ' + @name : ''
       nohash = options.nohash ? ' --nohash' : ''
 
       # suppress fontforge message
@@ -51,19 +68,18 @@ module Fontcustom
     end
 
     def show_paths
-      name = options.name || 'fontcustom'
-      file = Dir[File.join(@output, name + '*.ttf')].first
-      @font_path = file.chomp('.ttf')
+      file = Dir[File.join(@output, @name + '*.ttf')].first
+      @path = file.chomp('.ttf')
 
       ['woff','ttf','eot','svg'].each do |type|
-        say_status(:create, @font_path + '.' + type)
+        say_status(:create, @path + '.' + type)
       end
     end
 
     def create_stylesheet
       files = Dir[File.join(input, '*.{svg,eps}')]
       @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
-      @font = File.basename(@font_path)
+      @path = File.basename(@path)
 
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
     end

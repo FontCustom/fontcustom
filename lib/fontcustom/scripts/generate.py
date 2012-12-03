@@ -66,5 +66,3 @@ call(scriptPath + '/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=
 
 # Hint the TTF file
 call(scriptPath + '/ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
-
-print json.dumps({'file': fontfile, 'names': files})
