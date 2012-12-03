@@ -3,14 +3,22 @@ require 'fontcustom'
 
 module Fontcustom
   class CLI < Thor
-    desc 'compile INPUT_DIR [OUTPUT_DIR]', 'Generates icon webfonts and a corresponding CSS file from a collection of vector images.'
-    def compile(input, output = nil)
-      Fontcustom.compile(input, output)
+    # duplicated from Fontcustom::Generator so as to also appear under `fontcustom help` command
+    class_option :output, :aliases => '-o', :desc => 'Specify an output directory. Default: $DIR/fontcustom'
+    class_option :name, :aliases => '-n', :desc => 'Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom'
+    class_option :nohash, :type => :boolean, :default => false, :desc => 'Disable filename hashes. Default: false'
+
+    desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
+    def compile(*args)
+      # workaround to pass arguments from one Thor class to another
+      ARGV.shift
+      Fontcustom.compile(*ARGV)
     end
 
-    desc 'watch INPUT_DIR [OUTPUT_DIR]', 'Watches a directory of vector images for changes and regenerates icon webfonts and CSS when there are.'
-    def watch(input, output = nil)
-      Fontcustom.watch(input, output)
+    desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically.'
+    def watch(*args)
+      ARGV.shift
+      Fontcustom.watch(*ARGV)
     end
   end
 end
