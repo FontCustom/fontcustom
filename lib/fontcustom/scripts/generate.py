@@ -64,7 +64,8 @@ svgfile.close()
 scriptPath = os.path.dirname(os.path.realpath(__file__))
 p = subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
 out, err = p.communicate()
-out += err
+if err is not None:
+	out += err
 # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
 # global version. This allows us to avoid forcing OS X users to compile
 # sfnt2woff from source, simplifying install.

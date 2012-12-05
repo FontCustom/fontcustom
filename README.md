@@ -1,4 +1,4 @@
-FontCustom v0.1.0
+FontCustom v0.1.1
 ==========
 
 **Generate custom icon webfonts from the comfort of the command line.**
@@ -12,7 +12,7 @@ Installation
 
 ```sh
 # Requires FontForge
-brew install fontforge
+brew install fontforge eot-utils ttfautohint
 gem install fontcustom
 ```
 

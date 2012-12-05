@@ -24,12 +24,6 @@ fontcustom
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-ttf2eot
-
-    Author: taviso@sdf.lonestar.org 15-Mar-2009
-    License: Derived from WebKit, so BSD/LGPL 2/LGPL 2.1.
-
-
 sfnt2woff
 
     Version: MPL 1.1/GPL 2.0/LGPL 2.1
