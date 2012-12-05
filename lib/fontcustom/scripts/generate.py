@@ -3,7 +3,7 @@ import os
 import argparse
 import md5
 import json
-from subprocess import call
+import subprocess
 
 parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
 parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
@@ -53,7 +53,8 @@ f.fullname = args.name
 f.generate(fontfile + '.ttf')
 f.generate(fontfile + '.svg')
 
-# Fix SVG header for webkit (from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py)
+# Fix SVG header for webkit
+# from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
 svgfile = open(fontfile + '.svg', 'r+')
 svgtext = svgfile.read()
 svgfile.seek(0)
@@ -61,8 +62,16 @@ svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000
 svgfile.close()
 
 scriptPath = os.path.dirname(os.path.realpath(__file__))
-call([scriptPath + '/sfnt2woff', fontfile + '.ttf'])
-call(scriptPath + '/ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
+p = subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+out, err = p.communicate()
+out += err
+# If the local version of sfnt2woff fails (i.e., on Linux), try to use the
+# global version. This allows us to avoid forcing OS X users to compile
+# sfnt2woff from source, simplifying install.
+if 'OSError' in out:
+	subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+
+subprocess.call('mkeot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
-call(scriptPath + '/ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
