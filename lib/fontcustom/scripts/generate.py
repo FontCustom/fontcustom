@@ -62,17 +62,15 @@ svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000
 svgfile.close()
 
 scriptPath = os.path.dirname(os.path.realpath(__file__))
-p = subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
-out, err = p.communicate()
-if err is not None:
-	out += err
-# If the local version of sfnt2woff fails (i.e., on Linux), try to use the
-# global version. This allows us to avoid forcing OS X users to compile
-# sfnt2woff from source, simplifying install.
-if 'OSError' in out:
+try:
+	subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+except OSError:
+	# If the local version of sfnt2woff fails (i.e., on Linux), try to use the
+	# global version. This allows us to avoid forcing OS X users to compile
+	# sfnt2woff from source, simplifying install.
 	subprocess.call(['sfnt2woff', fontfile + '.ttf'])
 
 subprocess.call('mkeot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
-subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
