@@ -159,10 +159,13 @@ gem install fontcustom</pre>
           <pre class="prettyprint linenums">
 sudo apt-get install fontforge eot-utils ttfautohint
 wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
-unzip woff-code-latest.zip -d sfnt2woff &amp;&amp; cd sfnt2woff &amp;&amp; make &amp;&amp; make install
+unzip woff-code-latest.zip -d sfnt2woff &amp;&amp; cd sfnt2woff &amp;&amp; make &amp;&amp; sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom</pre>
 
-          <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first. <code>sudo apt-get ruby1.*.*-dev</code></small></p>
+          <p>Note that if <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
+
+          <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first: <code>sudo apt-get ruby1.*.*-dev</code>.</small></p>
+          <p><small></small></p>
         </section>
       </div>
     </div>
