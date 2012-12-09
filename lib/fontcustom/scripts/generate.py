@@ -1,15 +1,27 @@
 import fontforge
 import os
-import argparse
 import md5
 import json
 import subprocess
 
-parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
-parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
-parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
-parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
-args = parser.parse_args()
+try:
+	import argparse
+	parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
+	parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
+	parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
+	parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
+	args = parser.parse_args()
+	indir = args.dir[0]
+	outdir = args.dir[1]
+except ImportError:
+	# Older Pythons don't have argparse, so we use optparse instead
+	import optparse
+	parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
+	parser.add_option('--name', metavar='fontname', type='string', nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
+	parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
+	(args, posargs) = parser.parse_args()
+	indir = posargs[0]
+	outdir = posargs[1]
 
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
@@ -20,7 +32,7 @@ files = []
 
 KERNING = 15
 
-for dirname, dirnames, filenames in os.walk(args.dir[0]):
+for dirname, dirnames, filenames in os.walk(indir):
 	for filename in filenames:
 		name, ext = os.path.splitext(filename)
 		filePath = os.path.join(dirname, filename)
@@ -42,10 +54,10 @@ for dirname, dirnames, filenames in os.walk(args.dir[0]):
 			cp += 1
 
 if args.nohash:
-	fontfile = args.dir[1] + '/' + args.name
+	fontfile = outdir + '/' + args.name
 else:
 	hashStr = m.hexdigest()
-	fontfile = args.dir[1] + '/' + args.name + '-' + hashStr
+	fontfile = outdir + '/' + args.name + '-' + hashStr
 
 f.fontname = args.name
 f.familyname = args.name
