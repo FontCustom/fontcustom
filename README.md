@@ -3,7 +3,7 @@ FontCustom v0.1.2
 
 **Generate custom icon webfonts from the comfort of the command line.**
 
-[Full documentation](http://endtwist.github.com/fontcustom/)<br/>
+[Full documentation](http://endtwist.github.com/fontcustom/)
 [Feedback and issues](https://github.com/endtwist/fontcustom/issues)
 
 
