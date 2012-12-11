@@ -76,5 +76,13 @@ module Fontcustom
 
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
     end
+
+    def create_guide
+      files = Dir[File.join(input, '*.{svg,eps}')]
+      @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
+      @path = File.basename(@path)
+
+      template('templates/fontcustom.html', File.join(@output, 'fontcustom.html'))
+    end
   end
 end

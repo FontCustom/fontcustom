@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>FontCustom</title>
+  <link rel="stylesheet" type="text/css" href="fontcustom.css">
+</head>
+<body>
+
+<% @classes.each_with_index do |name, index| %>
+<span class="icon-<%= name %>"></span><% end %>
+
+</body>
+</html>
