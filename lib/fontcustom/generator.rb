@@ -1,5 +1,6 @@
 require 'json'
 require 'thor/group'
+require 'fileutils'
 
 module Fontcustom
   class Generator < Thor::Group
@@ -44,17 +45,9 @@ module Fontcustom
     end
 
     def cleanup_output_dir
-      css = File.join(@output, 'fontcustom.css')
-      old_name = if File.exists? css
-                   line = IO.readlines(css)[5]                           # font-family: "Example Font";
-                   line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
-                 else
-                   'fontcustom'
-                 end
-
-      old_files = Dir[File.join(@output, old_name + '-*.{woff,ttf,eot,svg}')]
-      old_files << css if File.exists?(css)
-      old_files.each {|file| remove_file file }
+      Dir[File.join(@output, "**/*")].each do |f|
+        remove_file f
+      end
     end
 
     def generate
