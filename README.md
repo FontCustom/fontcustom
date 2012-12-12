@@ -26,3 +26,11 @@ fontcustom watch path/to/vectors    # Watch for changes
 ```
 
 Optional second parameter allows you to specify an output directory.
+
+Creating SVG Files
+------------------
+
+* To ensure that all glyphs appear at the same scale, all SVG files should have the same canvas dimensions.
+* All glyphs should be solid black.
+* All glyphs should be converted to outlines (aka traced)
+* Export as SVG 1.1 from Illustrator
