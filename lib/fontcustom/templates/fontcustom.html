@@ -7,8 +7,9 @@
 </head>
 <body>
 
-<% @classes.each_with_index do |name, index| %>
-<span class="icon-<%= name %>"></span><% end %>
+<%- @classes.each_with_index do |name, index| %>
+  <p><span class="icon-<%= name %>"></span> .icon-<%= name %></p>
+<%- end %>
 
 </body>
 </html>
