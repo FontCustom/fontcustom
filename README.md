@@ -25,7 +25,7 @@ fontcustom compile path/to/vectors  # Compile icons and css to path/to/fontcusto
 fontcustom watch path/to/vectors    # Watch for changes
 ```
 
-Optional second parameter allows you to specify an output directory.
+Optional second parameter allows you to specify an output directory. By default a "fontcustom" directory will be created as a sibling to the input directory.
 
 Creating SVG Files
 ------------------
