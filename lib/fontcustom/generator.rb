@@ -11,6 +11,7 @@ module Fontcustom
     class_option :output, :aliases => '-o'
     class_option :name, :aliases => '-n'
     class_option :nohash, :type => :boolean, :default => false
+    class_option :debug, :type => :boolean, :default => false
 
     def self.source_root
       File.dirname(__FILE__)
@@ -64,7 +65,11 @@ module Fontcustom
 
       # suppress fontforge message
       # TODO get font name and classes from script (without showing fontforge message)
-      `fontforge -script #{gem_file_path}/scripts/generate.py #{input} #{@output + name + nohash} > /dev/null 2>&1`
+      cmd = "fontforge -script #{gem_file_path}/scripts/generate.py #{input} #{@output + name + nohash}"
+      unless options.debug
+        cmd += " > /dev/null 2>&1"
+      end
+      `#{cmd}`
     end
 
     def show_paths
