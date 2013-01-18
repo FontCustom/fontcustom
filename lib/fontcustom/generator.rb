@@ -11,6 +11,7 @@ module Fontcustom
     class_option :output, :aliases => '-o'
     class_option :name, :aliases => '-n'
     class_option :nohash, :type => :boolean, :default => false
+    class_option :template, :aliases => '-t', :default => 'templates/fontcustom.css'
 
     def self.source_root
       File.dirname(__FILE__)
@@ -81,7 +82,7 @@ module Fontcustom
       @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
       @path = File.basename(@path)
 
-      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      template(options.template, File.join(@output, 'fontcustom.css'))
     end
   end
 end
