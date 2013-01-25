@@ -41,6 +41,23 @@ for dirname, dirnames, filenames in os.walk(indir):
 		size = os.path.getsize(filePath)
 
 		if ext in ['.svg', '.eps']:
+			if ext in ['.svg']:
+				# hack removal of <switch> </switch> tags
+				svgfile = open(filePath, 'r+')
+				svgtext = svgfile.read()
+				svgfile.seek(0)
+
+				# replace the <switch> </switch> tags with 'nothing'
+				svgtext = svgtext.replace('<switch>', '')
+				svgtext = svgtext.replace('</switch>', '')
+			
+				# remove all contents of file so that we can write out the new contents
+				svgfile.truncate()			
+				svgfile.write(svgtext)
+
+				svgfile.close()
+				# end hack
+				
 			m.update(filename + str(size) + ';')
 			glyph = f.createChar(cp)
 			glyph.importOutlines(filePath)
