@@ -84,7 +84,7 @@ except OSError:
 	# sfnt2woff from source, simplifying install.
 	subprocess.call(['sfnt2woff', fontfile + '.ttf'])
 
-subprocess.call('mkeot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
+subprocess.call('ttf2eot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
 subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)

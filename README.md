@@ -12,7 +12,7 @@ Installation
 
 ```sh
 # Requires FontForge
-brew install fontforge eot-utils ttfautohint
+brew install fontforge ttf2eot ttfautohint
 gem install fontcustom
 ```
 
