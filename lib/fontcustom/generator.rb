@@ -12,6 +12,7 @@ module Fontcustom
     class_option :name, :aliases => '-n'
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
+    class_option :font_path, :aliases => '-f'
 
     def self.source_root
       File.dirname(__FILE__)
@@ -84,7 +85,12 @@ module Fontcustom
     def create_stylesheet
       files = Dir[File.join(input, '*.{svg,eps}')]
       @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
-      @path = File.basename(@path)
+      if(!options.font_path.nil?)
+        font_path = (options.font_path) ? options.font_path : ''
+        @path = File.join(font_path, File.basename(@path))
+      else
+        @path = File.basename(@path)
+      end
 
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
     end
