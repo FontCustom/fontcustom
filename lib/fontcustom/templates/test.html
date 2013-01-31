@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<title>Your Font/Glyphs</title>
+<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<link rel="stylesheet" href="fontcustom.css" />
+<!--[if lte IE 7]>
+<link rel="stylesheet" href="fontcustom-ie7.css" />
+<![endif]-->
+
+
+<style>
+  section, header, footer {display: block;}
+  body {
+    font-family: sans-serif;
+    color: #444;
+    line-height: 1.5;
+    font-size: 1em;
+  }
+  * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .glyph {
+    float: left;
+    text-align: center;
+    background: #eee;
+    padding: .75em;
+    margin: .75em 1.5em .75em 0;
+    width: 7em;
+    border-radius: .25em;
+    box-shadow: inset 0 0 0 1px #f8f8f8, 0 0 0 1px #CCC;
+  }
+  .glyph input {
+    width: 100%;
+    text-align: center;
+    font-family: consolas, monospace;
+  }
+  .glyph input, .mtm {
+    margin-top: .75em;
+  }
+  .w-main {
+    width: 80%;
+  }
+  .centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .fs1 {
+    font-size: 2em;
+  }
+  header {
+    margin: 2em 0;
+    padding-bottom: .5em;
+    color: #666;
+    box-shadow: 0 2px #eee;
+  }
+  header h1 {
+    font-size: 2em;
+    font-weight: normal;
+  }
+  .clearfix:before, .clearfix:after { content: ""; display: table; }
+  .clearfix:after, .clear { clear: both; }
+  footer {
+    margin-top: 2em;
+    padding: .5em 0;
+    box-shadow: 0 -2px #eee;
+  }
+  a, a:visited {
+    color: #B35047;
+    text-decoration: none;
+  }
+  a:hover, a:focus {color: #000;}
+  .box1 {
+    display: inline-block;
+    width: 15em;
+    padding: .25em .5em;
+    background: #eee;
+    margin: .5em 1em .5em 0;
+  }
+</style>
+</head>
+<body>
+  <div class="w-main centered">
+    <section class="mtm clearfix" id="glyphs">
+    <header> <h1>Your font contains the following glyphs</h1> </header>
+    <% @classes.each_with_index do |name, index| %>
+      <div class="glyph">
+        <div class="fs1" ><i class="icon-<%= name %>"></i></div>
+        <input type="text" readonly="readonly" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
+      </div>
+    <% end %>
+    </section>
+  </div>
+</body>
+</html>
