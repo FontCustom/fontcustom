@@ -47,6 +47,7 @@ module Fontcustom
 
     def cleanup_output_dir
       css = File.join(@output, 'fontcustom.css')
+      css_ie7   = File.join(@output, 'fontcustom-ie7.css')
       old_name = if File.exists? css
                    line = IO.readlines(css)[5]                           # font-family: "Example Font";
                    line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
@@ -56,6 +57,7 @@ module Fontcustom
 
       old_files = Dir[File.join(@output, old_name + '-*.{woff,ttf,eot,svg}')]
       old_files << css if File.exists?(css)
+      old_files << css_ie7 if File.exists?(css_ie7)
       old_files.each {|file| remove_file file }
     end
 
@@ -93,6 +95,7 @@ module Fontcustom
       end
 
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
     end
   end
 end
