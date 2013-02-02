@@ -12,6 +12,8 @@ module Fontcustom
     class_option :name, :aliases => '-n'
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
+    class_option :font_path, :aliases => '-f'
+    class_option :html, :type => :boolean, :default => false
 
     def self.source_root
       File.dirname(__FILE__)
@@ -46,6 +48,8 @@ module Fontcustom
 
     def cleanup_output_dir
       css = File.join(@output, 'fontcustom.css')
+      css_ie7   = File.join(@output, 'fontcustom-ie7.css')
+      test_html = File.join(@output, 'test.html')
       old_name = if File.exists? css
                    line = IO.readlines(css)[5]                           # font-family: "Example Font";
                    line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
@@ -55,6 +59,8 @@ module Fontcustom
 
       old_files = Dir[File.join(@output, old_name + '-*.{woff,ttf,eot,svg}')]
       old_files << css if File.exists?(css)
+      old_files << css_ie7 if File.exists?(css_ie7)
+      old_files << test_html if File.exists?(test_html)
       old_files.each {|file| remove_file file }
     end
 
@@ -84,9 +90,16 @@ module Fontcustom
     def create_stylesheet
       files = Dir[File.join(input, '*.{svg,eps}')]
       @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
-      @path = File.basename(@path)
+      if(!options.font_path.nil?)
+        font_path = (options.font_path) ? options.font_path : ''
+        @path = File.join(font_path, File.basename(@path))
+      else
+        @path = File.basename(@path)
+      end
 
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
+      template('templates/test.html', File.join(@output, 'test.html')) if options.html
     end
   end
 end
