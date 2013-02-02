@@ -1,4 +1,4 @@
-FontCustom v0.1.2
+FontCustom v0.1.3
 ==========
 
 **Generate custom icon webfonts from the comfort of the command line.**
@@ -26,3 +26,9 @@ fontcustom watch path/to/vectors    # Watch for changes
 ```
 
 Optional second parameter allows you to specify an output directory.
+
+Need help?
+
+```sh
+fontcustom --help
+```
