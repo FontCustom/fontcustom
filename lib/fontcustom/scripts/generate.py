@@ -101,7 +101,9 @@ except OSError:
 	# sfnt2woff from source, simplifying install.
 	subprocess.call(['sfnt2woff', fontfile + '.ttf'])
 
-subprocess.call('mkeot ' + fontfile + '.ttf > ' + fontfile + '.eot', shell=True)
+# eotlitetool.py script to generate IE7-compatible .eot fonts
+subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
+subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
 subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
