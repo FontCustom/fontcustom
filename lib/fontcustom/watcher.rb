@@ -16,11 +16,12 @@ module Fontcustom
       @listener = Listen.to(dir).filter(/\.(eps|svg)$/).change(&callback)
 
       begin
-        puts "Fontcustom is watching your icons at " + dir
+        puts 'Fontcustom is watching your icons at ' + dir
+        puts 'Press Ctrl + C to stop.'
         Fontcustom.compile(*args)
         @listener.start()
 
-      # Catches Cmd/Ctrl + C
+      # Catches Ctrl + C
       # Does listen gem have a better way of handling this?
       rescue SignalException
         stop

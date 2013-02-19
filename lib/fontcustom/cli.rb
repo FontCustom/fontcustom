@@ -18,7 +18,7 @@ module Fontcustom
       Fontcustom.compile(*ARGV)
     end
 
-    desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically.'
+    desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop.'
     def watch(*args)
       ARGV.shift
       Fontcustom.watch(*ARGV)
