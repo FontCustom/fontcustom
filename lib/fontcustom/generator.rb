@@ -10,9 +10,9 @@ module Fontcustom
     argument :input, :type => :string
     class_option :output, :aliases => '-o'
     class_option :name, :aliases => '-n'
+    class_option :font_path, :aliases => '-f'
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
-    class_option :font_path, :aliases => '-f'
     class_option :html, :type => :boolean, :default => false
 
     def self.source_root
