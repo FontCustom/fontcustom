@@ -14,11 +14,16 @@ module Fontcustom
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
     class_option :html, :type => :boolean, :default => false
+    class_option :template, :aliases => '-t'
 
     def self.source_root
       File.dirname(__FILE__)
     end
 
+    def source_paths
+      [self.class.source_root, input]
+    end
+    
     def verify_fontforge
       if `which fontforge` == ''
         raise Thor::Error, 'Please install fontforge first.'
@@ -51,8 +56,8 @@ module Fontcustom
       css_ie7   = File.join(@output, 'fontcustom-ie7.css')
       test_html = File.join(@output, 'test.html')
       old_name = if File.exists? css
-                   line = IO.readlines(css)[5]                           # font-family: "Example Font";
-                   line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
+                   lines = File.open(css,'rb').read                  # font-family: "Example Font";
+                   lines.match(/([a-z0-9]+)-.+\.ttf/)[1]             # => 'example-font'
                  else
                    'fontcustom'
                  end
@@ -89,6 +94,7 @@ module Fontcustom
 
     def create_stylesheet
       files = Dir[File.join(input, '*.{svg,eps}')]
+      css_template = (!options.template.nil? && !options.template.empty?) ? options.template : 'templates/fontcustom.css' 
       @classes = files.map {|file| File.basename(file)[0..-5].gsub(/\W/, '-').downcase }
       if(!options.font_path.nil?)
         font_path = (options.font_path) ? options.font_path : ''
@@ -97,7 +103,7 @@ module Fontcustom
         @path = File.basename(@path)
       end
 
-      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      template(css_template, File.join(@output, 'fontcustom.css'))
       template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
       template('templates/test.html', File.join(@output, 'test.html')) if options.html
     end
