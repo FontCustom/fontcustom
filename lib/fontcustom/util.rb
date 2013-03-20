@@ -4,7 +4,7 @@ class Fontcustom
   class Util < Thor
     class << self
       def root
-        File.dirname __FILE__
+        File.expand_path(File.join(File.dirname(__FILE__)))
       end
 
       def template(name)

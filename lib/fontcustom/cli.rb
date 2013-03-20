@@ -17,7 +17,7 @@ class Fontcustom
       @options = Fontcustom::Options.new(options)
 
       # raises Thor::Error if conditions aren't met
-      Util.verify_all 
+      Fontcustom::Util.verify_all 
 
       # generate fonts
       
