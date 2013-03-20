@@ -1,3 +1,3 @@
-module Fontcustom
+class Fontcustom
   VERSION = "0.1.4"
 end

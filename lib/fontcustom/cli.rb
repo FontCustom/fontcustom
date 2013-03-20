@@ -1,7 +1,7 @@
 require 'thor'
 require 'fontcustom'
 
-module Fontcustom
+class Fontcustom
   class CLI < Thor
     # duplicated from Fontcustom::Generator so as to also appear under `fontcustom help` command
     class_option :output, :aliases => '-o', :desc => 'Specify an output directory. Default: $DIR/fontcustom'
@@ -12,16 +12,21 @@ module Fontcustom
     class_option :html, :type => :boolean, :default => false, :desc => 'Generate html page with icons'
 
     desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
-    def compile(*args)
-      # workaround to pass arguments from one Thor class to another
-      ARGV.shift
-      Fontcustom.compile(*ARGV)
+    def compile input_dir
+      options.merge! {input_dir: input_dir}
+      @options = Util.parse_options options
+      Util.verify_all
+
+      # generate fonts
+      
+
+      # generate css
+
     end
 
     desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop.'
-    def watch(*args)
-      ARGV.shift
-      Fontcustom.watch(*ARGV)
+    def watch
+      Fontcustom::Watcher.watch(args)
     end
   end
 end

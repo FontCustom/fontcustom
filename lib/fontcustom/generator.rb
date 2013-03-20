@@ -1,7 +1,7 @@
 require 'json'
 require 'thor/group'
 
-module Fontcustom
+class Fontcustom
   class Generator < Thor::Group
     include Thor::Actions
 

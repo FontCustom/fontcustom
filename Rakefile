@@ -1,10 +1,8 @@
 require "bundler/gem_tasks"
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-Rake::TestTask.new do |t|
-  t.libs = t.libs + ['lib/fontcustom', 'spec', 'spec/fixtures']
-  t.test_files = FileList['spec/fontcustom/*_spec.rb']
-  t.verbose = true
+RSpec::Core::RakeTask.new 'spec' do |s|
+  s.rspec_opts = '--color --format documentation'
 end
 
-task :default => :test
+task :default => :spec

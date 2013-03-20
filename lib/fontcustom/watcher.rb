@@ -1,6 +1,6 @@
 require 'listen'
 
-module Fontcustom
+class Fontcustom
   class Watcher
     def self.watch(*args)
       callback = Proc.new do |modified, added, removed|
