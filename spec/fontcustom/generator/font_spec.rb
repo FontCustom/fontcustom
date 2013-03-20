@@ -10,19 +10,28 @@ describe Fontcustom::Generator::Font do
     expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
   end
 
-  it 'should clean up old generated files'
-
   context '#generate' do
-    it 'should call fontforge' do
-      # don't actually run the script
-      subject.stub :run_script
-      subject.should_receive(:run_script).once.with(/fontforge/)
+    before(:each) do
+      subject.stub :cleanup_old_files
+      subject.stub :run_script 
+      subject.stub :show_paths
+    end
 
+    it 'should call fontforge' do
+      subject.should_receive(:run_script).once.with(/fontforge/)
       subject.generate
     end
 
-    it 'should print generated file paths'
-
     it 'should return an ouput hash'
+  end
+
+  context '.cleanup_old_files' do
+    it 'should delete old files from cache'
+  end
+
+  context '.show_paths' do
+    it 'should print generated file paths' do
+      subject.send(:show_paths)
+    end
   end
 end

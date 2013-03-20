@@ -15,15 +15,13 @@ class Fontcustom
     def compile input_dir
       options.merge! {input_dir: input_dir}
       @options = Fontcustom::Options.new(options)
+      # TODO Does @options persist across subclasses by default? if not, how to do so?
 
-      # raises Thor::Error if conditions aren't met
-      Fontcustom::Util.verify_all 
-
-      # generate fonts
+      Fontcustom::Util.verify_all # raises Thor::Error if conditions aren't met
       
-
-      # generate css
-
+      # TODO reuse generators / use class methods
+      fonts = Fontcustom::Generator::Font.new(@options).generate
+      css = Fontcustom::Generator::CSS.new(@options, fonts).generate
     end
 
     desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop.'
