@@ -1,28 +1,27 @@
 require 'spec_helper'
 
 describe Fontcustom::Options do
-  context '#parse_options' do
-    it 'should return an options hash' do
-      options = Fontcustom::Options.parse_options
-      keys = [:font_name, :font_path, :input_dir, :output_dir, :css_template, :css_prefix, :hash, :html, :debug]
+  it 'should save all options as attributes' do
+    attrs = [:font_name, :font_path, :input_dir, :output_dir, :css_template, :css_prefix, :hash, :html, :debug]
+    attrs.each {|attr| subject.should respond_to(attr) }
+  end
 
-      options.should be_a_kind_of(Hash)
-      (options.keys & keys).length.should equal(keys.length)
-    end
+  it 'should work without config file or CL args' do
+    subject.font_name.should eq('fontcustom')
+  end
 
-    it 'should work without config file or CL args' do
-      options = Fontcustom::Options.parse_options
-      options[:font_name].should eq('fontcustom')
-    end
+  it 'should overwrite defaults from a config file' do
+    with_config = Fontcustom::Options.new(:config_file => fixture('fontcustom.yml'))
+    with_config.font_name.should eq('custom-name-from-config')
+  end
 
-    it 'should overwrite defaults from a config file' do
-      options = Fontcustom::Options.parse_options(:config_file => fixture('fontcustom.yml'))
-      options[:font_name].should eq('custom-name-from-config')
-    end
+  it 'should overwrite defaults and config with CL args' do
+    with_config_and_args = Fontcustom::Options.new(:font_name => 'custom-name-from-args', :config_file => fixture('fontcustom.yml'))
+    with_config_and_args.font_name.should eq('custom-name-from-args')
+  end
 
-    it 'should overwrite defaults and config with CL args' do
-      options = Fontcustom::Options.parse_options(:font_name => 'custom-name-from-args', :config_file => fixture('fontcustom.yml'))
-      options[:font_name].should eq('custom-name-from-args')
-    end
+  it 'should normalize font names to lower-spinal-case' do
+    with_weird_name = Fontcustom::Options.new(:font_name => 'a ContRiveD_eXample')
+    with_weird_name.font_name.should eq('a-contrived_example')
   end
 end

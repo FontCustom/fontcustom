@@ -4,7 +4,7 @@ class Fontcustom
   class Util < Thor
     class << self
       def root
-        File.expand_path '..', __FILE__
+        File.dirname __FILE__
       end
 
       def template(name)
@@ -30,12 +30,6 @@ class Fontcustom
           raise Thor::Error, "#{input} doesn't contain any vectors (*.svg or *.eps files)."
         end
       end
-
-      def verify_or_create_output_dir
-        @output = options.output.nil? ? File.join(File.dirname(input), 'fontcustom') : options.output
-        empty_directory(@output) unless File.directory?(@output)
-      end
-
     end
   end
 end

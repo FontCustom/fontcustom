@@ -14,8 +14,10 @@ class Fontcustom
     desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
     def compile input_dir
       options.merge! {input_dir: input_dir}
-      @options = Util.parse_options options
-      Util.verify_all
+      @options = Fontcustom::Options.new(options)
+
+      # raises Thor::Error if conditions aren't met
+      Util.verify_all 
 
       # generate fonts
       
