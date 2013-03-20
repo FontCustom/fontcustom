@@ -9,10 +9,16 @@ describe Fontcustom::Util do
   end
 
   context '#verify_*' do
-    it 'should check if fontforge is installed'
+    it "should raise error if fontforge isn't installed" do
+      expect { Fontcustom::Util.verify_fontforge(`which fontforge-does-not-exist`) }.to raise_error(Thor::Error, /install fontforge/)
+    end
 
-    it 'should check that input dir exists'
+    it "should raise error if input_dir doesn't exist" do
+      expect { Fontcustom::Util.verify_input_dir(fixture('does-not-exist')) }.to raise_error(Thor::Error, /isn't a directory/)
+    end
 
-    it 'should check that input dir contains vectors' 
+    it "should raise error if input_dir doesn't contain vectors" do
+      expect { Fontcustom::Util.verify_input_dir(fixture('empty')) }.to raise_error(Thor::Error, /doesn't contain any vectors/)
+    end
   end
 end

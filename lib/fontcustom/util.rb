@@ -1,5 +1,7 @@
+require 'thor'
+
 class Fontcustom
-  class Util
+  class Util < Thor
     class << self
       def root
         File.expand_path '..', __FILE__
@@ -10,13 +12,13 @@ class Fontcustom
       end
 
       def verify_all
-        verify_fontforge
+        verify_fontforge(`which fontforge`)
         verify_input_dir
         verify_dir_dir
       end
 
-      def verify_fontforge
-        if `which fontforge` == ''
+      def verify_fontforge(which) # arg to allow unit testing
+        if which == ''
           raise Thor::Error, 'Please install fontforge first.'
         end
       end

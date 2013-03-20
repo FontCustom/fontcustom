@@ -25,10 +25,7 @@ class Fontcustom
           options.merge! config_options
         end
 
-        unless args.empty?
-          options.merge! args
-        end
-
+        options.merge!(args) unless args.empty?
         options
       end
     end

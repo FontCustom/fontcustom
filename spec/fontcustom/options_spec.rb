@@ -16,12 +16,12 @@ describe Fontcustom::Options do
     end
 
     it 'should overwrite defaults from a config file' do
-      options = Fontcustom::Options.parse_options(:config_file => fixtures('fontcustom.yml'))
+      options = Fontcustom::Options.parse_options(:config_file => fixture('fontcustom.yml'))
       options[:font_name].should eq('custom-name-from-config')
     end
 
     it 'should overwrite defaults and config with CL args' do
-      options = Fontcustom::Options.parse_options(:font_name => 'custom-name-from-args', :config_file => fixtures('fontcustom.yml'))
+      options = Fontcustom::Options.parse_options(:font_name => 'custom-name-from-args', :config_file => fixture('fontcustom.yml'))
       options[:font_name].should eq('custom-name-from-args')
     end
   end
