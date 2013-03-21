@@ -18,12 +18,24 @@ describe Fontcustom::Generator::Font do
       subject.should_receive(:run_script).once.with(/fontforge/)
       subject.start
     end
+  end
 
+  context "#save_output_data (unstubbed test)" do
+    it "should add generated files to .fontcustom-data" do
+      output_dir = fixture('unstubbed-test')
+      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => output_dir)
+      #Fontcustom::Util.verify_output_dir(options.output_dir) # creates dir
+      unstubbed = Fontcustom::Generator::Font.new(options)
+
+      stdout = capture(:stdout) { unstubbed.start }
+      puts stdout
+    end
+  end
+
+  context "#show_paths" do
     it "should print generated file paths" do
       stdout = capture(:stdout) { subject.send(:show_paths) }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
-
-    it "should add generated files to .fontcustom-data"
   end
 end
