@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Fontcustom::Generator::Font do
   subject do
@@ -6,32 +6,24 @@ describe Fontcustom::Generator::Font do
     Fontcustom::Generator::Font.new(options)
   end
 
-  it 'should raise error if not passed options' do
+  it "should raise error if not passed options" do
     expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
   end
 
-  context '#generate' do
-    before(:each) do
-      subject.stub :cleanup_old_files
+  context "#start" do
+    it "should call fontforge" do
       subject.stub :run_script 
+      subject.stub :save_output_data
       subject.stub :show_paths
-    end
-
-    it 'should call fontforge' do
       subject.should_receive(:run_script).once.with(/fontforge/)
-      subject.generate
+      subject.start
     end
 
-    it 'should return an ouput hash'
-  end
-
-  context '.cleanup_old_files' do
-    it 'should delete old files from cache'
-  end
-
-  context '.show_paths' do
-    it 'should print generated file paths' do
-      subject.send(:show_paths)
+    it "should print generated file paths" do
+      stdout = capture(:stdout) { subject.send(:show_paths) }
+      stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
+
+    it "should add generated files to .fontcustom-data"
   end
 end

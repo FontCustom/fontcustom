@@ -1,32 +1,31 @@
-require 'thor'
-require 'fontcustom'
+require "thor"
+require "fontcustom"
 
 class Fontcustom
   class CLI < Thor
     # duplicated from Fontcustom::Generator so as to also appear under `fontcustom help` command
-    class_option :output, :aliases => '-o', :desc => 'Specify an output directory. Default: $DIR/fontcustom'
-    class_option :name, :aliases => '-n', :desc => 'Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom'
-    class_option :font_path, :aliases => '-f', :desc => 'Specify a path for fonts in css @font-face declaration. Default: none'
-    class_option :nohash, :type => :boolean, :default => false, :desc => 'Disable filename hashes. Default: false'
-    class_option :debug, :type => :boolean, :default => false, :desc => 'Display debug messages. Default: false'
-    class_option :html, :type => :boolean, :default => false, :desc => 'Generate html page with icons'
+    class_option :output, :aliases => "-o", :desc => "Specify an output directory. Default: $DIR/fontcustom"
+    class_option :name, :aliases => "-n", :desc => "Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom"
+    class_option :font_path, :aliases => "-f", :desc => "Specify a path for fonts in css @font-face declaration. Default: none"
+    class_option :nohash, :type => :boolean, :default => false, :desc => "Disable filename hashes. Default: false"
+    class_option :debug, :type => :boolean, :default => false, :desc => "Display debug messages. Default: false"
+    class_option :html, :type => :boolean, :default => false, :desc => "Generate html page with icons"
 
-    desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
-    def compile input_dir
-      options.merge! {input_dir: input_dir}
-      @options = Fontcustom::Options.new(options)
-      # TODO Does @options persist across subclasses by default? if not, how to do so?
-
-      Fontcustom::Util.verify_all # raises Thor::Error if conditions aren't met
-      
-      # TODO reuse generators / use class methods
-      fonts = Fontcustom::Generator::Font.new(@options).generate
-      css = Fontcustom::Generator::CSS.new(@options, fonts).generate
+    desc "compile DIR [options]", "Generates webfonts and CSS from *.svg and *.eps files in DIR."
+    def compile(input_dir)
+      options.merge! {:input_dir => input_dir}
+      options = Fontcustom::Options.new(options)
+      Fontcustom::Util.verify_all # raises Thor::Error if conditions aren"t met
+      Fontcustom::Util.reset_data(options)
+      Fontcustom::Generator::Font.new(options).start
+      Fontcustom::Generator::CSS.new(options).start
     end
 
-    desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop.'
-    def watch
-      Fontcustom::Watcher.watch(args)
+    desc "watch DIR [options]", "Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
+    def watch(input_dir)
+      options.merge! {:input_dir => input_dir, :watching => true}
+      options = Fontcustom::Options.new(options)
+      Fontcustom::Watcher.new(options).watch
     end
   end
 end
