@@ -16,7 +16,7 @@ class Fontcustom
       @font_path = options[:font_path] || './'
       @input_dir = input_dir
       @output_dir = options[:output_dir] || File.join(input_dir, 'fontcustom')
-      @css_template = options[:css_template] || Fontcustom::Util.template('css')
+      @css_template = options[:css_template] || Fontcustom.template('css')
       @css_prefix = options[:css_prefix] || '.icon-'
       @hash = options[:hash] || true
       @html = options[:html] || false

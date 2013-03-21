@@ -15,7 +15,7 @@ class Fontcustom
     def compile(input_dir)
       options.merge! {:input_dir => input_dir}
       options = Fontcustom::Options.new(options)
-      Fontcustom::Util.verify_all(options) # raises Thor::Error if conditions aren"t met
+      Fontcustom.verify_all(options) # raises Thor::Error if conditions aren"t met
       Fontcustom::Generator::Font.new(options).start
       Fontcustom::Generator::CSS.new(options).start
     end

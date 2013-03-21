@@ -1,12 +1,12 @@
 require "yaml"
-require "thor" # can we just require Thor::Error?
+require "thor"
 require "thor/actions"
 
 class Fontcustom
   class Util < Thor
     include Thor::Actions
-
-    class << self
+    
+    no_tasks do 
       def root
         File.expand_path(File.join(File.dirname(__FILE__)))
       end

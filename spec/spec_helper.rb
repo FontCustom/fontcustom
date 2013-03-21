@@ -20,7 +20,6 @@ RSpec.configure do |c|
     ensure
       eval("$#{stream} = #{stream.upcase}")
     end
-
     result
   end
 end
