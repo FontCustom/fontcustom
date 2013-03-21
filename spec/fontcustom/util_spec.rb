@@ -2,7 +2,7 @@ require "spec_helper"
 
 # Why are we calling FC::Util methods from the parent class?
 # See note in /lib/fontcustom.rb. Stubbing occurs on FC::UTIL.
-describe Fontcustom::UTIL do
+describe Fontcustom::Util do
   context "#root" do
     it "should return $GEM_ROOT/lib/fontcustom/" do
       version = File.join(Fontcustom.root, "version.rb")

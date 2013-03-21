@@ -1,7 +1,6 @@
 import fontforge
 import os
 import md5
-import json
 import subprocess
 
 try:

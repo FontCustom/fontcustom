@@ -3,6 +3,7 @@ require 'yaml'
 class Fontcustom
   class Options
     attr_reader :font_name, :font_path, :input_dir, :output_dir, :css_template, :css_prefix, :hash, :html, :debug
+    attr_accessor :font_hash, :icon_names
 
     def initialize(options = {})
       input_dir = options[:input_dir] || `pwd`.chomp

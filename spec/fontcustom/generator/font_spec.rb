@@ -20,22 +20,40 @@ describe Fontcustom::Generator::Font do
     end
   end
 
-  context "#save_output_data (unstubbed test)" do
-    it "should add generated files to .fontcustom-data" do
-      pending 'not yet'
-      output_dir = fixture('unstubbed-test')
-      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => output_dir)
-      Fontcustom.verify_output_dir(options.output_dir) # creates dir
-      unstubbed = Fontcustom::Generator::Font.new(options)
+  context ".save_output_data" do
+    it "should save icon names to options" do
+      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => fixture('mixed-output'))
+      generator = Fontcustom::Generator::Font.new options
+      generator.stub :update_data_file
+      generator.send :save_output_data
+      options.icon_names.should =~ ['c', 'd', 'a_r3ally-exotic-f1le-name']
+    end
 
-      stdout = capture(:stdout) { unstubbed.start }
-      puts stdout
+    it "should save font hash to options" do
+      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => fixture('mixed-output'))
+      generator = Fontcustom::Generator::Font.new options
+      generator.stub :update_data_file
+      generator.send :save_output_data
+      options.font_hash.should be_a(String)
+    end
+
+    it "should add generated files to .fontcustom-data" do
+      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => fixture('mixed-output'))
+      generator = Fontcustom::Generator::Font.new options
+      generator.stub :update_data_file
+      generator.should_receive(:update_data_file).once.with(/#{options.font_hash}/)
+      generator.send :save_output_data
     end
   end
 
-  context "#show_paths" do
+  context ".show_paths" do
     it "should print generated file paths" do
-      stdout = capture(:stdout) { subject.send(:show_paths) }
+      options = Fontcustom::Options.new(:input_dir => fixture('vectors'), :output_dir => fixture('mixed-output'))
+      generator = Fontcustom::Generator::Font.new options
+      generator.stub :update_data_file
+      generator.send :save_output_data
+      stdout = capture(:stdout) { generator.send(:show_paths) }
+      puts stdout
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
   end
