@@ -51,14 +51,20 @@ class Fontcustom
           paths = YAML.load_file data_file
           unless paths.empty?
             paths.each { |file| remove_file File.join(output, file) }
-            clear_file data_file
+            clear_data_file data_file
           end
         else
           add_file data_file
         end
       end
 
-      def clear_file(file)
+      def update_data_file(output, files)
+        data_file = File.join(output, ".fontcustom-data")
+        string = files.to_yaml.sub("---\n", "")
+        append_to_file data_file, string 
+      end
+
+      def clear_data_file(file)
         File.open(file, "w") {}
       end
     end

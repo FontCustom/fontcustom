@@ -1,4 +1,5 @@
 require "thor/shell"
+require "yaml"
 
 class Fontcustom
   module Generator
@@ -37,18 +38,20 @@ class Fontcustom
       end
 
       def get_icon_names
-        vectors = Dir[File.join(@options.input_dir, '*.{svg,eps}')]
-        vectors.map {|vector| File.basename(vector)[0..-5].gsub(/\W/, '-').downcase }
+        vectors = Dir[File.join(@options.input_dir, "*.{svg,eps}")]
+        vectors.map {|vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
       end
 
       def get_font_hash
-        path = Dir[File.join(@options.output_dir, @options.font_name + '*.ttf')].first
-        name = File.basename path, '.ttf'
-        name.sub(@options.font_name + '-', '')
+        path = Dir[File.join(@options.output_dir, @options.font_name + "*.ttf")].first
+        name = File.basename path, ".ttf"
+        name.sub(@options.font_name + "-", "")
       end
 
       def update_data_file
-        
+        name = "#{@options.font_name}-#{@options.font_hash}."
+        files = ["woff","ttf","eot","svg"].map { |ext| name + ext }
+        Fontcustom.update_data_file @options.output_dir, files
       end
       
       def show_paths

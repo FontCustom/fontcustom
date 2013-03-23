@@ -58,22 +58,22 @@ describe Fontcustom::Util do
 
     it "should delete files specified in .fontcustom-data" do
       Fontcustom::UTIL.stub(:remove_file)
-      Fontcustom::UTIL.stub(:clear_file)
+      Fontcustom::UTIL.stub(:clear_data_file)
       Fontcustom::UTIL.should_receive(:remove_file).exactly(5).times
       Fontcustom.reset_output(output)
     end
 
     it "should not delete non-generated files" do
       Fontcustom::UTIL.stub(:remove_file)
-      Fontcustom::UTIL.stub(:clear_file)
+      Fontcustom::UTIL.stub(:clear_data_file)
       Fontcustom::UTIL.should_not_receive(:remove_file).with(/(dont-delete-me-bro|another-font\.ttf)/)
       Fontcustom.reset_output(output)
     end
 
     it "should clear the contents of .fontcustom-data" do
       Fontcustom::UTIL.stub(:remove_file)
-      Fontcustom::UTIL.stub(:clear_file)
-      Fontcustom::UTIL.should_receive(:clear_file).once.with(/\.fontcustom-data/)
+      Fontcustom::UTIL.stub(:clear_data_file)
+      Fontcustom::UTIL.should_receive(:clear_data_file).once.with(/\.fontcustom-data/)
       Fontcustom.reset_output(output)
     end
   end
