@@ -6,8 +6,8 @@ class Fontcustom
     attr_accessor :font_hash, :icon_names
 
     def initialize(options = {})
-      input_dir = absolute_path(options[:input_dir]) || `pwd`.chomp
-      config_file = absolute_path(options[:config_file]) || File.join(input_dir, 'fontcustom.yml')
+      input_dir = options[:input_dir] || Dir.pwd
+      config_file = options[:config_file] || File.join(input_dir, 'fontcustom.yml')
       if File.exists? config_file
         config = parse_config config_file
         options = config.merge! options # passed options overwrite config
@@ -16,7 +16,7 @@ class Fontcustom
       @font_name = normalize_name(options[:font_name]) || 'fontcustom'
       @font_path = options[:font_path] || './'
       @input_dir = input_dir
-      @output_dir = absolute_path(options[:output_dir]) || File.join(input_dir, @font_name)
+      @output_dir = options[:output_dir] || File.join(input_dir, @font_name)
       @templates = options[:templates] || [ :css ]
       @css_prefix = options[:css_prefix] || '.icon-'
       @hash = options[:hash] || true
@@ -43,11 +43,6 @@ class Fontcustom
     def normalize_name(name = false)
       name = name.gsub(/\W/, '-').downcase if name
       name
-    end
-
-    def absolute_path(path = false)
-      File.absolute_path(path) if path
-      path
     end
   end
 end
