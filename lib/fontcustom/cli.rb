@@ -3,7 +3,7 @@ require "fontcustom"
 
 class Fontcustom
   class CLI < Thor
-    # duplicated from Fontcustom::Generator so as to also appear under `fontcustom help` command
+    # TODO update (templates:array, etc)
     class_option :output, :aliases => "-o", :desc => "Specify an output directory. Default: $DIR/fontcustom"
     class_option :name, :aliases => "-n", :desc => "Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom"
     class_option :font_path, :aliases => "-f", :desc => "Specify a path for fonts in css @font-face declaration. Default: none"

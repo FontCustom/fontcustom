@@ -15,7 +15,7 @@ describe Fontcustom::Generator::Template do
     end
   end
 
-  context ".template_paths" do
+  context "#template_paths" do
     it "should convert symbols to correct paths" do 
       # TODO update this once additional templates are added
       templates = [:scss, :html]
@@ -27,7 +27,7 @@ describe Fontcustom::Generator::Template do
     end
   end
 
-  context ".generate" do
+  context "#generate" do
     it "should run Fontcustom.templates for each template" do
       templates = [:scss, :html]
       options = Fontcustom::Options.new :templates => templates

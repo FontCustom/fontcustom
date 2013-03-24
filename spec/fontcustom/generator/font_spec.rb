@@ -32,7 +32,7 @@ describe Fontcustom::Generator::Font do
     end
   end
 
-  context ".save_output_data" do
+  context "#save_output_data" do
     it "should save icon_names and font_hash to options" do
       options = Fontcustom::Options.new(:input_dir => fixture("vectors"), :output_dir => fixture("mixed-output"))
       generator = Fontcustom::Generator::Font.new options
@@ -47,14 +47,14 @@ describe Fontcustom::Generator::Font do
       generator = Fontcustom::Generator::Font.new options
       Fontcustom.stub(:update_data_file)
       Fontcustom.should_receive(:update_data_file).once do |path, arr|
-        path.should == options.output_dir
+        path.should eq(options.output_dir)
         arr.each { |item| item.should =~ /fontcustom-.+\.(woff|ttf|eot|svg)/ }
       end
       generator.send :save_output_data # populates icon_names and then calls update_data_file
     end
   end
 
-  context ".show_paths" do
+  context "#show_paths" do
     it "should print generated file paths" do
       options = Fontcustom::Options.new(:input_dir => fixture("vectors"), :output_dir => fixture("mixed-output"))
       generator = Fontcustom::Generator::Font.new options
