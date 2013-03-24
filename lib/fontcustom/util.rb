@@ -5,14 +5,22 @@ require "thor/actions"
 class Fontcustom
   class Util < Thor
     include Thor::Actions
-    
+
     no_tasks do 
       def root
         File.expand_path(File.join(File.dirname(__FILE__)))
       end
 
-      def template(template, output)
+      def template_path(name)
+        File.join root, "templates", name
+      end
+
+      def copy_template(template, output)
         template(template, output)
+      end
+
+      def error(msg)
+        raise Thor::Error, msg
       end
 
       def verify_all(options)
@@ -23,15 +31,15 @@ class Fontcustom
 
       def verify_fontforge(which) # arg to simplify unit testing
         if which == ""
-          raise Thor::Error, "Please install fontforge first."
+          error "Please install fontforge first."
         end
       end
 
       def verify_input_dir(input)
         if ! File.directory? input 
-          raise Thor::Error, "#{input} doesn't exist or isn't a directory."
+          error "#{input} doesn't exist or isn't a directory."
         elsif Dir[File.join(input, "*.{svg,eps}")].empty?
-          raise Thor::Error, "#{input} doesn't contain any vectors (*.svg or *.eps files)."
+          error "#{input} doesn't contain any vectors (*.svg or *.eps files)."
         end
       end
 
@@ -39,7 +47,7 @@ class Fontcustom
         if File.directory? output
           reset_output_dir output
         elsif File.exists? output
-          raise Thor::Error, "#{output} already exists but isn't a directory."
+          error "#{output} already exists but isn't a directory."
         else
           empty_directory output
         end

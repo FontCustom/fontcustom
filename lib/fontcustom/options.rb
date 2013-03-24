@@ -5,6 +5,15 @@ class Fontcustom
     attr_reader :font_name, :font_path, :input_dir, :output_dir, :templates, :css_prefix, :hash, :html, :debug
     attr_accessor :font_hash, :icon_names
 
+    # :font_path = relative to generated css or output_dir
+    # :input_dir = absolute
+    # :output_dir = absolute
+    # :templates = names or symbols, matched against Thor::Actions.source_paths
+    #
+    # How do non-template thor actions work? Relative or absolute?
+    #
+    # TODO def get_absolute_path
+
     def initialize(options = {})
       input_dir = options[:input_dir] || `pwd`.chomp
       config_file = options[:config_file] || File.join(input_dir, 'fontcustom.yml')
@@ -13,7 +22,7 @@ class Fontcustom
         options = config.merge! options # passed options overwrite config
       end
 
-      @font_name = normalize_name options[:font_name]
+      @font_name = normalize_name(options[:font_name]) || 'fontcustom'
       @font_path = options[:font_path] || './'
       @input_dir = input_dir
       @output_dir = options[:output_dir] || File.join(input_dir, 'fontcustom')
@@ -36,12 +45,9 @@ class Fontcustom
       options
     end
 
-    def normalize_name(name = nil)
-      if name
-        name.gsub(/\W/, '-').downcase
-      else
-        'fontcustom'
-      end
+    def normalize_name(name = false)
+      name = name.gsub(/\W/, '-').downcase if name
+      name
     end
   end
 end

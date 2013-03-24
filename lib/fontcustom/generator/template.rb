@@ -7,7 +7,7 @@ class Fontcustom
 
       def start
         if @options.templates.empty?
-          Fontcustom.message "Skipping generated files."
+          Fontcustom.error "No templates specified."
         else
           generate(template_paths)
         end
@@ -20,14 +20,14 @@ class Fontcustom
           if template.is_a? Symbol
             case template # TODO flesh out other scenarios
             when :scss
-              Fontcustom.template "_fontcustom.#{template.to_s}"
+              Fontcustom.template_path "_fontcustom.#{template.to_s}"
             else
-              Fontcustom.template "fontcustom.#{template.to_s}"
+              Fontcustom.template_path "fontcustom.#{template.to_s}"
             end
           elsif template.is_a?(String) && File.exists?(template)
             template            
           else 
-            Fontcustom.message "Could not find template: " + template
+            Fontcustom.error "Could not find template: " + template
           end
         end
       end
