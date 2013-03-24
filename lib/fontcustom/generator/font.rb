@@ -18,7 +18,7 @@ class Fontcustom
         # TODO 
         # investigate using generate.py to swallow fontforge output 
         # and return YAML of classnames and hash
-        cmd = cmd << " > /dev/null 2>&1" unless @options.debug
+        cmd << " > /dev/null 2>&1" unless @options.debug
 
         run_script(cmd)
         save_output_data

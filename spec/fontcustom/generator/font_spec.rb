@@ -6,8 +6,10 @@ describe Fontcustom::Generator::Font do
     Fontcustom::Generator::Font.new(options)
   end
 
-  it "should raise error if not passed options" do
-    expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
+  context "#initialize" do
+    it "should raise error if not passed options" do
+      expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
+    end
   end
 
   context "#start" do
@@ -17,6 +19,16 @@ describe Fontcustom::Generator::Font do
       subject.stub :show_paths
       subject.should_receive(:run_script).once.with(/fontforge/)
       subject.start
+    end
+
+    it "should not swallow fontforge output if debug option is given" do
+      options = Fontcustom::Options.new(:debug => true)
+      debug = Fontcustom::Generator::Font.new(options)
+      debug.stub :run_script 
+      debug.stub :save_output_data
+      debug.stub :show_paths
+      debug.should_receive(:run_script).once.with(/^(.(?!\/dev\/null))+$/)
+      debug.start
     end
   end
 

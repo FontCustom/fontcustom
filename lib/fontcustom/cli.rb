@@ -17,7 +17,7 @@ class Fontcustom
       options = Fontcustom::Options.new(options)
       Fontcustom.verify_all(options) # raises Thor::Error if conditions aren"t met
       Fontcustom::Generator::Font.new(options).start
-      Fontcustom::Generator::CSS.new(options).start
+      Fontcustom::Generator::Template.new(options).start
     end
 
     desc "watch DIR [options]", "Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."

@@ -29,4 +29,4 @@ end
 
 require 'fontcustom/options'
 require 'fontcustom/generator/font'
-#require 'fontcustom/generator/css'
+require 'fontcustom/generator/template'

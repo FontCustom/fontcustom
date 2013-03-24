@@ -11,8 +11,8 @@ class Fontcustom
         File.expand_path(File.join(File.dirname(__FILE__)))
       end
 
-      def template(name)
-        File.join root, "templates", name
+      def template(template, output)
+        template(template, output)
       end
 
       def verify_all(options)
@@ -21,7 +21,7 @@ class Fontcustom
         verify_output_dir(options.output_dir)
       end
 
-      def verify_fontforge(which) # arg to allow unit testing
+      def verify_fontforge(which) # arg to simplify unit testing
         if which == ""
           raise Thor::Error, "Please install fontforge first."
         end
@@ -37,7 +37,7 @@ class Fontcustom
 
       def verify_output_dir(output)
         if File.directory? output
-          reset_output output
+          reset_output_dir output
         elsif File.exists? output
           raise Thor::Error, "#{output} already exists but isn't a directory."
         else
@@ -45,7 +45,7 @@ class Fontcustom
         end
       end
 
-      def reset_output(output)
+      def reset_output_dir(output)
         data_file = File.join(output, ".fontcustom-data")
         if File.exists? data_file
           paths = YAML.load_file data_file
@@ -58,8 +58,8 @@ class Fontcustom
         end
       end
 
-      def update_data_file(output, files)
-        data_file = File.join(output, ".fontcustom-data")
+      def update_data_file(output_dir, files)
+        data_file = File.join(output_dir, ".fontcustom-data")
         string = files.to_yaml.sub("---\n", "")
         append_to_file data_file, string 
       end
