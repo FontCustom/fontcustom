@@ -13,7 +13,7 @@ class Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = @options.font_name ? " --name " + @options.font_name : ""
         hash = @options.hash ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom.root}/scripts/generate.py #{@options.input_dir} #{@options.output_dir + name + hash}"
+        cmd = "fontforge -script #{Fontcustom.gem_root}/scripts/generate.py #{@options.input_dir} #{@options.output_dir + name + hash}"
 
         # TODO 
         # investigate using generate.py to swallow fontforge output 

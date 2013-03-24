@@ -20,9 +20,9 @@ class Fontcustom
           if template.is_a? Symbol
             case template # TODO flesh out other scenarios
             when :scss
-              Fontcustom.template_path "_fontcustom.#{template.to_s}"
+              "_fontcustom.#{template.to_s}"
             else
-              Fontcustom.template_path "fontcustom.#{template.to_s}"
+              "fontcustom.#{template.to_s}"
             end
           elsif template.is_a?(String) && File.exists?(template)
             template            
@@ -35,7 +35,7 @@ class Fontcustom
       def generate(templates)
         files = []
         templates.each do |template|
-          name = @options.font_name + File.extname(template)
+          name = template.sub('fontcustom', @options.font_name)
           files << name
           output = File.join @options.output_dir, name
           Fontcustom.copy_template template, output

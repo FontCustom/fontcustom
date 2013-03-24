@@ -7,12 +7,16 @@ class Fontcustom
     include Thor::Actions
 
     no_tasks do 
-      def root
+      def self.source_root
+        File.join(gem_root, 'templates')
+      end
+
+      def self.gem_root
         File.expand_path(File.join(File.dirname(__FILE__)))
       end
 
-      def template_path(name)
-        File.join root, "templates", name
+      def gem_root
+        self.class.gem_root
       end
 
       def copy_template(template, output)

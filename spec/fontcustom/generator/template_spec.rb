@@ -33,11 +33,21 @@ describe Fontcustom::Generator::Template do
       options = Fontcustom::Options.new :templates => templates
       generator = Fontcustom::Generator::Template.new options
       paths = generator.send :template_paths
-      Fontcustom.stub :templates
-      Fontcustom.should_receive(:generate).twice
+      Fontcustom.stub :copy_template
+      Fontcustom.stub :update_data_file
+      Fontcustom.should_receive(:copy_template).twice.with(/fontcustom\./, /fontcustom\./)
       generator.send :generate, paths
     end
 
-    it "should update .fontcustom-data with any files created"
+    it "should update .fontcustom-data with any files created" do
+      templates = [:scss, :html]
+      options = Fontcustom::Options.new :templates => templates
+      generator = Fontcustom::Generator::Template.new options
+      paths = generator.send :template_paths
+      Fontcustom.stub :copy_template
+      Fontcustom.stub :update_data_file
+      Fontcustom.should_receive(:update_data_file).once.with(options.output_dir, ["_fontcustom.scss", "fontcustom.html"])
+      generator.send :generate, paths
+    end
   end
 end
