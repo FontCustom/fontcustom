@@ -29,6 +29,7 @@ module Fontcustom
         # Thor::Actions will first look for templates in `pwd` before trying the input_dir and the gem defaults
         source_paths # assigns @source_paths
         @source_paths = @source_paths.unshift(Dir.pwd, @opts.input_dir)
+        self
       end
 
       def start
@@ -95,10 +96,6 @@ module Fontcustom
 
       def error(msg)
         raise Thor::Error, msg
-      end
-
-      def gem_lib
-        self.class.gem_lib
       end
     end
   end

@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Fontcustom::Base do
-  context "#gem_lib" do
+  context ".gem_lib" do
     it "should return $GEM_ROOT/lib/fontcustom/" do
-      version = File.join(subject.gem_lib, "version.rb")
+      version = File.join(Fontcustom::Base.gem_lib, "version.rb")
       File.exists?(version).should be_true
     end
   end

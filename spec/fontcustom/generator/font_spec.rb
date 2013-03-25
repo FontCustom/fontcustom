@@ -1,14 +1,15 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Font do
-  subject do
-    options = Fontcustom::Options.new
-    Fontcustom::Generator::Font.new(options)
+  subject do 
+    base = Fontcustom::Base.new.load :input_dir => fixture("vectors"), :output_dir => fixture("mixed-output")
+    Fontcustom::Generator::Font.new base
   end
 
   context "#initialize" do
-    it "should raise error if not passed options" do
+    it "should raise error if not passed a Fontcustom::Base instance" do
       expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
+      expect { subject }.to_not raise_error(ArgumentError)
     end
   end
 
@@ -22,8 +23,8 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should not swallow fontforge output if debug option is given" do
-      options = Fontcustom::Options.new(:debug => true)
-      debug = Fontcustom::Generator::Font.new(options)
+      base = Fontcustom::Base.new.load(:input_dir => fixture("vectors"), :output_dir => fixture("output-test"), :debug => true)
+      debug = Fontcustom::Generator::Font.new(base)
       debug.stub :run_script 
       debug.stub :save_output_data
       debug.stub :show_paths
@@ -34,33 +35,26 @@ describe Fontcustom::Generator::Font do
 
   context "#save_output_data" do
     it "should save icon_names and font_hash to options" do
-      options = Fontcustom::Options.new(:input_dir => fixture("vectors"), :output_dir => fixture("mixed-output"))
-      generator = Fontcustom::Generator::Font.new options
-      generator.stub :update_data_file
-      generator.send :save_output_data
-      options.icon_names.should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      options.font_hash.should be_a(String)
+      subject.base.stub :update_data_file
+      subject.send :save_output_data
+      subject.opts.icon_names.should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
+      subject.opts.font_hash.should be_a(String)
     end
 
     it "should add generated files to .fontcustom-data" do
-      options = Fontcustom::Options.new(:input_dir => fixture("vectors"), :output_dir => fixture("mixed-output"))
-      generator = Fontcustom::Generator::Font.new options
-      Fontcustom.stub(:update_data_file)
-      Fontcustom.should_receive(:update_data_file).once do |path, arr|
-        path.should eq(options.output_dir)
-        arr.each { |item| item.should =~ /fontcustom-.+\.(woff|ttf|eot|svg)/ }
+      subject.base.stub(:update_data_file)
+      subject.base.should_receive(:update_data_file).once do |files|
+        files.each { |file| file.should =~ /fontcustom-.+\.(woff|ttf|eot|svg)/ }
       end
-      generator.send :save_output_data # populates icon_names and then calls update_data_file
+      subject.send :save_output_data # populates icon_names and then calls update_data_file
     end
   end
 
   context "#show_paths" do
     it "should print generated file paths" do
-      options = Fontcustom::Options.new(:input_dir => fixture("vectors"), :output_dir => fixture("mixed-output"))
-      generator = Fontcustom::Generator::Font.new options
-      generator.stub :update_data_file
-      generator.send :save_output_data
-      stdout = capture(:stdout) { generator.send(:show_paths) }
+      subject.stub :update_data_file
+      subject.send :save_output_data
+      stdout = capture(:stdout) { subject.send(:show_paths) }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
   end
