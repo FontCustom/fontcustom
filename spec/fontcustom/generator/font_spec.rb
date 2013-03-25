@@ -37,8 +37,8 @@ describe Fontcustom::Generator::Font do
     it "should save icon_names and font_hash to options" do
       subject.base.stub :update_data_file
       subject.send :save_output_data
-      subject.opts.icon_names.should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      subject.opts.font_hash.should be_a(String)
+      subject.base.data[:icon_names].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
+      subject.base.data[:font_hash].should be_a(String)
     end
 
     it "should add generated files to .fontcustom-data" do

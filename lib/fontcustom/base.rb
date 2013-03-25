@@ -8,6 +8,7 @@ module Fontcustom
 
     # Using @opts so we don't collide with Thor's options
     attr_reader :opts
+    attr_accessor :data
     
     # Required for Thor::Actions
     def self.source_root

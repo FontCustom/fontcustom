@@ -1,13 +1,14 @@
 module Fontcustom
   module Generator
     class Template
-      def initialize(options)
-        @options = options
+      def initialize(base)
+        @base = base
+        @opts = base.opts
       end
 
       def start
-        if @options.templates.empty?
-          Fontcustom.error "No templates specified."
+        if @opts.templates.empty?
+          @base.error "No templates specified."
         else
           generate(template_paths)
         end
@@ -16,7 +17,7 @@ module Fontcustom
       private
 
       def template_paths
-        @options.templates.map do |template|
+        @opts.templates.map do |template|
           if template.is_a? Symbol
             case template # TODO flesh out other scenarios
             when :scss
@@ -27,7 +28,7 @@ module Fontcustom
           elsif template.is_a?(String) && File.exists?(template)
             template            
           else 
-            Fontcustom.error "Could not find template: " + template
+            @base.error "Could not find template: " + template
           end
         end
       end
@@ -35,12 +36,12 @@ module Fontcustom
       def generate(templates)
         files = []
         templates.each do |template|
-          name = template.sub('fontcustom', @options.font_name)
+          name = template.sub('fontcustom', @opts.font_name)
           files << name
-          output = File.join @options.output_dir, name
-          Fontcustom.copy_template template, output
+          output = File.join @opts.output_dir, name
+          @base.copy_template template, output
         end
-        Fontcustom.update_data_file(@options.output_dir, files)
+        @base.update_data_file(@opts.output_dir, files)
       end
     end
   end

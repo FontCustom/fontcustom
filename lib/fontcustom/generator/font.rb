@@ -35,8 +35,10 @@ module Fontcustom
       end
 
       def save_output_data
-        @opts.icon_names = get_icon_names
-        @opts.font_hash = get_font_hash
+        @base.data = {
+          :icon_names => get_icon_names,
+          :font_hash => get_font_hash
+        }
         update_data_file
       end
 
@@ -52,14 +54,16 @@ module Fontcustom
       end
 
       def update_data_file
-        name = "#{@opts.font_name}-#{@opts.font_hash}."
+        # TODO allow skipping font_hash
+        name = "#{@opts.font_name}-#{@base.data[:font_hash]}."
         files = ["woff","ttf","eot","svg"].map { |ext| name + ext }
         @base.update_data_file files
       end
       
       def show_paths
         # TODO remove output_dir?
-        path = File.join(@opts.output_dir, @opts.font_name + '-' + @opts.font_hash)
+        # TODO allow skipping font_hash
+        path = File.join(@opts.output_dir, @opts.font_name + '-' + @base.data[:font_hash])
         ["woff","ttf","eot","svg"].each do |type|
           @base.shell.say_status(:create, path + "." + type)
         end
