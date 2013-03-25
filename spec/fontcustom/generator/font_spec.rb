@@ -15,6 +15,7 @@ describe Fontcustom::Generator::Font do
 
   context "#start" do
     it "should call fontforge" do
+      subject.base.stub :verify_all
       subject.stub :run_script 
       subject.stub :save_output_data
       subject.stub :show_paths
@@ -25,6 +26,7 @@ describe Fontcustom::Generator::Font do
     it "should not swallow fontforge output if debug option is given" do
       base = Fontcustom::Base.new.load(:input_dir => fixture("vectors"), :output_dir => fixture("output-test"), :debug => true)
       debug = Fontcustom::Generator::Font.new(base)
+      debug.base.stub :verify_all
       debug.stub :run_script 
       debug.stub :save_output_data
       debug.stub :show_paths
@@ -34,11 +36,11 @@ describe Fontcustom::Generator::Font do
   end
 
   context "#save_output_data" do
-    it "should save icon_names and font_hash to options" do
+    it "should save icon_names and generated_name to options" do
       subject.base.stub :update_data_file
       subject.send :save_output_data
       subject.base.data[:icon_names].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      subject.base.data[:font_hash].should be_a(String)
+      subject.base.data[:generated_name].should =~ /#{subject.opts.font_name}-.+/
     end
 
     it "should add generated files to .fontcustom-data" do

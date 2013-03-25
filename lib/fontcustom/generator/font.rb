@@ -12,6 +12,7 @@ module Fontcustom
       end
 
       def start
+        @base.verify_all
         # TODO normalize naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)
         name = @opts.font_name ? " --name " + @opts.font_name : ""
@@ -37,7 +38,7 @@ module Fontcustom
       def save_output_data
         @base.data = {
           :icon_names => get_icon_names,
-          :font_hash => get_font_hash
+          :generated_name => get_generated_name
         }
         update_data_file
       end
@@ -47,23 +48,19 @@ module Fontcustom
         vectors.map {|vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
       end
 
-      def get_font_hash
-        path = Dir[File.join(@opts.output_dir, @opts.font_name + "*.ttf")].first
-        name = File.basename path, ".ttf"
-        name.sub(@opts.font_name + "-", "")
+      def get_generated_name
+        return @opts.font_name unless @opts.hash
+        ttf = Dir[File.join(@opts.output_dir, @opts.font_name + "*.ttf")].first
+        File.basename ttf, ".ttf"
       end
 
       def update_data_file
-        # TODO allow skipping font_hash
-        name = "#{@opts.font_name}-#{@base.data[:font_hash]}."
-        files = ["woff","ttf","eot","svg"].map { |ext| name + ext }
+        files = ["woff","ttf","eot","svg"].map { |ext| @base.data[:generated_name] + '.' + ext }
         @base.update_data_file files
       end
       
       def show_paths
-        # TODO remove output_dir?
-        # TODO allow skipping font_hash
-        path = File.join(@opts.output_dir, @opts.font_name + '-' + @base.data[:font_hash])
+        path = File.join(@opts.output_dir, @base.data[:generated_name])
         ["woff","ttf","eot","svg"].each do |type|
           @base.shell.say_status(:create, path + "." + type)
         end

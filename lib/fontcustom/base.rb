@@ -34,11 +34,13 @@ module Fontcustom
       end
 
       def start
+        # TODO do stuff
+      end
+
+      def verify_all
         verify_fontforge(`which fontforge`)
         verify_input_dir
         verify_output_dir
-
-        # TODO do stuff
       end
 
       def verify_fontforge(which) # arg to simplify unit testing
@@ -60,14 +62,16 @@ module Fontcustom
           reset_output_dir
         elsif File.exists? @opts.output_dir
           error "#{@opts.output_dir} already exists but isn't a directory."
+        else
+          add_file @opts.output_dir + "/.fontcustom-data" # creates @opts.output_dir
         end
       end
 
       def reset_output_dir
         data_file = File.join(@opts.output_dir, ".fontcustom-data")
         if File.exists? data_file
-          paths = YAML.load_file data_file
-          unless paths.empty?
+          paths = YAML.load File.open(data_file)
+          if paths && ! paths.empty?
             paths.each { |file| remove_file(file) }
             clear_data_file
           end
