@@ -1,7 +1,7 @@
 require "thor"
 require "fontcustom"
 
-class Fontcustom
+module Fontcustom
   class CLI < Thor
     # TODO update (templates:array, etc)
     class_option :output, :aliases => "-o", :desc => "Specify an output directory. Default: $DIR/fontcustom"
@@ -14,10 +14,7 @@ class Fontcustom
     desc "compile DIR [options]", "Generates webfonts and CSS from *.svg and *.eps files in DIR."
     def compile(input_dir)
       options.merge! {:input_dir => input_dir}
-      options = Fontcustom::Options.new(options)
-      Fontcustom.verify_all(options) # raises Thor::Error if conditions aren"t met
-      Fontcustom::Generator::Font.new(options).start
-      Fontcustom::Generator::Template.new(options).start
+      Fontcustom::Base.new(options).generate_all
     end
 
     desc "watch DIR [options]", "Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."

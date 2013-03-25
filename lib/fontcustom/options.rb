@@ -1,6 +1,6 @@
 require 'yaml'
 
-class Fontcustom
+module Fontcustom
   class Options
     attr_reader :font_name, :font_path, :input_dir, :output_dir, :templates, :css_prefix, :hash, :html, :debug
     attr_accessor :font_hash, :icon_names
@@ -22,10 +22,6 @@ class Fontcustom
       @hash = options[:hash] || true
       @html = options[:html] || false
       @debug = options[:debug] || false
-
-      # set relative roots for Thor::Actions
-      Fontcustom.source_paths << @input_dir
-      Fontcustom.destination_root = @output_dir
     end
 
     private

@@ -1,4 +1,4 @@
-class Fontcustom
+module Fontcustom
   module Generator
     class Template
       def initialize(options)

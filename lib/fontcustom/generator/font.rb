@@ -1,7 +1,7 @@
 require "thor/shell"
 require "yaml"
 
-class Fontcustom
+module Fontcustom
   module Generator
     class Font
       def initialize(options)
@@ -13,7 +13,7 @@ class Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = @options.font_name ? " --name " + @options.font_name : ""
         hash = @options.hash ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom.gem_root}/scripts/generate.py #{@options.input_dir} #{@options.output_dir + name + hash}"
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options.input_dir} #{@options.output_dir + name + hash}"
 
         # TODO 
         # investigate using generate.py to swallow fontforge output 
@@ -55,10 +55,10 @@ class Fontcustom
       end
       
       def show_paths
+        # TODO remove output_dir?
         path = File.join(@options.output_dir, @options.font_name + '-' + @options.font_hash)
-        shell = ::Thor::Shell::Color.new
         ["woff","ttf","eot","svg"].each do |type|
-          shell.say_status(:create, path + "." + type)
+          Fontcustom.shell.say_status(:create, path + "." + type)
         end
       end
     end
