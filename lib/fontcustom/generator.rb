@@ -14,6 +14,7 @@ module Fontcustom
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
     class_option :html, :type => :boolean, :default => false
+    class_option :verbose, :type => :boolean, :default => true
 
     def self.source_root
       File.dirname(__FILE__)
@@ -83,7 +84,7 @@ module Fontcustom
       @path = file.chomp('.ttf')
 
       ['woff','ttf','eot','svg'].each do |type|
-        say_status(:create, @path + '.' + type)
+        say_status(:create, @path + '.' + type) if options.verbose
       end
     end
 
@@ -97,9 +98,9 @@ module Fontcustom
         @path = File.basename(@path)
       end
 
-      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
-      template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
-      template('templates/test.html', File.join(@output, 'test.html')) if options.html
+      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'), :verbose => options.verbose)
+      template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'), :verbose => options.verbose)
+      template('templates/test.html', File.join(@output, 'test.html'), :verbose => options.verbose) if options.html
     end
   end
 end
