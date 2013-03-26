@@ -12,6 +12,7 @@ module Fontcustom
     class_option :html, :type => :boolean, :default => false, :desc => 'Generate html page with icons'
 
     desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
+    option :verbose, :type => :boolean, :default => true, :desc => "Set to `false` to disable verbosity"
     def compile(*args)
       # workaround to pass arguments from one Thor class to another
       ARGV.shift
