@@ -10,6 +10,7 @@ module Fontcustom
     class_option :nohash, :type => :boolean, :default => false, :desc => 'Disable filename hashes. Default: false'
     class_option :debug, :type => :boolean, :default => false, :desc => 'Display debug messages. Default: false'
     class_option :html, :type => :boolean, :default => false, :desc => 'Generate html page with icons'
+    class_option :json, :type => :boolean, :default => false, :desc => 'Generate json data file describing glyph names and unicode positions. Useful for rendering custom templates. Default: false'
 
     desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
     def compile(*args)

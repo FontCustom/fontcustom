@@ -14,6 +14,7 @@ module Fontcustom
     class_option :nohash, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
     class_option :html, :type => :boolean, :default => false
+    class_option :json, :type => :boolean, :default => false
 
     def self.source_root
       File.dirname(__FILE__)
@@ -50,6 +51,7 @@ module Fontcustom
       css = File.join(@output, 'fontcustom.css')
       css_ie7   = File.join(@output, 'fontcustom-ie7.css')
       test_html = File.join(@output, 'test.html')
+      json_data = File.join(@output, 'fontcustom.json')
       old_name = if File.exists? css
                    line = IO.readlines(css)[5]                           # font-family: "Example Font";
                    line.scan(/".+"/)[0][1..-2].gsub(/\W/, '-').downcase  # => 'example-font'
@@ -61,6 +63,7 @@ module Fontcustom
       old_files << css if File.exists?(css)
       old_files << css_ie7 if File.exists?(css_ie7)
       old_files << test_html if File.exists?(test_html)
+      old_files << json_data if File.exists?(test_html)
       old_files.each {|file| remove_file file }
     end
 
@@ -100,6 +103,17 @@ module Fontcustom
       template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
       template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
       template('templates/test.html', File.join(@output, 'test.html')) if options.html
+
+      if options.json
+        # Create a new hash to hold all font data. JSON-encoding the hash ensures
+        # we handle all possible glyph names appropriately
+        font_data = {:name => @name, :path => @path, :glyphs => Hash.new}
+        @classes.each_with_index do |glyph, position|
+          font_data[:glyphs][glyph] = (61696 + position)
+        end
+        @json = JSON.pretty_generate(font_data)
+        template('templates/fontcustom.json', File.join(@output, 'fontcustom.json'))
+      end
     end
   end
 end
