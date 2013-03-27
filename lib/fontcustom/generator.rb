@@ -63,7 +63,7 @@ module Fontcustom
       old_files << css if File.exists?(css)
       old_files << css_ie7 if File.exists?(css_ie7)
       old_files << test_html if File.exists?(test_html)
-      old_files << json_data if File.exists?(test_html)
+      old_files << json_data if File.exists?(json_data)
       old_files.each {|file| remove_file file }
     end
 
