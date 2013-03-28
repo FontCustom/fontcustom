@@ -8,7 +8,7 @@ describe Fontcustom::Util do
   context ".check_fontforge" do
     it "should raise error if fontforge isn't installed" do
       util.stub(:"`").and_return("")
-      expect { util.check_fontforge }.to raise_error Thor::Error, /install fontforge/
+      expect { util.check_fontforge }.to raise_error Fontcustom::Error, /install fontforge/
     end
   end
 
@@ -54,7 +54,7 @@ describe Fontcustom::Util do
 
     it "should raise an error if template does not exist" do
       expect { util.get_template_paths [:css, fixture("fake-template")] }.to raise_error(
-        Thor::Error, /couldn't find.+#{fixture("fake-template")}/
+        Fontcustom::Error, /couldn't find.+#{fixture("fake-template")}/
       )
     end
   end

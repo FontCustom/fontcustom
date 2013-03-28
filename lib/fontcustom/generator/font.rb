@@ -1,70 +1,59 @@
-require "thor/shell"
 require "yaml"
+require "thor/group"
+require "thor/actions"
 
 module Fontcustom
   module Generator
-    class Font
-      attr_reader :base, :opts
+    class Font < Thor::Group
+      include Thor::Actions
 
-      def initialize(base)
-        @base = base
-        @opts = base.opts
-      end
+      # Instead of passing each option individually as a Thor option,
+      # we're passing the entire option hash as an argument. This is
+      # way DRYier, easier to maintain.
+      argument :opts 
 
-      def start
-        @base.verify_all
-        # TODO normalize naming conventions with python script
-        # TODO remove name arg if default is already set in python (or rm from python)
-        name = @opts.font_name ? " --name " + @opts.font_name : ""
-        hash = @opts.hash ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom::Base.gem_lib}/scripts/generate.py #{@opts.input_dir} #{@opts.output_dir + name + hash}"
-
-        # TODO 
-        # investigate using generate.py to swallow fontforge output 
-        # and return YAML of classnames and hash
-        cmd << " > /dev/null 2>&1" unless @opts.debug
-
-        run_script(cmd)
-        save_output_data
-        show_paths
-      end
-
-      private
-
-      def run_script(cmd)
-        `#{cmd}`
-      end
-
-      def save_output_data
-        @base.data = {
-          :icon_names => get_icon_names,
-          :generated_name => get_generated_name
-        }
-        update_data_file
-      end
-
-      def get_icon_names
-        vectors = Dir[File.join(@opts.input_dir, "*.{svg,eps}")]
-        vectors.map {|vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
-      end
-
-      def get_generated_name
-        return @opts.font_name unless @opts.hash
-        ttf = Dir[File.join(@opts.output_dir, @opts.font_name + "*.ttf")].first
-        File.basename ttf, ".ttf"
-      end
-
-      def update_data_file
-        files = ["woff","ttf","eot","svg"].map { |ext| @base.data[:generated_name] + '.' + ext }
-        @base.update_data_file files
-      end
-      
-      def show_paths
-        path = File.join(@opts.output_dir, @base.data[:generated_name])
-        ["woff","ttf","eot","svg"].each do |type|
-          @base.shell.say_status(:create, path + "." + type)
+      def check_input
+        if ! File.directory? opts[:input]
+          raise Fontcustom::Error, "#{opts[:input]} doesn't exist or isn't a directory."
+        elsif Dir[File.join(opts[:input], "*.{svg,eps}")].empty?
+          raise Fontcustom::Error, "#{opts[:input]} doesn't contain any vectors (*.svg or *.eps files)."
         end
       end
+
+      def check_output
+        if File.exists? File.join(opts[:output], ".fontcustom-data")
+          # Skip ahead, everything is in order
+        elsif File.exists?(opts[:output]) && ! File.directory?(opts[:output])
+          raise Fontcustom::Error, "#{opts[:output]} already exists but isn't a directory."
+        else
+          # creates opts[:output] as well
+          add_file File.join(opts[:output], ".fontcustom-data") 
+        end
+      end
+
+      def get_data
+        data = File.join(opts[:output], ".fontcustom-data")
+        data = YAML.load(File.open(data)) if File.exists? data
+        @data = data.is_a?(Hash) ? data : {}
+      end
+
+      def reset_output
+        return unless @data[:files]
+        begin
+          deleted = []
+          @data[:files].each do |file| 
+            remove_file(file)
+            deleted << file
+          end
+        ensure
+          @data[:files] = @data[:files] - deleted
+          yaml = @data.to_yaml.sub("---\n", "")
+          file = File.join(opts[:output], ".fontcustom-data")
+          Fontcustom::Util.clear_file(file)
+          append_to_file file, yaml
+        end
+      end
+
     end
   end
 end

@@ -20,7 +20,7 @@ module Fontcustom
     class << self 
       def check_fontforge
         if `which fontforge` == ""
-          raise Thor::Error, "Please install fontforge first. Visit http://fontcustom.com for more details."
+          raise Fontcustom::Error, "Please install fontforge first. Visit http://fontcustom.com for more details."
         end
       end
 
@@ -71,10 +71,14 @@ module Fontcustom
             if template.is_a?(String) && File.exists?(template)
               template
             else
-              raise Thor::Error, "We couldn't find your custom template: #{template}\nPlease double check and try again."
+              raise Fontcustom::Error, "We couldn't find your custom template: #{template}\nPlease double check and try again."
             end
           end
         end
+      end
+
+      def clear_file(file)
+        File.open(file, "w") {}
       end
 
       def gem_lib_path
