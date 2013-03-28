@@ -1,5 +1,22 @@
+require "yaml"
+
 module Fontcustom
   class Util
+    DEFAULT_OPTIONS = {
+      :input => Dir.pwd,
+      :output => File.join(Dir.pwd, "fontcustom"),
+      :config => false,
+      :templates => [:css, :demo], 
+      :file_name => "fontcustom",
+      :file_hash => true,
+      :css_font_path => "",
+      :css_selector_prefix => ".icon-",
+      :scss => false,
+      :demo => true,
+      :debug => false,
+      :verbose => true
+    }
+
     class << self 
       def check_fontforge
         if `which fontforge` == ""
@@ -7,12 +24,61 @@ module Fontcustom
         end
       end
 
-      def parse_options(options)
+      # Priority: Passed args, config file, default
+      def collect_options(args = {})
+        options = DEFAULT_OPTIONS.clone
+        options[:config] = get_config_path(args)
+
+        if options[:config]
+          config = YAML.load File.open(options[:config])
+          if config.is_a? Hash
+            config = config.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+            options.merge! config
+          end
+        end
+        
+        args.delete :config # don't overwrite #get_config_path
+        options.merge! args
+
+        options[:templates] = get_template_paths(options[:templates])
+        options[:file_name] = options[:file_name].strip.downcase.gsub(/\W/, '-') 
         options
       end
 
-      def lower_spinal_case(string)
-        string.gsub(/\W/, '-').downcase
+      # Checks options[:config], options[:input], and pwd
+      def get_config_path(options)
+        if options[:config] && File.exists?(options[:config])
+          options[:config] 
+        elsif options[:input] && File.exists?(File.join(options[:input], "fontcustom.yml"))
+          File.join(options[:input], "fontcustom.yml")
+        elsif File.exists?(File.join(Dir.pwd, "fontcustom.yml"))
+          File.join(Dir.pwd, "fontcustom.yml") 
+        else
+          false
+        end
+      end
+
+      def get_template_paths(templates)
+        templates = templates.map do |template|
+          case template
+          when :css
+            File.join gem_lib_path, "templates", "fontcustom.css"
+          when :scss
+            File.join gem_lib_path, "templates", "_fontcustom.scss"
+          when :demo
+            File.join gem_lib_path, "templates", "fontcustom.html"
+          else
+            if template.is_a?(String) && File.exists?(template)
+              template
+            else
+              raise Thor::Error, "We couldn't find your custom template: #{template}\nPlease double check and try again."
+            end
+          end
+        end
+      end
+
+      def gem_lib_path
+        File.expand_path(File.join(File.dirname(__FILE__)))
       end
     end
   end
