@@ -60,7 +60,7 @@ describe Fontcustom::Generator::Font do
     it "should assign @data from data file" do
       gen = generator :output => fixture("mixed-output")
       data = gen.get_data
-      data.should == data_file_contents
+      data[:files] =~ data_file_contents[:files]
     end
   end
 
@@ -99,19 +99,70 @@ describe Fontcustom::Generator::Font do
   end
 
   context "#generate" do
-    it "should call fontforge"
-    it "should options to fontforge"
-    it "should raise error if fontforge fails"
+    subject do
+      gen = generator(:input => fixture("vectors"), :output => fixture("generate-spec"))
+      gen.stub(:"`").and_return ""
+      gen
+    end
+    
+    it "should call fontforge" do
+      subject.should_receive(:"`").with(/fontforge -script/)
+      subject.generate
+    end
+
+    it "should options to fontforge" do
+      subject.should_receive(:"`").with(/#{fixture("vectors")}.+#{fixture("generate-spec")}/)
+      subject.generate
+    end
+
+    it "should raise error if fontforge fails" do
+      pending "What does a fontforge failure look like?"
+    end
   end
 
   context "#collect_data" do
-    it "should assign @data from updated data file (TODO implement this in generate.py"
-    it "should parse output for file names (TEMP)"
-    it "should parse input for icon names (TEMP)"
-    it "should assign @data[:files] and @data[:icons] and update data file (TEMP)" 
+    subject do
+      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
+      Fontcustom::Util.stub :clear_file
+      gen.stub :append_to_file
+      gen.instance_variable_set(:@data, {:files => []})
+      gen
+    end
+
+    it "should assign @data from updated data file (TODO)"
+
+    it "should assign @data from input and output files (TEMP)" do
+      subject.collect_data
+      data = subject.instance_variable_get(:@data)
+      data[:icons].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
+      data[:file_name].should == "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
+      data[:files].should =~ [
+        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
+        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
+        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
+        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
+      ]
+    end
+
+    it "should update data file (TEMP)" do
+      file = File.join(fixture("mixed-output"), ".fontcustom-data")
+      Fontcustom::Util.should_receive(:clear_file).once.with(file)
+      subject.should_receive(:append_to_file).once.with do |path, content|
+        path.should == file
+        content.should match(/:files:/)
+        content.should match(/:icons:/)
+        content.should match(/:file_name:/)
+      end
+      subject.collect_data
+    end
   end
 
   context "#announce_files" do
-    it "should print generated files to console"
+    it "should print generated files to console" do
+      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
+      gen.instance_variable_set :@data, data_file_contents 
+      stdout = capture(:stdout) { gen.announce_files }
+      stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
+    end
   end
 end

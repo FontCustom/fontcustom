@@ -53,7 +53,47 @@ module Fontcustom
           append_to_file file, yaml
         end
       end
+      
+      def generate
+        # TODO align option naming conventions with python script
+        # TODO remove name arg if default is already set in python (or rm from python)
+        name = opts[:file_name] ? " --name " + opts[:file_name] : ""
+        hash = opts[:hash] ? "" : " --nohash"
+        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
 
+        # TODO use generate.py to swallow fontforge output 
+        cmd << " > /dev/null 2>&1" unless opts[:debug]
+
+        begin
+          `#{cmd}`
+        rescue
+          raise Fontcustom::Error, "The compilation failed unexpectedly. Check your options and try again with --debug get more details."
+        end
+      end
+
+      # TODO move this into generate.py
+      def collect_data
+        @data[:icons] = Dir[File.join(opts[:input], "*.{svg,eps}")]
+        @data[:icons].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
+        @data[:file_name] = if opts[:hash]
+                              opts[:file_name] 
+                            else
+                              ttf = Dir[File.join(opts[:output], opts[:file_name] + "*.ttf")].first
+                              File.basename ttf, ".ttf"
+                            end
+
+        files = ["woff","ttf","eot","svg"].map { |ext| @data[:file_name] + '.' + ext }
+        @data[:files] = @data[:files] + files
+
+        yaml = @data.to_yaml.sub("---\n", "")
+        file = File.join(opts[:output], ".fontcustom-data")
+        Fontcustom::Util.clear_file(file)
+        append_to_file file, yaml
+      end
+
+      def announce_files
+        @data[:files].each { |file| shell.say_status(:create, file) }
+      end
     end
   end
 end
