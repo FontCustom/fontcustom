@@ -1,63 +1,38 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Font do
-  subject do 
-    base = Fontcustom::Base.new.load :input_dir => fixture("vectors"), :output_dir => fixture("mixed-output")
-    Fontcustom::Generator::Font.new base
+  context "#check_input" do
+    it "should raise error if input doesn't exist"
+    it "should raise error if input isn't a directory"
+    it "should raise error if input doesn't contain vectors"
   end
 
-  context "#initialize" do
-    it "should raise error if not passed a Fontcustom::Base instance" do
-      expect { Fontcustom::Generator::Font.new }.to raise_error(ArgumentError)
-      expect { subject }.to_not raise_error(ArgumentError)
-    end
+  context "#check_output" do
+    it "should raise an error if output isn't a directory"
+    it "should create output dir and data file if they don't exist"
+    it "should assign @data from data file"
   end
 
-  context "#start" do
-    it "should call fontforge" do
-      subject.base.stub :verify_all
-      subject.stub :run_script 
-      subject.stub :save_output_data
-      subject.stub :show_paths
-      subject.should_receive(:run_script).once.with(/fontforge/)
-      subject.start
-    end
-
-    it "should not swallow fontforge output if debug option is given" do
-      base = Fontcustom::Base.new.load(:input_dir => fixture("vectors"), :output_dir => fixture("output-test"), :debug => true)
-      debug = Fontcustom::Generator::Font.new(base)
-      debug.base.stub :verify_all
-      debug.stub :run_script 
-      debug.stub :save_output_data
-      debug.stub :show_paths
-      debug.should_receive(:run_script).once.with(/^(.(?!\/dev\/null))+$/)
-      debug.start
-    end
+  context "#reset_output" do
+    it "should delete files from @data[:files]"
+    it "should not delete non-generated files"
+    it "should empty @data[:files] and update data file"
   end
 
-  context "#save_output_data" do
-    it "should save icon_names and generated_name to options" do
-      subject.base.stub :update_data_file
-      subject.send :save_output_data
-      subject.base.data[:icon_names].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      subject.base.data[:generated_name].should =~ /#{subject.opts.font_name}-.+/
-    end
-
-    it "should add generated files to .fontcustom-data" do
-      subject.base.stub(:update_data_file)
-      subject.base.should_receive(:update_data_file).once do |files|
-        files.each { |file| file.should =~ /fontcustom-.+\.(woff|ttf|eot|svg)/ }
-      end
-      subject.send :save_output_data # populates icon_names and then calls update_data_file
-    end
+  context "#generate" do
+    it "should call fontforge"
+    it "should options to fontforge"
+    it "should raise error if fontforge fails"
   end
 
-  context "#show_paths" do
-    it "should print generated file paths" do
-      subject.stub :update_data_file
-      subject.send :save_output_data
-      stdout = capture(:stdout) { subject.send(:show_paths) }
-      stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
-    end
+  context "#collect_data" do
+    it "should assign @data from updated data file (TODO implement this in generate.py"
+    it "should parse output for file names (TEMP)"
+    it "should parse input for icon names (TEMP)"
+    it "should assign @data[:files] and @data[:icons] and update data file (TEMP)" 
+  end
+
+  context "#announce_files" do
+    it "should print generated files to console"
   end
 end
