@@ -50,5 +50,15 @@ describe Fontcustom::Generator::Template do
       end
       subject.copy_templates
     end
+
+    it "should be silent if verbose is false" do
+      gen = generator :output => fixture("mixed-output"), :templates => %W|scss css #{fixture("not-a-dir")}|, :verbose => false
+      gen.instance_variable_set :@data, data_file_contents
+      gen.stub :template
+      Fontcustom::Util.stub :clear_file
+      gen.stub :append_to_file
+      stdout = capture(:stdout) { gen.copy_templates }
+      stdout.should == ""
+    end
   end
 end

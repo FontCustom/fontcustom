@@ -27,7 +27,7 @@ module Fontcustom
           raise Fontcustom::Error, "#{opts[:output]} already exists but isn't a directory."
         else
           # creates opts[:output] as well
-          add_file File.join(opts[:output], ".fontcustom-data") 
+          add_file File.join(opts[:output], ".fontcustom-data"), :verbose => opts[:verbose]
         end
       end
 
@@ -42,7 +42,7 @@ module Fontcustom
         begin
           deleted = []
           @data[:files].each do |file| 
-            remove_file File.join(opts[:output], file)
+            remove_file File.join(opts[:output], file), :verbose => opts[:verbose]
             deleted << file
           end
         ensure
@@ -87,14 +87,16 @@ module Fontcustom
       end
 
       def announce_files
-        @data[:files].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
+        if opts[:verbose]
+          @data[:files].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
+        end
       end
 
       def save_data
         yaml = @data.to_yaml.sub("---\n", "")
         file = File.join(opts[:output], ".fontcustom-data")
         Fontcustom::Util.clear_file(file)
-        append_to_file file, yaml
+        append_to_file file, yaml, :verbose => opts[:verbose]
       end
     end
   end

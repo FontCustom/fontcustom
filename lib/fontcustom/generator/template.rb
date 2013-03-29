@@ -35,7 +35,7 @@ module Fontcustom
           opts[:templates].each do |source|
             name = File.basename source
             destination = File.join opts[:output], name
-            template source, destination
+            template source, destination, :verbose => opts[:verbose]
             created << name
           end
         ensure
@@ -43,7 +43,7 @@ module Fontcustom
           yaml = @data.to_yaml.sub("---\n", "")
           file = File.join(opts[:output], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
-          append_to_file file, yaml, :force => true
+          append_to_file file, yaml, :verbose => opts[:verbose]
         end
       end
     end

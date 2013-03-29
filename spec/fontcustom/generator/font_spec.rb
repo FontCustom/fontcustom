@@ -32,7 +32,7 @@ describe Fontcustom::Generator::Font do
     it "should create output dir and data file if they don't exist" do
       gen = generator :output => fixture("create-me")
       gen.stub(:add_file)
-      gen.should_receive(:add_file).with(fixture("create-me") + "/.fontcustom-data")
+      gen.should_receive(:add_file).with(fixture("create-me") + "/.fontcustom-data", anything)
       gen.check_output
     end
   end
@@ -82,6 +82,11 @@ describe Fontcustom::Generator::Font do
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with(file, /:files: \[\]/, :verbose => false)
       subject.reset_output
+    end
+
+    it "should be silent" do
+      stdout = capture(:stdout) { subject.reset_output }
+      stdout.should == ""
     end
   end
 
@@ -133,6 +138,13 @@ describe Fontcustom::Generator::Font do
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
+
+    it "should print nothing if verbose is false" do
+      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"), :verbose => false)
+      gen.instance_variable_set :@data, data_file_contents 
+      stdout = capture(:stdout) { gen.announce_files }
+      stdout.should == ""
+    end
   end
 
   context "#save_data" do
@@ -150,6 +162,15 @@ describe Fontcustom::Generator::Font do
         content.should match(/:file_name:/)
       end
       gen.save_data
+    end
+
+    it "should be silent if verbose is false" do
+      gen = generator(:output => fixture("mixed-output"), :verbose => false)
+      Fontcustom::Util.stub :clear_file
+      gen.stub :append_to_file
+      gen.instance_variable_set(:@data, data_file_contents)
+      stdout = capture(:stdout) { gen.save_data }
+      stdout.should == ""
     end
   end
 end
