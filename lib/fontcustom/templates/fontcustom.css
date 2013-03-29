@@ -3,11 +3,11 @@
 */
 
 @font-face {
-  font-family: "<%= @name %>";
-  src: url("<%= @path %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @path %>.woff") format("woff"),
-       url("<%= @path %>.ttf") format("truetype"),
-       url("<%= @path %>.svg#<%= @name %>") format("svg");
+  font-family: "<%= @opts[:font_name] %>";
+  src: url("<%= @data[:file_name] %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @data[:file_name] %>.woff") format("woff"),
+       url("<%= @data[:file_name] %>.ttf") format("truetype"),
+       url("<%= @data[:file_name] %>.svg#<%= @opts[:font_name] %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -17,7 +17,7 @@
 */
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "<%= @name %>";
+  font-family: "<%= @opts[:font_name] %>";
   font-weight: normal;
   font-style: normal;
   display: inline-block;
@@ -68,5 +68,5 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 /*
   Icon Classes
 */
-<% @classes.each_with_index do |name, index| %>
+<% @data[:icons].each_with_index do |name, index| %>
 .icon-<%= name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

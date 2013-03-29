@@ -7,6 +7,20 @@ RSpec.configure do |c|
     File.join(File.expand_path('../fixtures', __FILE__), path)
   end
 
+  def data_file_contents
+    {
+      :files => %w|
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
+        fontcustom.css
+      |,
+      :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
+      :icons => %w|a b c|
+    }
+  end
+
   def cleanup(dir)
     FileUtils.rm_r(dir, :verbose => true) if File.exists?(dir)
   end

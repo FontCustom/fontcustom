@@ -64,6 +64,8 @@ module Fontcustom
         end
       end
 
+      # Could arguably belong in Generator::Template, however, it's nice to
+      # be able to catch template errors before any generator runs.
       def get_template_paths(templates)
         templates = templates.map do |template|
           case template

@@ -83,15 +83,17 @@ module Fontcustom
 
         files = ["woff","ttf","eot","svg"].map { |ext| @data[:file_name] + '.' + ext }
         @data[:files] = @data[:files] + files
-
-        yaml = @data.to_yaml.sub("---\n", "")
-        file = File.join(opts[:output], ".fontcustom-data")
-        Fontcustom::Util.clear_file(file)
-        append_to_file file, yaml
       end
 
       def announce_files
         @data[:files].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
+      end
+
+      def save_data
+        yaml = @data.to_yaml.sub("---\n", "")
+        file = File.join(opts[:output], ".fontcustom-data")
+        Fontcustom::Util.clear_file(file)
+        append_to_file file, yaml
       end
     end
   end
