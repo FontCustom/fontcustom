@@ -4,7 +4,7 @@ module Fontcustom
   class Util
     DEFAULT_OPTIONS = {
       :input => Dir.pwd,
-      :output => File.join(Dir.pwd, "fontcustom"),
+      :output => false, # used to assign default, if necessary 
       :config => false,
       :templates => [:css, :demo], 
       :file_name => "fontcustom",
@@ -17,6 +17,12 @@ module Fontcustom
       :verbose => true
     }
 
+    DATA_MODEL = {
+      :files => [],
+      :file_name => "",
+      :icons => []
+    }
+
     class << self 
       def check_fontforge
         if `which fontforge` == ""
@@ -24,10 +30,11 @@ module Fontcustom
         end
       end
 
-      # Priority: Passed args, config file, default
+      # Priority: Passed args > config file > default
       def collect_options(args = {})
         options = DEFAULT_OPTIONS.clone
         options[:config] = get_config_path(args)
+        args.delete :config # don't overwrite #get_config_path
 
         if options[:config]
           config = YAML.load File.open(options[:config])
@@ -36,10 +43,9 @@ module Fontcustom
             options.merge! config
           end
         end
-        
-        args.delete :config # don't overwrite #get_config_path
-        options.merge! args
 
+        options.merge! args
+        options[:output] ||= File.join(options[:input], "fontcustom")
         options[:templates] = get_template_paths(options[:templates])
         options[:file_name] = options[:file_name].strip.downcase.gsub(/\W/, '-') 
         options

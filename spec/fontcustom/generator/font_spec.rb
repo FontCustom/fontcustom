@@ -50,11 +50,10 @@ describe Fontcustom::Generator::Font do
   end
 
   context "#get_data" do
-    it "should assign empty @data if no data file is found" do
+    it "should assign empty data model if no data file is found" do
       gen = generator :output => fixture("empty")
       data = gen.get_data
-      data.should be_a(Hash)
-      data.should be_empty
+      data.should == Fontcustom::Util::DATA_MODEL
     end
 
     it "should assign @data from data file" do
@@ -93,7 +92,7 @@ describe Fontcustom::Generator::Font do
     it "should update the data file" do
       file = File.join(fixture("mixed-output"), ".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with(file, /:files: \[\]/)
+      subject.should_receive(:append_to_file).once.with(file, /:files: \[\]/, :verbose => false)
       subject.reset_output
     end
   end

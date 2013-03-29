@@ -17,9 +17,11 @@ describe Fontcustom::Util do
       options = util.collect_options
       defaults = util::DEFAULT_OPTIONS.dup
 
-      # ignore options[:templates] since they will be expanded
+      # ignore :templates and :output since they're generated
       options.delete(:templates)
       defaults.delete(:templates)
+      options.delete(:output)
+      defaults.delete(:output)
 
       options.should == defaults
     end

@@ -7,9 +7,8 @@ module Fontcustom
     class Font < Thor::Group
       include Thor::Actions
 
-      # Instead of passing each option individually as a Thor option,
-      # we're passing the entire option hash as an argument. This is
-      # way DRYier, easier to maintain.
+      # Instead of passing each option individually we're passing the entire option hash as an argument. 
+      # This is DRYier, easier to maintain.
       argument :opts 
 
       def check_input
@@ -34,7 +33,7 @@ module Fontcustom
       def get_data
         data = File.join(opts[:output], ".fontcustom-data")
         data = YAML.load(File.open(data)) if File.exists? data
-        @data = data.is_a?(Hash) ? data : {}
+        @data = data.is_a?(Hash) ? data : Fontcustom::Util::DATA_MODEL.dup
       end
 
       def reset_output
@@ -42,7 +41,7 @@ module Fontcustom
         begin
           deleted = []
           @data[:files].each do |file| 
-            remove_file(file)
+            remove_file File.join(opts[:output], file)
             deleted << file
           end
         ensure
@@ -50,7 +49,7 @@ module Fontcustom
           yaml = @data.to_yaml.sub("---\n", "")
           file = File.join(opts[:output], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
-          append_to_file file, yaml
+          append_to_file file, yaml, :verbose => false # clear data file silently
         end
       end
       
@@ -58,7 +57,7 @@ module Fontcustom
         # TODO align option naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts[:file_name] ? " --name " + opts[:file_name] : ""
-        hash = opts[:hash] ? "" : " --nohash"
+        hash = opts[:file_hash] ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
 
         # TODO use generate.py to swallow fontforge output 
@@ -92,7 +91,7 @@ module Fontcustom
       end
 
       def announce_files
-        @data[:files].each { |file| shell.say_status(:create, file) }
+        @data[:files].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
       end
     end
   end
