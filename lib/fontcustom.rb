@@ -1,4 +1,3 @@
-require "thor"
 require "fontcustom/version"
 require "fontcustom/error"
 require "fontcustom/util"

@@ -6,13 +6,10 @@ module Fontcustom
       :input => Dir.pwd,
       :output => false, # used to assign default, if necessary 
       :config => false,
-      :templates => [:css, :demo], 
+      :templates => [:css, :preview], 
       :file_name => "fontcustom",
       :file_hash => true,
-      :css_font_path => "",
       :css_selector_prefix => ".icon-",
-      :scss => false,
-      :demo => true,
       :debug => false,
       :verbose => true
     }
@@ -73,7 +70,7 @@ module Fontcustom
             File.join gem_lib_path, "templates", "fontcustom.css"
           when :scss
             File.join gem_lib_path, "templates", "_fontcustom.scss"
-          when :demo
+          when :preview
             File.join gem_lib_path, "templates", "fontcustom.html"
           else
             if template.is_a?(String) && File.exists?(template)

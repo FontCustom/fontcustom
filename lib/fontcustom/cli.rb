@@ -3,25 +3,25 @@ require "fontcustom"
 
 module Fontcustom
   class CLI < Thor
-    # TODO update (templates:array, etc)
-    class_option :output, :aliases => "-o", :desc => "Specify an output directory. Default: $DIR/fontcustom"
-    class_option :name, :aliases => "-n", :desc => "Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom"
-    class_option :font_path, :aliases => "-f", :desc => "Specify a path for fonts in css @font-face declaration. Default: none"
-    class_option :nohash, :type => :boolean, :default => false, :desc => "Disable filename hashes. Default: false"
+    class_option :output, :aliases => "-o", :desc => "The output directory (will be created if it doesn't exist). Default: INPUT/fontcustom/"
+    class_option :config, :aliases => "-c", :desc => "Path to fontcustom.yml. Default: INPUT/fontcustom.yml and `pwd`/fontcustom.yml" 
+    class_option :templates, :aliases => "-t", :type => :array, :desc => "A list of templates to compile after fonts are generated. Accepts :css, :scss, :preview or a path to any file of your choosing. Default: :css and :preview"
+    class_option :file_name, :aliases => "--name -n", :desc => "The font name. Used in your CSS and templates. Default: fontcustom"
+    class_option :css_selector_prefix, :aliases => "--prefix -p", :desc => "The prefix for your icon CSS selectors. Default: '.icon-'"
+    class_option :file_hash, :aliases => "--hash -h", :type => :boolean, :default => true, :desc => "Generate fonts with asset-busting hashes. Default: true"
     class_option :debug, :type => :boolean, :default => false, :desc => "Display debug messages. Default: false"
-    class_option :html, :type => :boolean, :default => false, :desc => "Generate html page with icons"
+    class_option :verbose, :aliases => "-v", :type => :boolean, :default => true, :desc => "Display messages. Default: true"
 
-    desc "compile DIR [options]", "Generates webfonts and CSS from *.svg and *.eps files in DIR."
-    def compile(input_dir)
-      options.merge! {:input_dir => input_dir}
-      Fontcustom::Base.new(options).generate_all
+    desc "compile INPUT [options]", "Generates webfonts and CSS from *.svg and *.eps files in INPUT."
+    def compile(input)
+      options.merge! :input => input
+      options = Fontcustom::Util.collect_options options
+      Fontcustom::Generator::Font.start [options]
+      Fontcustom::Generator::Template.start [options]
     end
 
-    desc "watch DIR [options]", "Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
-    def watch(input_dir)
-      options.merge! {:input_dir => input_dir, :watching => true}
-      options = Fontcustom::Options.new(options)
-      Fontcustom::Watcher.new(options).watch
+    desc "watch INPUT [options]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
+    def watch(input)
     end
   end
 end

@@ -45,7 +45,7 @@ describe Fontcustom::Util do
   context ".get_template_paths" do
     it "should expand template paths" do
       lib = util.gem_lib_path
-      templates = util.get_template_paths [:css, :scss, :demo, fixture("not-a-dir")]
+      templates = util.get_template_paths [:css, :scss, :preview, fixture("not-a-dir")]
       templates.should == [
         File.join(lib, "templates", "fontcustom.css"), 
         File.join(lib, "templates", "_fontcustom.scss"),

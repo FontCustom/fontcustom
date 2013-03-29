@@ -1,4 +1,5 @@
 require "yaml"
+require "thor"
 require "thor/group"
 require "thor/actions"
 
@@ -42,7 +43,7 @@ module Fontcustom
           yaml = @data.to_yaml.sub("---\n", "")
           file = File.join(opts[:output], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
-          append_to_file file, yaml # TODO force?
+          append_to_file file, yaml, :force => true
         end
       end
     end
