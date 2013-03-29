@@ -45,7 +45,7 @@ describe Fontcustom::Util do
   context ".get_template_paths" do
     it "should expand template paths" do
       lib = util.gem_lib_path
-      templates = util.get_template_paths [:css, :scss, :preview, fixture("not-a-dir")]
+      templates = util.get_template_paths %W|css scss preview #{fixture("not-a-dir")}|
       templates.should == [
         File.join(lib, "templates", "fontcustom.css"), 
         File.join(lib, "templates", "_fontcustom.scss"),
@@ -55,7 +55,7 @@ describe Fontcustom::Util do
     end
 
     it "should raise an error if template does not exist" do
-      expect { util.get_template_paths [:css, fixture("fake-template")] }.to raise_error(
+      expect { util.get_template_paths %W|css #{fixture("fake-template")}| }.to raise_error(
         Fontcustom::Error, /couldn't find.+#{fixture("fake-template")}/
       )
     end

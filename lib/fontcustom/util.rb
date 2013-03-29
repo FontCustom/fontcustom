@@ -6,7 +6,7 @@ module Fontcustom
       :input => Dir.pwd,
       :output => false, # used to assign default, if necessary 
       :config => false,
-      :templates => [:css, :preview], 
+      :templates => %w|css preview|, 
       :file_name => "fontcustom",
       :file_hash => true,
       :css_selector_prefix => ".icon-",
@@ -66,14 +66,14 @@ module Fontcustom
       def get_template_paths(templates)
         templates = templates.map do |template|
           case template
-          when :css
+          when "css"
             File.join gem_lib_path, "templates", "fontcustom.css"
-          when :scss
+          when "scss"
             File.join gem_lib_path, "templates", "_fontcustom.scss"
-          when :preview
+          when "preview"
             File.join gem_lib_path, "templates", "fontcustom.html"
           else
-            if template.is_a?(String) && File.exists?(template)
+            if File.exists?(template)
               template
             else
               raise Fontcustom::Error, "We couldn't find your custom template: #{template}\nPlease double check and try again."

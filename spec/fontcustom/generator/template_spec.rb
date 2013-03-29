@@ -21,7 +21,7 @@ describe Fontcustom::Generator::Template do
 
   context "#copy_templates" do
     subject do
-      gen = generator :output => fixture("mixed-output"), :templates => [:scss, :css, fixture("not-a-dir")]
+      gen = generator :output => fixture("mixed-output"), :templates => %W|scss css #{fixture("not-a-dir")}|
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
       Fontcustom::Util.stub :clear_file
