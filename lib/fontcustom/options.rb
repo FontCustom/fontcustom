@@ -15,6 +15,6 @@ module Fontcustom
     :fonts => [],
     :templates => [],
     :file_name => "",
-    :icons => []
+    :glyphs => []
   }
 end

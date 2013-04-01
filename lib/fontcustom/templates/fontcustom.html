@@ -88,7 +88,7 @@
   <div class="w-main centered">
     <section class="mtm clearfix" id="glyphs">
     <header> <h1>Your font contains the following glyphs</h1> </header>
-    <% @data[:icons].each_with_index do |name, index| %>
+    <% @data[:glyphs].each_with_index do |name, index| %>
       <div class="glyph">
         <div class="fs1" ><i class="icon-<%= name %>"></i></div>
         <input type="text" readonly="readonly" value="&amp;#x<%= (61696+index).to_s(16) %>;" />

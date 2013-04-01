@@ -73,8 +73,8 @@ module Fontcustom
 
       # TODO move this into generate.py
       def collect_data
-        @data[:icons] = Dir[File.join(opts[:input], "*.{svg,eps}")]
-        @data[:icons].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
+        @data[:glyphs] = Dir[File.join(opts[:input], "*.{svg,eps}")]
+        @data[:glyphs].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
         @data[:file_name] = if opts[:hash]
                               opts[:font_name] 
                             else

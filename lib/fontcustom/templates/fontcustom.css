@@ -68,5 +68,5 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 /*
   Icon Classes
 */
-<% @data[:icons].each_with_index do |name, index| %>
+<% @data[:glyphs].each_with_index do |name, index| %>
 .icon-<%= name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

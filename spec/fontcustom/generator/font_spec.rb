@@ -121,7 +121,7 @@ describe Fontcustom::Generator::Font do
       gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
       gen.collect_data
       data = gen.instance_variable_get(:@data)
-      data[:icons].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
+      data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
       data[:file_name].should == "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
       data[:fonts].should =~ [
         "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
@@ -159,7 +159,7 @@ describe Fontcustom::Generator::Font do
       gen.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
         content.should match(/:fonts:/)
-        content.should match(/:icons:/)
+        content.should match(/:glyphs:/)
         content.should match(/:file_name:/)
       end
       gen.save_data

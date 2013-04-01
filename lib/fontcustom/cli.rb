@@ -1,5 +1,6 @@
 require "thor"
 require "fontcustom"
+require "fontcustom/watcher"
 
 module Fontcustom
   class CLI < Thor
@@ -25,7 +26,7 @@ module Fontcustom
     def watch(input)
       options.merge! :input => input
       options = Fontcustom::Util.collect_options options
-      Fontcustom::Watcher.new options
+      Fontcustom::Watcher.new(options).watch
     end
   end
 end

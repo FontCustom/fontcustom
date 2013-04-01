@@ -16,7 +16,7 @@ RSpec.configure do |c|
       |,
       :templates => %w|fontcustom.css|,
       :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
-      :icons => %w|a b c|
+      :glyphs => %w|a b c|
     }
   end
 
