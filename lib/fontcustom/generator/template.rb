@@ -50,6 +50,7 @@ module Fontcustom
       end
 
       def generate
+        @opts = opts # make available to templates
         begin 
           created = []
           opts[:templates].each do |source|

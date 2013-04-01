@@ -1,4 +1,5 @@
 require "fontcustom/version"
+require "fontcustom/options"
 require "fontcustom/error"
 require "fontcustom/util"
 require "fontcustom/generator/font"

@@ -2,25 +2,6 @@ require "yaml"
 
 module Fontcustom
   class Util
-    DEFAULT_OPTIONS = {
-      :input => Dir.pwd,
-      :output => false, # used to assign default, if necessary 
-      :config => false,
-      :templates => %w|css preview|, 
-      :file_name => "fontcustom",
-      :file_hash => true,
-      :css_selector_prefix => ".icon-",
-      :debug => false,
-      :verbose => true
-    }
-
-    DATA_MODEL = {
-      :fonts => [],
-      :templates => [],
-      :file_name => "",
-      :icons => []
-    }
-
     class << self 
       def check_fontforge
         if `which fontforge` == ""
@@ -30,7 +11,7 @@ module Fontcustom
 
       # Priority: Passed args > config file > default
       def collect_options(args = {})
-        options = DEFAULT_OPTIONS.clone
+        options = Fontcustom::DEFAULT_OPTIONS.clone
         options[:config] = get_config_path(args)
         args.delete :config # don't overwrite #get_config_path
 
@@ -45,7 +26,7 @@ module Fontcustom
         options.merge! args
         options[:output] ||= File.join(options[:input], "fontcustom")
         options[:templates] = get_template_paths(options[:templates])
-        options[:file_name] = options[:file_name].strip.downcase.gsub(/\W/, '-') 
+        options[:font_name] = options[:font_name].strip.downcase.gsub(/\W/, '-') 
         options
       end
 

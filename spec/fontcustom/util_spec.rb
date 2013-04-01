@@ -15,7 +15,7 @@ describe Fontcustom::Util do
   context ".collect_options" do
     it "should return defaults when called without arguments" do
       options = util.collect_options
-      defaults = util::DEFAULT_OPTIONS.dup
+      defaults = Fontcustom::DEFAULT_OPTIONS.dup
 
       # ignore :templates and :output since they're generated
       options.delete(:templates)
@@ -28,17 +28,17 @@ describe Fontcustom::Util do
 
     it "should overwrite defaults with config file" do
       options = util.collect_options :config => fixture("fontcustom.yml")
-      options[:file_name].should == "custom-name-from-config"
+      options[:font_name].should == "custom-name-from-config"
     end
 
     it "should overwrite config file and defaults with CLI options" do
-      options = util.collect_options :config => fixture("fontcustom.yml"), :file_name => "custom-name-from-cli"
-      options[:file_name].should == "custom-name-from-cli"
+      options = util.collect_options :config => fixture("fontcustom.yml"), :font_name => "custom-name-from-cli"
+      options[:font_name].should == "custom-name-from-cli"
     end
 
     it "should normalize file name" do
-      options = util.collect_options :file_name => " A_stR4nG3 nAm3  "
-      options[:file_name].should == "a_str4ng3-nam3"
+      options = util.collect_options :font_name => " A_stR4nG3 nAm3  "
+      options[:font_name].should == "a_str4ng3-nam3"
     end
   end
 

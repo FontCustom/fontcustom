@@ -41,7 +41,7 @@ describe Fontcustom::Generator::Font do
     it "should assign empty data model if no data file is found" do
       gen = generator :output => fixture("empty")
       data = gen.get_data
-      data.should == Fontcustom::Util::DATA_MODEL
+      data.should == Fontcustom::DATA_MODEL
     end
 
     it "should assign @data from data file" do
@@ -118,7 +118,7 @@ describe Fontcustom::Generator::Font do
 
     it "should assign @data from input and output files (TEMP)" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
-      gen.instance_variable_set(:@data, Fontcustom::Util::DATA_MODEL)
+      gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:icons].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]

@@ -34,7 +34,7 @@ module Fontcustom
       def get_data
         data = File.join(opts[:output], ".fontcustom-data")
         data = YAML.load(File.open(data)) if File.exists? data
-        @data = data.is_a?(Hash) ? data : Fontcustom::Util::DATA_MODEL.dup
+        @data = data.is_a?(Hash) ? data : Fontcustom::DATA_MODEL.dup
       end
 
       def reset_output
@@ -57,7 +57,7 @@ module Fontcustom
       def generate
         # TODO align option naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)
-        name = opts[:file_name] ? " --name " + opts[:file_name] : ""
+        name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
 
@@ -76,9 +76,9 @@ module Fontcustom
         @data[:icons] = Dir[File.join(opts[:input], "*.{svg,eps}")]
         @data[:icons].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
         @data[:file_name] = if opts[:hash]
-                              opts[:file_name] 
+                              opts[:font_name] 
                             else
-                              ttf = Dir[File.join(opts[:output], opts[:file_name] + "*.ttf")].first
+                              ttf = Dir[File.join(opts[:output], opts[:font_name] + "*.ttf")].first
                               File.basename ttf, ".ttf"
                             end
 
