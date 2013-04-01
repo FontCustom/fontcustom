@@ -30,6 +30,7 @@ module Fontcustom
         if opts[:templates].empty?
           raise Fontcustom::Error, "No templates were specified. Check your options and try again."
         end
+        source_paths << Dir.pwd
       end
 
       def reset_output
