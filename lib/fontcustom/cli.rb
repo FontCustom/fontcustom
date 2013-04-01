@@ -23,6 +23,9 @@ module Fontcustom
 
     desc "watch INPUT [options]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
     def watch(input)
+      options.merge! :input => input
+      options = Fontcustom::Util.collect_options options
+      Fontcustom::Watcher.new options
     end
   end
 end

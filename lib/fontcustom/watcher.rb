@@ -1,37 +1,50 @@
-require 'listen'
+require "fontcustom"
+require "listen"
 
 module Fontcustom
   class Watcher
-    def self.watch(*args)
-      callback = Proc.new do |modified, added, removed|
-        puts '    >> Changed: ' + modified.join(' ') unless modified.empty?
-        puts '    >> Added: ' + added.join(' ') unless added.empty?
-        puts '    >> Removed: ' + removed.join(' ') unless removed.empty?
+    def initialize(options)
+      @options = options
+      @listener = Listen.to(@options[:input]).filter(/\.(eps|svg)$/).change(&callback)
+      @options[:blocking] = @options[:blocking] == false ? false : true
+      @listener = @listener.polling_fallback_message(false) unless @options[:blocking]
+    end
 
-        changed = modified + added + removed
-        Fontcustom.compile(*args) unless changed.empty?
-      end
-
-      dir = args.first
-      @listener = Listen.to(dir).filter(/\.(eps|svg)$/).change(&callback)
-
+    def watch
       begin
-        puts 'Fontcustom is watching your icons at ' + dir
-        puts 'Press Ctrl + C to stop.'
-        Fontcustom.compile(*args)
-        @listener.start()
+        puts "Fontcustom is watching your icons at #{@options[:input]}. Press Ctrl + C to stop."
+        compile
+        @listener.start @options[:blocking]
 
       # Catches Ctrl + C
-      # Does listen gem have a better way of handling this?
+      # TODO Does the listen gem have a better way of handling this?
       rescue SignalException
         stop
       end
     end
 
-    def self.stop
+    def stop
       # Newline exists so message is not prepended with ^C on SIGTERM
-      puts "\nFontcustom is signing off. Goodnight and good luck."
+      puts "\nFontcustom is signing off. Good night and good luck."
       @listener.stop
+    end
+
+    private
+
+    def callback
+      Proc.new do |modified, added, removed|
+        puts "    >> Changed: " + modified.join(" ") unless modified.empty?
+        puts "    >> Added: " + added.join(" ") unless added.empty?
+        puts "    >> Removed: " + removed.join(" ") unless removed.empty?
+
+        changed = modified + added + removed
+        compile unless changed.empty?
+      end
+    end
+
+    def compile
+      Fontcustom::Generator::Font.start [@options]
+      Fontcustom::Generator::Template.start [@options]
     end
   end
 end

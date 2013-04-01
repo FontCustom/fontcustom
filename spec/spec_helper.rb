@@ -1,5 +1,4 @@
 require 'rspec'
-require 'fileutils'
 require File.expand_path('../../lib/fontcustom.rb', __FILE__)
 
 RSpec.configure do |c|
@@ -19,10 +18,6 @@ RSpec.configure do |c|
       :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
       :icons => %w|a b c|
     }
-  end
-
-  def cleanup(dir)
-    FileUtils.rm_r(dir, :verbose => true) if File.exists?(dir)
   end
 
   def capture(stream)
