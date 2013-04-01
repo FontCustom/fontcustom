@@ -30,14 +30,13 @@ module Fontcustom
         options
       end
 
-      # Checks options[:config], options[:input], and pwd
       def get_config_path(options)
         if options[:config] && File.exists?(options[:config])
           options[:config] 
-        elsif options[:input] && File.exists?(File.join(options[:input], "fontcustom.yml"))
-          File.join(options[:input], "fontcustom.yml")
-        elsif File.exists?(File.join(Dir.pwd, "fontcustom.yml"))
-          File.join(Dir.pwd, "fontcustom.yml") 
+        elsif File.exists? "fontcustom.yml"
+          "fontcustom.yml"
+        elsif File.exists? "config/fontcustom.yml"
+          "config/fontcustom.yml"
         else
           false
         end
