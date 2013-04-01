@@ -1,3 +1,14 @@
+## 1.0.0-RC1 (4/1/2013)
+
+* Refactored gem internals to reflect saner usage of Thor
+* Refactored tests
+* Added support for fontcustom.yml config file ([#49](https://github.com/FontCustom/fontcustom/issues/49))
+* Added support for .fontcustom-data file ([#55](https://github.com/FontCustom/fontcustom/pull/55))
+* Added support for SCSS template ([#48](https://github.com/FontCustom/fontcustom/issues/48))
+* Added support for custom templates ([#39](https://github.com/FontCustom/fontcustom/pull/39))
+* Added support for custom CSS selector namespaces ([#32](https://github.com/FontCustom/fontcustom/issues/32))
+* Added support for --verbose=false ([#54](https://github.com/FontCustom/fontcustom/pull/54))
+
 ## 0.1.4 (2/19/2013)
 
 * Instructions for stopping watcher ([#46](https://github.com/FontCustom/fontcustom/issues/46))
