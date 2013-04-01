@@ -47,7 +47,7 @@ describe Fontcustom::Generator::Font do
     it "should assign @data from data file" do
       gen = generator :output => fixture("mixed-output")
       data = gen.get_data
-      data[:files] =~ data_file_contents[:files]
+      data[:fonts] =~ data_file_contents[:fonts]
     end
   end
 
@@ -61,26 +61,27 @@ describe Fontcustom::Generator::Font do
       gen
     end
 
-    it "should delete files from @data[:files]" do
-      subject.should_receive(:remove_file).exactly(5).times
+    it "should delete fonts from @data[:fonts]" do
+      subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
       subject.reset_output
     end
 
-    it "should not delete non-generated files" do
+    it "should not delete non-font files" do
       subject.should_not_receive(:remove_file).with("dont-delete-me.bro")
       subject.should_not_receive(:remove_file).with("another-font.ttf")
+      subject.should_not_receive(:remove_file).with("fontcustom.css")
       subject.reset_output
     end
 
-    it "should empty @data[:files]" do
+    it "should empty @data[:fonts]" do
       subject.reset_output
-      subject.instance_variable_get(:@data)[:files].should be_empty
+      subject.instance_variable_get(:@data)[:fonts].should be_empty
     end
     
     it "should update the data file" do
       file = File.join(fixture("mixed-output"), ".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with(file, /:files: \[\]/, :verbose => false)
+      subject.should_receive(:append_to_file).once.with(file, /:fonts: \[\]/, :verbose => false)
       subject.reset_output
     end
 
@@ -122,7 +123,7 @@ describe Fontcustom::Generator::Font do
       data = gen.instance_variable_get(:@data)
       data[:icons].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
       data[:file_name].should == "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
-      data[:files].should =~ [
+      data[:fonts].should =~ [
         "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
         "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
         "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
@@ -157,7 +158,7 @@ describe Fontcustom::Generator::Font do
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       gen.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
-        content.should match(/:files:/)
+        content.should match(/:fonts:/)
         content.should match(/:icons:/)
         content.should match(/:file_name:/)
       end

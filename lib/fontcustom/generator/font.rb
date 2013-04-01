@@ -8,7 +8,7 @@ module Fontcustom
     class Font < Thor::Group
       include Thor::Actions
 
-      # Instead of passing each option individually we're passing the entire option hash as an argument. 
+      # Instead of passing each option individually we're passing the entire options hash as an argument. 
       # This is DRYier, easier to maintain.
       argument :opts 
 
@@ -38,15 +38,15 @@ module Fontcustom
       end
 
       def reset_output
-        return unless @data[:files]
+        return if @data[:fonts].empty?
         begin
           deleted = []
-          @data[:files].each do |file| 
+          @data[:fonts].each do |file| 
             remove_file File.join(opts[:output], file), :verbose => opts[:verbose]
             deleted << file
           end
         ensure
-          @data[:files] = @data[:files] - deleted
+          @data[:fonts] = @data[:fonts] - deleted
           yaml = @data.to_yaml.sub("---\n", "")
           file = File.join(opts[:output], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
@@ -83,12 +83,12 @@ module Fontcustom
                             end
 
         files = ["woff","ttf","eot","svg"].map { |ext| @data[:file_name] + '.' + ext }
-        @data[:files] = @data[:files] + files
+        @data[:fonts] = @data[:fonts] + files
       end
 
       def announce_files
         if opts[:verbose]
-          @data[:files].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
+          @data[:fonts].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
         end
       end
 

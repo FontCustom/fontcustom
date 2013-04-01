@@ -3,6 +3,6 @@ require "fontcustom/cli"
 
 describe Fontcustom::CLI do
   context "#compile" do
-    it "nothing to see here yet"
+    it "is pending"
   end
 end

@@ -9,13 +9,13 @@ RSpec.configure do |c|
 
   def data_file_contents
     {
-      :files => %w|
+      :fonts => %w|
         fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
         fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
         fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
         fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
-        fontcustom.css
       |,
+      :templates => %w|fontcustom.css|,
       :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
       :icons => %w|a b c|
     }

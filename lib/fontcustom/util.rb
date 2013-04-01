@@ -15,7 +15,8 @@ module Fontcustom
     }
 
     DATA_MODEL = {
-      :files => [],
+      :fonts => [],
+      :templates => [],
       :file_name => "",
       :icons => []
     }
