@@ -43,12 +43,17 @@ describe Fontcustom::Util do
   end
 
   context ".get_config_path" do
-    it "should search options[:config] first" do
+    it "should search for fontcustom.yml if options[:config] is a dir" do
+      options = { :config => fixture("") }
+      util.get_config_path(options).should == fixture("fontcustom.yml")
+    end
+
+    it "should search use options[:config] if it's a file" do
       options = { :config => fixture("fontcustom.yml") }
       util.get_config_path(options).should == fixture("fontcustom.yml")
     end
 
-    it "should search input dir if not options[:config] is given" do
+    it "should search in input dir if no options[:config] is given" do
       options = { :input => fixture("") }
       util.get_config_path(options).should == fixture("fontcustom.yml")
     end

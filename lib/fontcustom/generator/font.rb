@@ -36,8 +36,7 @@ module Fontcustom
         data = File.read File.join(opts[:output], ".fontcustom-data") 
         data = JSON.parse(data, :symbolize_names => true) unless data.empty?
         @data = data.is_a?(Hash) ? data : Fontcustom::DATA_MODEL.dup
-      rescue JSON::ParserError => e
-        puts e.inspect
+      rescue JSON::ParserError
         raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:output]} is corrupted. Fix the JSON or delete the file to start from scratch."
       end
 
@@ -68,11 +67,9 @@ module Fontcustom
         # TODO use generate.py to swallow fontforge output 
         cmd << " > /dev/null 2>&1" unless opts[:debug]
 
-        begin
-          `#{cmd}`
-        rescue
-          raise Fontcustom::Error, "The compilation failed unexpectedly. Check your options and try again with --debug get more details."
-        end
+        `#{cmd}`
+      rescue
+        raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
       end
 
       # TODO move this into generate.py

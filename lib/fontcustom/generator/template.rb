@@ -22,7 +22,7 @@ module Fontcustom
         if File.exists? data
           @data = JSON.parse(File.read(data), :symbolize_names => true) 
         else
-          raise Fontcustom::Error, "We couldn't find a .fontcustom-data file in #{opts[:output]}. Try again?"
+          raise Fontcustom::Error, "There's no .fontcustom-data file in #{opts[:output]}. Try again?"
         end
       rescue JSON::ParserError 
         # Catches both empty and and malformed files
@@ -31,7 +31,7 @@ module Fontcustom
 
       def check_templates
         if opts[:templates].empty?
-          raise Fontcustom::Error, "No templates were specified. Check your options and try again."
+          raise Fontcustom::Error, "No templates were specified. Check your options and try again?"
         end
       end
 

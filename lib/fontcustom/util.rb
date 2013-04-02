@@ -9,9 +9,12 @@ module Fontcustom
         end
       end
 
+      # Converts all options into symbol-accessible hashes
       # Priority: Passed args > config file > default
       def collect_options(args = {})
         options = Fontcustom::DEFAULT_OPTIONS.clone
+        args = args.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+
         options[:input] = args[:input] if args[:input]
         options[:config] = args[:config] if args[:config]
         args.delete :config # don't overwrite the return value of #get_config_path
@@ -34,8 +37,10 @@ module Fontcustom
 
       # passed path > input
       def get_config_path(options)
-        if options[:config] && File.exists?(options[:config])
-          options[:config] 
+        if options[:config] && File.directory?(options[:config]) && File.exists?(File.join(options[:config], "fontcustom.yml"))
+          File.join options[:config], "fontcustom.yml"
+        elsif options[:config] && File.exists?(options[:config]) 
+          options[:config]
         elsif File.exists? File.join(options[:input], "fontcustom.yml")
           File.join options[:input], "fontcustom.yml"
         else
@@ -63,7 +68,7 @@ module Fontcustom
             elsif File.exists?(File.join(options[:input], template))
               File.join options[:input], template
             else
-              raise Fontcustom::Error, "We couldn't find your custom template: #{template}\nPlease double check and try again."
+              raise Fontcustom::Error, "We couldn't find your custom template #{template}. Double check and try again?"
             end
           end
         end
