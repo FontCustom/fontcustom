@@ -42,20 +42,30 @@ describe Fontcustom::Util do
     end
   end
 
+  context ".get_config_path" do
+    it "should search options[:config] first"
+    it "should search input dir second"
+    it "should return false if neither exist"
+  end
+
   context ".get_template_paths" do
-    it "should expand template paths" do
+    it "should expand shorthand for packaged templates" do
       lib = util.gem_lib_path
-      templates = util.get_template_paths %W|css scss preview #{fixture("not-a-dir")}|
+      options = { :input => fixture("vectors"), :templates => %W|css scss preview| }
+      templates = util.get_template_paths options
       templates.should == [
         File.join(lib, "templates", "fontcustom.css"), 
         File.join(lib, "templates", "_fontcustom.scss"),
-        File.join(lib, "templates", "fontcustom.html"),
-        fixture("not-a-dir")
+        File.join(lib, "templates", "fontcustom.html")
       ]
     end
 
-    it "should raise an error if template does not exist" do
-      expect { util.get_template_paths %W|css #{fixture("fake-template")}| }.to raise_error(
+    it "should search in Dir.pwd first"
+    it "should search in options[:input] second"
+
+    it "should raise an error if a template does not exist" do
+      options = { :input => fixture("vectors"), :templates => %W|css #{fixture("fake-template")}| }
+      expect { util.get_template_paths options }.to raise_error(
         Fontcustom::Error, /couldn't find.+#{fixture("fake-template")}/
       )
     end

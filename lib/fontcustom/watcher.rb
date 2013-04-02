@@ -5,7 +5,10 @@ module Fontcustom
   class Watcher
     def initialize(options)
       @options = options
-      @listener = Listen.to(@options[:input]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+      @listener = Listen.to(@options[:input])
+                        .relative_paths(true)
+                        .filter(/\.(eps|svg)$/)
+                        .change(&callback)
       @options[:blocking] = @options[:blocking] == false ? false : true
       @listener = @listener.polling_fallback_message(false) unless @options[:blocking]
     end
