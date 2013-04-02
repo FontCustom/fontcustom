@@ -43,9 +43,20 @@ describe Fontcustom::Util do
   end
 
   context ".get_config_path" do
-    it "should search options[:config] first"
-    it "should search input dir second"
-    it "should return false if neither exist"
+    it "should search options[:config] first" do
+      options = { :config => fixture("fontcustom.yml") }
+      util.get_config_path(options).should == fixture("fontcustom.yml")
+    end
+
+    it "should search input dir if not options[:config] is given" do
+      options = { :input => fixture("") }
+      util.get_config_path(options).should == fixture("fontcustom.yml")
+    end
+
+    it "should return false if neither exist" do
+      options = { :input => fixture("vectors") }
+      util.get_config_path(options).should be_false
+    end
   end
 
   context ".get_template_paths" do
@@ -53,15 +64,25 @@ describe Fontcustom::Util do
       lib = util.gem_lib_path
       options = { :input => fixture("vectors"), :templates => %W|css scss preview| }
       templates = util.get_template_paths options
-      templates.should == [
+      templates.should =~ [
         File.join(lib, "templates", "fontcustom.css"), 
         File.join(lib, "templates", "_fontcustom.scss"),
         File.join(lib, "templates", "fontcustom.html")
       ]
     end
 
-    it "should search in Dir.pwd first"
-    it "should search in options[:input] second"
+    it "should search in Dir.pwd first" do
+      Dir.chdir fixture("")
+      options = { :templates => %W|not-a-dir| }
+      templates = util.get_template_paths options
+      templates.should =~ ["not-a-dir"]
+    end
+
+    it "should search in options[:input] second" do
+      options = { :input => fixture("empty"), :templates => %W|no_vectors_here.txt| }
+      templates = util.get_template_paths options
+      templates.should =~ [fixture("empty/no_vectors_here.txt")]
+    end
 
     it "should raise an error if a template does not exist" do
       options = { :input => fixture("vectors"), :templates => %W|css #{fixture("fake-template")}| }
