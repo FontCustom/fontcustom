@@ -15,7 +15,7 @@ describe Fontcustom::Generator::Template do
     it "should assign @data from data file" do
       gen = generator :output => fixture("mixed-output")
       gen.get_data
-      gen.instance_variable_get(:@data).should == data_file_contents
+      gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
     end
   end
 
@@ -56,7 +56,7 @@ describe Fontcustom::Generator::Template do
     it "should update the data file" do
       file = File.join(fixture("mixed-output"), ".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with(file, /:templates: \[\]/, :verbose => false)
+      subject.should_receive(:append_to_file).once.with(file, /"templates":/, :verbose => false)
       subject.reset_output
     end
 

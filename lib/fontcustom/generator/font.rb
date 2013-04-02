@@ -1,4 +1,4 @@
-require "yaml"
+require "json"
 require "thor"
 require "thor/group"
 require "thor/actions"
@@ -32,9 +32,13 @@ module Fontcustom
       end
 
       def get_data
-        data = File.join(opts[:output], ".fontcustom-data")
-        data = YAML.load(File.open(data)) if File.exists? data
+        # file has already been verified/created
+        data = File.read File.join(opts[:output], ".fontcustom-data") 
+        data = JSON.parse(data, :symbolize_names => true) unless data.empty?
         @data = data.is_a?(Hash) ? data : Fontcustom::DATA_MODEL.dup
+      rescue JSON::ParserError => e
+        puts e.inspect
+        raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:output]} is corrupted. Fix the JSON or delete the file to start from scratch."
       end
 
       def reset_output
@@ -47,10 +51,10 @@ module Fontcustom
           end
         ensure
           @data[:fonts] = @data[:fonts] - deleted
-          yaml = @data.to_yaml.sub("---\n", "")
+          json = JSON.pretty_generate @data
           file = File.join(opts[:output], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
-          append_to_file file, yaml, :verbose => false # clear data file silently
+          append_to_file file, json, :verbose => false # clear data file silently
         end
       end
       
@@ -93,10 +97,10 @@ module Fontcustom
       end
 
       def save_data
-        yaml = @data.to_yaml.sub("---\n", "")
+        json = JSON.pretty_generate @data
         file = File.join(opts[:output], ".fontcustom-data")
         Fontcustom::Util.clear_file(file)
-        append_to_file file, yaml, :verbose => opts[:verbose]
+        append_to_file file, json, :verbose => opts[:verbose]
       end
     end
   end
