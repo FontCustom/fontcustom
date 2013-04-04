@@ -3,31 +3,32 @@ require "listen"
 
 module Fontcustom
   class Watcher
-    def initialize(options)
-      @options = options
-      @listener = Listen.to(@options[:input])
+    def initialize(opts)
+      @opts = opts
+      @listener = Listen.to(@opts[:input])
                         .relative_paths(true)
                         .filter(/\.(eps|svg)$/)
                         .change(&callback)
-      @options[:blocking] = @options[:blocking] == false ? false : true
-      @listener = @listener.polling_fallback_message(false) unless @options[:blocking]
+      @opts[:blocking] = @opts[:blocking] == false ? false : true
+      @listener = @listener.polling_fallback_message(false) unless @opts[:blocking]
     end
 
     def watch
-      begin
-        puts "Fontcustom is watching your icons at #{@options[:input]}. Press Ctrl + C to stop."
-        compile
-        @listener.start @options[:blocking]
+      puts "Fontcustom is watching your icons at #{@opts[:input]}. Press Ctrl + C to stop."
+      compile if @opts[:first]
+      @listener.start @opts[:blocking]
 
-      # Catches Ctrl + C
-      # TODO Does the listen gem have a better way of handling this?
-      rescue SignalException
-        stop
-      end
+    rescue Fontcustom::Error => e
+      show_error e
+
+    # Catches Ctrl + C
+    # TODO Does the listen gem have a better way of handling this?
+    rescue SignalException
+      stop
     end
 
     def stop
-      # Newline exists so message is not prepended with ^C on SIGTERM
+      # Adding a newline so message is not prepended with ^C on SIGTERM
       puts "\nFontcustom is signing off. Good night and good luck."
       @listener.stop
     end
@@ -36,18 +37,26 @@ module Fontcustom
 
     def callback
       Proc.new do |modified, added, removed|
-        puts "  >> Changed: " + modified.join(", ") unless modified.empty?
-        puts "  >> Added: " + added.join(", ") unless added.empty?
-        puts "  >> Removed: " + removed.join(", ") unless removed.empty?
+        begin
+          puts "  >> Changed: " + modified.join(", ") unless modified.empty?
+          puts "  >> Added: " + added.join(", ") unless added.empty?
+          puts "  >> Removed: " + removed.join(", ") unless removed.empty?
 
-        changed = modified + added + removed
-        compile unless changed.empty?
+          changed = modified + added + removed
+          compile unless changed.empty?
+        rescue Fontcustom::Error => e
+          show_error e
+        end
       end
     end
 
     def compile
-      Fontcustom::Generator::Font.start [@options]
-      Fontcustom::Generator::Template.start [@options]
+      Fontcustom::Generator::Font.start [@opts]
+      Fontcustom::Generator::Template.start [@opts]
+    end
+
+    def show_error(err)
+      puts "ERROR: #{err.message}"
     end
   end
 end
