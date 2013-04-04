@@ -2,6 +2,7 @@ import fontforge
 import os
 import md5
 import subprocess
+import tempfile
 
 try:
 	import argparse
@@ -26,6 +27,10 @@ except ImportError:
 
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
+f.design_size = 16
+f.em = 512
+f.ascent = 448
+f.descent = 64
 
 m = md5.new()
 cp = 0xf100
@@ -43,6 +48,7 @@ for dirname, dirnames, filenames in os.walk(indir):
 			if ext in ['.svg']:
 				# hack removal of <switch> </switch> tags
 				svgfile = open(filePath, 'r+')
+				tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
 				svgtext = svgfile.read()
 				svgfile.seek(0)
 
@@ -50,19 +56,25 @@ for dirname, dirnames, filenames in os.walk(indir):
 				svgtext = svgtext.replace('<switch>', '')
 				svgtext = svgtext.replace('</switch>', '')
 			
-				# remove all contents of file so that we can write out the new contents
-				svgfile.truncate()			
-				svgfile.write(svgtext)
+				tmpsvgfile.file.write(svgtext)
 
 				svgfile.close()
+				tmpsvgfile.file.close()
+
+				filePath = tmpsvgfile.name
 				# end hack
 				
 			m.update(filename + str(size) + ';')
 			glyph = f.createChar(cp)
 			glyph.importOutlines(filePath)
 
-			glyph.left_side_bearing = KERNING
-			glyph.right_side_bearing = KERNING
+			# if we created a temporary file, let's clean it up
+			if tmpsvgfile:
+				os.unlink(tmpsvgfile.name)
+
+			# glyph.left_side_bearing = KERNING
+			# glyph.right_side_bearing = KERNING
+			glyph.width = 512
 
 			# possible optimization?
 			# glyph.simplify()

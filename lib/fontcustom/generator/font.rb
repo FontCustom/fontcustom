@@ -64,10 +64,14 @@ module Fontcustom
         hash = opts[:file_hash] ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
 
-        # TODO use generate.py to swallow fontforge output 
-        cmd << " > /dev/null 2>&1" unless opts[:debug]
+        cmd << " 2>&1" unless opts[:debug]
 
-        `#{cmd}`
+        output = `#{cmd}`
+        if not opts[:debug]
+          output = output.split(/\n/)
+          output.slice!(0..2)
+        end
+        puts output
       rescue
         raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
       end
