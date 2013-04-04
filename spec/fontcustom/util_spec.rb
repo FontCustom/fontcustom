@@ -65,6 +65,16 @@ describe Fontcustom::Util do
   end
 
   context ".get_template_paths" do
+    it "should ensure that 'css' is included with 'preview'" do
+      lib = util.gem_lib_path
+      options = { :input => fixture("vectors"), :templates => %W|preview| }
+      templates = util.get_template_paths options
+      templates.should =~ [
+        File.join(lib, "templates", "fontcustom.css"), 
+        File.join(lib, "templates", "fontcustom.html")
+      ]
+    end
+
     it "should expand shorthand for packaged templates" do
       lib = util.gem_lib_path
       options = { :input => fixture("vectors"), :templates => %W|css scss preview| }

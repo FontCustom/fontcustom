@@ -6,7 +6,7 @@ module Fontcustom
     :templates => %w|css preview|, 
     :font_name => "fontcustom",
     :file_hash => true,
-    :css_prefix => ".icon-",
+    :css_prefix => "icon-",
     :debug => false,
     :verbose => true
   }

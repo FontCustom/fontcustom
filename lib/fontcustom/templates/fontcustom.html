@@ -1,101 +1,119 @@
-<!doctype html>
+<% scale = %w|12 14 16 18 21 24 36 48 60 72| %>
+<!DOCTYPE html>
 <html>
-<head>
-<title>Your Font/Glyphs</title>
-<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <head>
+    <title><%= @opts[:font_name] %> glyphs preview</title>
+    <link rel="stylesheet" href="fontcustom.css" />
+    <!--[if lte IE 7]><link rel="stylesheet" href="fontcustom-ie7.css" /><![endif]-->
 
-<link rel="stylesheet" href="fontcustom.css" />
-<!--[if lte IE 7]>
-<link rel="stylesheet" href="fontcustom-ie7.css" />
-<![endif]-->
+    <style>
+      * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
+      body {
+        background: #fff;
+        color: #444;
+        font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
 
-<style>
-  section, header, footer {display: block;}
-  body {
-    font-family: sans-serif;
-    color: #444;
-    line-height: 1.5;
-    font-size: 1em;
-  }
-  * {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  .glyph {
-    float: left;
-    text-align: center;
-    background: #eee;
-    padding: .75em;
-    margin: .75em 1.5em .75em 0;
-    width: 7em;
-    border-radius: .25em;
-    box-shadow: inset 0 0 0 1px #f8f8f8, 0 0 0 1px #CCC;
-  }
-  .glyph input {
-    width: 100%;
-    text-align: center;
-    font-family: consolas, monospace;
-  }
-  .glyph input, .mtm {
-    margin-top: .75em;
-  }
-  .w-main {
-    width: 80%;
-  }
-  .centered {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .fs1 {
-    font-size: 2em;
-  }
-  header {
-    margin: 2em 0;
-    padding-bottom: .5em;
-    color: #666;
-    box-shadow: 0 2px #eee;
-  }
-  header h1 {
-    font-size: 2em;
-    font-weight: normal;
-  }
-  .clearfix:before, .clearfix:after { content: ""; display: table; }
-  .clearfix:after, .clear { clear: both; }
-  footer {
-    margin-top: 2em;
-    padding: .5em 0;
-    box-shadow: 0 -2px #eee;
-  }
-  a, a:visited {
-    color: #B35047;
-    text-decoration: none;
-  }
-  a:hover, a:focus {color: #000;}
-  .box1 {
-    display: inline-block;
-    width: 15em;
-    padding: .25em .5em;
-    background: #eee;
-    margin: .5em 1em .5em 0;
-  }
-</style>
-</head>
-<body>
-  <div class="w-main centered">
-    <section class="mtm clearfix" id="glyphs">
-    <header> <h1>Your font contains the following glyphs</h1> </header>
-    <% @data[:glyphs].each_with_index do |name, index| %>
+      a, 
+      a:visited {
+        color: #888;
+        text-decoration: underline;
+      }
+      a:hover, 
+      a:focus { color: #000; }
+
+      h1 {
+        border-bottom: 2px solid #ddd;
+        color: #888;
+        font-size: 36px;
+        font-weight: 300;
+        margin-bottom: 20px;
+        padding: 20px 0;
+      }
+
+      .container {
+        margin: 0 auto;
+        min-width: 880px;
+        padding: 0 40px;
+        width: 80%;
+      }
+
+      .glyph {
+        border-bottom: 1px dotted #ccc;
+        padding: 10px 0 20px;
+        margin-bottom: 20px;
+      }
+
+      .preview-glyphs { vertical-align: bottom; } 
+
+      .preview-scale { 
+        color: #888;
+        font-size: 12px; 
+        margin-top: 5px;
+      }
+
+      .step {
+        display: inline-block;
+        line-height: 1;
+        width: 10%;
+      }
+
+      <% scale.each do |n| %>
+      .size-<%= n %> { font-size: <%= n %>px; }
+      <% end %>
+
+      .usage { margin-top: 10px; }
+
+      .usage input {
+        font-family: monospace;
+        margin-right: 3px;
+        padding: 2px 5px;
+        text-align: center;
+      }
+
+      .usage .point { width: 150px; }
+
+      .usage .class { width: 250px; }
+
+      .footer {
+        color: #888;
+        font-size: 12px;
+        padding: 20px 0;
+      }
+    </style>
+
+    <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      <h1><%= @opts[:font_name] %> contains <%= @data[:glyphs].length %> glyphs:</h1> 
+
+      <% @data[:glyphs].each_with_index do |name, index| %>
       <div class="glyph">
-        <div class="fs1" ><i class="icon-<%= name %>"></i></div>
-        <input type="text" readonly="readonly" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
-        <input type="text" readonly="readonly" value=".icon-<%= name %>" />
+        <div class="preview preview-glyphs">
+          <% scale.each do |n| %><i class="step <%= @opts[:css_prefix] + name %> size-<%= n %>"></i><% end %>
+        </div>
+        <div class="preview preview-scale">
+          <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
+        </div>
+        <div class="usage">
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts[:css_prefix] + name %>" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
+        </div>
       </div>
-    <% end %>
-    </section>
-  </div>
-</body>
+      <% end %>
+
+      <div class="footer">
+        Made with love using <a href="http://fontcustom.com">Font Custom</a>.
+      </div>
+    </div>
+  </body>
 </html>

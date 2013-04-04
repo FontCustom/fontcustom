@@ -1,5 +1,5 @@
 /*
-  Font Custom - icon webfonts made simple
+  Font Custom
 */
 
 @font-face {
@@ -16,7 +16,7 @@
   Bootstrap Overrides
 */
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
+[class^="<%= @opts[:css_prefix] %>"]:before, [class*=" <%= @opts[:css_prefix] %>"]:before {
   font-family: "<%= @opts[:font_name] %>";
   font-weight: normal;
   font-style: normal;
@@ -24,44 +24,44 @@
   text-decoration: inherit;
 }
 
-a [class^="icon-"], a [class*=" icon-"] {
+a [class^="<%= @opts[:css_prefix] %>"], a [class*=" <%= @opts[:css_prefix] %>"] {
   display: inline-block;
   text-decoration: inherit;
 }
 
 /* makes the font 33% larger relative to the icon container */
-.icon-large:before {
+.<%= @opts[:css_prefix] %>large:before {
   vertical-align: top;
   font-size: 1.333em;
 }
 
 /* keeps button heights with and without icons the same */
-.btn [class^="icon-"], .btn [class*=" icon-"] {
+.btn [class^="<%= @opts[:css_prefix] %>"], .btn [class*=" <%= @opts[:css_prefix] %>"] {
   line-height: 0.9em;
 }
 
-li [class^="icon-"], li [class*=" icon-"] {
+li [class^="<%= @opts[:css_prefix] %>"], li [class*=" <%= @opts[:css_prefix] %>"] {
   display: inline-block;
   width: 1.25em;
   text-align: center;
 }
 
-/* 1.5 increased font size for icon-large * 1.25 width */
-li .icon-large[class^="icon-"], li .icon-large[class*=" icon-"] {
+/* 1.5 increased font size for <%= @opts[:css_prefix] %>large * 1.25 width */
+li .<%= @opts[:css_prefix] %>large[class^="<%= @opts[:css_prefix] %>"], li .<%= @opts[:css_prefix] %>large[class*=" <%= @opts[:css_prefix] %>"] {
   width: 1.875em;
 }
 
-li[class^="icon-"], li[class*=" icon-"] {
+li[class^="<%= @opts[:css_prefix] %>"], li[class*=" <%= @opts[:css_prefix] %>"] {
   margin-left: 0;
   list-style-type: none;
 }
 
-li[class^="icon-"]:before, li[class*=" icon-"]:before {
+li[class^="<%= @opts[:css_prefix] %>"]:before, li[class*=" <%= @opts[:css_prefix] %>"]:before {
   text-indent: -2em;
   text-align: center;
 }
 
-li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
+li[class^="<%= @opts[:css_prefix] %>"].<%= @opts[:css_prefix] %>large:before, li[class*=" <%= @opts[:css_prefix] %>"].<%= @opts[:css_prefix] %>large:before {
   text-indent: -1.333em;
 }
 
@@ -69,4 +69,4 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
   Icon Classes
 */
 <% @data[:glyphs].each_with_index do |name, index| %>
-.icon-<%= name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+.<%= @opts[:css_prefix] + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

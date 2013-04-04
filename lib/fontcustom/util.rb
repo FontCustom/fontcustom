@@ -54,14 +54,17 @@ module Fontcustom
       # Could arguably belong in Generator::Template, however, it's nice to
       # be able to catch template errors before any generator runs.
       def get_template_paths(options)
+        options[:templates] << "css" if options[:templates].include?("preview") && ! options[:templates].include?("css")
         options[:templates].map do |template|
           case template
+          when "preview"
+            File.join gem_lib_path, "templates", "fontcustom.html"
           when "css"
             File.join gem_lib_path, "templates", "fontcustom.css"
           when "scss"
             File.join gem_lib_path, "templates", "_fontcustom.scss"
-          when "preview"
-            File.join gem_lib_path, "templates", "fontcustom.html"
+          when "css-ie7"
+            File.join gem_lib_path, "templates", "fontcustom-ie7.css"
           else
             if File.exists?(template)
               template
