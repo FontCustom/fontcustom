@@ -31,7 +31,7 @@
     background: #eee;
     padding: .75em;
     margin: .75em 1.5em .75em 0;
-    width: 7em;
+    /*width: 7em;*/
     border-radius: .25em;
     box-shadow: inset 0 0 0 1px #f8f8f8, 0 0 0 1px #CCC;
   }
@@ -90,7 +90,7 @@
     <header> <h1>Your font contains the following glyphs</h1> </header>
     <% @data[:glyphs].each_with_index do |name, index| %>
       <div class="glyph">
-        <div class="fs1" ><i class="icon-<%= name %>"></i></div>
+        <div class="fs1" ><i class="icon-<%= name %>"></i> Hey there.</div>
         <input type="text" readonly="readonly" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
         <input type="text" readonly="readonly" value=".icon-<%= name %>" />
       </div>
