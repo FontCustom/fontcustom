@@ -29,7 +29,7 @@ f = fontforge.font()
 f.encoding = 'UnicodeFull'
 f.design_size = 16
 f.em = 512
-f.ascent = 480
+f.ascent = 448
 f.descent = 64
 
 m = md5.new()
