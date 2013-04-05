@@ -93,7 +93,7 @@ describe Fontcustom::Generator::Font do
 
   context "#generate" do
     subject do
-      gen = generator(:input => fixture("vectors"), :output => fixture("generate-spec"))
+      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
       gen.stub(:"`").and_return ""
       gen
     end
@@ -103,13 +103,14 @@ describe Fontcustom::Generator::Font do
       subject.generate
     end
 
-    it "should options to fontforge" do
-      subject.should_receive(:"`").with(/#{fixture("vectors")}.+#{fixture("generate-spec")}/)
+    it "should pass options to fontforge" do
+      subject.should_receive(:"`").with(/#{fixture("vectors")}.+#{fixture("mixed-output")}/)
       subject.generate
     end
 
     it "should raise error if fontforge fails" do
-      pending "What does a fontforge failure look like?"
+      gen = generator(:input => fixture("vectors"), :output => fixture("fake-dir-should-cause-failure"), :debug => true)
+      expect { gen.generate }.to raise_error Fontcustom::Error, /failed unexpectedly/
     end
   end
 

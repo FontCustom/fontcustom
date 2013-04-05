@@ -62,18 +62,18 @@ module Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
-
-        # TODO test out whether this is even necessary
-        cmd << " 2>&1" unless opts[:debug]
+        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash} 2>&1"
         output = `#{cmd}`
-        unless opts[:debug]
-          output = output.split(/\n/)
-          output.slice!(0..2)
+        output = output.split("\n")[3..-1]
+
+        if opts[:debug]
+          shell.say "DEBUG: (raw output from fontforge)"
+          shell.say output
         end
-        puts output
-      rescue
-        raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
+
+        unless output.nil? # correct output should be nil
+          raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
+        end
       end
 
       # TODO use generate.py to add fonts, glyphs and file_name directly to .fontcustom-data
