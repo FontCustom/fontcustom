@@ -1,11 +1,18 @@
-# FontCustom Contributing Checklist
+# FontCustom Contributing Guidelines
 
-First, thanks for your interest in making FontCustom better! This project was born out of an over-heard conversation between two devs in a coffee shop — it's come a long ways thanks to the support of kind folks like you.
+Thanks for helping make FontCustom better! This project was born out of an over-heard conversation between two devs in a coffee shop — it's come a long ways thanks to the support of folks like you.
 
-## A short list to help you get started:
+## Conventions
 
-* Check out [issues]() for ideas. Is someone else working on something similar?
-* Fork the repo and work out of a named topic branch, a la `git checkout -b my_sweet_contribution`. Please don't work directly off `master`.
-* Run tests with `guard`.
-* Add/improve tests for your contributions.
-* Submit a pull request!
+We try to follow the [Github ruby styleguide](https://github.com/styleguide/ruby) as much as possible. 
+
+If you catch a typo or a particularly unsightly piece of code — please _do_ let us know. No such thing as too small of an improvement.
+
+## Process
+
+* Visit [issues](https://github.com/FontCustom/fontcustom/issues) for ideas.
+* Fork the repo if you haven't done so already.
+* Create a topic branch. `git checkout -b my_sweet_feature`
+* Add tests. Run tests with `rake`.
+* Develop your feature.
+* Once all tests are passing, submit a pull request!

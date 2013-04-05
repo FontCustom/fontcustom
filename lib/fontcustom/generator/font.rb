@@ -64,10 +64,10 @@ module Fontcustom
         hash = opts[:file_hash] ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
 
+        # TODO test out whether this is even necessary
         cmd << " 2>&1" unless opts[:debug]
-
         output = `#{cmd}`
-        if not opts[:debug]
+        unless opts[:debug]
           output = output.split(/\n/)
           output.slice!(0..2)
         end
@@ -76,7 +76,7 @@ module Fontcustom
         raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
       end
 
-      # TODO move this into generate.py
+      # TODO use generate.py to add fonts, glyphs and file_name directly to .fontcustom-data
       def collect_data
         @data[:glyphs] = Dir[File.join(opts[:input], "*.{svg,eps}")]
         @data[:glyphs].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
