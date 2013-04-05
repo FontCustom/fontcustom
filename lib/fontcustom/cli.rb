@@ -44,7 +44,7 @@ module Fontcustom
 
     desc "config [INPUT]", "Adds an annotated fontcustom.yml to INPUT (created if it doesn't exists)."
     def config(input)
-      template "fontcustom.yml", input 
+      template "fontcustom.yml", File.join(input, "fontcustom.yml")
     end
 
     desc "version", "Shows the version information."
