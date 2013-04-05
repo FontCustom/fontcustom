@@ -63,32 +63,25 @@ module Fontcustom
         name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash} 2>&1"
-        output = `#{cmd}`
-        output = output.split("\n")[3..-1]
+
+        output = `#{cmd}`.split("\n")
+        @json = output[3] # JSON
+        output = output[4..-1] # Strip fontforge message
 
         if opts[:debug]
           shell.say "DEBUG: (raw output from fontforge)"
           shell.say output
         end
 
-        unless output.nil? # correct output should be nil
+        unless output.empty? # correct output should be []
           raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
         end
       end
 
-      # TODO use generate.py to add fonts, glyphs and file_name directly to .fontcustom-data
       def collect_data
-        @data[:glyphs] = Dir[File.join(opts[:input], "*.{svg,eps}")]
-        @data[:glyphs].map! { |vector| File.basename(vector)[0..-5].gsub(/\W/, "-").downcase }
-        @data[:file_name] = if opts[:hash]
-                              opts[:font_name] 
-                            else
-                              ttf = Dir[File.join(opts[:output], opts[:font_name] + "*.ttf")].first
-                              File.basename ttf, ".ttf"
-                            end
-
-        files = ["woff","ttf","eot","svg"].map { |ext| @data[:file_name] + '.' + ext }
-        @data[:fonts] = @data[:fonts] + files
+        @json = JSON.parse(@json, :symbolize_names => true)
+        @data.merge! @json
+        @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-").downcase }
       end
 
       def announce_files

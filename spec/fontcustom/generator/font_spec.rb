@@ -94,7 +94,7 @@ describe Fontcustom::Generator::Font do
   context "#generate" do
     subject do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
-      gen.stub(:"`").and_return ""
+      gen.stub(:"`").and_return fontforge_output
       gen
     end
     
@@ -108,18 +108,23 @@ describe Fontcustom::Generator::Font do
       subject.generate
     end
 
+    it "should assign @json" do
+      subject.generate
+      json = subject.instance_variable_get(:@json)
+      json.should == data_file_contents.to_json
+    end
+
     it "should raise error if fontforge fails" do
       gen = generator(:input => fixture("vectors"), :output => fixture("fake-dir-should-cause-failure"), :debug => true)
-      expect { gen.generate }.to raise_error Fontcustom::Error, /failed unexpectedly/
+      expect { capture(:stdout) { gen.generate } }.to raise_error Fontcustom::Error, /failed unexpectedly/
     end
   end
 
   context "#collect_data" do
-    it "should assign @data from updated data file (TODO)"
-
-    it "should assign @data from input and output files (TEMP)" do
+    it "should assign @data from @json" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
       gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
+      gen.instance_variable_set(:@json, data_file_contents.to_json)
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]

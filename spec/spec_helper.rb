@@ -1,4 +1,5 @@
 require 'rspec'
+require 'json'
 require File.expand_path('../../lib/fontcustom.rb', __FILE__)
 
 RSpec.configure do |c|
@@ -16,8 +17,12 @@ RSpec.configure do |c|
       |,
       :templates => %w|fontcustom.css|,
       :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
-      :glyphs => %w|a b c|
+      :glyphs => %w|a_r3ally-exotic-f1le-name c d|
     }
+  end
+
+  def fontforge_output
+    "Copyright (c) 2000-2012 by George Williams.\n Executable based on sources from 14:57 GMT 31-Jul-2012-D.\n Library based on sources from 14:57 GMT 31-Jul-2012.\n#{data_file_contents.to_json}"
   end
 
   def capture(stream)
