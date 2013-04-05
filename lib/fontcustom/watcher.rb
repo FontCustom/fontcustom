@@ -14,8 +14,8 @@ module Fontcustom
     end
 
     def watch
-      puts "Fontcustom is watching your icons at #{@opts[:input]}. Press Ctrl + C to stop."
-      compile if @opts[:first]
+      puts "Font Custom is watching your icons at #{@opts[:input]}. Press Ctrl + C to stop."
+      compile unless @opts[:skip_first]
       @listener.start @opts[:blocking]
 
     rescue Fontcustom::Error => e
@@ -29,7 +29,7 @@ module Fontcustom
 
     def stop
       # Adding a newline so message is not prepended with ^C on SIGTERM
-      puts "\nFontcustom is signing off. Good night and good luck."
+      puts "\nFont Custom is signing off. Good night and good luck."
       @listener.stop
     end
 

@@ -33,9 +33,9 @@ module Fontcustom
     end
 
     desc "watch [INPUT]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
-    method_option :first, :aliases => "-f", :type => :boolean, :default => false, :desc => "Compile immediately upon watching. Default: false"
+    method_option :skip_first, :aliases => "-s", :type => :boolean, :desc => "Compile immediately upon watching. Default: false"
     def watch(input)
-      opts = options.merge :input => input, :first => options[:first]
+      opts = options.merge :input => input, :skip_first => !! options[:skip_first]
       opts = Fontcustom::Util.collect_options opts
       Fontcustom::Watcher.new(opts).watch
     rescue Fontcustom::Error => e
