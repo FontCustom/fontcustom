@@ -98,10 +98,10 @@
 
       <% @data[:glyphs].each_with_index do |name, index| %>
       <div class="glyph">
-        <div class="preview preview-glyphs">
+        <div class="preview-glyphs">
           <% scale.each do |n| %><i class="step <%= @opts[:css_prefix] + name %> size-<%= n %>"></i><% end %>
         </div>
-        <div class="preview preview-scale">
+        <div class="preview-scale">
           <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
         </div>
         <div class="usage">
