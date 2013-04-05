@@ -1,0 +1,23 @@
+##
+# FONTCUSTOM CONFIG
+#
+# Include this file along with your vectors or pass it to any command with:
+#   --config=path/to/config.yml 
+#   -c path/to/containing/dir/
+#
+# Run `fontcustom help` to learn about various options
+##
+
+#output: /path/to/output
+
+#templates: [ scss, preview, relative/path/from/INPUT, relative/path/from/PWD ]
+
+#font_name: my-font
+
+#file_hash: false
+
+#css_prefix: glyph-
+
+#debug: true
+
+#verbose: false
