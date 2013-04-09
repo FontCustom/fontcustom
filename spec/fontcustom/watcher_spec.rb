@@ -12,9 +12,9 @@ describe Fontcustom::Watcher do
   end
 
   context "#watch" do
-    it "should not call generators on init" do
-      Fontcustom::Generator::Font.should_not_receive(:start)
-      Fontcustom::Generator::Template.should_not_receive(:start)
+    it "should call generators on init" do
+      Fontcustom::Generator::Font.should_receive(:start).once
+      Fontcustom::Generator::Template.should_receive(:start).once
       w = watcher :input => fixture("vectors"), :output => fixture("watcher-test")
       # silence output
       capture(:stdout) do
@@ -23,10 +23,10 @@ describe Fontcustom::Watcher do
       end
     end
 
-    it "should call generators on init if options[:first] is passed" do
-      Fontcustom::Generator::Font.should_receive(:start).once 
-      Fontcustom::Generator::Template.should_receive(:start).once
-      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test"), :first => true
+    it "should not call generators on init if options[:skip_first] is passed" do
+      Fontcustom::Generator::Font.should_not_receive(:start)
+      Fontcustom::Generator::Template.should_not_receive(:start)
+      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test"), :skip_first => true
       capture(:stdout) do
         w.watch
         w.stop
@@ -36,7 +36,7 @@ describe Fontcustom::Watcher do
     it "should call generators when vectors change" do
       Fontcustom::Generator::Font.should_receive(:start).once
       Fontcustom::Generator::Template.should_receive(:start).once
-      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test")
+      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test"), :skip_first => true
       capture(:stdout) do
         begin
           w.watch
@@ -52,7 +52,7 @@ describe Fontcustom::Watcher do
     it "should do nothing when non-vectors change" do
       Fontcustom::Generator::Font.should_not_receive(:start)
       Fontcustom::Generator::Template.should_not_receive(:start)
-      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test")
+      w = watcher :input => fixture("vectors"), :output => fixture("watcher-test"), :skip_first => true
       capture(:stdout) do
         begin
           w.watch
