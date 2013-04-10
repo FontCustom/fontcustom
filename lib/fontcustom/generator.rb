@@ -12,6 +12,7 @@ module Fontcustom
     class_option :name, :aliases => '-n'
     class_option :font_path, :aliases => '-f'
     class_option :nohash, :type => :boolean, :default => false
+    class_option :bare_css, :type => :boolean, :default => false
     class_option :debug, :type => :boolean, :default => false
     class_option :html, :type => :boolean, :default => false
 
@@ -48,6 +49,7 @@ module Fontcustom
 
     def cleanup_output_dir
       css = File.join(@output, 'fontcustom.css')
+      css_bare = File.join(@output, 'fontcustom-bare.css')
       css_ie7   = File.join(@output, 'fontcustom-ie7.css')
       test_html = File.join(@output, 'test.html')
       old_name = if File.exists? css
@@ -59,6 +61,7 @@ module Fontcustom
 
       old_files = Dir[File.join(@output, old_name + '-*.{woff,ttf,eot,svg}')]
       old_files << css if File.exists?(css)
+      old_files << css_bare if File.exists?(css_bare)
       old_files << css_ie7 if File.exists?(css_ie7)
       old_files << test_html if File.exists?(test_html)
       old_files.each {|file| remove_file file }
@@ -68,6 +71,7 @@ module Fontcustom
       gem_file_path = File.expand_path(File.join(File.dirname(__FILE__)))
       name = options.name ? ' --name ' + @name : ''
       nohash = options.nohash ? ' --nohash' : ''
+      bare_css = options.bare_css ? ' --bare_css' : ''
 
       # suppress fontforge message
       # TODO get font name and classes from script (without showing fontforge message)
@@ -97,7 +101,11 @@ module Fontcustom
         @path = File.basename(@path)
       end
 
-      template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      if options.bare_css
+        template('templates/fontcustom-bare.css', File.join(@output, 'fontcustom-bare.css'))
+      else
+        template('templates/fontcustom.css', File.join(@output, 'fontcustom.css'))
+      end
       template('templates/fontcustom-ie7.css', File.join(@output, 'fontcustom-ie7.css'))
       template('templates/test.html', File.join(@output, 'test.html')) if options.html
     end
