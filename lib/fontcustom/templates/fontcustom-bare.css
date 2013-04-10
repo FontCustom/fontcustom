@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "<%= @name %>";
+  src: url("<%= @path %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @path %>.woff") format("woff"),
+       url("<%= @path %>.ttf") format("truetype"),
+       url("<%= @path %>.svg#<%= @name %>") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+<%= @classes.collect {|name| ".icon-#{name}"}.join(', ') %>
+{
+  font-family: '<%= @name %>';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  text-decoration: inherit;
+}
+
+<% @classes.each_with_index do |name, index| %>
+.icon-<%= name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
