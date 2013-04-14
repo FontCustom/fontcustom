@@ -1,27 +1,55 @@
-require 'thor'
-require 'fontcustom'
+require "thor"
+require "thor/actions"
+require "fontcustom"
+require "fontcustom/watcher"
 
 module Fontcustom
   class CLI < Thor
-    # duplicated from Fontcustom::Generator so as to also appear under `fontcustom help` command
-    class_option :output, :aliases => '-o', :desc => 'Specify an output directory. Default: $DIR/fontcustom'
-    class_option :name, :aliases => '-n', :desc => 'Specify a font name. This will be used in the generated fonts and CSS. Default: fontcustom'
-    class_option :font_path, :aliases => '-f', :desc => 'Specify a path for fonts in css @font-face declaration. Default: none'
-    class_option :nohash, :type => :boolean, :default => false, :desc => 'Disable filename hashes. Default: false'
-    class_option :debug, :type => :boolean, :default => false, :desc => 'Display debug messages. Default: false'
-    class_option :html, :type => :boolean, :default => false, :desc => 'Generate html page with icons'
+    include Thor::Actions
 
-    desc 'compile DIR [options]', 'Generates webfonts and CSS from *.svg and *.eps files in DIR.'
-    def compile(*args)
-      # workaround to pass arguments from one Thor class to another
-      ARGV.shift
-      Fontcustom.compile(*ARGV)
+    # Actual defaults are stored in Fontcustom::DEFAULT_OPTIONS instead of Thor
+    class_option :output, :aliases => "-o", :desc => "The output directory (will be created if it doesn't exist). Default: INPUT/fontcustom/"
+    class_option :config, :aliases => "-c", :desc => "Path to or containing directory of the config file. Default: INPUT/fontcustom.yml" 
+    class_option :templates, :aliases => "-t", :type => :array, :desc => "List of templates to compile alongside fonts. Accepts 'css', 'css-ie7', 'scss', 'preview' or arbitrary paths (relative to INPUT or PWD). Default: 'css preview'"
+    class_option :font_name, :aliases => "-n", :desc => "The font name used in your templates (automatically normalized to lowercase spinal case). Default: 'fontcustom'"
+    class_option :file_hash, :aliases => "-h", :type => :boolean, :desc => "Generate font files with asset-busting hashes. Default: true"
+    class_option :css_prefix, :aliases => "-p", :desc => "The prefix for each glyph's CSS class. Default: 'icon-'"
+    class_option :debug, :aliases => "-d", :type => :boolean, :desc => "Display debug messages from fontforge. Default: false"
+    class_option :verbose, :aliases => "-v", :type => :boolean, :desc => "Display output messages. Default: true"
+
+    # Required for Thor::Actions#template
+    def self.source_root
+      File.join Fontcustom::Util.gem_lib_path, "templates"
     end
 
-    desc 'watch DIR [options]', 'Watches DIR for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop.'
-    def watch(*args)
-      ARGV.shift
-      Fontcustom.watch(*ARGV)
+    desc "compile [INPUT]", "Generates webfonts and CSS from *.svg and *.eps files in INPUT."
+    def compile(input)
+      opts = options.merge :input => input
+      opts = Fontcustom::Util.collect_options opts
+      Fontcustom::Generator::Font.start [opts]
+      Fontcustom::Generator::Template.start [opts]
+    rescue Fontcustom::Error => e
+      puts "ERROR: #{e.message}"
+    end
+
+    desc "watch [INPUT]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
+    method_option :skip_first, :aliases => "-s", :type => :boolean, :desc => "Compile immediately upon watching. Default: false"
+    def watch(input)
+      opts = options.merge :input => input, :skip_first => !! options[:skip_first]
+      opts = Fontcustom::Util.collect_options opts
+      Fontcustom::Watcher.new(opts).watch
+    rescue Fontcustom::Error => e
+      puts "ERROR: #{e.message}"
+    end
+
+    desc "config [INPUT]", "Adds an annotated fontcustom.yml to INPUT (created if it doesn't exists)."
+    def config(input)
+      template "fontcustom.yml", File.join(input, "fontcustom.yml")
+    end
+
+    desc "version", "Shows the version information."
+    def version
+      puts "fontcustom-#{Fontcustom::VERSION}"
     end
   end
 end

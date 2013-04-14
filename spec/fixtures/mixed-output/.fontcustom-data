@@ -1,0 +1,17 @@
+{
+  "fonts": [
+    "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff",
+    "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
+    "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
+    "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg"
+  ],
+  "templates": [
+    "fontcustom.css"
+  ],
+  "file_name": "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e",
+  "glyphs": [
+    "a_r3ally-exotic-f1le-name",
+    "c",
+    "d"
+  ]
+}

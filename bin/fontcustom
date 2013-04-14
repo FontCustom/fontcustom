@@ -2,4 +2,4 @@
 
 require 'fontcustom/cli'
 
-Fontcustom::CLI.start
+Fontcustom::CLI.start(ARGV)

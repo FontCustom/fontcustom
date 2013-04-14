@@ -1,0 +1,119 @@
+<% scale = %w|12 14 16 18 21 24 36 48 60 72| %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @opts[:font_name] %> glyphs preview</title>
+    <link rel="stylesheet" href="fontcustom.css" />
+    <!--[if lte IE 7]><link rel="stylesheet" href="fontcustom-ie7.css" /><![endif]-->
+
+    <style>
+      * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #fff;
+        color: #444;
+        font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      a, 
+      a:visited {
+        color: #888;
+        text-decoration: underline;
+      }
+      a:hover, 
+      a:focus { color: #000; }
+
+      h1 {
+        border-bottom: 2px solid #ddd;
+        color: #888;
+        font-size: 36px;
+        font-weight: 300;
+        margin-bottom: 20px;
+        padding: 20px 0;
+      }
+
+      .container {
+        margin: 0 auto;
+        min-width: 880px;
+        padding: 0 40px;
+        width: 80%;
+      }
+
+      .glyph {
+        border-bottom: 1px dotted #ccc;
+        padding: 10px 0 20px;
+        margin-bottom: 20px;
+      }
+
+      .preview-glyphs { vertical-align: bottom; } 
+
+      .preview-scale { 
+        color: #888;
+        font-size: 12px; 
+        margin-top: 5px;
+      }
+
+      .step {
+        display: inline-block;
+        line-height: 1;
+        width: 10%;
+      }
+
+      <% scale.each do |n| %>
+      .size-<%= n %> { font-size: <%= n %>px; }
+      <% end %>
+
+      .usage { margin-top: 10px; }
+
+      .usage input {
+        font-family: monospace;
+        margin-right: 3px;
+        padding: 2px 5px;
+        text-align: center;
+      }
+
+      .usage .point { width: 150px; }
+
+      .usage .class { width: 250px; }
+
+      .footer {
+        color: #888;
+        font-size: 12px;
+        padding: 20px 0;
+      }
+    </style>
+
+    <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      <h1><%= @opts[:font_name] %> contains <%= @data[:glyphs].length %> glyphs:</h1> 
+
+      <% @data[:glyphs].each_with_index do |name, index| %>
+      <div class="glyph">
+        <div class="preview-glyphs">
+          <% scale.each do |n| %><i class="step <%= @opts[:css_prefix] + name %> size-<%= n %>"></i><% end %>
+        </div>
+        <div class="preview-scale">
+          <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
+        </div>
+        <div class="usage">
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts[:css_prefix] + name %>" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
+        </div>
+      </div>
+      <% end %>
+
+      <div class="footer">
+        Made with love using <a href="http://fontcustom.com">Font Custom</a>.
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,8 +1,9 @@
 import fontforge
 import os
 import md5
-import json
 import subprocess
+import tempfile
+import json
 
 try:
 	import argparse
@@ -27,6 +28,10 @@ except ImportError:
 
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
+f.design_size = 16
+f.em = 512
+f.ascent = 448
+f.descent = 64
 
 m = md5.new()
 cp = 0xf100
@@ -44,6 +49,7 @@ for dirname, dirnames, filenames in os.walk(indir):
 			if ext in ['.svg']:
 				# hack removal of <switch> </switch> tags
 				svgfile = open(filePath, 'r+')
+				tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
 				svgtext = svgfile.read()
 				svgfile.seek(0)
 
@@ -51,19 +57,25 @@ for dirname, dirnames, filenames in os.walk(indir):
 				svgtext = svgtext.replace('<switch>', '')
 				svgtext = svgtext.replace('</switch>', '')
 			
-				# remove all contents of file so that we can write out the new contents
-				svgfile.truncate()			
-				svgfile.write(svgtext)
+				tmpsvgfile.file.write(svgtext)
 
 				svgfile.close()
+				tmpsvgfile.file.close()
+
+				filePath = tmpsvgfile.name
 				# end hack
 				
 			m.update(filename + str(size) + ';')
 			glyph = f.createChar(cp)
 			glyph.importOutlines(filePath)
 
-			glyph.left_side_bearing = KERNING
-			glyph.right_side_bearing = KERNING
+			# if we created a temporary file, let's clean it up
+			if tmpsvgfile:
+				os.unlink(tmpsvgfile.name)
+
+			# glyph.left_side_bearing = KERNING
+			# glyph.right_side_bearing = KERNING
+			glyph.width = 512
 
 			# possible optimization?
 			# glyph.simplify()
@@ -76,7 +88,7 @@ if args.nohash:
 	fontfile = outdir + '/' + args.name
 else:
 	hashStr = m.hexdigest()
-	fontfile = outdir + '/' + args.name + '-' + hashStr
+	fontfile = outdir + '/' + args.name + '_' + hashStr
 
 f.fontname = args.name
 f.familyname = args.name
@@ -107,3 +119,7 @@ subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
 subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+
+# Describe output in JSON
+outname = os.path.basename(fontfile)
+print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files, 'file_name': outname})

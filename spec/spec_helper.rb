@@ -1,29 +1,39 @@
-require 'spork'
+require 'rspec'
+require 'json'
+require File.expand_path('../../lib/fontcustom.rb', __FILE__)
 
-Spork.prefork do
-  require 'rspec'
-  require 'fileutils'
-
-  RSpec.configure do |c|
-    def cleanup(dir)
-      FileUtils.rm_r(dir, :verbose => true) if File.exists?(dir)
-    end
-
-    def capture(stream)
-      begin
-        stream = stream.to_s
-        eval "$#{stream} = StringIO.new"
-        yield
-        result = eval("$#{stream}").string
-      ensure
-        eval("$#{stream} = #{stream.upcase}")
-      end
-
-      result
-    end
+RSpec.configure do |c|
+  def fixture(path)
+    File.join(File.expand_path('../fixtures', __FILE__), path)
   end
-end
 
-Spork.each_run do
-  require File.expand_path('../../lib/fontcustom.rb', __FILE__)
+  def data_file_contents
+    {
+      :fonts => %w|
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
+        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
+      |,
+      :templates => %w|fontcustom.css|,
+      :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
+      :glyphs => %w|a_r3ally-exotic-f1le-name c d|
+    }
+  end
+
+  def fontforge_output
+    "Copyright (c) 2000-2012 by George Williams.\n Executable based on sources from 14:57 GMT 31-Jul-2012-D.\n Library based on sources from 14:57 GMT 31-Jul-2012.\n#{data_file_contents.to_json}"
+  end
+
+  def capture(stream)
+    begin
+      stream = stream.to_s
+      eval "$#{stream} = StringIO.new"
+      yield
+      result = eval("$#{stream}").string
+    ensure
+      eval("$#{stream} = #{stream.upcase}")
+    end
+    result
+  end
 end

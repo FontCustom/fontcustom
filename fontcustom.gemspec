@@ -9,8 +9,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Yifei Zhang", "Joshua Gross"]
   gem.email         = ["yz@yifei.co", "joshua@gross.is"]
   gem.summary       = %q{Generate custom icon webfonts from the comfort of the command line.}
-  gem.description   = %q{Transforms EPS and SVG vectors into icon webfonts. Generates Bootstrap compatible CSS for easy inclusion in your projects.}
-  gem.homepage      = "http://endtwist.github.com/fontcustom/"
+  gem.description   = %q{Transforms EPS and SVG vectors into icon webfonts. Generates CSS (or your preferred alternative) for easy inclusion in your projects.}
+  gem.homepage      = "http://fontcustom.com"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -24,9 +24,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
   gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'fakefs'
-  gem.add_development_dependency 'spork'
-  gem.add_development_dependency 'guard-spork'
-  gem.add_development_dependency 'guard-rspec'
-  gem.add_development_dependency 'rb-fsevent', '~> 0.9.1'
 end
