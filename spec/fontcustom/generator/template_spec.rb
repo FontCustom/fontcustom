@@ -44,7 +44,7 @@ describe Fontcustom::Generator::Template do
     it "should not delete non-template files" do
       subject.should_not_receive(:remove_file).with("dont-delete-me.bro")
       subject.should_not_receive(:remove_file).with("another-font.ttf")
-      subject.should_not_receive(:remove_file).with(/fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e/)
+      subject.should_not_receive(:remove_file).with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/)
       subject.reset_output
     end
 

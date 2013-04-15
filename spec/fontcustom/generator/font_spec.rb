@@ -62,7 +62,7 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should delete fonts from @data[:fonts]" do
-      subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
+      subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
       subject.reset_output
     end
 
@@ -128,12 +128,12 @@ describe Fontcustom::Generator::Font do
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      data[:file_name].should == "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
+      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
       data[:fonts].should =~ [
-        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
-        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
-        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
-        "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
       ]
     end
   end
