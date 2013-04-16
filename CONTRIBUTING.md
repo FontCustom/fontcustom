@@ -12,7 +12,8 @@ If you catch a typo or a particularly unsightly piece of code — please _do_ le
 
 * Visit [issues](https://github.com/FontCustom/fontcustom/issues) for ideas.
 * Fork the repo if you haven't done so already.
+* `master` == current stable release
 * Create a topic branch. `git checkout -b my_sweet_feature`
-* Add tests. Run tests with `rake`.
+* Add your tests. Run tests with `rake`.
 * Develop your feature.
 * Once all tests are passing, submit a pull request!
