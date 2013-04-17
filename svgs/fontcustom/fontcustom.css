@@ -1,73 +1,41 @@
-/*
-Font Custom - icon webfonts made simple
-*/
+/* 
+ * Font Custom: bare CSS
+ */
 
 @font-face {
   font-family: "fontcustom";
-  src: url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot?#iefix") format("embedded-opentype"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff") format("woff"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf") format("truetype"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg#fontcustom") format("svg");
+  src: url("fontcustom_842cdcb9f0a9b5bf44769237006ede6f.eot");
+  src: url("fontcustom_842cdcb9f0a9b5bf44769237006ede6f.eot?#iefix") format("embedded-opentype"),
+       url("fontcustom_842cdcb9f0a9b5bf44769237006ede6f.woff") format("woff"),
+       url("fontcustom_842cdcb9f0a9b5bf44769237006ede6f.ttf") format("truetype"),
+       url("fontcustom_842cdcb9f0a9b5bf44769237006ede6f.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
-/*
-Bootstrap Overrides
-*/
-
-[class^="icon-"]:before, [class*=" icon-"]:before {
+.icon-browser:before,
+.icon-customize:before,
+.icon-factory:before,
+.icon-glasses:before,
+.icon-graffiti:before,
+.icon-lightning:before,
+.icon-outlet:before,
+.icon-pen:before,
+.icon-pinch:before,
+.icon-scale:before,
+.icon-star:before,
+.icon-walk:before,
+.icon-windmill:before {
   font-family: "fontcustom";
-  font-weight: normal;
   font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
   display: inline-block;
   text-decoration: inherit;
 }
-
-a [class^="icon-"], a [class*=" icon-"] {
-  display: inline-block;
-  text-decoration: inherit;
-}
-
-/* makes the font 33% larger relative to the icon container */
-.icon-large:before {
-  vertical-align: top;
-  font-size: 1.333em;
-}
-
-/* keeps button heights with and without icons the same */
-.btn [class^="icon-"], .btn [class*=" icon-"] {
-  line-height: 0.9em;
-}
-
-li [class^="icon-"], li [class*=" icon-"] {
-  display: inline-block;
-  width: 1.25em;
-  text-align: center;
-}
-
-/* 1.5 increased font size for icon-large * 1.25 width */
-li .icon-large[class^="icon-"], li .icon-large[class*=" icon-"] {
-  width: 1.875em;
-}
-
-li[class^="icon-"], li[class*=" icon-"] {
-  margin-left: 0;
-  list-style-type: none;
-}
-
-li[class^="icon-"]:before, li[class*=" icon-"]:before {
-  text-indent: -2em;
-  text-align: center;
-}
-
-li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
-  text-indent: -1.333em;
-}
-
-/*
-Icon Classes
-*/
 
 .icon-browser:before { content: "\f100"; }
 .icon-customize:before { content: "\f101"; }
