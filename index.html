@@ -53,7 +53,7 @@
     </div>
 
     <div id="github-ribbon">
-      <a href="https://github.com/endtwist/fontcustom/"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+      <a href="https://github.com/FontCustom/fontcustom/"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
     </div>
 
     <div id="overview" class="container">
@@ -73,8 +73,8 @@
           <h1>Font Custom</h1>
           <p>Generate custom icon webfonts from the comfort of the command line.</p>
           <p>
-          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
-          	<iframe src="http://ghbtns.com/github-btn.html?user=endtwist&repo=fontcustom&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
+          	<iframe src="http://ghbtns.com/github-btn.html?user=FontCustom&repo=fontcustom&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
+          	<iframe src="http://ghbtns.com/github-btn.html?user=FontCustom&repo=fontcustom&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
           </p>
         </div>
       </div>
@@ -130,7 +130,7 @@
             <h1>Usage</h1>
           </div>
           <div class="content">
-            <p>Just create a directory for your <strong>svg</strong> and <strong>eps</strong> files. Then, on the command line, run:
+            <p>Just create a directory for your <strong>svg</strong> files. Then, on the command line, run:
             <pre class="prettyprint">fontcustom watch /path/to/vectors</pre>
             <p>Font Custom will create the font files and accompanying CSS file. It will also continue to run and watch the folder for changes, so you don't have to manually re-run it each time you update the vector set.</p>
             <br>
@@ -152,15 +152,20 @@
 
           <p>To install on <strong>OS X</strong> using <strong><a href="http://mxcl.github.com/homebrew/">Homebrew</a></strong> simply run:</p>
           <pre class="prettyprint linenums">
-brew install fontforge
+brew install fontforge ttfautohint
 gem install fontcustom</pre>
 
           <p>On <strong>Linux</strong>? No problem*:</p>
           <pre class="prettyprint linenums">
-sudo apt-get install fontforge
+sudo apt-get install fontforge ttfautohint
+wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
+unzip woff-code-latest.zip -d sfnt2woff &amp;&amp; cd sfnt2woff &amp;&amp; make &amp;&amp; sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom</pre>
 
-          <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first. <code>sudo apt-get ruby1.*.*-dev</code></small></p>
+          <p>Note that if <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
+
+          <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first: <code>sudo apt-get install ruby1.*.*-dev</code>.</small></p>
+          <p><small></small></p>
         </section>
       </div>
     </div>
