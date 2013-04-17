@@ -58,13 +58,19 @@ module Fontcustom
         options[:templates].map do |template|
           case template
           when "preview"
-            File.join gem_lib_path, "templates", "fontcustom.html"
+            File.join gem_lib_path, "templates", "fontcustom-preview.html"
           when "css"
             File.join gem_lib_path, "templates", "fontcustom.css"
           when "scss"
             File.join gem_lib_path, "templates", "_fontcustom.scss"
-          when "css-ie7"
-            File.join gem_lib_path, "templates", "fontcustom-ie7.css"
+          when "bootstrap"
+            File.join gem_lib_path, "templates", "fontcustom-bootstrap.css"
+          when "bootstrap-scss"
+            File.join gem_lib_path, "templates", "_fontcustom-bootstrap.scss"
+          when "bootstrap-ie7"
+            File.join gem_lib_path, "templates", "fontcustom-bootstrap-ie7.css"
+          when "bootstrap-ie7-scss"
+            File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
           else
             if File.exists?(template)
               template

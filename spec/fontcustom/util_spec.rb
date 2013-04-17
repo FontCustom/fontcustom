@@ -71,18 +71,22 @@ describe Fontcustom::Util do
       templates = util.get_template_paths options
       templates.should =~ [
         File.join(lib, "templates", "fontcustom.css"), 
-        File.join(lib, "templates", "fontcustom.html")
+        File.join(lib, "templates", "fontcustom-preview.html")
       ]
     end
 
     it "should expand shorthand for packaged templates" do
       lib = util.gem_lib_path
-      options = { :input => fixture("vectors"), :templates => %W|css scss preview| }
+      options = { :input => fixture("vectors"), :templates => %W|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss| }
       templates = util.get_template_paths options
       templates.should =~ [
+        File.join(lib, "templates", "fontcustom-preview.html"),
         File.join(lib, "templates", "fontcustom.css"), 
         File.join(lib, "templates", "_fontcustom.scss"),
-        File.join(lib, "templates", "fontcustom.html")
+        File.join(lib, "templates", "fontcustom-bootstrap.css"), 
+        File.join(lib, "templates", "_fontcustom-bootstrap.scss"), 
+        File.join(lib, "templates", "fontcustom-bootstrap-ie7.css"), 
+        File.join(lib, "templates", "_fontcustom-bootstrap-ie7.scss") 
       ]
     end
 

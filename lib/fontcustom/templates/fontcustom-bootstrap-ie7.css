@@ -1,0 +1,22 @@
+/* 
+ * Font Custom: Bootstrap CSS for IE7
+ */
+
+[class^="<%= @opts[:css_prefix] %>"],
+[class*=" <%= @opts[:css_prefix] %>"] {
+  font-family: "<%= @opts[:font_name] %>";
+  font-style: normal;
+  font-weight: normal;
+}
+
+.btn.dropdown-toggle [class^="<%= @opts[:css_prefix] %>"],
+.btn.dropdown-toggle [class*=" <%= @opts[:css_prefix] %>"] {
+  /* keeps button heights with and without icons the same */
+  line-height: 1.4em;
+}
+
+.<%= @opts[:css_prefix] %>large {
+  font-size: 1.3333em;
+}
+<% @data[:glyphs].each_with_index do |name, index| %>
+.<%= @opts[:css_prefix] + name %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= (61696+index).to_s(16) %>;&nbsp;'); }<% end %>
