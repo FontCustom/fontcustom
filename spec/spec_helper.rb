@@ -10,13 +10,13 @@ RSpec.configure do |c|
   def data_file_contents
     {
       :fonts => %w|
-        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
-        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
-        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
-        fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
+        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
+        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
+        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
+        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
       |,
       :templates => %w|fontcustom.css|,
-      :file_name => "fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
+      :file_name => "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e", 
       :glyphs => %w|a_r3ally-exotic-f1le-name c d|
     }
   end

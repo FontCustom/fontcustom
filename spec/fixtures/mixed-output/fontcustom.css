@@ -4,10 +4,10 @@ Font Custom - icon webfonts made simple
 
 @font-face {
   font-family: "fontcustom";
-  src: url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot?#iefix") format("embedded-opentype"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff") format("woff"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf") format("truetype"),
-       url("fontcustom-cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg#fontcustom") format("svg");
+  src: url("fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot?#iefix") format("embedded-opentype"),
+       url("fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff") format("woff"),
+       url("fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf") format("truetype"),
+       url("fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }

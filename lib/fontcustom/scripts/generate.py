@@ -88,7 +88,7 @@ if args.nohash:
 	fontfile = outdir + '/' + args.name
 else:
 	hashStr = m.hexdigest()
-	fontfile = outdir + '/' + args.name + '-' + hashStr
+	fontfile = outdir + '/' + args.name + '_' + hashStr
 
 f.fontname = args.name
 f.familyname = args.name
