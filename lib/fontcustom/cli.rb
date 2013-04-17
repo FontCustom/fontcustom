@@ -10,7 +10,7 @@ module Fontcustom
     # Actual defaults are stored in Fontcustom::DEFAULT_OPTIONS instead of Thor
     class_option :output, :aliases => "-o", :desc => "The output directory (will be created if it doesn't exist). Default: INPUT/fontcustom/"
     class_option :config, :aliases => "-c", :desc => "Path to or containing directory of the config file. Default: INPUT/fontcustom.yml" 
-    class_option :templates, :aliases => "-t", :type => :array, :desc => "List of templates to compile alongside fonts. Accepts 'css', 'css-ie7', 'scss', 'preview' or arbitrary paths (relative to INPUT or PWD). Default: 'css preview'"
+    class_option :templates, :aliases => "-t", :type => :array, :desc => "List of templates to compile alongside fonts. Accepts 'preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss' or arbitrary paths relative to INPUT or PWD. Default: 'css preview'"
     class_option :font_name, :aliases => "-n", :desc => "The font name used in your templates (automatically normalized to lowercase spinal case). Default: 'fontcustom'"
     class_option :file_hash, :aliases => "-h", :type => :boolean, :desc => "Generate font files with asset-busting hashes. Default: true"
     class_option :css_prefix, :aliases => "-p", :desc => "The prefix for each glyph's CSS class. Default: 'icon-'"
