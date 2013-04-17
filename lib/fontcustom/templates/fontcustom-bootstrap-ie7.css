@@ -11,7 +11,6 @@
 
 .btn.dropdown-toggle [class^="<%= @opts[:css_prefix] %>"],
 .btn.dropdown-toggle [class*=" <%= @opts[:css_prefix] %>"] {
-  /* keeps button heights with and without icons the same */
   line-height: 1.4em;
 }
 
