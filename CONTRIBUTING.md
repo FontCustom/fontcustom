@@ -1,6 +1,6 @@
-# FontCustom Contributing Guidelines
+# Contributor Guidelines
 
-Thanks for helping make FontCustom better! This project was born out of an over-heard conversation between two devs in a coffee shop — it's come a long ways thanks to the support of folks like you.
+Thanks for helping make Font Custom better. This project was born out of an over-heard conversation between two devs in a coffee shop — it's come a long ways thanks to the support of folks like you.
 
 ## Conventions
 
