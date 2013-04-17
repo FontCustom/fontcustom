@@ -1,4 +1,6 @@
-## 1.0.0-RC1 (4/4/2013)
+## 1.0.0 (4/17/2013)
+
+Big changes, more flexibility, better workflow. Be sure to check out the [docs](http://fontcustom.com) to see how it all ties together.
 
 * Improved preview html to show glyphs at various sizes
 * Added support for fontcustom.yml config file ([#49](https://github.com/FontCustom/fontcustom/issues/49))
@@ -7,9 +9,14 @@
 * Added support for custom CSS selector namespaces ([#32](https://github.com/FontCustom/fontcustom/issues/32))
 * Added support for --verbose=false ([#54](https://github.com/FontCustom/fontcustom/pull/54))
 * Improved ascent/decent heights ([#33](https://github.com/FontCustom/fontcustom/issues/33))
-* Fixed bug where watcher could fall into an infinite loop
+* Added clean Ruby API ([#62](https://github.com/FontCustom/fontcustom/issues/62))
+* Workaround for Sprockets compatibility ([#61](https://github.com/FontCustom/fontcustom/pull/61))
+* Added clean (bootstrap free) CSS and made it the default choice ([#59](https://github.com/FontCustom/fontcustom/pull/59))
+* Addes SCSS versions of Bootstrap and IE7 stylesheets
+* Fixed CSS bug on IE8 and IE9's compatibility mode
+* Fixed gem bug where watcher could fall into an infinite loop
 * Added error messages for faulty input
-* Refactored gem internals to reflect saner usage of Thor
+* Refactored gem internals to use Thor more sanely
 * Refactored tests
 
 ## 0.1.4 (2/19/2013)
