@@ -1,4 +1,6 @@
-# FontCustom v1.0.0
+# FontCustom v0.1.4
+
+**(v1.0.0 is currently in pre-release until docs are updated. Install the latest with `gem install fontcustom --pre`)**
 
 **Generate custom icon webfonts from the comfort of the command line.**
 

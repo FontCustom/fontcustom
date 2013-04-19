@@ -1,4 +1,4 @@
-## 1.0.0 (4/17/2013)
+## 1.0.0 (4/18/2013)
 
 Big changes, more flexibility, better workflow. Be sure to check out the [docs](http://fontcustom.com) to see how it all ties together.
 
@@ -12,6 +12,7 @@ Big changes, more flexibility, better workflow. Be sure to check out the [docs](
 * Added clean Ruby API ([#62](https://github.com/FontCustom/fontcustom/issues/62))
 * Workaround for Sprockets compatibility ([#61](https://github.com/FontCustom/fontcustom/pull/61))
 * Added clean (bootstrap free) CSS and made it the default choice ([#59](https://github.com/FontCustom/fontcustom/pull/59))
+* Added option to pass different path to @font-face for SCSS partials ([#64](https://github.com/FontCustom/fontcustom/issues/64))
 * Addes SCSS versions of Bootstrap and IE7 stylesheets
 * Fixed CSS bug on IE8 and IE9's compatibility mode
 * Fixed gem bug where watcher could fall into an infinite loop
