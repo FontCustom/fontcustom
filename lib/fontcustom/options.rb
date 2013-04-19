@@ -7,6 +7,7 @@ module Fontcustom
     :font_name => "fontcustom",
     :file_hash => true,
     :css_prefix => "icon-",
+    :font_face_path => false,
     :debug => false,
     :verbose => true
   }

@@ -1,14 +1,20 @@
-/*
+<%
+file_name = if @opts[:font_face_path]
+  File.join @opts[:font_face_path], @data[:file_name]
+else
+  @data[:file_name]
+end
+%>/*
  * Font Custom: Bootstrap CSS
  */
 
 @font-face {
   font-family: "<%= @opts[:font_name] %>";
-  src: url("<%= @data[:file_name] %>.eot");
-  src: url("<%= @data[:file_name] %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @data[:file_name] %>.woff") format("woff"),
-       url("<%= @data[:file_name] %>.ttf") format("truetype"),
-       url("<%= @data[:file_name] %>.svg#<%= @opts[:font_name] %>") format("svg");
+  src: url("<%= file_name %>.eot");
+  src: url("<%= file_name %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= file_name %>.woff") format("woff"),
+       url("<%= file_name %>.ttf") format("truetype"),
+       url("<%= file_name %>.svg#<%= @opts[:font_name] %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
