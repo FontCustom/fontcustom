@@ -30,9 +30,6 @@ h1, h2, h3, h4 {
 }
 
 .section-wrap {
-    /*background: #f0f0f0;
-    border-top: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;*/
     border-top: 1px solid #dedede;
     -webkit-box-shadow: inset 0 5px 10px -3px #dedede;
     -moz-box-shadow: inset 0 5px 10px -3px #dedede;
@@ -40,9 +37,15 @@ h1, h2, h3, h4 {
     padding: 60px 0;
 }
 
-button[class^="icon-"]::before, button[class*="icon-"]::before,
-a [class^="icon-"]::before, a [class*="icon-"]::before {
-    margin-right: 10px;
+[class^="icon-"], [class*=" icon-"] {
+    width: auto;
+    margin: 0;
+}
+
+#overview h3 {
+    width: auto;
+    height: auto;
+    background: none;
 }
 
 #overview h3::before {
@@ -62,11 +65,11 @@ a [class^="icon-"]::before, a [class*="icon-"]::before {
     margin-bottom: 20px;
 }
 
-#usage {
+#quick-start {
     padding-bottom: 0;
 }
 
-#usage #svg-folder {
+#quick-start #svg-folder {
     width: 50%;
     min-width: 320px;
     height: 400px;
@@ -74,15 +77,15 @@ a [class^="icon-"]::before, a [class*="icon-"]::before {
     overflow: hidden;
 }
 
-#usage .content {
+#quick-start .content {
     float: left;
     width: 40%;
     margin-top: 40px;
 }
-
+/*
 #output .files, #output .span12 {
     margin-left: 0;
-}
+}*/
 
 .twitter-follow-button {
     margin-top: 5px;

@@ -1,0 +1,28 @@
+{
+  "fonts": [
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg"
+  ],
+  "templates": [
+    "fontcustom.css",
+    "fontcustom-preview.html"
+  ],
+  "file_name": "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e",
+  "glyphs": [
+    "browser",
+    "customize",
+    "factory",
+    "glasses",
+    "graffiti",
+    "lightning",
+    "outlet",
+    "pen",
+    "pinch",
+    "scale",
+    "star",
+    "walk",
+    "windmill"
+  ]
+}

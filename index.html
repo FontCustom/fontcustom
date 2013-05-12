@@ -27,7 +27,6 @@
   </head>
 
   <body onload="prettyPrint()">
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -81,53 +80,53 @@
 
       <div class="overview row">
         <div class="span4">
-          <h3 class="icon-browser">Cross-browser</h3>
+          <h3><i class="icon-browser"></i> Cross-browser</h3>
           <p>Output multiple font formats and a <a href="http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax">bulletproof</a> stylesheet with one command. Works on modern browsers, quirky mobile flavors, and even your old friend IE8.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-factory">Bootstrap-ready</h3>
+          <h3><i class="icon-factory"></i> Bootstrap-ready</h3>
           <p>Font Custom creates styles using Bootstrap's <code>.icon-{{your-icon-name}}</code> naming convention. Just include <strong>fontcustom.css</strong> and you're set.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-outlet">Plug and play</h3>
+          <h3><i class="icon-outlet"></i> Plug and play</h3>
           <p>No configuration or navigating confusing APIs. Just place all your vectors in a folder, link a CSS file, and let Font Custom take care of the rest.</p>
         </div>
       </div>
       <div class="overview row">
         <div class="span4">
-          <h3 class="icon-pen">Infinite options</h3>
+          <h3><i class="icon-pen"></i> Infinite options</h3>
           <p>Why limit yourself to generic, overused icon sets? Create your own vectors or check out <a href="http://glyphicons.com/">Glyphicons</a> and <a href="http://thenounproject.com">The Noun Project</a> for a buffet of possibilities.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-scale">Flexible sizes</h3>
+          <h3><i class="icon-scale"></i> Flexible sizes</h3>
           <p>Resize icons to your heart's content. Since they're vector, Font Custom icons appear crisp at any size. (Also, no more <code>@2x</code> icon assets.)</p>
         </div>
         <div class="span4">
-          <h3 class="icon-graffiti">Just add CSS</h3>
+          <h3><i class="icon-graffiti"></i> Just add CSS</h3>
           <p>Change colors, add shadows, rotate, transmogrify &mdash; style icons however you want with just a little CSS. Tweaking icon designs has never been easier.</p>
         </div>
       </div>
       <div class="overview row">
         <div class="span4">
-          <h3 class="icon-pinch">Smaller file sizes</h3>
+          <h3><i class="icon-pinch"></i> Smaller file sizes</h3>
           <p>Icon font sets like <a href="http://pictos.cc/font/">Pictos</a> and <a href="http://fontawesome.github.com/Font-Awesome/">Font Awesome</a> require browsers to download hundreds of icons you'll never use. Font Custom only includes the icons you choose.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-glasses">Screen reader friendly</h3>
+          <h3><i class="icon-glasses"></i> Screen reader friendly</h3>
           <p>Some icon fonts use letters or alphanumeric characters which are read out by screen readers. Font Custom uses Unicode's <a href="http://en.wikipedia.org/wiki/Private_Use_(Unicode)#Private_Use_Areas">PUA</a> so this won't ever be an issue.</p>
         </div>
         <div class="span4">
-          <h3 class="icon-lightning">Automatic regeneration</h3>
+          <h3><i class="icon-lightning"></i> Automatic regeneration</h3>
           <p>Add an icon? Remove an icon? Fonts and styles are regenerated instantly thanks to Font Custom's handy command line watcher.</p>
         </div>
       </div>
     </div>
 
-    <div id="usage" class="section-wrap">
+    <div id="quick-start" class="section-wrap">
       <div class="container">
         <section>
           <div class="page-header">
-            <h1>Usage</h1>
+            <h1>Quick Start</h1>
           </div>
           <div class="content">
             <p>Just create a directory for your <strong>svg</strong> files. Then, on the command line, run:
@@ -170,12 +169,66 @@ gem install fontcustom</pre>
       </div>
     </div>
 
+    <div id="usage" class="section-wrap">
+      <div class="container">
+        <div class="page-header">
+          <h1>Usage</h1>
+        </div>
+        <section class="row-fluid">
+          <div class="span6">
+            <h2>Configuration</h2>
+            <p>You can configure several settings that will affect what files are generated, where, and how. It's possible to manually configure Font Custom on each use or, for convenience, generate a <code>fontcustom.yml</code> that will store your configuration settings for a given project.</p>
+            <p>To generate a new configuration file, simply use the <code>config</code> option:</p>
+            <pre class="prettyprint">fontcustom config /path/to/vectors</pre>
+          </div>
+          <div class="span6">
+            <h2>Options</h2>
+            <p>There are several settings you can tweak to alter the app's output:</p>
+            <ul>
+              <li>
+                <h3>--output</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--templates</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--font-name</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--file-hash</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--css-prefix</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--font-face-path</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--debug</h3>
+                <p>TBD</p>
+              </li>
+              <li>
+                <h3>--verbose</h3>
+                <p>TBD</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
     <div id="output" class="section-wrap">
       <div class="container">
+        <div class="page-header">
+          <h1>Output</h1>
+        </div>
         <section class="row-fluid">
-          <div class="page-header">
-            <h1>Output</h1>
-          </div>
           <div class="span6 files">
             <h2>Files</h2>
             <p>Font Custom generates a number of files, including CSS and all font files as follows:</p>
@@ -200,6 +253,8 @@ Icon Classes
 .icon-walk:before { content: "\f002"; }
 .icon-windmill:before { content: "\f003"; }</pre>
           </div>
+        </section>
+        <section class="row-fluid">
           <div class="span12">
             <h2>Including Font Custom in your project</h2>
             <p>First, include the CSS file (there are multiple ways to do this, of course).</p>
@@ -208,6 +263,16 @@ Icon Classes
             <p>To add an icon to a selector, simply add the class that corresponds to the vector's file name:</p>
             <pre class="prettyprint">
 &lt;span class="icon-sheep"&gt;Mary had a little lamb.&lt;/span&gt;</pre>
+          </div>
+        </section>
+        <section class="row-fluid">
+          <div class="span12">
+            <h2>Generating alternate output (SCSS, custom templates)</h2>
+            <p>Sometimes you simply need a SCSS file, an HTML preview, or want to use a custom template. Fortunately, we've made that easy with the <code>--template</code> argument.</p>
+            <p>By default, the <code>--template</code> argument assumes <code>'css preview'</code>, which generates a CSS file and HTML preview of all the glyphs. You can instead provide alternative combinations of any of the following: <code>'css', 'css-ie7', 'scss', 'preview'</code>.</p>
+            <p>Additionally, if you pass a path to the argument, it will assume you intend to use that as a custom template file and attempt to build using that, e.g.</p>
+            <pre class="prettyprint">fontcustom compile --template ../custom_template.css</pre>
+          </div>
         </section>
       </div>
     </div>
@@ -222,22 +287,22 @@ Icon Classes
           <div class="row">
             <div class="dropdown clearfix span3">
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px; min-width: 185px;">
-                <li><a tabindex="-1" href="#"><span class="icon-lightning"></span>Action</a></li>
-                <li><a tabindex="-1" href="#"><span class="icon-pen"></span>Another action</a></li>
-                <li><a tabindex="-1" href="#"><span class="icon-graffiti"></span>Something else here</a></li>
+                <li><a tabindex="-1" href="#"><span class="icon-lightning"></span> Action</a></li>
+                <li><a tabindex="-1" href="#"><span class="icon-pen"></span> Another action</a></li>
+                <li><a tabindex="-1" href="#"><span class="icon-graffiti"></span> Something else here</a></li>
                 <li class="divider"></li>
-                <li><a tabindex="-1" href="#"><span class="icon-star"></span>Separated link</a></li>
+                <li><a tabindex="-1" href="#"><span class="icon-star"></span> Separated link</a></li>
               </ul>
             </div>
 
             <div class="code span9">
               <pre class="prettyprint linenums">
 &lt;ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"&gt;
-  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-lightning"&gt;&lt;/span&gt;Action&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-pen"&gt;&lt;/span&gt;Another action&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-graffiti"&gt;&lt;/span&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-lightning"&gt;&lt;/span&gt; Action&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-pen"&gt;&lt;/span&gt; Another action&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-graffiti"&gt;&lt;/span&gt; Something else here&lt;/a&gt;&lt;/li&gt;
   &lt;li class="divider"&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-star"&gt;&lt;/span&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a tabindex="-1" href="#"&gt;&lt;span class="icon-star"&gt;&lt;/span&gt; Separated link&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</pre>
             </div>
           </div>
@@ -245,7 +310,7 @@ Icon Classes
           <div class="row">
             <div class="btn-toolbar span3">
                 <div class="btn-group">
-                  <button class="btn btn-primary dropdown-toggle icon-lightning" data-toggle="dropdown">Action <span class="caret"></span></button>
+                  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Action <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -255,28 +320,7 @@ Icon Classes
                   </ul>
                 </div><!-- /btn-group -->
                 <div class="btn-group">
-                  <button class="btn btn-danger dropdown-toggle icon-lightning" data-toggle="dropdown">Danger <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div><!-- /btn-group -->
-                <br>
-                <div class="btn-group">
-                  <button class="btn btn-warning dropdown-toggle icon-lightning" data-toggle="dropdown">Warning <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div><!-- /btn-group -->
-                <div class="btn-group">
-                  <button class="btn btn-success dropdown-toggle icon-lightning" data-toggle="dropdown">Success <span class="caret"></span></button>
+                  <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Danger <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -287,7 +331,7 @@ Icon Classes
                 </div><!-- /btn-group -->
                 <br>
                 <div class="btn-group">
-                  <button class="btn btn-info dropdown-toggle icon-lightning" data-toggle="dropdown">Info <span class="caret"></span></button>
+                  <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Warning <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -297,7 +341,28 @@ Icon Classes
                   </ul>
                 </div><!-- /btn-group -->
                 <div class="btn-group">
-                  <button class="btn btn-inverse dropdown-toggle icon-lightning" data-toggle="dropdown">Inverse <span class="caret"></span></button>
+                  <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Success <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <br>
+                <div class="btn-group">
+                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Info <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <div class="btn-group">
+                  <button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-lightning"></i> Inverse <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -439,7 +504,7 @@ Icon Classes
 
     <div class="container">
         <footer>
-          <p>Copyright &copy; 2012 <a href="http://yifei.co">Yifei Zhang</a>, <a href="http://unwieldy.net">Joshua Gross</a>.</p>
+          <p>Copyright &copy; 2013 <a href="http://yifei.co">Yifei Zhang</a>, <a href="http://unwieldy.net">Joshua Gross</a>.</p>
         </footer>
     </div>
 
