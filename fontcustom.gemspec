@@ -6,8 +6,8 @@ require 'fontcustom/version'
 Gem::Specification.new do |gem|
   gem.name          = "fontcustom"
   gem.version       = Fontcustom::VERSION
-  gem.authors       = ["Yifei Zhang", "Joshua Gross"]
-  gem.email         = ["yz@yifei.co", "joshua@gross.is"]
+  gem.authors       = ["Kai Zau", "Joshua Gross"]
+  gem.email         = ["kai@kaizau.com", "joshua@gross.is"]
   gem.summary       = %q{Generate custom icon webfonts from the comfort of the command line.}
   gem.description   = %q{Transforms EPS and SVG vectors into icon webfonts. Generates CSS (or any custom template) for easy inclusion in your projects.}
   gem.homepage      = "http://fontcustom.com"

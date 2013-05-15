@@ -1,6 +1,6 @@
 fontcustom
 
-    Copyright (c) 2012 Yifei Zhang, Joshua Gross
+    Copyright (c) 2013 Kai Zau, Joshua Gross
 
     MIT License
 
