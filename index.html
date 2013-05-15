@@ -7,8 +7,7 @@
     <meta name="description" content="Generate custom icon webfonts from the comfort of the command line.">
     <meta name="author" content="Yifei Zhang and Joshua Gross">
 
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/prettify.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/fontcustom/fontcustom.css" rel="stylesheet">
@@ -161,7 +160,7 @@ wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
 unzip woff-code-latest.zip -d sfnt2woff &amp;&amp; cd sfnt2woff &amp;&amp; make &amp;&amp; sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom</pre>
 
-          <p>Note that if <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
+          <p>Note that you <strong>need</strong> to have a version of FontForge that includes <strong>Python scripting</strong>; otherwise Font Custom will not work at all! Additionally, if <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
 
           <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first: <code>sudo apt-get install ruby1.*.*-dev</code>.</small></p>
           <p><small></small></p>
@@ -175,50 +174,61 @@ gem install fontcustom</pre>
           <h1>Usage</h1>
         </div>
         <section class="row-fluid">
-          <div class="span6">
-            <h2>Configuration</h2>
-            <p>You can configure several settings that will affect what files are generated, where, and how. It's possible to manually configure Font Custom on each use or, for convenience, generate a <code>fontcustom.yml</code> that will store your configuration settings for a given project.</p>
-            <p>To generate a new configuration file, simply use the <code>config</code> option:</p>
-            <pre class="prettyprint">fontcustom config /path/to/vectors</pre>
-          </div>
-          <div class="span6">
-            <h2>Options</h2>
-            <p>There are several settings you can tweak to alter the app's output:</p>
-            <ul>
-              <li>
-                <h3>--output</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--templates</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--font-name</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--file-hash</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--css-prefix</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--font-face-path</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--debug</h3>
-                <p>TBD</p>
-              </li>
-              <li>
-                <h3>--verbose</h3>
-                <p>TBD</p>
-              </li>
-            </ul>
-          </div>
+          <h2>Configuration</h2>
+          <p>You can configure several settings that will affect what files are generated, where, and how. It's possible to manually configure Font Custom on each use or, for convenience, generate a <code>fontcustom.yml</code> that will store your configuration settings for a given project.</p>
+          <p>To generate a new configuration file, simply use the <code>config</code> option:</p>
+          <pre class="prettyprint">fontcustom config /path/to/vectors</pre>
+        </section>
+        <section class="row-fluid">
+          <h2>Options</h2>
+          <p>There are several settings you can set to modify Font Custom's results:</p>
+          <ul>
+            <li>
+              <h3>output</h3>
+              <p>The directory to which the resulting font and CSS files will be added. If the directory doesn't exist, it will be created. By default, the output directory is <code>/path/to/vectors/fontcustom</code>. You probably want to set this.</p>
+            </li>
+            <li>
+              <h3>templates</h3>
+              <p>In addition to the font files, Font Custom has the ability to generate several different types of templates/helper files, such as the accompanying CSS file. Any or all of these options can be turned on or off, depending on what you need.</p>
+              <p>The options include:</p>
+              <ul>
+                <li><h4><code>preview</code></h4> A preview HTML file of the generated font, including each icon at several sizes, the class name in the CSS file, and the HTML entity the character is accessible through. See an <a href="css/fontcustom/fontcustom-preview.html" target="_blank">example.</a></li>
+                <li><h4><code>css</code></h4> Your standard CSS file, with each icon mapped to a class name.</li>
+                <li><h4><code>scss</code></h4> A SCSS file with the same output as the CSS file, but suitable for easy compilation into a SCSS-based project.</li>
+                <li><h4><code>bootstrap</code></h4> A CSS file with Twitter Bootstrap compatible overrides for the icons. Great to drop into any Bootstrap-based project.</li>
+                <li><h4><code>bootstrap-scss</code></h4> Same as above, but as a SCSS file.</li>
+                <li><h4><code>bootstrap-ie7</code></h4> For Bootstrap projects that may need IE7 compatibility, you can export a helper CSS file.</li>
+                <li><h4><code>bootstrap-ie7-scss</code></h4> Same as above, but as a SCSS file.</li>
+              </ul>
+              <br/>
+              <p>You can also build your own template and have Font Custom compile it for you. Simply include the path to the template, relative to either the input folder or the <code>pwd</code>. You can base your template off of one of the <a href="https://github.com/FontCustom/fontcustom/blob/master/lib/fontcustom/templates/_fontcustom.scss" target="_blank">existing templates.</a></p>
+              <p>By default, Font Custom will generate <code>css</code> and <code>preview</code> files for you.</p>
+            </li>
+            <li>
+              <h3>font-name</h3>
+              <p>The font name used in your templates (automatically normalized to lowercase spinal case). By default, <code>fontcustom</code>.</p>
+            </li>
+            <li>
+              <h3>file-hash</h3>
+              <p>Generate font files with asset-busting hashes. The hash is based on the file size and filename of each included icon, so when the icons or filenames change, new files with new hashes will be generated. Hashes will not be appended to any of the CSS/SCSS files (though the references to the fonts will be updated), only the fonts. By default, this option is <strong>on</strong>.</p>
+            </li>
+            <li>
+              <h3>css-prefix</h3>
+              <p>The prefix for each glyph's CSS class. Default: <code>icon-</code></p>
+            </li>
+            <li>
+              <h3>font-face-path</h3>
+              <p>The http path used in @font-face declarations. <em>Only used in .scss partials.</em> By default, none is set.</p>
+            </li>
+            <li>
+              <h3>debug</h3>
+              <p>Display debug messages from fontforge. This can be particularly helpful if a font isn't outputting as expected or at all (as well, very useful for submitting bug reports). By default, this is <strong>off</strong>.</p>
+            </li>
+            <li>
+              <h3>verbose</h3>
+              <p>Display output messages containing information about the files generated/removed. By default, this is <strong>on</strong>.</p>
+            </li>
+          </ul>
         </section>
       </div>
     </div>
@@ -231,18 +241,19 @@ gem install fontcustom</pre>
         <section class="row-fluid">
           <div class="span6 files">
             <h2>Files</h2>
-            <p>Font Custom generates a number of files, including CSS and all font files as follows:</p>
+            <p>Font Custom generates a number of files by default, including font files, css, and a preview file as follows:</p>
             <pre class="prettyprint">
 fontcustom.css
-fontcustom-UNIQUEHASH.ttf
-fontcustom-UNIQUEHASH.eot
-fontcustom-UNIQUEHASH.woff
-fontcustom-UNIQUEHASH.svg</pre>
+fontcustom-preview.html
+fontcustom_UNIQUEHASH.ttf
+fontcustom_UNIQUEHASH.eot
+fontcustom_UNIQUEHASH.woff
+fontcustom_UNIQUEHASH.svg</pre>
             <p>The <code>UNIQUEHASH</code> is generated based on the filenames and sizes of all of the vector files. This way, when new font files are generated, the old font won&rsquo;t be cached by the browser.</p>
           </div>
           <div class="span6">
             <h2>CSS</h2>
-            <p>The CSS file contains Bootstrap-compatible boilerplate selectors and classes for each icon. The icon classes can be found at the bottom of the file, like this:</p>
+            <p>The CSS file contains selectors and classes for each icon. The icon classes can be found at the bottom of the file, like this:</p>
             <pre class="prettyprint linenums">
 /*
 Icon Classes
@@ -269,9 +280,7 @@ Icon Classes
           <div class="span12">
             <h2>Generating alternate output (SCSS, custom templates)</h2>
             <p>Sometimes you simply need a SCSS file, an HTML preview, or want to use a custom template. Fortunately, we've made that easy with the <code>--template</code> argument.</p>
-            <p>By default, the <code>--template</code> argument assumes <code>'css preview'</code>, which generates a CSS file and HTML preview of all the glyphs. You can instead provide alternative combinations of any of the following: <code>'css', 'css-ie7', 'scss', 'preview'</code>.</p>
-            <p>Additionally, if you pass a path to the argument, it will assume you intend to use that as a custom template file and attempt to build using that, e.g.</p>
-            <pre class="prettyprint">fontcustom compile --template ../custom_template.css</pre>
+            <p>By default, the <code>--template</code> argument is <code>'css preview'</code> by default, which generates a CSS file and HTML preview of all the glyphs. You can instead provide alternative combinations of any of the types listed in the configuration section, or provide your own custom templates.</p>
           </div>
         </section>
       </div>
@@ -485,13 +494,13 @@ Icon Classes
             <div class="page-header">
               <h1>License</h1>
             </div>
-            <p>This project is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a> and &copy; 2012 Yifei Zhang, Joshua Gross. You can find a copy of all of the licenses in the projects LICENSE.txt file.</p>
+            <p>This project is licensed under the <a href="http://opensource.org/licenses/MIT">MIT License</a> and &copy; 2013 Kai Zau, Joshua Gross. You can find a copy of all of the licenses in the projects LICENSE.txt file.</p>
           </div>
           <div class="span6">
             <div class="page-header">
               <h1>About</h1>
             </div>
-            <p>This project was lovingly hand-crafted by <a href="http://unwieldy.net">Joshua Gross</a> and <a href="http://yifei.co">Yifei Zhang</a> in New York City.</p>
+            <p>This project was lovingly hand-crafted by <a href="http://unwieldy.net">Joshua Gross</a> and <a href="http://kaizau.com">Kai Zau</a> in New York City.</p>
             <p>
               You should follow us on Twitter, if that&rsquo;s your thing:<br>
               <a href="https://twitter.com/endtwist" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @endtwist</a>&nbsp;
@@ -504,7 +513,7 @@ Icon Classes
 
     <div class="container">
         <footer>
-          <p>Copyright &copy; 2013 <a href="http://yifei.co">Yifei Zhang</a>, <a href="http://unwieldy.net">Joshua Gross</a>.</p>
+          <p>Copyright &copy; 2013 <a href="http://kaizau.com">Kai Zau</a>, <a href="http://unwieldy.net">Joshua Gross</a>.</p>
         </footer>
     </div>
 
