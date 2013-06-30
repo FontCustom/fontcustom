@@ -4,7 +4,8 @@ module Fontcustom
   class Util
     class << self 
       def check_fontforge
-        if `which fontforge` == ""
+        fontforge = `which fontforge`
+        if fontforge == "" || fontforge == "fontforge not found"
           raise Fontcustom::Error, "Please install fontforge first. Visit http://fontcustom.com for more details."
         end
       end
