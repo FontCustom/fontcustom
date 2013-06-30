@@ -16,7 +16,12 @@ module Fontcustom
     def watch
       puts "Font Custom is watching your icons at #{@opts[:input]}. Press Ctrl + C to stop."
       compile unless @opts[:skip_first]
-      @listener.start @opts[:blocking]
+
+      if @opts[:blocking]
+        @listener.start!
+      else
+        @listener.start
+      end
 
     rescue Fontcustom::Error => e
       show_error e
