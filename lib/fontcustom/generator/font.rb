@@ -66,7 +66,13 @@ module Fontcustom
 
         output = `#{cmd}`.split("\n")
         @json = output[3] # JSON
-        output = output[4..-1] # Strip fontforge message
+        if @json == 'Warning: Font contained no glyphs'
+          @json = output[4]
+          output = output[5..-1] # Strip fontforge message
+        else
+          @json = output[3]
+          output = output[4..-1] # Strip fontforge message
+        end
 
         if opts[:debug]
           shell.say "DEBUG: (raw output from fontforge)"
