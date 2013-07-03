@@ -75,14 +75,18 @@ for dirname, dirnames, filenames in os.walk(indir):
 
 			# glyph.left_side_bearing = KERNING
 			# glyph.right_side_bearing = KERNING
-			glyph.width = 512
+			#glyph.width = 512
 
 			# possible optimization?
 			# glyph.simplify()
 			# glyph.round()
+			glyph.left_side_bearing = glyph.right_side_bearing = 0
+			glyph.round()
 
 			files.append(name)
 			cp += 1
+
+		f.autoWidth(0, 0, 512)
 
 if args.nohash:
 	fontfile = outdir + '/' + args.name
