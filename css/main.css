@@ -158,6 +158,7 @@ footer {
         .cube > div span {
             font-size: 50px;
             line-height: 60px;
+            background-image: none;
         }
 
     .cube > div:first-child  {

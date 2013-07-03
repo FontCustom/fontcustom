@@ -158,11 +158,14 @@ sudo apt-get install fontforge ttfautohint
 wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
 unzip woff-code-latest.zip -d sfnt2woff &amp;&amp; cd sfnt2woff &amp;&amp; make &amp;&amp; sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom</pre>
-
-          <p>Note that you <strong>need</strong> to have a version of FontForge that includes <strong>Python scripting</strong>; otherwise Font Custom will not work at all! Additionally, if <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
-
-          <p><small>* On Debian and Ubuntu, you may need to install the ruby dev packages first: <code>sudo apt-get install ruby1.*.*-dev</code>.</small></p>
-          <p><small></small></p>
+          <br/>
+          <h2>Requirements</h2>
+          <ul>
+            <li><strong>Ruby 1.9.x</strong> or greater.</li>
+            <li>A version of FontForge that includes <strong>Python scripting</strong></li>
+            <li>On Debian and Ubuntu, you may need to install the ruby dev packages first: <code>sudo apt-get install ruby1.*.*-dev</code>.</li>
+            <li>If <code>ttfautohint</code> is not available in your distribution, Font Custom will still work but your generated font will not be properly hinted.</p>
+          <ul>
         </section>
       </div>
     </div>
