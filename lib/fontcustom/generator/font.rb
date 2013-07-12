@@ -79,7 +79,7 @@ module Fontcustom
           shell.say output
         end
 
-        unless output.empty? # correct output should be []
+        unless $?.success?
           raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
         end
       end
