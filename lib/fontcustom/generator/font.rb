@@ -8,9 +8,9 @@ module Fontcustom
     class Font < Thor::Group
       include Thor::Actions
 
-      # Instead of passing each option individually we're passing the entire options hash as an argument. 
+      # Instead of passing each option individually we're passing the entire options hash as an argument.
       # This is DRYier, easier to maintain.
-      argument :opts 
+      argument :opts
 
       def check_input
         if ! File.directory? opts[:input]
@@ -33,7 +33,7 @@ module Fontcustom
 
       def get_data
         # file has already been verified/created
-        data = File.read File.join(opts[:output], ".fontcustom-data") 
+        data = File.read File.join(opts[:output], ".fontcustom-data")
         data = JSON.parse(data, :symbolize_names => true) unless data.empty?
         @data = data.is_a?(Hash) ? data : Fontcustom::DATA_MODEL.dup
       rescue JSON::ParserError
@@ -44,7 +44,7 @@ module Fontcustom
         return if @data[:fonts].empty?
         begin
           deleted = []
-          @data[:fonts].each do |file| 
+          @data[:fonts].each do |file|
             remove_file File.join(opts[:output], file), :verbose => opts[:verbose]
             deleted << file
           end
@@ -56,7 +56,7 @@ module Fontcustom
           append_to_file file, json, :verbose => false # clear data file silently
         end
       end
-      
+
       def generate
         # TODO align option naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)

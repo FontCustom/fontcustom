@@ -77,7 +77,7 @@ describe Fontcustom::Generator::Font do
       subject.reset_output
       subject.instance_variable_get(:@data)[:fonts].should be_empty
     end
-    
+
     it "should update the data file" do
       file = File.join(fixture("mixed-output"), ".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
@@ -97,7 +97,7 @@ describe Fontcustom::Generator::Font do
       gen.stub(:"`").and_return fontforge_output
       gen
     end
-    
+
     it "should call fontforge" do
       subject.should_receive(:"`").with(/fontforge -script/)
       subject.generate
@@ -128,11 +128,11 @@ describe Fontcustom::Generator::Font do
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
+      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e"
       data[:fonts].should =~ [
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg",
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
         "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
       ]
     end
@@ -141,14 +141,14 @@ describe Fontcustom::Generator::Font do
   context "#announce_files" do
     it "should print generated files to console" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
-      gen.instance_variable_set :@data, data_file_contents 
+      gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
 
     it "should print nothing if verbose is false" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"), :verbose => false)
-      gen.instance_variable_set :@data, data_file_contents 
+      gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should == ""
     end
