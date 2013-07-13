@@ -80,7 +80,7 @@ module Fontcustom
         end
 
         unless $?.success?
-          raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
+          raise Fontcustom::Error, "Compilation failed unexpectedly: #{output}"
         end
       end
 
