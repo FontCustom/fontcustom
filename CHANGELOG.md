@@ -1,3 +1,11 @@
+## 1.0.1 (7/21/2013)
+
+Various bugfixes.
+
+* Set glyph widths automatically ([#95](https://github.com/FontCustom/fontcustom/issues/95))
+* Fixes Ruby 1.8.7 syntax error ([#94](https://github.com/FontCustom/fontcustom/issues/94))
+* More robust fontforge error handling ([#99](https://github.com/FontCustom/fontcustom/issues/99))
+
 ## 1.0.0 (4/18/2013)
 
 Big changes, more flexibility, better workflow. Be sure to check out the [docs](http://fontcustom.com) to see how it all ties together.
