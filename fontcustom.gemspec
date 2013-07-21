@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'json'
-  gem.add_dependency 'thor'
-  gem.add_dependency 'listen'
+  gem.add_dependency 'json', '~>1.8.0'
+  gem.add_dependency 'thor', '~>0.18.1'
+  gem.add_dependency 'listen', '~>1.2.2'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
