@@ -41,6 +41,7 @@ describe Fontcustom::Watcher do
         begin
           w.watch
           FileUtils.cp fixture("vectors/C.svg"), fixture("vectors/test.svg")
+          sleep 2
         ensure
           w.stop
           new = fixture("vectors/test.svg")
