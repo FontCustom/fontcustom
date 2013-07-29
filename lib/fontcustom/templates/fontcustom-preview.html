@@ -82,6 +82,8 @@
 
       .usage .class { width: 250px; }
 
+      .usage .number { width: 100px; }
+
       .footer {
         color: #888;
         font-size: 12px;
@@ -107,7 +109,7 @@
         <div class="usage">
           <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts[:css_prefix] + name %>" />
           <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
-          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="<%= (61696+index) %>" />
+          <input class="number" type="text" readonly="readonly" onClick="this.select();" value="<%= (61696+index) %>" />
         </div>
       </div>
       <% end %>
