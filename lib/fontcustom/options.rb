@@ -1,21 +1,22 @@
+require "thor/core_ext/hash_with_indifferent_access"
+
 module Fontcustom
-  DEFAULT_OPTIONS = {
-    :input => Dir.pwd,
-    :output => false, # used to assign default, if necessary 
-    :config => false,
-    :templates => %w|css preview|, 
+  # :input, :output, and :config are build from arguments
+  DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
+    :project_root => Dir.pwd,
+    :templates => %w|css preview|,
     :font_name => "fontcustom",
     :file_hash => true,
     :css_prefix => "icon-",
     :font_face_path => false,
     :debug => false,
     :verbose => true
-  }
+  })
 
-  DATA_MODEL = {
+  DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new({
     :fonts => [],
     :templates => [],
     :file_name => "",
     :glyphs => []
-  }
+  })
 end
