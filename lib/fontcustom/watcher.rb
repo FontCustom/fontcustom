@@ -24,7 +24,6 @@ module Fontcustom
       show_error e
 
     # Catches Ctrl + C
-    # TODO Does the listen gem have a better way of handling this?
     rescue SignalException
       stop
     end
