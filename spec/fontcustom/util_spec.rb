@@ -28,7 +28,7 @@ describe Fontcustom::Util do
 
     it "should overwrite defaults with config file" do
       options = util.collect_options :config => fixture("fontcustom.yml")
-      options[:font_name].should == "custom-name-from-config"
+      options[:font_name].should == "Custom-Name-From-Config"
     end
 
     it "should overwrite config file and defaults with CLI options" do
@@ -37,8 +37,8 @@ describe Fontcustom::Util do
     end
 
     it "should normalize file name" do
-      options = util.collect_options :font_name => " A_stR4nG3 nAm3  "
-      options[:font_name].should == "a_str4ng3-nam3"
+      options = util.collect_options :font_name => " A_stR4nG3  nAm3 Ø&  "
+      options[:font_name].should == "A_stR4nG3--nAm3---"
     end
   end
 

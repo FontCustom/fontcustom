@@ -87,7 +87,7 @@ module Fontcustom
       def collect_data
         @json = JSON.parse(@json, :symbolize_names => true)
         @data.merge! @json
-        @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-").downcase }
+        @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-") }
       end
 
       def announce_files

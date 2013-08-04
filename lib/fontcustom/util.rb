@@ -32,7 +32,7 @@ module Fontcustom
         options.merge! args
         options[:output] ||= File.join(options[:input], "fontcustom")
         options[:templates] = get_template_paths options
-        options[:font_name] = options[:font_name].strip.downcase.gsub(/\W/, '-') 
+        options[:font_name] = options[:font_name].strip.gsub(/\W/, '-') 
         options
       end
 
