@@ -16,13 +16,11 @@ describe Fontcustom::Util do
     it "should return defaults when called without arguments" do
       options = util.collect_options
       defaults = Fontcustom::DEFAULT_OPTIONS.dup
-
-      # ignore :templates and :output since they're generated
-      options.delete(:templates)
-      defaults.delete(:templates)
-      options.delete(:output)
-      defaults.delete(:output)
-
+      # ignore generated options
+      [:input, :output, :config, :templates].each do |key|
+        options.delete key
+        defaults.delete key
+      end
       options.should == defaults
     end
 
@@ -148,9 +146,12 @@ describe Fontcustom::Util do
     end
 
     it "should raise an error if a template does not exist" do
-      options = { :input => fixture("vectors"), :templates => %W|css #{fixture("fake-template")}| }
+      options = { 
+        :input => { :vectors => fixture("vectors"), :templates => fixture("vectors") },
+        :templates => %W|css fake-template| 
+      }
       expect { util.get_templates options }.to raise_error(
-        Fontcustom::Error, /couldn't find.+#{fixture("fake-template")}/
+        Fontcustom::Error, /couldn't find.+fake-template/
       )
     end
   end

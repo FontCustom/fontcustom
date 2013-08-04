@@ -33,12 +33,11 @@ module Fontcustom
 
         # Override with passed arguments
         options.merge! args
+        options[:font_name] = options[:font_name].strip.gsub(/\W/, '-')
 
         options[:input] = get_input_paths options
         options[:output] = get_output_paths options
         options[:templates] = get_templates options
-
-        options[:font_name] = options[:font_name].strip.gsub(/\W/, '-')
         options
       end
 
@@ -71,12 +70,14 @@ module Fontcustom
         end
       end
 
-      # TODO use project_path
       def get_input_paths(options)
         if options[:input].is_a? Hash
           input = Thor::CoreExt::HashWithIndifferentAccess.new options[:input]
           raise Fontcustom::Error, "INPUT should be a string or a hash containing a \"vectors\" key." unless input[:vectors]
+
+          input[:vectors] = File.join options[:project_root], input[:vectors]
           raise Fontcustom::Error, "INPUT[\"vectors\"] should a directory." unless File.directory? input[:vectors]
+
           input[:templates] ||= input[:vectors]
           input
         elsif options[:input].is_a? String 
@@ -92,16 +93,18 @@ module Fontcustom
         if options[:output].is_a? Hash
           output = Thor::CoreExt::HashWithIndifferentAccess.new options[:output]
           raise Fontcustom::Error, "OUTPUT should be a string or a hash containing a \"fonts\" key." unless output[:fonts]
+
+          output[:fonts] = File.join options[:project_root], output[:fonts]
           output[:css] ||= output[:fonts]
           output[:preview] ||= output[:fonts]
           output
         else
           if options[:output].is_a? String
             output = File.join options[:project_root], options[:output]
-            raise Fontcustom::Error, "OUTPUT should be a directory, not a file." if File.exists? output && ! File.directory? output
+            raise Fontcustom::Error, "OUTPUT should be a directory, not a file." if File.exists?(output) && ! File.directory?(output)
           else
-            # TODO friendly warning that we're defaulting to pwd/fonts
-            output = File.join options[:project_root], "fonts"
+            # TODO friendly warning that we're defaulting to pwd/:font_name
+            output = File.join options[:project_root], options[:font_name]
           end
           Thor::CoreExt::HashWithIndifferentAccess.new({
             :fonts => output,
@@ -137,17 +140,9 @@ module Fontcustom
           when "bootstrap-ie7-scss"
             File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
           else
-
-            # TODO 
-            # look in template_path first
-            # then in input/templates and input
-            if File.exists?(template)
-              template
-            elsif File.exists?(File.join(options[:input], template))
-              File.join options[:input], template
-            else
-              raise Fontcustom::Error, "We couldn't find your custom template #{template}. Double check and try again?"
-            end
+            template = File.join(options[:input][:templates], template)
+            raise Fontcustom::Error, "We couldn't find your custom template at #{template}. Double check and try again?" unless File.exists? template
+            template
           end
         end
       end

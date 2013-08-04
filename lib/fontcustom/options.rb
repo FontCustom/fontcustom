@@ -4,6 +4,7 @@ module Fontcustom
   # :input, :output, and :config are build from arguments
   DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
     :project_root => Dir.pwd,
+    :input => Dir.pwd,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :file_hash => true,
