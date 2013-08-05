@@ -13,57 +13,70 @@ describe Fontcustom::Util do
   end
 
   context ".collect_options" do
-    it "should return defaults when called without arguments" do
-      options = util.collect_options
-      defaults = Fontcustom::DEFAULT_OPTIONS.dup
-
-      # ignore generated options
-      [:font_name, :input, :output, :config, :templates].each do |key|
-        options.delete key
-        defaults.delete key
-      end
-      options.should == defaults
-    end
-
     it "should raise error if fontcustom.yml isn't valid" do
-      args = { :config => fixture("fontcustom-malformed.yml") }
-      expect { util.collect_options(args) }.to raise_error Fontcustom::Error, /couldn't read your configuration/
+      options = { 
+        :project_root => fixture,
+        :input => "vectors",
+        :config => "fontcustom-malformed.yml" 
+      }
+      expect { util.collect_options(options) }.to raise_error Fontcustom::Error, /couldn't read your configuration/
     end
 
     it "should overwrite defaults with config file" do
-      options = util.collect_options :config => fixture("fontcustom.yml")
+      options = { 
+        :project_root => fixture,
+        :input => "vectors",
+        :config => "fontcustom.yml" 
+      }
+      options = util.collect_options options
       options[:font_name].should == "Custom-Name-From-Config"
     end
 
     it "should overwrite config file and defaults with CLI options" do
-      options = util.collect_options :config => fixture("fontcustom.yml"), :font_name => "custom-name-from-cli"
+      options = { 
+        :project_root => fixture,
+        :input => "vectors",
+        :font_name => "custom-name-from-cli",
+        :config => "fontcustom.yml" 
+      }
+      options = util.collect_options options
       options[:font_name].should == "custom-name-from-cli"
     end
 
     it "should normalize file name" do
-      options = util.collect_options :font_name => " A_stR4nG3  nAm3 Ø&  "
+      options = { 
+        :project_root => fixture,
+        :input => "vectors",
+        :font_name => " A_stR4nG3  nAm3 Ø&  "
+      }
+      options = util.collect_options options
       options[:font_name].should == "A_stR4nG3--nAm3---"
     end
   end
 
   context ".get_config_path" do
     it "should search for fontcustom.yml if options[:config] is a dir" do
-      options = { :config => fixture("") }
-      util.get_config_path(options).should == fixture("fontcustom.yml")
+      options = { 
+        :project_root => fixture,
+        :config => "config-test"
+      }
+      util.get_config_path(options).should == fixture("config-test/fontcustom.yml")
     end
 
     it "should search use options[:config] if it's a file" do
-      options = { :config => fixture("fontcustom.yml") }
-      util.get_config_path(options).should == fixture("fontcustom.yml")
-    end
-
-    it "should search in project_root if no options[:config] is given" do
-      options = { :project_root => fixture("") }
+      options = { 
+        :project_root => fixture,
+        :config => "fontcustom.yml"
+      }
       util.get_config_path(options).should == fixture("fontcustom.yml")
     end
 
     it "should raise error if fontcustom.yml was specified but doesn't exist" do
-      options = { :config => fixture("vectors") }
+      options = { 
+        :project_root => fixture,
+        :input => "vectors",
+        :config => "does-not-exist"
+      }
       expect { util.get_config_path(options) }.to raise_error Fontcustom::Error, /couldn't find/
     end
 
@@ -72,6 +85,14 @@ describe Fontcustom::Util do
   end
 
   context ".get_input_paths" do
+    it "should raise error if input[:vectors] doesn't contain vectors" do
+      options = {
+        :project_root => fixture,
+        :input => "empty"
+      }
+      expect { util.get_input_paths(options) }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
+    end
+
     context "when passed a hash" do
       it "should return a hash of input locations" do
         options = {
@@ -191,6 +212,18 @@ describe Fontcustom::Util do
         paths = util.get_output_paths(options)
         paths[:css].should_not equal(paths[:fonts])
         paths[:preview].should_not equal(paths[:fonts])
+      end
+
+      it "should create additional paths if they are given" do
+        options = {
+          :output => { 
+            :fonts => "fonts",
+            "special.js" => "assets/javascripts"
+          },
+          :project_root => fixture
+        }
+        paths = util.get_output_paths(options)
+        paths["special.js"].should eq(File.join(options[:project_root], "assets/javascripts"))
       end
       
       it "should raise an error if :fonts isn't included" do

@@ -6,57 +6,72 @@ describe Fontcustom::Generator::Font do
     Fontcustom::Generator::Font.new([opts])
   end
 
-  context "#check_input" do
-    it "should raise error if input doesn't exist" do
-      options = { :input => fixture("does-not-exist") }
-      expect { generator(options).invoke :check_input }.to raise_error Fontcustom::Error, /doesn't exist/
+  context "#prepare_output_dirs" do
+    it "should create output dir if it doesn't exist" do
+      options = {
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "create-me"
+      }
+      gen = generator options
+      gen.stub(:empty_directory)
+      gen.should_receive(:empty_directory).with(fixture("create-me"), anything)
+      gen.prepare_output_dirs
     end
 
-    it "should raise error if input isn't a directory" do
-      options = { :input => fixture("not-a-dir") }
-      expect { generator(options).invoke :check_input }.to raise_error Fontcustom::Error, /isn't a directory/
-    end
-
-    it "should raise error if input doesn't contain vectors" do
-      options = { :input => fixture("empty") }
-      expect { generator(options).invoke :check_input }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
-    end
-  end
-
-  context "#check_output" do
-    it "should raise an error if output isn't a directory" do
-      options = { :output => fixture("not-a-dir") }
-      expect { generator(options).check_output }.to raise_error Fontcustom::Error, /isn't a directory/
-    end
-
-    it "should create output dir and data file if they don't exist" do
-      gen = generator :output => fixture("create-me")
-      gen.stub(:add_file)
-      gen.should_receive(:add_file).with(fixture("create-me") + "/.fontcustom-data", anything)
-      gen.check_output
+    it "should create dirs for multiple output dirs" do
+      options = {
+        :project_root => fixture,
+        :input => "vectors",
+        :output => {
+          :fonts => "assets/fonts",
+          :css => "assets/stylesheets"
+        }
+      }
+      gen = generator options
+      gen.stub(:empty_directory)
+      gen.should_receive(:empty_directory).twice
+      gen.prepare_output_dirs
     end
   end
 
   context "#get_data" do
     it "should assign empty data model if no data file is empty" do
-      gen = generator :output => fixture("empty-data")
-      data = gen.get_data
+      options = {
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "empty-data"
+      }
+      gen = generator options
+      gen.get_data
+      data = gen.instance_variable_get("@data")
       data.should == Fontcustom::DATA_MODEL
     end
 
     it "should assign @data from data file" do
-      gen = generator :output => fixture("mixed-output")
-      data = gen.get_data
+      options = {
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      }
+      gen = generator options
+      gen.get_data
+      data = gen.instance_variable_get("@data")
       data[:fonts] =~ data_file_contents[:fonts]
     end
   end
 
   context "#reset_output" do
     subject do
-      gen = generator :output => fixture("mixed-output")
+      options = {
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      }
+      gen = generator options
       gen.stub :remove_file
-      Fontcustom::Util.stub :clear_file
       gen.stub :append_to_file
+      Fontcustom::Util.stub :clear_file
       gen.instance_variable_set(:@data, data_file_contents)
       gen
     end
@@ -77,9 +92,9 @@ describe Fontcustom::Generator::Font do
       subject.reset_output
       subject.instance_variable_get(:@data)[:fonts].should be_empty
     end
-    
+
     it "should update the data file" do
-      file = File.join(fixture("mixed-output"), ".fontcustom-data")
+      file = fixture(".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with(file, /"fonts":/, :verbose => false)
       subject.reset_output
@@ -97,7 +112,7 @@ describe Fontcustom::Generator::Font do
       gen.stub(:"`").and_return fontforge_output
       gen
     end
-    
+
     it "should call fontforge" do
       subject.should_receive(:"`").with(/fontforge -script/)
       subject.generate
@@ -128,11 +143,11 @@ describe Fontcustom::Generator::Font do
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e" 
+      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e"
       data[:fonts].should =~ [
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot", 
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg", 
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf", 
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg",
+        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
         "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
       ]
     end
@@ -141,14 +156,14 @@ describe Fontcustom::Generator::Font do
   context "#announce_files" do
     it "should print generated files to console" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
-      gen.instance_variable_set :@data, data_file_contents 
+      gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
 
     it "should print nothing if verbose is false" do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"), :verbose => false)
-      gen.instance_variable_set :@data, data_file_contents 
+      gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should == ""
     end

@@ -43,21 +43,23 @@ module Fontcustom
 
       def get_config_path(options)
         if options[:config]
+          config = File.join options[:project_root], options[:config] 
+
           # :config is a dir containing fontcustom.yml
-          if File.exists?(File.join(options[:config], "fontcustom.yml"))
-            File.join options[:config], "fontcustom.yml"
+          if File.exists? File.join(config, "fontcustom.yml")
+            File.join config, "fontcustom.yml"
 
           # :config is the path to fontcustom.yml
-          elsif options[:config] && ! File.directory?(options[:config]) && File.exists?(options[:config])
-            options[:config]
+          elsif File.exists?(config) && ! File.directory?(config)
+            config
 
           else
-            raise Fontcustom::Error, "I couldn't find your configuration file. Check #{options[:config]} and try again."
+            raise Fontcustom::Error, "I couldn't find your configuration file. Check #{config} and try again."
           end
         else
           # config/fontcustom.yml is in the project_root
-          if File.exists? File.join(options[:project_root], "config/fontcustom.yml")
-            File.join options[:project_root], "config/fontcustom.yml"
+          if File.exists? File.join(options[:project_root], "config", "fontcustom.yml")
+            File.join options[:project_root], "config", "fontcustom.yml"
 
           # fontcustom.yml is in the project_root
           elsif File.exists? File.join(options[:project_root], "fontcustom.yml")
@@ -71,7 +73,7 @@ module Fontcustom
       end
 
       def get_input_paths(options)
-        if options[:input].is_a? Hash
+        paths = if options[:input].is_a? Hash
           input = Thor::CoreExt::HashWithIndifferentAccess.new options[:input]
           raise Fontcustom::Error, "INPUT should be a string or a hash containing a \"vectors\" key." unless input[:vectors]
 
@@ -88,6 +90,12 @@ module Fontcustom
             :templates => input
           })
         end
+        
+        if Dir[File.join(paths[:vectors], "*.{svg,eps}")].empty?
+          raise Fontcustom::Error, "#{paths[:vectors]} doesn't contain any vectors (*.svg or *.eps files)."
+        end
+
+        paths
       end
 
       def get_output_paths(options)
@@ -95,7 +103,10 @@ module Fontcustom
           output = Thor::CoreExt::HashWithIndifferentAccess.new options[:output]
           raise Fontcustom::Error, "OUTPUT should be a string or a hash containing a \"fonts\" key." unless output[:fonts]
 
-          output[:fonts] = File.join options[:project_root], output[:fonts]
+          output.each do |key, val|
+            output[key] = File.join options[:project_root], val
+          end
+
           output[:css] ||= output[:fonts]
           output[:preview] ||= output[:fonts]
           output
@@ -142,7 +153,7 @@ module Fontcustom
             File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
           else
             path = File.join(options[:project_root], options[:input][:templates], template)
-            raise Fontcustom::Error, "We couldn't find your custom template at #{file}. Double check and try again?" unless File.exists? path
+            raise Fontcustom::Error, "We couldn't find your custom template at #{path}. Double check and try again?" unless File.exists? path
             path
           end
         end

@@ -2,6 +2,7 @@ require "json"
 require "thor"
 require "thor/group"
 require "thor/actions"
+require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
   module Generator
@@ -12,32 +13,28 @@ module Fontcustom
       # This is DRYier, easier to maintain.
       argument :opts 
 
-      def check_input
-        if ! File.directory? opts[:input]
-          raise Fontcustom::Error, "#{opts[:input]} doesn't exist or isn't a directory."
-        elsif Dir[File.join(opts[:input], "*.{svg,eps}")].empty?
-          raise Fontcustom::Error, "#{opts[:input]} doesn't contain any vectors (*.svg or *.eps files)."
-        end
-      end
-
-      def check_output
-        if File.exists? File.join(opts[:output], ".fontcustom-data")
-          # Skip ahead, everything is in order
-        elsif File.exists?(opts[:output]) && ! File.directory?(opts[:output])
-          raise Fontcustom::Error, "#{opts[:output]} already exists but isn't a directory."
-        else
-          # creates opts[:output] as well
-          add_file File.join(opts[:output], ".fontcustom-data"), :verbose => opts[:verbose]
+      def prepare_output_dirs
+        dirs = opts[:output].values.uniq
+        dirs.each do |dir|
+          unless File.directory? dir
+            empty_directory dir, :verbose => opts[:verbose]
+          end
         end
       end
 
       def get_data
-        # file has already been verified/created
-        data = File.read File.join(opts[:output], ".fontcustom-data") 
-        data = JSON.parse(data, :symbolize_names => true) unless data.empty?
-        @data = data.is_a?(Hash) ? data : Fontcustom::DATA_MODEL.dup
-      rescue JSON::ParserError
-        raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:output]} is corrupted. Fix the JSON or delete the file to start from scratch."
+        datafile = File.join opts[:project_root], ".fontcustom-data"
+        if File.exists? datafile
+          begin
+            data = File.read datafile
+            data = JSON.parse(data, :symbolize_names => true) unless data.empty?
+            @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
+          rescue JSON::ParserError
+            raise Fontcustom::Error, "The .fontcustom-data file at #{datafile} is corrupted. Fix the JSON or delete the file to start from scratch."
+          end
+        else
+          @data = Fontcustom::DATA_MODEL.dup
+        end
       end
 
       def reset_output
@@ -45,15 +42,15 @@ module Fontcustom
         begin
           deleted = []
           @data[:fonts].each do |file| 
-            remove_file File.join(opts[:output], file), :verbose => opts[:verbose]
+            remove_file File.join(opts[:output][:fonts], file), :verbose => opts[:verbose]
             deleted << file
           end
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          file = File.join(opts[:output], ".fontcustom-data")
+          file = File.join(opts[:project_root], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
-          append_to_file file, json, :verbose => false # clear data file silently
+          append_to_file file, json, :verbose => false # modify silently
         end
       end
       
