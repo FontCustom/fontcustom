@@ -3,7 +3,7 @@ require 'json'
 require File.expand_path('../../lib/fontcustom.rb', __FILE__)
 
 RSpec.configure do |c|
-  def fixture(path)
+  def fixture(path = "")
     File.join(File.expand_path('../fixtures', __FILE__), path)
   end
 

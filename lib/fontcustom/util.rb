@@ -23,11 +23,11 @@ module Fontcustom
         options[:config] = get_config_path options
 
         if options[:config]
-          config = YAML.load File.open(options[:config])
-          if config.is_a? Hash
+          begin
+            config = YAML.load File.open(options[:config])
             options.merge! config
-          else
-            raise FontCustom::Error, "I couldn't read your fontcustom.yml file. Please check #{options[:config]} and try again."
+          rescue
+            raise Fontcustom::Error, "I couldn't read your configuration file. Please check #{options[:config]} and try again."
           end
         end
 
@@ -55,11 +55,11 @@ module Fontcustom
             raise Fontcustom::Error, "I couldn't find your configuration file. Check #{options[:config]} and try again."
           end
         else
-          # config/fontcustom.yml is in the project_root 
+          # config/fontcustom.yml is in the project_root
           if File.exists? File.join(options[:project_root], "config/fontcustom.yml")
             File.join options[:project_root], "config/fontcustom.yml"
 
-          # fontcustom.yml is in the project_root 
+          # fontcustom.yml is in the project_root
           elsif File.exists? File.join(options[:project_root], "fontcustom.yml")
             File.join options[:project_root], "fontcustom.yml"
 
@@ -76,15 +76,16 @@ module Fontcustom
           raise Fontcustom::Error, "INPUT should be a string or a hash containing a \"vectors\" key." unless input[:vectors]
 
           input[:vectors] = File.join options[:project_root], input[:vectors]
-          raise Fontcustom::Error, "INPUT[\"vectors\"] should a directory." unless File.directory? input[:vectors]
+          raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{input[:vectors]} and try again." unless File.directory? input[:vectors]
 
           input[:templates] ||= input[:vectors]
           input
-        elsif options[:input].is_a? String 
-          raise Fontcustom::Error, "INPUT should a directory." unless File.directory? options[:input]
+        elsif options[:input].is_a? String
+          input = File.join options[:project_root], options[:input]
+          raise Fontcustom::Error, "INPUT should be a directory. Check #{input} and try again." unless File.directory? input
           Thor::CoreExt::HashWithIndifferentAccess.new({
-            :vectors => options[:input],
-            :templates => options[:input]
+            :vectors => input,
+            :templates => input
           })
         end
       end
@@ -101,7 +102,7 @@ module Fontcustom
         else
           if options[:output].is_a? String
             output = File.join options[:project_root], options[:output]
-            raise Fontcustom::Error, "OUTPUT should be a directory, not a file." if File.exists?(output) && ! File.directory?(output)
+            raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{output} and try again." if File.exists?(output) && ! File.directory?(output)
           else
             # TODO friendly warning that we're defaulting to pwd/:font_name
             output = File.join options[:project_root], options[:font_name]
@@ -140,9 +141,9 @@ module Fontcustom
           when "bootstrap-ie7-scss"
             File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
           else
-            template = File.join(options[:input][:templates], template)
-            raise Fontcustom::Error, "We couldn't find your custom template at #{template}. Double check and try again?" unless File.exists? template
-            template
+            path = File.join(options[:project_root], options[:input][:templates], template)
+            raise Fontcustom::Error, "We couldn't find your custom template at #{file}. Double check and try again?" unless File.exists? path
+            path
           end
         end
       end
