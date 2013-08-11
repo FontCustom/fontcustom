@@ -16,6 +16,7 @@ module Fontcustom
 
   DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new({
     :fonts => [],
+    :fonts_previous => [],
     :templates => [],
     :file_name => "",
     :glyphs => []

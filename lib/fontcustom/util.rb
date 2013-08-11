@@ -32,6 +32,7 @@ module Fontcustom
         end
 
         # Override with passed arguments
+        args.delete(:input) unless args[:input] # allows nil input from CLI
         options.merge! args
         options[:font_name] = options[:font_name].strip.gsub(/\W/, '-')
 

@@ -35,17 +35,12 @@ module Fontcustom
         end
       end
 
-      def update_source_paths
-        source_paths # assigns @source_paths
-        @source_paths.unshift(opts[:input], Dir.pwd)
-      end
-
       def reset_output
         return if @data[:templates].empty?
         begin
           deleted = []
           @data[:templates].each do |file|
-            remove_file File.join(opts[:project_root], file), :verbose => opts[:verbose]
+            remove_file file, :verbose => opts[:verbose]
             deleted << file
           end
         ensure
@@ -73,6 +68,7 @@ module Fontcustom
                      else
                        File.join opts[:output][:fonts], name
                      end
+
             template source, target, :verbose => opts[:verbose]
             created << target
           end

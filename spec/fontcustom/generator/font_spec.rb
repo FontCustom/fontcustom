@@ -75,7 +75,7 @@ describe Fontcustom::Generator::Font do
       gen
     end
 
-    it "should delete fonts from @data[:fonts]" do
+    it "should delete fonts from @data[:fonts_previous]" do
       subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
       subject.reset_output
     end
@@ -87,9 +87,9 @@ describe Fontcustom::Generator::Font do
       subject.reset_output
     end
 
-    it "should empty @data[:fonts]" do
+    it "should empty @data[:fonts_previous]" do
       subject.reset_output
-      subject.instance_variable_get(:@data)[:fonts].should be_empty
+      subject.instance_variable_get(:@data)[:fonts_previous].should be_empty
     end
 
     it "should update the data file" do

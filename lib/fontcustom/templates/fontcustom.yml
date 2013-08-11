@@ -1,80 +1,38 @@
-##
-# FONTCUSTOM CONFIG
-#
-# This file will automatically be loaded if located inside your vector dir.
-# Otherwise, pass it to `compile` or `watch` with:
-#
-#   --config=path/to/config.yml
-#   -c path/to/containing/dir/
-##
+# ---------------------------------------------------------------------------- #
+# Project Info
+# ---------------------------------------------------------------------------- #
+
+#font_name: My Custom Font
+#file_hash: false
+#css_prefix: glyph-
+#font_face_path: assets/fonts/fontcustom
+#debug: true
+#verbose: false
+
 
 # ---------------------------------------------------------------------------- #
-# Output Directory
-# absolute path OR relative path from `pwd`
-#
-# default: INPUT/fontcustom
+# Project Directories
+#   All paths are relative to PROJECT_ROOT (default: working directory).
+#   When assigned a hash, individual components can have their own paths.
+#   When assigned a string, all components share the same path.
+# ---------------------------------------------------------------------------- #
 
-#output: path/to/output
+#input:
+#  vectors: app/assets/fontcustom/vectors
+#  templates: app/assets/fontcustom/templates
+
+#output:
+#  fonts: app/assets/fonts
+#  css: app/assets/stylesheets
+#  preview: app/views/styleguide
+
 
 # ---------------------------------------------------------------------------- #
 # Templates
-# array of templates to generate alongside fonts
-# accepts shortcuts or paths (absolute, relative to INPUT, or relative to `pwd`)
-#
-# shortcuts: 
-#   preview
-#   css, scss
-#   bootstrap, bootstrap-scss
-#   bootstrap-ie7, bootstrap-ie7-scss
-#
-# default: [ css, preview ]
-
-#templates: [ scss, preview, path/from/INPUT ]
-
+#   Shortcuts:
+#     preview, css, scss, bootstrap, bootstrap-scss, bootstrap-ie7,
+#     bootstrap-ie7-scss
+#   Custom templates should be saved in the INPUT[:templates] directory.
 # ---------------------------------------------------------------------------- #
-# Font Name
-# automatically normalized to lower-spinal-case
-#
-# default: fontcustom
 
-#font_name: my-font
-  
-# ---------------------------------------------------------------------------- #
-# Font Hash
-# option to attach a cache-breaking fingerprint to each font file
-#
-# default: true
-
-#file_hash: false
-
-# ---------------------------------------------------------------------------- #
-# CSS Class Prefix
-#
-# default: icon-
-
-  #css_prefix: glyph-
-
-# ---------------------------------------------------------------------------- #
-# @Font-face Path
-# font path used in @font-face declarations
-# only affects SCSS shortcut templates and custom templates
-#
-# default: none
-
-#font_face_path: assets/fonts/fontcustom
-
-# ---------------------------------------------------------------------------- #
-# Debug
-# show raw output from Font Forge
-#
-# default: false
-
-#debug: true
-
-# ---------------------------------------------------------------------------- #
-# Verbose
-# print out all file operations
-#
-# default: true
-
-#verbose: false
+#templates: [ scss, preview, my-custom-template.yml ]
