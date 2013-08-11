@@ -5,19 +5,35 @@ module Fontcustom
   class Watcher
     def initialize(opts)
       @opts = opts
-      @listener = Listen.to(@opts[:input]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+      @vector_listener = Listen.to(@opts[:input][:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+      templates = @opts[:templates].dup
+      templates.delete_if do |template|
+        template.match Util.gem_lib_path
+      end
+      unless templates.empty?
+        templates = templates.map do |template|
+          File.basename teamplate
+        end
+        @template_listener = Listen.to(@opts[:input][:vectors]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
+      end
+
       @opts[:blocking] = @opts[:blocking] == false ? false : true
-      @listener = @listener.polling_fallback_message(false) unless @opts[:blocking]
+      unless @opts[:blocking]
+        @vector_listener = @vector_listener.polling_fallback_message(false) 
+        @template_listener = @template_listener.polling_fallback_message(false) if @template_listener 
+      end
     end
 
     def watch
-      puts "Font Custom is watching your icons at #{@opts[:input]}. Press Ctrl + C to stop."
+      puts "Font Custom is watching your icons at #{@opts[:input][:vectors]}. Press Ctrl + C to stop."
       compile unless @opts[:skip_first]
 
       if @opts[:blocking]
-        @listener.start!
+        @vector_listener.start!
+        @template_listener.start! if @template_listener
       else
-        @listener.start
+        @vector_listener.start
+        @template_listener.start if @template_listener
       end
 
     rescue Fontcustom::Error => e
@@ -29,9 +45,9 @@ module Fontcustom
     end
 
     def stop
-      # Adding a newline so message is not prepended with ^C on SIGTERM
+      @vector_listener.stop
+      @template_listener.stop if @template_listener
       puts "\nFont Custom is signing off. Good night and good luck."
-      @listener.stop
     end
 
     private

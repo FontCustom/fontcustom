@@ -45,32 +45,42 @@ module Fontcustom
         begin
           deleted = []
           @data[:templates].each do |file|
-            remove_file File.join(opts[:output], file), :verbose => opts[:verbose]
+            remove_file File.join(opts[:project_root], file), :verbose => opts[:verbose]
             deleted << file
           end
         ensure
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
-          file = File.join(opts[:output], ".fontcustom-data")
+          file = File.join(opts[:project_root], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
           append_to_file file, json, :verbose => false # clear data file silently
         end
       end
 
+      # TODO does this need project_root? should not, if util does its job.
       def generate
         @opts = opts # make available to templates
         begin
           created = []
           opts[:templates].each do |source|
             name = File.basename source
-            destination = File.join opts[:output], name
-            template source, destination, :verbose => opts[:verbose]
-            created << name
+            ext = File.extname name
+            target = if %|css scss sass less stylus|.include? ext
+                       File.join opts[:output][:css], name
+                     elsif name == "fontcustom-preview.html"
+                       File.join opts[:output][:preview], name
+                     elsif opts[:output].keys.include? name
+                       File.join opts[:output][name], name
+                     else
+                       File.join opts[:output][:fonts], name
+                     end
+            template source, target, :verbose => opts[:verbose]
+            created << target
           end
         ensure
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
-          file = File.join(opts[:output], ".fontcustom-data")
+          file = File.join(opts[:project_root], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
           append_to_file file, json, :verbose => opts[:verbose]
         end

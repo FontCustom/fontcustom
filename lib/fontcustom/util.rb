@@ -43,7 +43,7 @@ module Fontcustom
 
       def get_config_path(options)
         if options[:config]
-          config = File.join options[:project_root], options[:config] 
+          config = File.join options[:project_root], options[:config]
 
           # :config is a dir containing fontcustom.yml
           if File.exists? File.join(config, "fontcustom.yml")
@@ -90,7 +90,7 @@ module Fontcustom
             :templates => input
           })
         end
-        
+
         if Dir[File.join(paths[:vectors], "*.{svg,eps}")].empty?
           raise Fontcustom::Error, "#{paths[:vectors]} doesn't contain any vectors (*.svg or *.eps files)."
         end

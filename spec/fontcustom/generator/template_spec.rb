@@ -10,8 +10,7 @@ describe Fontcustom::Generator::Template do
     it "should raise error if data file doesn't exist" do 
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
-        :output => "empty"
+        :input => "shared/vectors"
       )
       expect { gen.get_data }.to raise_error Fontcustom::Error, /no \.fontcustom-data/
     end
@@ -19,9 +18,8 @@ describe Fontcustom::Generator::Template do
     # TODO ensure data file is correct
     it "should assign @data from data file" do
       gen = generator(
-        :project_root => fixture,
-        :input => "vectors",
-        :output => "mixed-output"
+        :project_root => fixture("generators"),
+        :input => "../shared/vectors"
       )
       gen.get_data
       gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
@@ -30,14 +28,22 @@ describe Fontcustom::Generator::Template do
 
   context "#check_templates" do
     it "should raise an error if no templates are given" do 
-      gen = generator :templates => []
+      gen = generator(
+        :project_root => fixture,
+        :input => "shared/vectors",
+        :templates => []
+      )
       expect { gen.check_templates }.to raise_error Fontcustom::Error, /No templates were specified/
     end
   end
 
   context "#reset_output" do
     subject do
-      gen = generator :output => fixture("mixed-output")
+      gen = generator(
+        :project_root => fixture("generators"),
+        :input => "../shared/vectors",
+        :output => "mixed-output"
+      )
       gen.stub :remove_file
       Fontcustom::Util.stub :clear_file
       gen.stub :append_to_file
@@ -63,7 +69,7 @@ describe Fontcustom::Generator::Template do
     end
     
     it "should update the data file" do
-      file = File.join(fixture("mixed-output"), ".fontcustom-data")
+      file = fixture("generators/.fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with(file, /"templates":/, :verbose => false)
       subject.reset_output
@@ -77,7 +83,12 @@ describe Fontcustom::Generator::Template do
 
   context "#generate" do
     subject do
-      gen = generator :output => fixture("mixed-output"), :templates => %W|scss css #{fixture("not-a-dir")}|
+      gen = generator(
+        :project_root => fixture("generators"),
+        :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
+        :output => "mixed-output", 
+        :templates => %W|scss css custom.css|
+      )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
       Fontcustom::Util.stub :clear_file
@@ -90,20 +101,26 @@ describe Fontcustom::Generator::Template do
       subject.generate
     end
 
-    it "should update data file" do 
-      file = File.join fixture("mixed-output"), ".fontcustom-data"
+    it "should update data file with generated templates" do 
+      file = fixture("generators/.fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
         content.should match(/fontcustom\.css/)
         content.should match(/_fontcustom\.scss/)
-        content.should match(/not-a-dir/)
+        content.should match(/custom\.css/)
       end
       subject.generate
     end
 
     it "should be silent if verbose is false" do
-      gen = generator :output => fixture("mixed-output"), :templates => %W|scss css #{fixture("not-a-dir")}|, :verbose => false
+      gen = generator( 
+        :project_root => fixture("generators"),
+        :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
+        :output => "mixed-output", 
+        :templates => %W|scss css custom.css|, 
+        :verbose => false
+      )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
       Fontcustom::Util.stub :clear_file
@@ -111,5 +128,10 @@ describe Fontcustom::Generator::Template do
       stdout = capture(:stdout) { gen.generate }
       stdout.should == ""
     end
+
+    it "should output files into :fonts by default"
+    it "should output css-like files into :css if specified"
+    it "should output fontcustom-preview.html into :preview if specified"
+    it "should output custom templates to their matching :output paths if specified"
   end
 end
