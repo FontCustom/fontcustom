@@ -8,12 +8,21 @@ describe Fontcustom::Generator::Template do
 
   context "#get_data" do
     it "should raise error if data file doesn't exist" do 
-      gen = generator :output => fixture("empty")
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "empty"
+      )
       expect { gen.get_data }.to raise_error Fontcustom::Error, /no \.fontcustom-data/
     end
 
+    # TODO ensure data file is correct
     it "should assign @data from data file" do
-      gen = generator :output => fixture("mixed-output")
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      )
       gen.get_data
       gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
     end

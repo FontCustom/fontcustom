@@ -18,15 +18,15 @@ module Fontcustom
       end
 
       def get_data
-        data = File.join(opts[:output], ".fontcustom-data")
+        data = File.join(opts[:project_root], ".fontcustom-data")
         if File.exists? data
           @data = JSON.parse(File.read(data), :symbolize_names => true)
         else
-          raise Fontcustom::Error, "There's no .fontcustom-data file in #{opts[:output]}. Try again?"
+          raise Fontcustom::Error, "There's no .fontcustom-data file in #{opts[:project_root]}. Try again?"
         end
       rescue JSON::ParserError
         # Catches both empty and and malformed files
-        raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:output]} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate .fontcustom-data."
+        raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:project_root]} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate .fontcustom-data."
       end
 
       def check_templates

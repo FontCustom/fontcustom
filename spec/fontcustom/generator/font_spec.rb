@@ -10,7 +10,7 @@ describe Fontcustom::Generator::Font do
     it "should create output dir if it doesn't exist" do
       options = {
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "create-me"
       }
       gen = generator options
@@ -22,7 +22,7 @@ describe Fontcustom::Generator::Font do
     it "should create dirs for multiple output dirs" do
       options = {
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => {
           :fonts => "assets/fonts",
           :css => "assets/stylesheets"
@@ -39,7 +39,7 @@ describe Fontcustom::Generator::Font do
     it "should assign empty data model if no data file is empty" do
       options = {
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "empty-data"
       }
       gen = generator options
@@ -51,7 +51,7 @@ describe Fontcustom::Generator::Font do
     it "should assign @data from data file" do
       options = {
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       }
       gen = generator options
@@ -65,7 +65,7 @@ describe Fontcustom::Generator::Font do
     subject do
       options = {
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       }
       gen = generator options
@@ -110,7 +110,7 @@ describe Fontcustom::Generator::Font do
     subject do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       )
       gen.stub(:"`").and_return fontforge_output
@@ -123,7 +123,7 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should pass options to fontforge" do
-      subject.should_receive(:"`").with(/#{fixture("vectors")}.+#{fixture("mixed-output")}/)
+      subject.should_receive(:"`").with(/#{fixture("shared/vectors")}.+#{fixture("mixed-output")}/)
       subject.generate
     end
 
@@ -136,7 +136,7 @@ describe Fontcustom::Generator::Font do
     it "should raise error if fontforge fails" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "fake-dir-should-cause-failure",
         :debug => true
       )
@@ -148,7 +148,7 @@ describe Fontcustom::Generator::Font do
     it "should assign @data from @json" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       )
       gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
@@ -170,7 +170,7 @@ describe Fontcustom::Generator::Font do
     it "should print generated files to console" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       )
       gen.instance_variable_set :@data, data_file_contents
@@ -181,7 +181,7 @@ describe Fontcustom::Generator::Font do
     it "should print nothing if verbose is false" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output",
         :verbose => false
       )
@@ -195,7 +195,7 @@ describe Fontcustom::Generator::Font do
     it "should update data file (TEMP)" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output"
       )
       Fontcustom::Util.stub :clear_file
@@ -215,7 +215,7 @@ describe Fontcustom::Generator::Font do
     it "should be silent if verbose is false" do
       gen = generator(
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :output => "mixed-output",
         :verbose => false
       )

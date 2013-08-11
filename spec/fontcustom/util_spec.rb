@@ -16,8 +16,8 @@ describe Fontcustom::Util do
     it "should raise error if fontcustom.yml isn't valid" do
       options = { 
         :project_root => fixture,
-        :input => "vectors",
-        :config => "fontcustom-malformed.yml" 
+        :input => "shared/vectors",
+        :config => "util/fontcustom-malformed.yml" 
       }
       expect { util.collect_options(options) }.to raise_error Fontcustom::Error, /couldn't read your configuration/
     end
@@ -25,8 +25,8 @@ describe Fontcustom::Util do
     it "should overwrite defaults with config file" do
       options = { 
         :project_root => fixture,
-        :input => "vectors",
-        :config => "fontcustom.yml" 
+        :input => "shared/vectors",
+        :config => "util/fontcustom.yml" 
       }
       options = util.collect_options options
       options[:font_name].should == "Custom-Name-From-Config"
@@ -35,9 +35,9 @@ describe Fontcustom::Util do
     it "should overwrite config file and defaults with CLI options" do
       options = { 
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :font_name => "custom-name-from-cli",
-        :config => "fontcustom.yml" 
+        :config => "util/fontcustom.yml" 
       }
       options = util.collect_options options
       options[:font_name].should == "custom-name-from-cli"
@@ -46,7 +46,7 @@ describe Fontcustom::Util do
     it "should normalize file name" do
       options = { 
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :font_name => " A_stR4nG3  nAm3 Ø&  "
       }
       options = util.collect_options options
@@ -58,23 +58,23 @@ describe Fontcustom::Util do
     it "should search for fontcustom.yml if options[:config] is a dir" do
       options = { 
         :project_root => fixture,
-        :config => "config-test"
+        :config => "util/config-is-in-dir"
       }
-      util.get_config_path(options).should == fixture("config-test/fontcustom.yml")
+      util.get_config_path(options).should == fixture("util/config-is-in-dir/fontcustom.yml")
     end
 
     it "should search use options[:config] if it's a file" do
       options = { 
         :project_root => fixture,
-        :config => "fontcustom.yml"
+        :config => "util/fontcustom.yml"
       }
-      util.get_config_path(options).should == fixture("fontcustom.yml")
+      util.get_config_path(options).should == fixture("util/fontcustom.yml")
     end
 
     it "should raise error if fontcustom.yml was specified but doesn't exist" do
       options = { 
         :project_root => fixture,
-        :input => "vectors",
+        :input => "shared/vectors",
         :config => "does-not-exist"
       }
       expect { util.get_config_path(options) }.to raise_error Fontcustom::Error, /couldn't find/
@@ -88,7 +88,7 @@ describe Fontcustom::Util do
     it "should raise error if input[:vectors] doesn't contain vectors" do
       options = {
         :project_root => fixture,
-        :input => "empty"
+        :input => "shared/vectors-empty"
       }
       expect { util.get_input_paths(options) }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
     end
@@ -96,7 +96,7 @@ describe Fontcustom::Util do
     context "when passed a hash" do
       it "should return a hash of input locations" do
         options = {
-          :input => { :vectors => "vectors" },
+          :input => { :vectors => "shared/vectors" },
           :project_root => fixture
         }
         paths = util.get_input_paths(options)
@@ -106,7 +106,7 @@ describe Fontcustom::Util do
 
       it "should set :templates as :vectors if :templates isn't passed" do
         options = {
-          :input => { :vectors => "vectors" },
+          :input => { :vectors => "shared/vectors" },
           :project_root => fixture
         }
         paths = util.get_input_paths(options)
@@ -115,7 +115,7 @@ describe Fontcustom::Util do
 
       it "should preserve :templates if it is passed" do
         options = {
-          :input => { :vectors => "vectors", :templates => "templates" },
+          :input => { :vectors => "shared/vectors", :templates => "shared/templates" },
           :project_root => fixture
         }
         paths = util.get_input_paths(options)
@@ -124,7 +124,7 @@ describe Fontcustom::Util do
 
       it "should raise an error if :vectors isn't included" do
         options = {
-          :input => { :templates => "templates" },
+          :input => { :templates => "shared/templates" },
           :project_root => fixture
         }
         expect { util.get_input_paths(options) }.to raise_error Fontcustom::Error, /should be a string or a hash/
@@ -132,7 +132,7 @@ describe Fontcustom::Util do
 
       it "should raise an error if :vectors doesn't point to an existing directory" do
         options = {
-          :input => { :vectors => "not-a-dir" },
+          :input => { :vectors => "shared/not-a-dir" },
           :project_root => fixture
         }
         expect { util.get_input_paths(options) }.to raise_error Fontcustom::Error, /should be a directory/
@@ -142,7 +142,7 @@ describe Fontcustom::Util do
     context "when passed a string" do
       it "should return a hash of input locations" do
         options = { 
-          :input => "vectors",
+          :input => "shared/vectors",
           :project_root => fixture
         }
         paths = util.get_input_paths(options)
@@ -152,7 +152,7 @@ describe Fontcustom::Util do
 
       it "should set :templates to match :vectors" do
         options = { 
-          :input => "vectors",
+          :input => "shared/vectors",
           :project_root => fixture
         }
         paths = util.get_input_paths(options)
@@ -161,7 +161,7 @@ describe Fontcustom::Util do
 
       it "should raise an error if :vectors doesn't point to a directory" do
         options = { 
-          :input => "not-a-dir",
+          :input => "shared/not-a-dir",
           :project_root => fixture
         }
         expect { util.collect_options options }.to raise_error Fontcustom::Error, /should be a directory/
@@ -181,7 +181,7 @@ describe Fontcustom::Util do
     context "when passed a hash" do
       it "should return a hash of output locations" do 
         options = {
-          :output => { :fonts => "fonts" },
+          :output => { :fonts => "output/fonts" },
           :project_root => fixture
         }
         paths = util.get_output_paths(options)
@@ -192,7 +192,7 @@ describe Fontcustom::Util do
 
       it "should set :css and :preview to match :fonts if either aren't passed" do
         options = {
-          :output => { :fonts => "fonts" },
+          :output => { :fonts => "output/fonts" },
           :project_root => fixture
         }
         paths = util.get_output_paths(options)
@@ -203,9 +203,9 @@ describe Fontcustom::Util do
       it "should preserve :css and :preview if they do exist" do
         options = {
           :output => { 
-            :fonts => "fonts",
-            :css => "styles",
-            :preview => "preview"
+            :fonts => "output/fonts",
+            :css => "output/styles",
+            :preview => "output/preview"
           },
           :project_root => fixture
         }
@@ -217,7 +217,7 @@ describe Fontcustom::Util do
       it "should create additional paths if they are given" do
         options = {
           :output => { 
-            :fonts => "fonts",
+            :fonts => "output/fonts",
             "special.js" => "assets/javascripts"
           },
           :project_root => fixture
@@ -228,7 +228,7 @@ describe Fontcustom::Util do
       
       it "should raise an error if :fonts isn't included" do
         options = {
-          :output => { :css => "styles" },
+          :output => { :css => "output/styles" },
           :project_root => fixture
         }
         expect { util.get_output_paths(options) }.to raise_error Fontcustom::Error, /containing a "fonts" key/
@@ -238,7 +238,7 @@ describe Fontcustom::Util do
     context "when passed a string" do
       it "should return a hash of output locations" do
         options = {
-          :output => "fonts",
+          :output => "output/fonts",
           :project_root => fixture
         }
         paths = util.get_output_paths(options)
@@ -249,7 +249,7 @@ describe Fontcustom::Util do
 
       it "should set :css and :preview to match :fonts" do
         options = {
-          :output => "fonts",
+          :output => "output/fonts",
           :project_root => fixture
         }
         paths = util.get_output_paths(options)
@@ -259,7 +259,7 @@ describe Fontcustom::Util do
 
       it "should raise an error if :fonts exists but isn't a directory" do
         options = {
-          :output => "not-a-dir",
+          :output => "shared/not-a-dir",
           :project_root => fixture
         }
         expect { util.get_output_paths(options) }.to raise_error Fontcustom::Error, /directory, not a file/
@@ -270,7 +270,7 @@ describe Fontcustom::Util do
   context ".get_templates" do
     it "should ensure that 'css' is included with 'preview'" do
       lib = util.gem_lib_path
-      options = { :input => fixture("vectors"), :templates => %W|preview| }
+      options = { :input => fixture("shared/vectors"), :templates => %W|preview| }
       templates = util.get_templates options
       templates.should =~ [
         File.join(lib, "templates", "fontcustom.css"),
@@ -280,7 +280,7 @@ describe Fontcustom::Util do
 
     it "should expand shorthand for packaged templates" do
       lib = util.gem_lib_path
-      options = { :input => fixture("vectors"), :templates => %W|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss| }
+      options = { :input => fixture("shared/vectors"), :templates => %W|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss| }
       templates = util.get_templates options
       templates.should =~ [
         File.join(lib, "templates", "fontcustom-preview.html"),
@@ -296,17 +296,17 @@ describe Fontcustom::Util do
     it "should find custom templates in :template_path" do
       options = { 
         :project_root => fixture, 
-        :input => { :templates => "templates" },
+        :input => { :templates => "shared/templates" },
         :templates => %W|custom.css|
       }
       templates = util.get_templates options
-      templates.should eq([ fixture("templates/custom.css") ])
+      templates.should eq([ fixture("shared/templates/custom.css") ])
     end
 
     it "should raise an error if a template does not exist" do
       options = {
         :project_root => fixture,
-        :input => { :templates => "templates" },
+        :input => { :templates => "shared/templates" },
         :templates => %W|css fake-template|
       }
       expect { util.get_templates options }.to raise_error Fontcustom::Error, /couldn't find.+fake-template/
