@@ -36,11 +36,10 @@ describe Fontcustom::Generator::Font do
   end
 
   context "#get_data" do
-    it "should assign empty data model if no data file is empty" do
+    it "should assign empty data model if data file is empty or missing" do
       options = {
         :project_root => fixture,
-        :input => "shared/vectors",
-        :output => "empty-data"
+        :input => "shared/vectors"
       }
       gen = generator options
       gen.get_data
