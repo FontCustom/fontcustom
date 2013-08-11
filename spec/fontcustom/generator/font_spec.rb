@@ -108,7 +108,11 @@ describe Fontcustom::Generator::Font do
 
   context "#generate" do
     subject do
-      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      )
       gen.stub(:"`").and_return fontforge_output
       gen
     end
@@ -130,14 +134,23 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should raise error if fontforge fails" do
-      gen = generator(:input => fixture("vectors"), :output => fixture("fake-dir-should-cause-failure"), :debug => true)
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "fake-dir-should-cause-failure",
+        :debug => true
+      )
       expect { capture(:stdout) { gen.generate } }.to raise_error Fontcustom::Error, /failed unexpectedly/
     end
   end
 
   context "#collect_data" do
     it "should assign @data from @json" do
-      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      )
       gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
       gen.instance_variable_set(:@json, data_file_contents.to_json)
       gen.collect_data
@@ -155,14 +168,23 @@ describe Fontcustom::Generator::Font do
 
   context "#announce_files" do
     it "should print generated files to console" do
-      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
 
     it "should print nothing if verbose is false" do
-      gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"), :verbose => false)
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output",
+        :verbose => false
+      )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
       stdout.should == ""
@@ -171,11 +193,15 @@ describe Fontcustom::Generator::Font do
 
   context "#save_data" do
     it "should update data file (TEMP)" do
-      gen = generator(:output => fixture("mixed-output"))
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output"
+      )
       Fontcustom::Util.stub :clear_file
       gen.stub :append_to_file
       gen.instance_variable_set(:@data, data_file_contents)
-      file = File.join(fixture("mixed-output"), ".fontcustom-data")
+      file = File.join fixture(".fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       gen.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
@@ -187,7 +213,12 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should be silent if verbose is false" do
-      gen = generator(:output => fixture("mixed-output"), :verbose => false)
+      gen = generator(
+        :project_root => fixture,
+        :input => "vectors",
+        :output => "mixed-output",
+        :verbose => false
+      )
       Fontcustom::Util.stub :clear_file
       gen.stub :append_to_file
       gen.instance_variable_set(:@data, data_file_contents)

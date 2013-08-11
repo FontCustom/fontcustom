@@ -59,7 +59,7 @@ module Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash} 2>&1"
+        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input][:vectors]} #{opts[:output][:fonts] + name + hash} 2>&1"
 
         output = `#{cmd}`.split("\n")
         @json = output[3] # JSON
@@ -89,13 +89,13 @@ module Fontcustom
 
       def announce_files
         if opts[:verbose]
-          @data[:fonts].each { |file| shell.say_status(:create, File.join(opts[:output], file)) }
+          @data[:fonts].each { |file| shell.say_status(:create, File.join(opts[:output][:fonts], file)) }
         end
       end
 
       def save_data
         json = JSON.pretty_generate @data
-        file = File.join(opts[:output], ".fontcustom-data")
+        file = File.join(opts[:project_root], ".fontcustom-data")
         Fontcustom::Util.clear_file(file)
         append_to_file file, json, :verbose => opts[:verbose]
       end
