@@ -8,7 +8,7 @@ module Fontcustom
     include Thor::Actions
 
     # Actual defaults are stored in Fontcustom::DEFAULT_OPTIONS instead of Thor
-    class_option :output, :aliases => "-o", :desc => "The output directory (will be created if it doesn't exist). Default: INPUT/fontcustom/"
+    class_option :output, :aliases => "-o", :desc => "The output directory (will be created if it doesn't exist). Default: INPUT/FONT_NAME/"
     class_option :config, :aliases => "-c", :desc => "Path to or containing directory of the config file. Default: INPUT/fontcustom.yml" 
     class_option :templates, :aliases => "-t", :type => :array, :desc => "List of templates to compile alongside fonts. Accepts 'preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss' or arbitrary paths relative to INPUT or PWD. Default: 'css preview'"
     class_option :font_name, :aliases => "-n", :desc => "The font name used in your templates (automatically normalized to lowercase spinal case). Default: 'fontcustom'"
@@ -23,8 +23,8 @@ module Fontcustom
       File.join Fontcustom::Util.gem_lib_path, "templates"
     end
 
-    desc "compile [INPUT]", "Generates webfonts and CSS from *.svg and *.eps files in INPUT."
-    def compile(input)
+    desc "compile [INPUT]", "Generates webfonts and CSS from *.svg and *.eps files in INPUT. Defaults to working directory."
+    def compile(input = Dir.pwd)
       opts = options.merge :input => input
       opts = Fontcustom::Util.collect_options opts
       Fontcustom::Generator::Font.start [opts]
@@ -33,9 +33,9 @@ module Fontcustom
       puts "ERROR: #{e.message}"
     end
 
-    desc "watch [INPUT]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop."
+    desc "watch [INPUT]", "Watches INPUT for changes and regenerates webfonts and CSS automatically. Ctrl + C to stop. Defaults to working directory."
     method_option :skip_first, :aliases => "-s", :type => :boolean, :desc => "Skip the initial compile upon watching. Default: false"
-    def watch(input)
+    def watch(input = Dir.pwd)
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
       opts = Fontcustom::Util.collect_options opts
       Fontcustom::Watcher.new(opts).watch
@@ -43,8 +43,8 @@ module Fontcustom
       puts "ERROR: #{e.message}"
     end
 
-    desc "config [INPUT]", "Adds an annotated fontcustom.yml to INPUT (created if it doesn't exists)."
-    def config(input)
+    desc "config [INPUT]", "Adds an annotated fontcustom.yml to INPUT. Defaults to working directory."
+    def config(input = Dir.pwd)
       template "fontcustom.yml", File.join(input, "fontcustom.yml")
     end
 
