@@ -296,7 +296,10 @@ describe Fontcustom::Util do
     it "should find custom templates in :template_path" do
       options = { 
         :project_root => fixture, 
-        :input => { :templates => "shared/templates" },
+        :input => { 
+          :vectors => fixture("shared/vectors"), 
+          :templates => fixture("shared/templates") 
+        },
         :templates => %W|custom.css|
       }
       templates = util.get_templates options

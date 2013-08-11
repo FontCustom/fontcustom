@@ -55,13 +55,40 @@ describe Fontcustom::Watcher do
         begin
           w.watch
           FileUtils.cp fixture("shared/vectors/C.svg"), fixture("shared/vectors/test.svg")
-          sleep 2
+          sleep 1
         ensure
           w.stop
           new = fixture("shared/vectors/test.svg")
           FileUtils.rm(new) if File.exists?(new)
         end
       end
+    end
+
+    it "should call generators when watched templates change" do
+      Fontcustom::Generator::Font.should_receive(:start).once
+      Fontcustom::Generator::Template.should_receive(:start).once
+      w = watcher(
+        :project_root => fixture,
+        :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
+        :templates => %w|css preview custom.css|,
+        :output => "output",
+        :skip_first => true
+      )
+      capture(:stdout) do
+        begin
+          template = fixture "shared/templates/custom.css"
+          content = File.read template
+          new = content + "\n.bar { color: red; }"
+
+          w.watch
+          File.open(template, "w") { |file| file.write(new) }
+          sleep 1
+        ensure
+          w.stop
+          File.open(template, "w") { |file| file.write(content) }
+        end
+      end
+
     end
 
     it "should do nothing when non-vectors change" do
@@ -84,7 +111,5 @@ describe Fontcustom::Watcher do
         end
       end
     end
-
-    it "should call generators when watched templates change"
   end
 end

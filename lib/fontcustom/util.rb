@@ -77,10 +77,15 @@ module Fontcustom
           input = Thor::CoreExt::HashWithIndifferentAccess.new options[:input]
           raise Fontcustom::Error, "INPUT should be a string or a hash containing a \"vectors\" key." unless input[:vectors]
 
-          input[:vectors] = File.join options[:project_root], input[:vectors]
+          input[:vectors] = File.expand_path File.join(options[:project_root], input[:vectors])
           raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{input[:vectors]} and try again." unless File.directory? input[:vectors]
 
-          input[:templates] ||= input[:vectors]
+          if input[:templates]
+            input[:templates] = File.expand_path File.join(options[:project_root], input[:templates])
+            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{input[:templates]} and try again." unless File.directory? input[:templates]
+          else
+            input[:templates] = input[:vectors]
+          end
           input
         elsif options[:input].is_a? String
           input = File.join options[:project_root], options[:input]
@@ -152,7 +157,7 @@ module Fontcustom
           when "bootstrap-ie7-scss"
             File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
           else
-            path = File.join(options[:project_root], options[:input][:templates], template)
+            path = File.join options[:input][:templates], template
             raise Fontcustom::Error, "We couldn't find your custom template at #{path}. Double check and try again?" unless File.exists? path
             path
           end

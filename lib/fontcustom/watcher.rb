@@ -6,15 +6,16 @@ module Fontcustom
     def initialize(opts)
       @opts = opts
       @vector_listener = Listen.to(@opts[:input][:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+
       templates = @opts[:templates].dup
       templates.delete_if do |template|
         template.match Util.gem_lib_path
       end
       unless templates.empty?
         templates = templates.map do |template|
-          File.basename teamplate
+          File.basename template
         end
-        @template_listener = Listen.to(@opts[:input][:vectors]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
+        @template_listener = Listen.to(@opts[:input][:templates]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
       end
 
       @opts[:blocking] = @opts[:blocking] == false ? false : true
