@@ -43,27 +43,27 @@ module Fontcustom
 
       def get_config_path(options)
         if options[:config]
-          config = File.join options[:project_root], options[:config]
-
-          # :config is a dir containing fontcustom.yml
-          if File.exists? File.join(config, "fontcustom.yml")
-            File.join config, "fontcustom.yml"
+          config = File.expand_path File.join(options[:project_root], options[:config])
 
           # :config is the path to fontcustom.yml
-          elsif File.exists?(config) && ! File.directory?(config)
+          if File.exists?(config) && ! File.directory?(config)
             config
+
+          # :config is a dir containing fontcustom.yml
+          elsif File.exists? File.join(config, "fontcustom.yml")
+            File.join config, "fontcustom.yml"
 
           else
             raise Fontcustom::Error, "I couldn't find your configuration file. Check #{config} and try again."
           end
         else
-          # config/fontcustom.yml is in the project_root
-          if File.exists? File.join(options[:project_root], "config", "fontcustom.yml")
-            File.join options[:project_root], "config", "fontcustom.yml"
-
           # fontcustom.yml is in the project_root
-          elsif File.exists? File.join(options[:project_root], "fontcustom.yml")
+          if File.exists? File.join(options[:project_root], "fontcustom.yml")
             File.join options[:project_root], "fontcustom.yml"
+
+          # config/fontcustom.yml is in the project_root
+          elsif File.exists? File.join(options[:project_root], "config", "fontcustom.yml")
+            File.join options[:project_root], "config", "fontcustom.yml"
 
           else
             # TODO helpful warning that no config was found
@@ -109,7 +109,7 @@ module Fontcustom
           raise Fontcustom::Error, "OUTPUT should be a string or a hash containing a \"fonts\" key." unless output[:fonts]
 
           output.each do |key, val|
-            output[key] = File.join options[:project_root], val
+            output[key] = File.expand_path File.join(options[:project_root], val)
           end
 
           output[:css] ||= output[:fonts]
@@ -117,7 +117,7 @@ module Fontcustom
           output
         else
           if options[:output].is_a? String
-            output = File.join options[:project_root], options[:output]
+            output = File.expand_path File.join(options[:project_root], options[:output])
             raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{output} and try again." if File.exists?(output) && ! File.directory?(output)
           else
             # TODO friendly warning that we're defaulting to pwd/:font_name

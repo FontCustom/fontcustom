@@ -57,7 +57,6 @@ module Fontcustom
         end
       end
 
-      # TODO does this need project_root? should not, if util does its job.
       def generate
         @opts = opts # make available to templates
         begin

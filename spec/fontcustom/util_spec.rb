@@ -63,13 +63,29 @@ describe Fontcustom::Util do
       util.get_config_path(options).should == fixture("util/config-is-in-dir/fontcustom.yml")
     end
 
-    it "should search use options[:config] if it's a file" do
+    it "should use options[:config] if it's a file" do
       options = { 
         :project_root => fixture,
         :config => "util/fontcustom.yml"
       }
       util.get_config_path(options).should == fixture("util/fontcustom.yml")
     end
+
+    it "should find fontcustom.yml in :project_root/config" do
+      options = { :project_root => fixture("util/rails-like") }
+      util.get_config_path(options).should == fixture("util/rails-like/config/fontcustom.yml")
+    end
+
+    it "should follow ../../ paths" do 
+      options = { 
+        :project_root => fixture("shared"),
+        :input => "vectors",
+        :config => "../util"
+      }
+      util.get_config_path(options).should == fixture("util/fontcustom.yml")
+    end
+
+    it "should print out which fontcustom.yml it's using"
 
     it "should raise error if fontcustom.yml was specified but doesn't exist" do
       options = { 
@@ -80,8 +96,7 @@ describe Fontcustom::Util do
       expect { util.get_config_path(options) }.to raise_error Fontcustom::Error, /couldn't find/
     end
 
-    it "should print out which fontcustom.yml it's using"
-    it "should print a warning if fontcustom.yml wasn't specified / doesn't exist"
+    it "should print a warning if fontcustom.yml was NOT specified and doesn't exist"
   end
 
   context ".get_input_paths" do
@@ -91,6 +106,16 @@ describe Fontcustom::Util do
         :input => "shared/vectors-empty"
       }
       expect { util.get_input_paths(options) }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
+    end
+
+    it "should follow ../../ paths" do
+      options = { 
+        :project_root => fixture("util"),
+        :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"}
+      }
+      paths = util.get_input_paths(options)
+      paths[:vectors].should eq(fixture("shared/vectors"))
+      paths[:templates].should eq(fixture("shared/templates"))
     end
 
     context "when passed a hash" do
@@ -176,7 +201,23 @@ describe Fontcustom::Util do
       paths[:fonts].should eq(fixture("test"))
     end
 
-    it "should print a warning when defaulting to :project_root/fonts"
+    it "should print a warning when defaulting to :project_root/:font_name"
+
+    it "should follow ../../ paths" do
+      options = { 
+        :project_root => fixture("shared"),
+        :input => "vectors",
+        :output => {
+          :fonts => "../output/fonts",
+          :css => "../output/css",
+          :preview => "../output/views"
+        }
+      }
+      paths = util.get_output_paths(options)
+      paths[:fonts].should eq(fixture("output/fonts"))
+      paths[:css].should eq(fixture("output/css"))
+      paths[:preview].should eq(fixture("output/views"))
+    end
 
     context "when passed a hash" do
       it "should return a hash of output locations" do 
