@@ -64,12 +64,12 @@ module Fontcustom
           opts[:templates].each do |source|
             name = File.basename source
             ext = File.extname name
-            target = if %|css scss sass less stylus|.include? ext
+            target = if opts[:output].keys.include? name
+                       File.join opts[:output][name], name
+                     elsif %w|.css .scss .sass .less .stylus|.include? ext
                        File.join opts[:output][:css], name
                      elsif name == "fontcustom-preview.html"
                        File.join opts[:output][:preview], name
-                     elsif opts[:output].keys.include? name
-                       File.join opts[:output][name], name
                      else
                        File.join opts[:output][:fonts], name
                      end

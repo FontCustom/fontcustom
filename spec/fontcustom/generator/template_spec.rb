@@ -7,7 +7,7 @@ describe Fontcustom::Generator::Template do
   end
 
   context "#get_data" do
-    it "should raise error if data file doesn't exist" do 
+    it "should raise error if data file doesn't exist" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors"
@@ -27,7 +27,7 @@ describe Fontcustom::Generator::Template do
   end
 
   context "#check_templates" do
-    it "should raise an error if no templates are given" do 
+    it "should raise an error if no templates are given" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
@@ -67,7 +67,7 @@ describe Fontcustom::Generator::Template do
       subject.reset_output
       subject.instance_variable_get(:@data)[:templates].should be_empty
     end
-    
+
     it "should update the data file" do
       file = fixture("generators/.fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
@@ -86,7 +86,7 @@ describe Fontcustom::Generator::Template do
       gen = generator(
         :project_root => fixture("generators"),
         :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
-        :output => "mixed-output", 
+        :output => "mixed-output",
         :templates => %W|scss css custom.css|
       )
       gen.instance_variable_set :@data, data_file_contents
@@ -97,11 +97,13 @@ describe Fontcustom::Generator::Template do
     end
 
     it "should call #template for each template" do
-      subject.should_receive(:template).exactly(3).times
+      subject.should_receive(:template).exactly(3).times do |*args|
+        args[1].should match(/(fontcustom\.css|_fontcustom\.scss|custom\.css)/)
+      end
       subject.generate
     end
 
-    it "should update data file with generated templates" do 
+    it "should update data file with generated templates" do
       file = fixture("generators/.fontcustom-data")
       Fontcustom::Util.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with do |path, content|
@@ -114,11 +116,11 @@ describe Fontcustom::Generator::Template do
     end
 
     it "should be silent if verbose is false" do
-      gen = generator( 
+      gen = generator(
         :project_root => fixture("generators"),
         :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
-        :output => "mixed-output", 
-        :templates => %W|scss css custom.css|, 
+        :output => "mixed-output",
+        :templates => %W|scss css custom.css|,
         :verbose => false
       )
       gen.instance_variable_set :@data, data_file_contents
@@ -129,9 +131,48 @@ describe Fontcustom::Generator::Template do
       stdout.should == ""
     end
 
-    it "should output files into :fonts by default"
-    it "should output css-like files into :css if specified"
-    it "should output fontcustom-preview.html into :preview if specified"
-    it "should output custom templates to their matching :output paths if specified"
+    context "when various output locations are given" do
+      subject do
+        gen = generator(
+          :project_root => fixture,
+          :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
+          :output => {:fonts => "output/fonts", :css => "output/css", :preview => "output/views", "custom.css" => "output/custom"},
+          :templates => %W|scss preview css custom.css regular.css|
+        )
+        gen.instance_variable_set :@data, data_file_contents
+        gen.stub :template
+        Fontcustom::Util.stub :clear_file
+        gen.stub :append_to_file
+        gen
+      end
+
+      it "should output custom templates to their matching :output paths" do
+        subject.should_receive(:template).exactly(5).times do |*args|
+          if File.basename(args[0]) == "custom.css"
+            args[1].should == fixture("output/custom/custom.css")
+          end
+        end
+        subject.generate
+      end
+
+      it "should output css templates into :css" do
+        subject.should_receive(:template).exactly(5).times do |*args|
+          name = File.basename(args[0])
+          if %w|_fontcustom.scss fontcustom.css regular.css|.include? name
+            args[1].should match(/output\/css\/#{name}/)
+          end
+        end
+        subject.generate
+      end
+
+      it "should output fontcustom-preview.html into :preview" do
+        subject.should_receive(:template).exactly(5).times do |*args|
+          if File.basename(args[0]) == "fontcustom-preview.html"
+            args[1].should == fixture("output/views/fontcustom-preview.html")
+          end
+        end
+        subject.generate
+      end
+    end
   end
 end
