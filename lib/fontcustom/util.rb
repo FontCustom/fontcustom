@@ -165,10 +165,6 @@ module Fontcustom
         end
       end
 
-      def clear_file(file)
-        File.open(file, "w") {}
-      end
-
       def gem_lib_path
         File.expand_path(File.join(File.dirname(__FILE__)))
       end

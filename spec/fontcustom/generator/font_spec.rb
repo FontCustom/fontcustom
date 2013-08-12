@@ -65,18 +65,19 @@ describe Fontcustom::Generator::Font do
       options = {
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "mixed-output",
+        :verbose => false
       }
       gen = generator options
       gen.stub :remove_file
       gen.stub :append_to_file
-      Fontcustom::Util.stub :clear_file
+      gen.stub :clear_file
       gen.instance_variable_set(:@data, data_file_contents)
       gen
     end
 
     it "should delete fonts from @data[:fonts]" do
-      subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
+      subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, anything)
       subject.reset_output
     end
 
@@ -94,7 +95,7 @@ describe Fontcustom::Generator::Font do
 
     it "should update the data file" do
       file = fixture(".fontcustom-data")
-      Fontcustom::Util.should_receive(:clear_file).once.with(file)
+      subject.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with(file, /"fonts":/, :verbose => false)
       subject.reset_output
     end
@@ -110,7 +111,8 @@ describe Fontcustom::Generator::Font do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "mixed-output",
+        :verbose => false
       )
       gen.stub(:"`").and_return fontforge_output
       gen
@@ -173,7 +175,7 @@ describe Fontcustom::Generator::Font do
       )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
-      stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
+      stdout.should =~ /created.+\.(woff|ttf|eot|svg)/
     end
 
     it "should print nothing if verbose is false" do
@@ -196,11 +198,11 @@ describe Fontcustom::Generator::Font do
         :input => "shared/vectors",
         :output => "output"
       )
-      Fontcustom::Util.stub :clear_file
+      gen.stub :clear_file
       gen.stub :append_to_file
       gen.instance_variable_set(:@data, data_file_contents)
       file = File.join fixture(".fontcustom-data")
-      Fontcustom::Util.should_receive(:clear_file).once.with(file)
+      gen.should_receive(:clear_file).once.with(file)
       gen.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
         content.should match(/"fonts":/)
@@ -216,7 +218,7 @@ describe Fontcustom::Generator::Font do
         :output => "output",
         :verbose => false
       )
-      Fontcustom::Util.stub :clear_file
+      gen.stub :clear_file
       gen.stub :append_to_file
       gen.instance_variable_set(:@data, data_file_contents)
       stdout = capture(:stdout) { gen.save_data }

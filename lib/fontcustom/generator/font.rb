@@ -1,13 +1,12 @@
 require "json"
 require "thor"
 require "thor/group"
-require "thor/actions"
 require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
   module Generator
     class Font < Thor::Group
-      include Thor::Actions
+      include Actions
 
       # Instead of passing each option individually we're passing the entire options hash as an argument. 
       # This is DRYier, easier to maintain.
@@ -42,15 +41,16 @@ module Fontcustom
         begin
           deleted = []
           @data[:fonts].each do |file| 
-            remove_file file, :verbose => opts[:verbose]
+            remove_file file, :verbose => false
             deleted << file
           end
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
           file = File.join(opts[:project_root], ".fontcustom-data")
-          Fontcustom::Util.clear_file(file)
-          append_to_file file, json, :verbose => false # modify silently
+          clear_file(file)
+          append_to_file file, json, :verbose => false
+          say_changed :removed, deleted
         end
       end
       
@@ -89,19 +89,14 @@ module Fontcustom
       end
 
       def announce_files
-        if opts[:verbose]
-          @data[:fonts].each do |file| 
-            path = file.sub(opts[:project_root], '')[1..-1]
-            shell.say_status(:create, path)
-          end
-        end
+        say_changed :created, @data[:fonts]
       end
 
       def save_data
         json = JSON.pretty_generate @data
         file = File.join(opts[:project_root], ".fontcustom-data")
-        Fontcustom::Util.clear_file(file)
-        append_to_file file, json, :verbose => opts[:verbose]
+        clear_file(file)
+        append_to_file file, json, :verbose => false
       end
     end
   end

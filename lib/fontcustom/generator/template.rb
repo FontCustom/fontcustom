@@ -2,12 +2,11 @@ require "json"
 require "pathname"
 require "thor"
 require "thor/group"
-require "thor/actions"
 
 module Fontcustom
   module Generator
     class Template < Thor::Group
-      include Thor::Actions
+      include Actions
 
       # Instead of passing each option individually we're passing the entire options hash as an argument.
       # This is DRYier, easier to maintain.
@@ -35,15 +34,16 @@ module Fontcustom
         begin
           deleted = []
           @data[:templates].each do |file|
-            remove_file file, :verbose => opts[:verbose]
+            remove_file file, :verbose => false
             deleted << file
           end
         ensure
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
           file = File.join(opts[:project_root], ".fontcustom-data")
-          Fontcustom::Util.clear_file(file)
-          append_to_file file, json, :verbose => false # clear data file silently
+          clear_file(file)
+          append_to_file file, json, :verbose => false
+          say_changed :removed, deleted
         end
       end
 
@@ -78,15 +78,16 @@ module Fontcustom
                        File.join opts[:output][:fonts], name
                      end
 
-            template source, target, :verbose => opts[:verbose]
+            template source, target, :verbose => false
             created << target
           end
         ensure
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
           file = File.join(opts[:project_root], ".fontcustom-data")
-          Fontcustom::Util.clear_file(file)
-          append_to_file file, json, :verbose => opts[:verbose]
+          clear_file(file)
+          append_to_file file, json, :verbose => false
+          say_changed :created, created
         end
       end
     end

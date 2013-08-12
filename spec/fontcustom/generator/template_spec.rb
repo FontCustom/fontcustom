@@ -31,17 +31,18 @@ describe Fontcustom::Generator::Template do
       gen = generator(
         :project_root => fixture("generators"),
         :input => "../shared/vectors",
-        :output => "mixed-output"
+        :output => "mixed-output",
+        :verbose => false
       )
       gen.stub :remove_file
-      Fontcustom::Util.stub :clear_file
+      gen.stub :clear_file
       gen.stub :append_to_file
       gen.instance_variable_set(:@data, data_file_contents)
       gen
     end
 
     it "should delete files from @data[:templates]" do
-      subject.should_receive(:remove_file).once.with(/fontcustom\.css/, :verbose => true)
+      subject.should_receive(:remove_file).once.with(/fontcustom\.css/, anything)
       subject.reset_output
     end
 
@@ -59,7 +60,7 @@ describe Fontcustom::Generator::Template do
 
     it "should update the data file" do
       file = fixture("generators/.fontcustom-data")
-      Fontcustom::Util.should_receive(:clear_file).once.with(file)
+      subject.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with(file, /"templates":/, :verbose => false)
       subject.reset_output
     end
@@ -82,7 +83,7 @@ describe Fontcustom::Generator::Template do
       data = gen.instance_variable_get("@data")
       data[:paths][:css_to_fonts].should match("../../foo/fonts")
       data[:paths][:preview_to_css].should match("output/css/")
-      data[:paths][:preprocessor_to_fonts].should eq("")
+      data[:paths][:preprocessor_to_fonts].should eq(data[:paths][:css_to_fonts])
     end
 
     it "should assign :preprocessor_to_css if :preprocessor_font_path is set" do
@@ -118,11 +119,12 @@ describe Fontcustom::Generator::Template do
         :project_root => fixture("generators"),
         :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
         :output => "mixed-output",
-        :templates => %W|scss css custom.css|
+        :templates => %W|scss css custom.css|,
+        :verbose => false
       )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
-      Fontcustom::Util.stub :clear_file
+      gen.stub :clear_file
       gen.stub :append_to_file
       gen
     end
@@ -136,7 +138,7 @@ describe Fontcustom::Generator::Template do
 
     it "should update data file with generated templates" do
       file = fixture("generators/.fontcustom-data")
-      Fontcustom::Util.should_receive(:clear_file).once.with(file)
+      subject.should_receive(:clear_file).once.with(file)
       subject.should_receive(:append_to_file).once.with do |path, content|
         path.should == file
         content.should match(/fontcustom\.css/)
@@ -147,18 +149,7 @@ describe Fontcustom::Generator::Template do
     end
 
     it "should be silent if verbose is false" do
-      gen = generator(
-        :project_root => fixture("generators"),
-        :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
-        :output => "mixed-output",
-        :templates => %W|scss css custom.css|,
-        :verbose => false
-      )
-      gen.instance_variable_set :@data, data_file_contents
-      gen.stub :template
-      Fontcustom::Util.stub :clear_file
-      gen.stub :append_to_file
-      stdout = capture(:stdout) { gen.generate }
+      stdout = capture(:stdout) { subject.generate }
       stdout.should == ""
     end
 
@@ -168,11 +159,12 @@ describe Fontcustom::Generator::Template do
           :project_root => fixture,
           :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
           :output => {:fonts => "output/fonts", :css => "output/css", :preview => "output/views", "custom.css" => "output/custom"},
-          :templates => %W|scss preview css custom.css regular.css|
+          :templates => %W|scss preview css custom.css regular.css|,
+          :verbose => false
         )
         gen.instance_variable_set :@data, data_file_contents
         gen.stub :template
-        Fontcustom::Util.stub :clear_file
+        gen.stub :clear_file
         gen.stub :append_to_file
         gen
       end
