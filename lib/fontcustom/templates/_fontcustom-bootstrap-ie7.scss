@@ -1,6 +1,7 @@
-/* 
- * Font Custom: Bootstrap CSS for IE7
- */
+//
+// Icon Font: <%= @opts[:font_name] %>
+// Bootstrap IE7 Enabler
+//
 
 [class^="<%= @opts[:css_prefix] %>"],
 [class*=" <%= @opts[:css_prefix] %>"] {

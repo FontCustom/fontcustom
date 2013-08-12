@@ -1,20 +1,14 @@
-<%
-file_name = if @opts[:font_face_path]
-  File.join @opts[:font_face_path], @data[:file_name]
-else
-  @data[:file_name]
-end
-%>/* 
- * Font Custom: bare CSS
- */
+//
+// Icon Font: <%= @opts[:font_name] %>
+//
 
 @font-face {
   font-family: "<%= @opts[:font_name] %>";
-  src: url("<%= file_name %>.eot");
-  src: url("<%= file_name %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= file_name %>.woff") format("woff"),
-       url("<%= file_name %>.ttf") format("truetype"),
-       url("<%= file_name %>.svg#<%= @opts[:font_name] %>") format("svg");
+  src: url("<%= @data[:paths][:preprocessor_to_fonts] %>.eot");
+  src: url("<%= @data[:paths][:preprocessor_to_fonts] %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @data[:paths][:preprocessor_to_fonts] %>.woff") format("woff"),
+       url("<%= @data[:paths][:preprocessor_to_fonts] %>.ttf") format("truetype"),
+       url("<%= @data[:paths][:preprocessor_to_fonts] %>.svg#<%= @opts[:font_name] %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }

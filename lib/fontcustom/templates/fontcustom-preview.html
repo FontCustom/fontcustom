@@ -1,9 +1,8 @@
-<% scale = %w|12 14 16 18 21 24 36 48 60 72| %>
-<!DOCTYPE html>
+<% scale = %w|12 14 16 18 21 24 36 48 60 72| %><!DOCTYPE html>
 <html>
   <head>
     <title><%= @opts[:font_name] %> glyphs preview</title>
-    <link rel="stylesheet" href="fontcustom.css" />
+    <link rel="stylesheet" href="<%= @data[:paths][:preview_to_css] %>" />
     <!--[if lte IE 7]><link rel="stylesheet" href="fontcustom-ie7.css" /><![endif]-->
 
     <style>

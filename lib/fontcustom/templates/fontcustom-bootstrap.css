@@ -1,14 +1,15 @@
-/*
- * Font Custom: Bootstrap CSS
- */
+/* 
+  Icon Font: <%= @opts[:font_name] %>
+  Bootstrap Override
+*/
 
 @font-face {
   font-family: "<%= @opts[:font_name] %>";
-  src: url("<%= @data[:file_name] %>.eot");
-  src: url("<%= @data[:file_name] %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @data[:file_name] %>.woff") format("woff"),
-       url("<%= @data[:file_name] %>.ttf") format("truetype"),
-       url("<%= @data[:file_name] %>.svg#<%= @opts[:font_name] %>") format("svg");
+  src: url("<%= @data[:paths][:css_to_fonts] %>.eot");
+  src: url("<%= @data[:paths][:css_to_fonts] %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @data[:paths][:css_to_fonts] %>.woff") format("woff"),
+       url("<%= @data[:paths][:css_to_fonts] %>.ttf") format("truetype"),
+       url("<%= @data[:paths][:css_to_fonts] %>.svg#<%= @opts[:font_name] %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }

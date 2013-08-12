@@ -6,7 +6,7 @@ module Fontcustom
     :project_root => Dir.pwd,
     :input => "",
     :templates => %w|css preview|,
-    :font_name => "Font Custom",
+    :font_name => "fontcustom",
     :file_hash => true,
     :css_prefix => "icon-",
     :preprocessor_font_path => "",
