@@ -26,17 +26,6 @@ describe Fontcustom::Generator::Template do
     end
   end
 
-  context "#check_templates" do
-    it "should raise an error if no templates are given" do
-      gen = generator(
-        :project_root => fixture,
-        :input => "shared/vectors",
-        :templates => []
-      )
-      expect { gen.check_templates }.to raise_error Fontcustom::Error, /No templates were specified/
-    end
-  end
-
   context "#reset_output" do
     subject do
       gen = generator(
@@ -78,6 +67,48 @@ describe Fontcustom::Generator::Template do
     it "should be silent" do
       stdout = capture(:stdout) { subject.reset_output }
       stdout.should == ""
+    end
+  end
+
+  context "#make_relative_paths" do
+    it "should assign :css_to_fonts and :preview_to_css" do
+      gen = generator(
+        :project_root => fixture,
+        :input => "shared/vectors",
+        :output => {:fonts => "foo/fonts", :css => "output/css", :preview => ""}
+      )
+      gen.instance_variable_set "@data", data_file_contents
+      gen.make_relative_paths
+      data = gen.instance_variable_get("@data")
+      data[:paths][:css_to_fonts].should match("../../foo/fonts")
+      data[:paths][:preview_to_css].should match("output/css/")
+      data[:paths][:preprocessor_to_fonts].should eq("")
+    end
+
+    it "should assign :preprocessor_to_css if :preprocessor_font_path is set" do
+      gen = generator(
+        :project_root => fixture,
+        :preprocessor_font_path => "fonts/fontcustom",
+        :input => "shared/vectors",
+        :output => {:fonts => "foo/bar/fonts", :css => "output/css", :preview => ""}
+      )
+      gen.instance_variable_set "@data", data_file_contents
+      gen.make_relative_paths
+      data = gen.instance_variable_get("@data")
+      data[:paths][:preprocessor_to_fonts].should match("fonts/fontcustom")
+    end
+
+    it "should assign '.' when paths are the same" do
+      gen = generator(
+        :project_root => fixture,
+        :input => "shared/vectors",
+        :output => "output"
+      )
+      gen.instance_variable_set "@data", data_file_contents
+      gen.make_relative_paths
+      data = gen.instance_variable_get("@data")
+      data[:paths][:css_to_fonts].should match("./")
+      data[:paths][:preview_to_css].should match("./")
     end
   end
 

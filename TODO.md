@@ -1,7 +1,8 @@
 ## TODO
 
-* Ensure data file is saving correct paths
 * Ensure that preview.html and css are building correct paths
 
-* Watcher messages relative to `project_root`
+* Colors for thor :say
 * Messages for improper config, default settings, etc.
+* Join create / delete messages
+* Unify errors, etc.

@@ -15,7 +15,7 @@ module Fontcustom
     class_option :font_name, :aliases => "-n", :desc => "The font name used in your templates. Also determines the default OUTPUT directory name. Default: 'fontcustom'"
     class_option :file_hash, :aliases => "-h", :type => :boolean, :desc => "Option to generate font files with asset-busting hashes. Default: true"
     class_option :css_prefix, :aliases => "-p", :desc => "The prefix for each glyph's CSS class. Default: 'icon-'"
-    class_option :font_face_path, :alias => "-f", :desc => "The http path used in @font-face declarations. Only used in .scss partials. Default: none"
+    class_option :preprocessor_font_path, :alias => "-s", :desc => "The font path passed to CSS preprocessors (used instead of normal paths in preprocessed CSS templates). Default: none"
     class_option :debug, :aliases => "-d", :type => :boolean, :desc => "Display debug messages from fontforge. Default: false"
     class_option :verbose, :aliases => "-v", :type => :boolean, :desc => "Display verbose messages. Default: true"
 

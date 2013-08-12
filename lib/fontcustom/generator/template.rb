@@ -1,4 +1,5 @@
 require "json"
+require "pathname"
 require "thor"
 require "thor/group"
 require "thor/actions"
@@ -29,12 +30,6 @@ module Fontcustom
         raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:project_root]} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate .fontcustom-data."
       end
 
-      def check_templates
-        if opts[:templates].empty?
-          raise Fontcustom::Error, "No templates were specified. Check your options and try again?"
-        end
-      end
-
       def reset_output
         return if @data[:templates].empty?
         begin
@@ -49,6 +44,18 @@ module Fontcustom
           file = File.join(opts[:project_root], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
           append_to_file file, json, :verbose => false # clear data file silently
+        end
+      end
+
+      def make_relative_paths
+        name = File.basename @data[:fonts].first, File.extname(@data[:fonts].first)
+        fonts = Pathname.new opts[:output][:fonts]
+        css = Pathname.new opts[:output][:css]
+        preview = Pathname.new opts[:output][:preview]
+        @data[:paths][:css_to_fonts] = File.join fonts.relative_path_from(css).to_s, name
+        @data[:paths][:preview_to_css] = File.join css.relative_path_from(preview).to_s, name
+        if opts[:preprocessor_font_path] != ""
+          @data[:paths][:preprocessor_to_fonts] = File.join opts[:preprocessor_font_path], name
         end
       end
 

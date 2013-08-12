@@ -1,11 +1,12 @@
 # ---------------------------------------------------------------------------- #
 # Project Info
+#   Learn more about these options with `fontcustom help`.
 # ---------------------------------------------------------------------------- #
 
 #font_name: My Custom Font
 #file_hash: false
 #css_prefix: glyph-
-#font_face_path: assets/fonts/fontcustom
+#preprocessor_font_path: fonts/fontcustom
 #debug: true
 #verbose: false
 

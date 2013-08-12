@@ -38,15 +38,15 @@ module Fontcustom
       end
 
       def reset_output
-        return if @data[:fonts_previous].empty?
+        return if @data[:fonts].empty?
         begin
           deleted = []
-          @data[:fonts_previous].each do |file| 
+          @data[:fonts].each do |file| 
             remove_file file, :verbose => opts[:verbose]
             deleted << file
           end
         ensure
-          @data[:fonts_previous] = @data[:fonts_previous] - deleted
+          @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
           file = File.join(opts[:project_root], ".fontcustom-data")
           Fontcustom::Util.clear_file(file)
@@ -85,16 +85,14 @@ module Fontcustom
         @json = JSON.parse(@json, :symbolize_names => true)
         @data.merge! @json
         @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-") }
-        @data[:fonts].each do |font|
-          @data[:fonts_previous] << File.join(@opts[:output][:fonts], font)
-        end
+        @data[:fonts].map! { |font| File.join(@opts[:output][:fonts], font) }
       end
 
       def announce_files
         if opts[:verbose]
-          path = opts[:output][:fonts].sub(opts[:project_root], '')
           @data[:fonts].each do |file| 
-            shell.say_status(:create, File.join(path, file)[1..-1])
+            path = file.sub(opts[:project_root], '')[1..-1]
+            shell.say_status(:create, path)
           end
         end
       end

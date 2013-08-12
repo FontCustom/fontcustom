@@ -9,16 +9,19 @@ module Fontcustom
     :font_name => "Font Custom",
     :file_hash => true,
     :css_prefix => "icon-",
-    :font_face_path => false,
+    :preprocessor_font_path => "",
     :debug => false,
     :verbose => true
   })
 
   DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new({
     :fonts => [],
-    :fonts_previous => [],
     :templates => [],
-    :file_name => "",
-    :glyphs => []
+    :glyphs => [],
+    :paths => {
+      :css_to_fonts => "",
+      :preprocessor_to_fonts => "",
+      :preview_to_css => ""
+    }
   })
 end

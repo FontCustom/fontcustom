@@ -126,4 +126,4 @@ subprocess.call('ttfautohint -s -n ' + fontfile + '.ttf ' + fontfile + '-hinted.
 
 # Describe output in JSON
 outname = os.path.basename(fontfile)
-print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files, 'file_name': outname})
+print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files})

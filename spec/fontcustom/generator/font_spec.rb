@@ -75,7 +75,7 @@ describe Fontcustom::Generator::Font do
       gen
     end
 
-    it "should delete fonts from @data[:fonts_previous]" do
+    it "should delete fonts from @data[:fonts]" do
       subject.should_receive(:remove_file).exactly(4).times.with(/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e/, :verbose => true)
       subject.reset_output
     end
@@ -87,9 +87,9 @@ describe Fontcustom::Generator::Font do
       subject.reset_output
     end
 
-    it "should empty @data[:fonts_previous]" do
+    it "should empty @data[:fonts]" do
       subject.reset_output
-      subject.instance_variable_get(:@data)[:fonts_previous].should be_empty
+      subject.instance_variable_get(:@data)[:fonts].should be_empty
     end
 
     it "should update the data file" do
@@ -148,19 +148,18 @@ describe Fontcustom::Generator::Font do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "output"
       )
       gen.instance_variable_set(:@data, Fontcustom::DATA_MODEL)
       gen.instance_variable_set(:@json, data_file_contents.to_json)
       gen.collect_data
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
-      data[:file_name].should == "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e"
       data[:fonts].should =~ [
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg",
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
-        "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"
+        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot"),
+        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg"),
+        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf"),
+        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff")
       ]
     end
   end
@@ -170,7 +169,7 @@ describe Fontcustom::Generator::Font do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "output"
       )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
@@ -181,7 +180,7 @@ describe Fontcustom::Generator::Font do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output",
+        :output => "output",
         :verbose => false
       )
       gen.instance_variable_set :@data, data_file_contents
@@ -191,11 +190,11 @@ describe Fontcustom::Generator::Font do
   end
 
   context "#save_data" do
-    it "should update data file (TEMP)" do
+    it "should update data file" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "output"
       )
       Fontcustom::Util.stub :clear_file
       gen.stub :append_to_file
@@ -206,7 +205,6 @@ describe Fontcustom::Generator::Font do
         path.should == file
         content.should match(/"fonts":/)
         content.should match(/"glyphs":/)
-        content.should match(/"file_name":/)
       end
       gen.save_data
     end
@@ -215,7 +213,7 @@ describe Fontcustom::Generator::Font do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => "mixed-output",
+        :output => "output",
         :verbose => false
       )
       Fontcustom::Util.stub :clear_file
