@@ -65,8 +65,9 @@
         width: 10%;
       }
 
-      <% scale.each do |n| %>
+      <% scale.each_with_index do |n,index| %>
       .size-<%= n %> { font-size: <%= n %>px; }
+      .step-<%= index+1 %> { width: <%= 1.5+((index.to_f+1)/0.70) %>%;}
       <% end %>
 
       .usage { margin-top: 10px; }
@@ -99,10 +100,10 @@
       <% @data[:glyphs].each_with_index do |name, index| %>
       <div class="glyph">
         <div class="preview-glyphs">
-          <% scale.each do |n| %><i class="step <%= @opts[:css_prefix] + name %> size-<%= n %>"></i><% end %>
+          <% scale.each_with_index do |n,index| %><span class="step step-<%= index+1 %> size-<%= n %>">Aa <i class="<%= @opts[:css_prefix] + name %>"></i></span><% end %>
         </div>
         <div class="preview-scale">
-          <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
+          <% scale.each_with_index do |n,index| %><span class="step step-<%= index+1 %>"><%= n %></span><% end %> 
         </div>
         <div class="usage">
           <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts[:css_prefix] + name %>" />
