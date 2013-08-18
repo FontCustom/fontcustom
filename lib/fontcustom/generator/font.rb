@@ -46,8 +46,7 @@ module Fontcustom
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          clear_file(opts[:data])
-          append_to_file opts[:data], json, :verbose => false
+          overwrite_file opts[:data], json
           say_changed :removed, deleted
         end
       end
@@ -95,8 +94,7 @@ module Fontcustom
 
       def save_data
         json = JSON.pretty_generate @data
-        clear_file(opts[:data])
-        append_to_file opts[:data], json, :verbose => false
+        overwrite_file opts[:data], json
       end
     end
   end

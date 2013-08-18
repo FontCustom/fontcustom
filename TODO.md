@@ -1,6 +1,5 @@
 ## TODO
 
-* `clear_file` and `append_to_file` can probably be combined
 * documentation for changing `project_root` in config
 
 * Messages for improper config, default settings, etc.

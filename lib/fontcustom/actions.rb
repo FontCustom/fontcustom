@@ -10,21 +10,22 @@ module Fontcustom
     end
 
     # TODO Currently not sure how Thor classes inherit `say_status` from Thor::Shell.
-    # Using the instance variable as a workaround.
+    # Using @shell (automatically set in Thor classes) as a workaround.
     def say_changed(status, changed)
       return unless opts[:verbose]
       message = changed.map { |file| relative_to_root(file) }
-      @shell.say_status status, message.join(" ") 
+      @shell.say_status status, message.join(" ")
     end
 
     def relative_to_root(path)
-      path.gsub!(opts[:project_root], "")
+      path.sub!(opts[:project_root], "")
       path = path[1..-1] if path[0] == "/"
       path
     end
 
-    def clear_file(file)
-      File.open(file, "w") {}
+    def overwrite_file(file, content = "")
+      File.open(file, "w") { content }
+      say_changed :updated, [ file ]
     end
   end
 end

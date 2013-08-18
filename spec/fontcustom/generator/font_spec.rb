@@ -83,8 +83,7 @@ describe Fontcustom::Generator::Font do
       }
       gen = generator options
       gen.stub :remove_file
-      gen.stub :append_to_file
-      gen.stub :clear_file
+      gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)
       gen
     end
@@ -108,8 +107,7 @@ describe Fontcustom::Generator::Font do
 
     it "should update the data file" do
       file = fixture(".fontcustom-data")
-      subject.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with(file, /"fonts":/, :verbose => false)
+      subject.should_receive(:overwrite_file).once.with(file, /"fonts":/)
       subject.reset_output
     end
 
@@ -211,12 +209,10 @@ describe Fontcustom::Generator::Font do
         :input => "shared/vectors",
         :output => "output"
       )
-      gen.stub :clear_file
-      gen.stub :append_to_file
+      gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)
       file = File.join fixture(".fontcustom-data")
-      gen.should_receive(:clear_file).once.with(file)
-      gen.should_receive(:append_to_file).once.with do |path, content|
+      gen.should_receive(:overwrite_file).once.with do |path, content|
         path.should == file
         content.should match(/"fonts":/)
         content.should match(/"glyphs":/)
@@ -231,8 +227,7 @@ describe Fontcustom::Generator::Font do
         :output => "output",
         :verbose => false
       )
-      gen.stub :clear_file
-      gen.stub :append_to_file
+      gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)
       stdout = capture(:stdout) { gen.save_data }
       stdout.should == ""

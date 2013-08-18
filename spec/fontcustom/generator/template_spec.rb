@@ -35,8 +35,7 @@ describe Fontcustom::Generator::Template do
         :verbose => false
       )
       gen.stub :remove_file
-      gen.stub :clear_file
-      gen.stub :append_to_file
+      gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)
       gen
     end
@@ -60,8 +59,7 @@ describe Fontcustom::Generator::Template do
 
     it "should update the data file" do
       file = fixture("generators/.fontcustom-data")
-      subject.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with(file, /"templates":/, :verbose => false)
+      subject.should_receive(:overwrite_file).once.with(file, /"templates":/)
       subject.reset_output
     end
 
@@ -124,8 +122,7 @@ describe Fontcustom::Generator::Template do
       )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
-      gen.stub :clear_file
-      gen.stub :append_to_file
+      gen.stub :overwrite_file
       gen
     end
 
@@ -138,8 +135,7 @@ describe Fontcustom::Generator::Template do
 
     it "should update data file with generated templates" do
       file = fixture("generators/.fontcustom-data")
-      subject.should_receive(:clear_file).once.with(file)
-      subject.should_receive(:append_to_file).once.with do |path, content|
+      subject.should_receive(:overwrite_file).once.with do |path, content|
         path.should == file
         content.should match(/fontcustom\.css/)
         content.should match(/_fontcustom\.scss/)
@@ -164,8 +160,7 @@ describe Fontcustom::Generator::Template do
         )
         gen.instance_variable_set :@data, data_file_contents
         gen.stub :template
-        gen.stub :clear_file
-        gen.stub :append_to_file
+        gen.stub :overwrite_file
         gen
       end
 
