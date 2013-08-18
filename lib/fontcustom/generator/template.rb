@@ -18,15 +18,14 @@ module Fontcustom
       end
 
       def get_data
-        data = File.join(opts[:project_root], ".fontcustom-data")
-        if File.exists? data
-          @data = JSON.parse(File.read(data), :symbolize_names => true)
+        if File.exists? opts[:data]
+          @data = JSON.parse(File.read(opts[:data]), :symbolize_names => true)
         else
-          raise Fontcustom::Error, "There's no .fontcustom-data file in #{opts[:project_root]}. Try again?"
+          raise Fontcustom::Error, "#{relative_to_root(opts[:data])} is required to generate templates, but I couldn't find it."
         end
       rescue JSON::ParserError
         # Catches both empty and and malformed files
-        raise Fontcustom::Error, "The .fontcustom-data file in #{opts[:project_root]} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate .fontcustom-data."
+        raise Fontcustom::Error, "#{relative_to_root(opts[:data])} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate the data file. Old generated files may need to be deleted manually."
       end
 
       def reset_output
@@ -40,9 +39,8 @@ module Fontcustom
         ensure
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
-          file = File.join(opts[:project_root], ".fontcustom-data")
-          clear_file(file)
-          append_to_file file, json, :verbose => false
+          clear_file(opts[:data])
+          append_to_file opts[:data], json, :verbose => false
           say_changed :removed, deleted
         end
       end
@@ -84,9 +82,8 @@ module Fontcustom
         ensure
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
-          file = File.join(opts[:project_root], ".fontcustom-data")
-          clear_file(file)
-          append_to_file file, json, :verbose => false
+          clear_file(opts[:data])
+          append_to_file opts[:data], json, :verbose => false
           say_changed :created, created
         end
       end

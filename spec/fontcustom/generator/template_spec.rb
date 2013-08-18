@@ -12,7 +12,7 @@ describe Fontcustom::Generator::Template do
         :project_root => fixture,
         :input => "shared/vectors"
       )
-      expect { gen.get_data }.to raise_error Fontcustom::Error, /no \.fontcustom-data/
+      expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data is required/
     end
 
     # TODO ensure data file is correct

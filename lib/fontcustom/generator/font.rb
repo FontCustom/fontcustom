@@ -22,14 +22,13 @@ module Fontcustom
       end
 
       def get_data
-        datafile = File.join opts[:project_root], ".fontcustom-data"
-        if File.exists? datafile
+        if File.exists? opts[:data]
           begin
-            data = File.read datafile
+            data = File.read opts[:data]
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
           rescue JSON::ParserError
-            raise Fontcustom::Error, "The .fontcustom-data file at #{datafile} is corrupted. Fix the JSON or delete the file to start from scratch."
+            raise Fontcustom::Error, "#{opts[:data]} is corrupted. Fix the JSON or delete the file to start from scratch."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -47,9 +46,8 @@ module Fontcustom
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          file = File.join(opts[:project_root], ".fontcustom-data")
-          clear_file(file)
-          append_to_file file, json, :verbose => false
+          clear_file(opts[:data])
+          append_to_file opts[:data], json, :verbose => false
           say_changed :removed, deleted
         end
       end
@@ -63,12 +61,15 @@ module Fontcustom
 
         output = `#{cmd}`.split("\n")
         @json = output[3] # JSON
+
+        # fontforge wrongly returns the following error message if only a single glyph.
+        # We can strip it out and ignore it.
         if @json == 'Warning: Font contained no glyphs'
           @json = output[4]
-          output = output[5..-1] # Strip fontforge message
+          output = output[5..-1]
         else
           @json = output[3]
-          output = output[4..-1] # Strip fontforge message
+          output = output[4..-1]
         end
 
         if opts[:debug]
@@ -94,9 +95,8 @@ module Fontcustom
 
       def save_data
         json = JSON.pretty_generate @data
-        file = File.join(opts[:project_root], ".fontcustom-data")
-        clear_file(file)
-        append_to_file file, json, :verbose => false
+        clear_file(opts[:data])
+        append_to_file opts[:data], json, :verbose => false
       end
     end
   end

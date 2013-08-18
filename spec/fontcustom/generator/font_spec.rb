@@ -50,13 +50,26 @@ describe Fontcustom::Generator::Font do
     it "should assign @data from data file" do
       options = {
         :project_root => fixture,
+        :config => "generators",
         :input => "shared/vectors",
         :output => "mixed-output"
       }
       gen = generator options
       gen.get_data
       data = gen.instance_variable_get("@data")
-      data[:fonts] =~ data_file_contents[:fonts]
+      data.should_not == Fontcustom::DATA_MODEL
+    end
+
+    it "should throw an error if data file is corrupted." do
+      options = {
+        :project_root => fixture,
+        :config => "generators",
+        :data => "generators/.fontcustom-data-corrupted",
+        :input => "shared/vectors",
+        :output => "mixed-output"
+      }
+      gen = generator options
+      expect { gen.get_data }.to raise_error Fontcustom::Error, /corrupted/
     end
   end
 

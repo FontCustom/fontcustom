@@ -1,0 +1,18 @@
+'Totally invalid JSON.'
+{
+  'fonts": [
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot",
+    "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg"
+  ],
+  "templates": [
+    "fontcustom.css"
+  ],
+  "file_name": "fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e",
+  "glyphs": [
+    "a_r3ally-exotic-f1le-name",
+    "c",
+    "d"
+  ]
+}

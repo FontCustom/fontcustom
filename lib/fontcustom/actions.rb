@@ -13,12 +13,14 @@ module Fontcustom
     # Using the instance variable as a workaround.
     def say_changed(status, changed)
       return unless opts[:verbose]
-      message = changed.map do |file| 
-        file.gsub!(opts[:project_root], "")
-        file = file[1..-1] if file[0] == "/"
-        file
-      end
+      message = changed.map { |file| relative_to_root(file) }
       @shell.say_status status, message.join(" ") 
+    end
+
+    def relative_to_root(path)
+      path.gsub!(opts[:project_root], "")
+      path = path[1..-1] if path[0] == "/"
+      path
     end
 
     def clear_file(file)

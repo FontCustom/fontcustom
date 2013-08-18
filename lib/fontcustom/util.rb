@@ -25,14 +25,23 @@ module Fontcustom
         if options[:config]
           begin
             config = YAML.load File.open(options[:config])
-            options.merge! config
+            options.merge! config if config
           rescue
+            # TODO pass on error message
             raise Fontcustom::Error, "I couldn't read your configuration file. Please check #{options[:config]} and try again."
           end
         end
 
-        # Override with passed arguments
-        args.delete(:input) unless args[:input] # allows nil input from CLI
+        options[:data] = if args[:data]
+                           File.expand_path File.join(options[:project_root], args.delete(:data))
+                         elsif options[:config]
+                           File.join File.dirname(options[:config]), '.fontcustom-data'
+                         else
+                           File.join options[:project_root], '.fontcustom-data'
+                         end
+
+        # Override with CLI arguments
+        args.delete(:input) if args[:input].nil? # Empty CLI commands pass :input as nil 
         options.merge! args
         options[:font_name] = options[:font_name].strip.gsub(/\W/, '-')
 

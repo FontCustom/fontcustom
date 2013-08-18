@@ -1,7 +1,7 @@
 require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
-  # :output and :config are build from arguments
+  # :output, :config, and :data are build from arguments
   DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
     :project_root => Dir.pwd,
     :input => "",

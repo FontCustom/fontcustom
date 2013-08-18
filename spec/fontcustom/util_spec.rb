@@ -43,6 +43,16 @@ describe Fontcustom::Util do
       options[:font_name].should == "custom-name-from-cli"
     end
 
+    it "should set :data in the config dir by default" do
+      options = { 
+        :project_root => fixture,
+        :config => "util/config-is-in-dir",
+        :input => "shared/vectors"
+      }
+      options = util.collect_options options
+      options[:data].should == fixture("util/config-is-in-dir/.fontcustom-data")
+    end
+
     it "should normalize file name" do
       options = { 
         :project_root => fixture,
