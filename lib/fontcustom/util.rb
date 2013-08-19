@@ -1,11 +1,9 @@
-require "thor/shell"
-require "thor/shell/basic"
-require "thor/shell/color"
-
 ##
-# Expects @shell and @opts to be accessible
+# Expects access to @shell and @opts
 module Fontcustom
   module Util
+
+    # TODO use this in Options?
     def check_fontforge
       fontforge = `which fontforge`
       if fontforge == "" || fontforge == "fontforge not found"
@@ -13,16 +11,19 @@ module Fontcustom
       end
     end
 
-    # TODO Currently not sure how Thor classes inherit `say_status` from Thor::Shell.
-    # Using @shell (automatically set in Thor classes) as a workaround.
     def say_changed(status, changed)
-      return unless opts[:verbose]
+      return unless @opts[:verbose]
       message = changed.map { |file| relative_to_root(file) }
       @shell.say_status status, message.join(" ")
     end
 
+    def say_message(status, message)
+      return unless @opts[:verbose]
+      @shell.say_status status, message
+    end
+
     def relative_to_root(path)
-      path.sub!(opts[:project_root], "")
+      path.sub!(@opts[:project_root], "")
       path = path[1..-1] if path[0] == "/"
       path
     end

@@ -11,6 +11,14 @@ describe Fontcustom::Util do
     end
   end
 
+  context "#check_fontforge" do
+    it "should raise error if fontforge isn't installed" do
+      gen = Generator.new
+      gen.stub(:"`").and_return("")
+      expect { gen.check_fontforge }.to raise_error Fontcustom::Error, /install fontforge/
+    end
+  end
+
   context "#say_changed" do
     it "should strip :project_root from changed paths" do
       changed = %w|a b c|.map { |file| fixture(file) }
@@ -18,13 +26,11 @@ describe Fontcustom::Util do
       output = capture(:stdout) { gen.say_changed(:success, changed) }
       output.should_not match(fixture)
     end
+
+    it "should not respond if :verbose is false"
   end
 
-  context "#check_fontforge" do
-    it "should raise error if fontforge isn't installed" do
-      gen = Generator.new
-      gen.stub(:"`").and_return("")
-      expect { gen.check_fontforge }.to raise_error Fontcustom::Error, /install fontforge/
-    end
+  context "#say_message" do 
+    it "should not respond if :verbose is false"
   end
 end
