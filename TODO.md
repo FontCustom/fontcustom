@@ -18,7 +18,6 @@ end
 ```
 
 1. util.rb => options.rb
-  - old options constants get moved into fontcustom.rb
   - use Options.collect_options in the interim
 
 2. actions.rb => util.rb (module)
