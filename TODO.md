@@ -18,7 +18,6 @@ end
 ```
 
 1. util.rb => options.rb
-  - check_fontforge goes to Actions (Util)
   - old options constants get moved into fontcustom.rb
   - use Options.collect_options in the interim
 

@@ -9,6 +9,13 @@ module Fontcustom
       base.send :include, Thor::Actions
     end
 
+    def check_fontforge
+      fontforge = `which fontforge`
+      if fontforge == "" || fontforge == "fontforge not found"
+        raise Fontcustom::Error, "Please install fontforge. Visit http://fontcustom.com for instructions."
+      end
+    end
+
     # TODO Currently not sure how Thor classes inherit `say_status` from Thor::Shell.
     # Using @shell (automatically set in Thor classes) as a workaround.
     def say_changed(status, changed)

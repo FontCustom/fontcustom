@@ -4,13 +4,6 @@ require "thor/core_ext/hash_with_indifferent_access"
 module Fontcustom
   class Util
     class << self
-      def check_fontforge
-        fontforge = `which fontforge`
-        if fontforge == "" || fontforge == "fontforge not found"
-          raise Fontcustom::Error, "Please install fontforge first. Visit http://fontcustom.com for more details."
-        end
-      end
-
       # Converts all options into symbol-accessible hashes
       # Priority: Passed args > config file > default
       def collect_options(args = {})

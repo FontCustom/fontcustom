@@ -5,13 +5,6 @@ describe Fontcustom::Util do
     Fontcustom::Util
   end
 
-  context ".check_fontforge" do
-    it "should raise error if fontforge isn't installed" do
-      util.stub(:"`").and_return("")
-      expect { util.check_fontforge }.to raise_error Fontcustom::Error, /install fontforge/
-    end
-  end
-
   context ".collect_options" do
     it "should raise error if fontcustom.yml isn't valid" do
       options = { 

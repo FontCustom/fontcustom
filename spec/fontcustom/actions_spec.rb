@@ -19,4 +19,12 @@ describe Fontcustom::Actions do
       output.should_not match(fixture)
     end
   end
+
+  context "#check_fontforge" do
+    it "should raise error if fontforge isn't installed" do
+      gen = Generator.new
+      gen.stub(:"`").and_return("")
+      expect { gen.check_fontforge }.to raise_error Fontcustom::Error, /install fontforge/
+    end
+  end
 end
