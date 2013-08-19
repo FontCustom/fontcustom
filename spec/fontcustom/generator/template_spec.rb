@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Fontcustom::Generator::Template do
   def generator(options)
-    opts = Fontcustom::Options.collect_options options
+    opts = Fontcustom::Options.new.collect_options options
     Fontcustom::Generator::Template.new([opts])
   end
 

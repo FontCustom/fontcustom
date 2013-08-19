@@ -17,11 +17,6 @@ def example
 end
 ```
 
-3. Options as a class (transitional)
-  - switch over to Options.new, instead of using the class directly
-  - initialize with @shell and @opts (self)
-  - #collect_options should convert class to hash 
-
 4. Improve messages
   - Messages for improper config, default settings, etc.
   - Handle all errors through say_status

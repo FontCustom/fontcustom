@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe Fontcustom::Options do
-  subject { Fontcustom::Options } # test class methods
-
-  context ".collect_options" do
+  context "#collect_options" do
     it "should raise error if fontcustom.yml isn't valid" do
       options = { 
         :project_root => fixture,
@@ -55,7 +53,7 @@ describe Fontcustom::Options do
     end
   end
 
-  context ".get_config_path" do
+  context "#get_config_path" do
     it "should search for fontcustom.yml if options[:config] is a dir" do
       options = { 
         :project_root => fixture,
@@ -100,7 +98,7 @@ describe Fontcustom::Options do
     it "should print a warning if fontcustom.yml was NOT specified and doesn't exist"
   end
 
-  context ".get_input_paths" do
+  context "#get_input_paths" do
     it "should raise error if input[:vectors] doesn't contain vectors" do
       options = {
         :project_root => fixture,
@@ -195,7 +193,7 @@ describe Fontcustom::Options do
     end
   end
 
-  context ".get_output_paths" do
+  context "#get_output_paths" do
     it "should default to :project_root/:font_name if no output is specified" do
       options = { :project_root => fixture, :font_name => "test" }
       paths = subject.get_output_paths(options)
@@ -309,7 +307,7 @@ describe Fontcustom::Options do
     end
   end
 
-  context ".get_templates" do
+  context "#get_templates" do
     it "should ensure that 'css' is included with 'preview'" do
       options = { :input => fixture("shared/vectors"), :templates => %W|preview| }
       templates = subject.get_templates options
