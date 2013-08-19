@@ -1,6 +1,7 @@
 # ---------------------------------------------------------------------------- #
 # Project Info
-#   Learn more about these options with `fontcustom help`.
+#   Learn more about these options by running `fontcustom help` or visit
+#   <http://fontcustom.com>.
 # ---------------------------------------------------------------------------- #
 
 #font_name: My Custom Font
@@ -12,11 +13,14 @@
 
 
 # ---------------------------------------------------------------------------- #
-# Project Directories
+# Project Paths
 #   All paths are relative to PROJECT_ROOT (default: working directory).
-#   When assigned a hash, individual components can have their own paths.
-#   When assigned a string, all components share the same path.
+#   PROJECT_ROOT can be configured (absolute path recommended).
+#   For finer control, assign INPUT and OUTPUT as hashes instead of a strings.
+#   The OUPUT hash can route custom templates according to their filename.
 # ---------------------------------------------------------------------------- #
+
+#project_root: some/other/place
 
 #input:
 #  vectors: app/assets/fontcustom/vectors
@@ -26,11 +30,12 @@
 #  fonts: app/assets/fonts
 #  css: app/assets/stylesheets
 #  preview: app/views/styleguide
+#  my-custom-template.yml: config
 
 
 # ---------------------------------------------------------------------------- #
 # Templates
-#   Shortcuts:
+#   Included in Font Custom:
 #     preview, css, scss, bootstrap, bootstrap-scss, bootstrap-ie7,
 #     bootstrap-ie7-scss
 #   Custom templates should be saved in the INPUT[:templates] directory.
