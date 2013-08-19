@@ -2,7 +2,7 @@ require "yaml"
 require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
-  class Util
+  class Options
     class << self
       # Converts all options into symbol-accessible hashes
       # Priority: Passed args > config file > default

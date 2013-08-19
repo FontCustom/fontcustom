@@ -17,9 +17,6 @@ def example
 end
 ```
 
-1. util.rb => options.rb
-  - use Options.collect_options in the interim
-
 2. actions.rb => util.rb (module)
   - should not auto-include Thor::Actions
   - may need to include its own Thor::Shell
