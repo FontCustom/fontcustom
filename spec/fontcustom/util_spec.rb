@@ -320,27 +320,25 @@ describe Fontcustom::Util do
 
   context ".get_templates" do
     it "should ensure that 'css' is included with 'preview'" do
-      lib = util.gem_lib_path
       options = { :input => fixture("shared/vectors"), :templates => %W|preview| }
       templates = util.get_templates options
       templates.should =~ [
-        File.join(lib, "templates", "fontcustom.css"),
-        File.join(lib, "templates", "fontcustom-preview.html")
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom.css"),
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.html")
       ]
     end
 
     it "should expand shorthand for packaged templates" do
-      lib = util.gem_lib_path
       options = { :input => fixture("shared/vectors"), :templates => %W|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss| }
       templates = util.get_templates options
       templates.should =~ [
-        File.join(lib, "templates", "fontcustom-preview.html"),
-        File.join(lib, "templates", "fontcustom.css"),
-        File.join(lib, "templates", "_fontcustom.scss"),
-        File.join(lib, "templates", "fontcustom-bootstrap.css"),
-        File.join(lib, "templates", "_fontcustom-bootstrap.scss"),
-        File.join(lib, "templates", "fontcustom-bootstrap-ie7.css"),
-        File.join(lib, "templates", "_fontcustom-bootstrap-ie7.scss")
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.html"),
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom.css"),
+        File.join(Fontcustom.gem_lib, "templates", "_fontcustom.scss"),
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom-bootstrap.css"),
+        File.join(Fontcustom.gem_lib, "templates", "_fontcustom-bootstrap.scss"),
+        File.join(Fontcustom.gem_lib, "templates", "fontcustom-bootstrap-ie7.css"),
+        File.join(Fontcustom.gem_lib, "templates", "_fontcustom-bootstrap-ie7.scss")
       ]
     end
 

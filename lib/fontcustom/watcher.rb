@@ -9,7 +9,7 @@ module Fontcustom
 
       templates = @opts[:templates].dup
       templates.delete_if do |template|
-        template.match Util.gem_lib_path
+        template.match Fontcustom.gem_lib
       end
       unless templates.empty?
         templates = templates.map do |template|

@@ -23,7 +23,7 @@ module Fontcustom
 
     # Required for Thor::Actions#template
     def self.source_root
-      File.join Fontcustom::Util.gem_lib_path, "templates"
+      File.join Fontcustom.gem_lib, "templates"
     end
 
     desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: working directory"

@@ -17,5 +17,9 @@ module Fontcustom
     puts "ERROR: #{e.message}"
   end
 
-  module_function :compile
+  def gem_lib
+    File.expand_path(File.join(File.dirname(__FILE__), "fontcustom"))
+  end
+
+  module_function :compile, :gem_lib
 end

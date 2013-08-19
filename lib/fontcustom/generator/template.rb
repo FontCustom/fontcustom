@@ -14,7 +14,7 @@ module Fontcustom
 
       # Required for Thor::Actions#template
       def self.source_root
-        File.join Fontcustom::Util.gem_lib_path, "templates"
+        File.join Fontcustom.gem_lib, "templates"
       end
 
       def get_data

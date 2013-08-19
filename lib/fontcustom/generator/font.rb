@@ -56,7 +56,7 @@ module Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input][:vectors]} #{opts[:output][:fonts] + name + hash} 2>&1"
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts[:input][:vectors]} #{opts[:output][:fonts] + name + hash} 2>&1"
 
         output = `#{cmd}`.split("\n")
         @json = output[3] # JSON

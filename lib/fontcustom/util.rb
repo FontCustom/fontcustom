@@ -149,33 +149,30 @@ module Fontcustom
       def get_templates(options)
         # ensure that preview has plain stylesheet to reference
         options[:templates] << "css" if options[:templates].include?("preview") && ! options[:templates].include?("css")
+        template_path = File.join Fontcustom.gem_lib, "templates"
 
         options[:templates].map do |template|
           case template
           when "preview"
-            File.join gem_lib_path, "templates", "fontcustom-preview.html"
+            File.join template_path, "fontcustom-preview.html"
           when "css"
-            File.join gem_lib_path, "templates", "fontcustom.css"
+            File.join template_path, "fontcustom.css"
           when "scss"
-            File.join gem_lib_path, "templates", "_fontcustom.scss"
+            File.join template_path, "_fontcustom.scss"
           when "bootstrap"
-            File.join gem_lib_path, "templates", "fontcustom-bootstrap.css"
+            File.join template_path, "fontcustom-bootstrap.css"
           when "bootstrap-scss"
-            File.join gem_lib_path, "templates", "_fontcustom-bootstrap.scss"
+            File.join template_path, "_fontcustom-bootstrap.scss"
           when "bootstrap-ie7"
-            File.join gem_lib_path, "templates", "fontcustom-bootstrap-ie7.css"
+            File.join template_path, "fontcustom-bootstrap-ie7.css"
           when "bootstrap-ie7-scss"
-            File.join gem_lib_path, "templates", "_fontcustom-bootstrap-ie7.scss"
+            File.join template_path, "_fontcustom-bootstrap-ie7.scss"
           else
             path = File.join options[:input][:templates], template
             raise Fontcustom::Error, "We couldn't find your custom template at #{path}. Double check and try again?" unless File.exists? path
             path
           end
         end
-      end
-
-      def gem_lib_path
-        File.expand_path(File.join(File.dirname(__FILE__)))
       end
     end
   end
