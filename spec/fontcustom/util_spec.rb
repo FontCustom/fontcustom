@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Fontcustom::Actions do
+describe Fontcustom::Util do
   class Generator
-    include Fontcustom::Actions
+    include Fontcustom::Util
     attr_accessor :opts
 
     def initialize

@@ -1,12 +1,14 @@
 require "json"
 require "thor"
 require "thor/group"
+require "thor/actions"
 require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
   module Generator
     class Font < Thor::Group
-      include Actions
+      include Util
+      include Thor::Actions
 
       # Instead of passing each option individually we're passing the entire options hash as an argument. 
       # This is DRYier, easier to maintain.

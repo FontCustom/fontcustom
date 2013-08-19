@@ -1,14 +1,11 @@
-require "thor/actions"
 require "thor/shell"
 require "thor/shell/basic"
 require "thor/shell/color"
 
+##
+# Expects @shell and @opts to be accessible
 module Fontcustom
-  module Actions
-    def self.included(base)
-      base.send :include, Thor::Actions
-    end
-
+  module Util
     def check_fontforge
       fontforge = `which fontforge`
       if fontforge == "" || fontforge == "fontforge not found"

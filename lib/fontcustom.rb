@@ -1,7 +1,7 @@
 require "fontcustom/version"
 require "fontcustom/error"
 require "fontcustom/options"
-require "fontcustom/actions"
+require "fontcustom/util"
 require "fontcustom/generator/font"
 require "fontcustom/generator/template"
 require "thor/core_ext/hash_with_indifferent_access"

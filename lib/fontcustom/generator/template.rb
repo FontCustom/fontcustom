@@ -2,11 +2,13 @@ require "json"
 require "pathname"
 require "thor"
 require "thor/group"
+require "thor/actions"
 
 module Fontcustom
   module Generator
     class Template < Thor::Group
-      include Actions
+      include Util
+      include Thor::Actions
 
       # Instead of passing each option individually we're passing the entire options hash as an argument.
       # This is DRYier, easier to maintain.
