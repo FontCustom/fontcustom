@@ -1,10 +1,12 @@
 ## TODO
 
 * documentation for changing `project_root` in config
-
+* documentation for file name based template output config
 * Messages for improper config, default settings, etc.
+* Handle error through `say_status`
+* Allow absolute paths?
 * Colors for thor :say
-* Handle error through Fontcustom::Actions
 
-* Util should be broken up into actions and Options
-* Options could be a class?
+* Improve options
+  - Use Thor options in CLI, pass to generators as hash (?)
+  - Refactor Util into Actions and separate Options class
