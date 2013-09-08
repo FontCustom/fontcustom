@@ -10,7 +10,8 @@ describe Fontcustom::Generator::Template do
     it "should raise error if data file doesn't exist" do
       gen = generator(
         :project_root => fixture,
-        :input => "shared/vectors"
+        :input => "shared/vectors",
+        :verbose => false
       )
       expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data is required/
     end

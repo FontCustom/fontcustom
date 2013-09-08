@@ -8,7 +8,7 @@ describe Fontcustom::Options do
         :input => "shared/vectors",
         :config => "options/fontcustom-malformed.yml" 
       }
-      expect { subject.collect_options(options) }.to raise_error Fontcustom::Error, /couldn't read your configuration/
+      expect { subject.collect_options(options) }.to raise_error Fontcustom::Error, /failed to load/
     end
 
     it "should overwrite defaults with config file" do
@@ -92,7 +92,7 @@ describe Fontcustom::Options do
         :input => "shared/vectors",
         :config => "does-not-exist"
       }
-      expect { subject.get_config_path(options) }.to raise_error Fontcustom::Error, /couldn't find/
+      expect { subject.get_config_path(options) }.to raise_error Fontcustom::Error, /configuration file was not found/
     end
 
     it "should print a warning if fontcustom.yml was NOT specified and doesn't exist"
@@ -151,7 +151,7 @@ describe Fontcustom::Options do
           :input => { :templates => "shared/templates" },
           :project_root => fixture
         }
-        expect { subject.get_input_paths(options) }.to raise_error Fontcustom::Error, /should be a string or a hash/
+        expect { subject.get_input_paths(options) }.to raise_error Fontcustom::Error, /contain a "vectors" key/
       end
 
       it "should raise an error if :vectors doesn't point to an existing directory" do
@@ -271,7 +271,7 @@ describe Fontcustom::Options do
           :output => { :css => "output/styles" },
           :project_root => fixture
         }
-        expect { subject.get_output_paths(options) }.to raise_error Fontcustom::Error, /containing a "fonts" key/
+        expect { subject.get_output_paths(options) }.to raise_error Fontcustom::Error, /contain a "fonts" key/
       end
     end
 
@@ -350,7 +350,7 @@ describe Fontcustom::Options do
         :input => { :templates => "shared/templates" },
         :templates => %W|css fake-template|
       }
-      expect { subject.get_templates options }.to raise_error Fontcustom::Error, /couldn't find.+fake-template/
+      expect { subject.get_templates options }.to raise_error Fontcustom::Error, /fake-template does not exist/
     end
   end
 end

@@ -18,9 +18,7 @@ end
 ```
 
 4. Improve messages
-  - Messages for improper config, default settings, etc.
-  - Handle all errors through say_status
-  - Colors for thor :say
+  - Ensure that verbose: false is silent
 
 5. Options as a class (full)
   - move #collect_options into initialize
@@ -28,3 +26,6 @@ end
 6. CLI should store default options
   - when reading options from config, only overwrite default options
 
+Bonus:
+  - Configure colors for thor say
+  - Error message if fontforge isn't installed

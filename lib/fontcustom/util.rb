@@ -23,7 +23,7 @@ module Fontcustom
     end
 
     def relative_to_root(path)
-      path.sub!(@opts[:project_root], "")
+      path = path.sub(@opts[:project_root], "")
       path = path[1..-1] if path[0] == "/"
       path
     end
