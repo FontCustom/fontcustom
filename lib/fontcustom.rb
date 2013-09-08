@@ -23,6 +23,12 @@ module Fontcustom
 
   module_function :compile, :gem_lib
 
+  EXAMPLE_OPTIONS = {
+    :project_root => "`pwd`",
+    :output => "PROJECT_ROOT/FONT_NAME",
+    :templates => "css preview"
+  }
+
   ##
   # Temporary holding spot for these constants
   # :output, :config, and :data are build from arguments
@@ -33,7 +39,7 @@ module Fontcustom
     :font_name => "fontcustom",
     :file_hash => true,
     :css_prefix => "icon-",
-    :preprocessor_font_path => "",
+    :preprocessor_path => "",
     :debug => false,
     :verbose => true
   })

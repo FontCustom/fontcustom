@@ -9,24 +9,52 @@ module Fontcustom
 
     default_task :show_help
 
-    # Actual defaults are stored in Fontcustom::DEFAULT_OPTIONS instead of Thor
-    class_option :project_root, :aliases => "-r", :desc => "The base directory that all paths are relative to. Default: working directory"
-    class_option :output, :aliases => "-o", :desc => "The directory that will receive generated files (created if it doesn't exist). Can be fine-tuned for arbitrary files if a configuration file is used. Default: PROJECT_ROOT/FONT_NAME/"
-    class_option :config, :aliases => "-c", :desc => "Path to an optional configuration file. PROJECT_ROOT/fontcustom.yml and PROJECT_ROOT/config/fontcustom.yml will be loaded automatically." 
-    class_option :templates, :aliases => "-t", :type => :array, :desc => "List of templates to compile alongside fonts. Default: 'css preview'", :enum => %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|
-    class_option :font_name, :aliases => "-n", :desc => "The font name used in your templates. Also determines the default OUTPUT directory name. Default: 'fontcustom'"
-    class_option :file_hash, :aliases => "-h", :type => :boolean, :desc => "Option to generate font files with asset-busting hashes. Default: true"
-    class_option :css_prefix, :aliases => "-p", :desc => "The prefix for each glyph's CSS class. Default: 'icon-'"
-    class_option :preprocessor_font_path, :aliases => "-s", :desc => "The font path passed to CSS preprocessors (used instead of normal paths in preprocessed CSS templates). Default: none"
-    class_option :debug, :aliases => "-d", :type => :boolean, :desc => "Display debug messages from fontforge. Default: false"
-    class_option :verbose, :type => :boolean, :desc => "Display verbose messages. Default: true"
+    class_option :project_root, :aliases => "-r",
+      :desc => "The root context for any relative paths (INPUT, OUTPUT, CONFIG).",
+      :default => EXAMPLE_OPTIONS[:project_root]
+
+    class_option :output, :aliases => "-o",
+      :desc => "Where generated files are saved. Can be fine-tuned if a configuration file is used.",
+      :default => EXAMPLE_OPTIONS[:output]
+
+    class_option :config, :aliases => "-c",
+      :desc => "Optional configuration file. PROJECT_ROOT/fontcustom.yml and PROJECT_ROOT/config/fontcustom.yml are loaded automatically."
+
+    class_option :templates, :aliases => "-t", :type => :array,
+      :desc => "List of templates to generate alongside fonts.",
+      :enum => %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
+      :default => EXAMPLE_OPTIONS[:templates]
+
+    class_option :font_name, :aliases => "-f",
+      :desc => "Set the font's name.",
+      :default => DEFAULT_OPTIONS[:font_name]
+
+    class_option :css_prefix, :aliases => "-p",
+      :desc => "Prefix for each glyph's CSS class.",
+      :default => DEFAULT_OPTIONS[:css_prefix]
+
+    class_option :preprocessor_path, :aliases => "-s",
+      :desc => "Special path used in CSS proprocessor templates."
+
+    # TODO make this negative (no file hash)
+    class_option :file_hash, :type => :boolean,
+      :desc => "Option to generate font files with asset-busting hashes.",
+      :default => DEFAULT_OPTIONS[:file_hash]
+
+    class_option :debug, :type => :boolean,
+      :desc => "Display debug messages from fontforge.",
+      :default => DEFAULT_OPTIONS[:debug]
+
+    class_option :verbose, :type => :boolean,
+      :desc => "Display verbose messages.",
+      :default => DEFAULT_OPTIONS[:verbose]
 
     # Required for Thor::Actions#template
     def self.source_root
       File.join Fontcustom.gem_lib, "templates"
     end
 
-    desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: working directory"
+    desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
     def compile(input = nil)
       opts = options.merge :input => input
       opts = Fontcustom::Options.new.collect_options opts
@@ -36,7 +64,7 @@ module Fontcustom
       say_status :error, e.message
     end
 
-    desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: working directory"
+    desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
     method_option :skip_first, :aliases => "-s", :type => :boolean, :desc => "Skip the initial compile upon watching. Default: false"
     def watch(input = nil)
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
@@ -46,7 +74,7 @@ module Fontcustom
       say_status :error, e.message
     end
 
-    desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: working directory"
+    desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: `pwd`"
     def config(dir = Dir.pwd)
       template "fontcustom.yml", File.join(dir, "fontcustom.yml")
     end

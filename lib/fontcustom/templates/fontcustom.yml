@@ -7,7 +7,7 @@
 #font_name: My Custom Font
 #file_hash: false
 #css_prefix: glyph-
-#preprocessor_font_path: fonts/fontcustom
+#preprocessor_path: fonts/fontcustom
 #debug: true
 #verbose: false
 

@@ -53,8 +53,8 @@ module Fontcustom
         preview = Pathname.new opts[:output][:preview]
         @data[:paths][:css_to_fonts] = File.join fonts.relative_path_from(css).to_s, name
         @data[:paths][:preview_to_css] = File.join css.relative_path_from(preview).to_s, "fontcustom.css"
-        @data[:paths][:preprocessor_to_fonts] = if opts[:preprocessor_font_path] != ""
-          File.join opts[:preprocessor_font_path], name
+        @data[:paths][:preprocessor_to_fonts] = if opts[:preprocessor_path] != ""
+          File.join opts[:preprocessor_path], name
         else
           @data[:paths][:css_to_fonts]
         end
