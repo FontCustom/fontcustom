@@ -94,17 +94,17 @@ describe Fontcustom::Generator::Font do
   context "#generate" do
     subject do
       gen = generator(:input => fixture("vectors"), :output => fixture("mixed-output"))
-      gen.stub(:"`").and_return fontforge_output
+      gen.stub(:"execute_and_clean").and_return [fontforge_stdout.split('\n'),fontforge_stderr,double(:status, :success? => true)]
       gen
     end
     
     it "should call fontforge" do
-      subject.should_receive(:"`").with(/fontforge -script/)
+      subject.should_receive(:"execute_and_clean").with(/fontforge -script/)
       subject.generate
     end
 
     it "should pass options to fontforge" do
-      subject.should_receive(:"`").with(/#{fixture("vectors")}.+#{fixture("mixed-output")}/)
+      subject.should_receive(:"execute_and_clean").with(/#{fixture("vectors")}.+#{fixture("mixed-output")}/)
       subject.generate
     end
 
