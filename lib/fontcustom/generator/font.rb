@@ -2,6 +2,7 @@ require "json"
 require "thor"
 require "thor/group"
 require "thor/actions"
+require "open3"
 
 module Fontcustom
   module Generator
@@ -62,24 +63,20 @@ module Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts[:font_name] ? " --name " + opts[:font_name] : ""
         hash = opts[:file_hash] ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash} 2>&1"
-
-        output = `#{cmd}`.split("\n")
-        @json = output[3] # JSON
-        if @json == 'Warning: Font contained no glyphs'
-          @json = output[4]
-          output = output[5..-1] # Strip fontforge message
-        else
-          @json = output[3]
-          output = output[4..-1] # Strip fontforge message
-        end
-
+        cmd = "fontforge -script #{Fontcustom::Util.gem_lib_path}/scripts/generate.py #{opts[:input]} #{opts[:output] + name + hash}"
+        
+        output, err, status=execute_and_clean(cmd)
+                
+        @json = output[0] #JSON
+        output=output[1..-1]
+        
         if opts[:debug]
           shell.say "DEBUG: (raw output from fontforge)"
+          shell.say err
           shell.say output
         end
 
-        unless $?.success?
+        unless status.success?
           raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
         end
       end
@@ -101,6 +98,15 @@ module Fontcustom
         file = File.join(opts[:output], ".fontcustom-data")
         Fontcustom::Util.clear_file(file)
         append_to_file file, json, :verbose => opts[:verbose]
+      end
+      
+      private
+      
+      def execute_and_clean cmd
+        stdout, stderr, status=Open3::capture3(cmd)
+        stdout=stdout.split("\n")
+        stdout=stdout[1..-1] if stdout[0]=='CreateAllPyModules()'
+        [stdout, stderr, status]
       end
     end
   end
