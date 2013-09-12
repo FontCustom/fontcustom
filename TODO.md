@@ -1,32 +1,12 @@
-# Refactor: Options / Actions / Util
+# TODO
 
-## End goal:
+* Use @opts.attr instead of hashes in generators
 
-```ruby
-# in cli.rb
-def compile(input)
-  opts = options.merge input: input
-  opts = Fontcustom::Options.new opts
-  Fontcustom::Generator::Font.start [opts]
-  Fontcustom::Generator::Template.start [opts]
-end
+* Allow absolute paths
+* Abstract path expansions
+* Include pull requests
 
-# in generator/font.rb
-def example
-  puts "#{opts.font_name} is sweet."
-end
-```
-
-4. Options as a class (full)
-  - move #collect_options into initialize
-
-4.b. Improve messages
-  - Ensure that verbose: false is silent
-
-6. CLI should store default options
-  - when reading options from config, only overwrite default options
-
-Bonus:
-  - Ensure that absolute paths for INPUT, OUPUT, CONFIG also work
-  - Configure colors for thor say
-  - Error message if fontforge isn't installed
+* Improve paths in messages (wrap in ticks)
+* On install hook / message to remind about fontforge
+* --silent instead of (or alongside?) --verbose
+* Configure colors for thor say

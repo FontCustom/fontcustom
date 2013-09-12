@@ -20,8 +20,7 @@ RSpec.configure do |c|
       :glyphs => %w|a_r3ally-exotic-f1le-name c d|,
       :paths => {
         :css_to_fonts => "",
-        :preprocessor_to_fonts => "",
-        :preview_to_css => ""
+        :preprocessor_to_fonts => ""
       }
     }
   end

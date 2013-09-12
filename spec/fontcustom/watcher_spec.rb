@@ -3,10 +3,15 @@ require "fileutils"
 require "fontcustom/watcher"
 
 describe Fontcustom::Watcher do
+  # Silence messages without passing :verbose => false to everything
+  before(:each) do
+    Fontcustom::Options.any_instance.stub :say_message
+  end
+  
   def watcher(options)
     Fontcustom::Generator::Font.stub :start
     Fontcustom::Generator::Template.stub :start
-    opts = Fontcustom::Options.new.collect_options options
+    opts = Fontcustom::Options.new(options).collect_options
     opts[:blocking] = false # undocumented — non-blocking use of watcher for testing
     Fontcustom::Watcher.new opts
   end

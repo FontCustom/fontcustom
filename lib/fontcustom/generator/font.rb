@@ -10,9 +10,9 @@ module Fontcustom
       include Util
       include Thor::Actions
 
-      # Instead of passing each option individually we're passing the entire options hash as an argument. 
+      # Instead of passing each option individually we're passing the entire options hash as an argument.
       # This is DRYier, easier to maintain.
-      argument :opts 
+      argument :opts
 
       def prepare_output_dirs
         dirs = opts[:output].values.uniq
@@ -24,13 +24,13 @@ module Fontcustom
       end
 
       def get_data
-        if File.exists? opts[:data]
+        if File.exists? opts[:data_cache]
           begin
-            data = File.read opts[:data]
+            data = File.read opts[:data_cache]
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
           rescue JSON::ParserError
-            raise Fontcustom::Error, "#{opts[:data]} is corrupted. Fix the JSON or delete the file to start from scratch."
+            raise Fontcustom::Error, "#{opts[:data_cache]} is corrupted. Fix the JSON or delete the file to start from scratch."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -41,18 +41,18 @@ module Fontcustom
         return if @data[:fonts].empty?
         begin
           deleted = []
-          @data[:fonts].each do |file| 
+          @data[:fonts].each do |file|
             remove_file file, :verbose => false
             deleted << file
           end
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          overwrite_file opts[:data], json
+          overwrite_file opts[:data_cache], json
           say_changed :removed, deleted
         end
       end
-      
+
       def generate
         # TODO align option naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)
@@ -96,7 +96,7 @@ module Fontcustom
 
       def save_data
         json = JSON.pretty_generate @data
-        overwrite_file opts[:data], json
+        overwrite_file opts[:data_cache], json
       end
     end
   end

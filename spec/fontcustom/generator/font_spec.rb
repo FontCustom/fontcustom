@@ -1,8 +1,13 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Font do
+  # Silence messages without passing :verbose => false to everything
+  before(:each) do
+    Fontcustom::Options.any_instance.stub :say_message
+  end
+  
   def generator(options)
-    opts = Fontcustom::Options.new.collect_options options
+    opts = Fontcustom::Options.new(options).collect_options
     Fontcustom::Generator::Font.new([opts])
   end
 
@@ -39,7 +44,8 @@ describe Fontcustom::Generator::Font do
     it "should assign empty data model if data file is empty or missing" do
       options = {
         :project_root => fixture,
-        :input => "shared/vectors"
+        :input => "shared/vectors",
+        :verbose => false
       }
       gen = generator options
       gen.get_data
@@ -52,7 +58,8 @@ describe Fontcustom::Generator::Font do
         :project_root => fixture,
         :config => "generators",
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "mixed-output",
+        :verbose => false
       }
       gen = generator options
       gen.get_data
@@ -60,13 +67,14 @@ describe Fontcustom::Generator::Font do
       data.should_not == Fontcustom::DATA_MODEL
     end
 
-    it "should throw an error if data file is corrupted." do
+    it "should throw an error if the data file is corrupted." do
       options = {
         :project_root => fixture,
         :config => "generators",
-        :data => "generators/.fontcustom-data-corrupted",
+        :data_cache => "generators/.fontcustom-data-corrupted",
         :input => "shared/vectors",
-        :output => "mixed-output"
+        :output => "mixed-output",
+        :verbose => false
       }
       gen = generator options
       expect { gen.get_data }.to raise_error Fontcustom::Error, /corrupted/

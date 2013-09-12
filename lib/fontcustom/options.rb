@@ -9,87 +9,64 @@ module Fontcustom
   class Options
     include Util
 
-    def initialize
-      @shell = Thor::Shell::Color.new
-      @opts = {} # required for Fontcustom::Util
-    end
+    attr_reader :project_root, :input, :output, :config, :data_cache, :templates,
+      :font_name, :file_hash, :css_prefix, :preprocessor_path, :skip_first, :debug, :verbose
 
-    # Converts all options into symbol-accessible hashes
-    # Priority: Passed args > config file > default
-    def collect_options(args = {})
-      options = Fontcustom::DEFAULT_OPTIONS.clone
-      options[:project_root] = args[:project_root] if args[:project_root]
+    def initialize(options = {})
+      check_fontforge
 
-      # Parse fontcustom.yml if it exists
-      # Deletes :config so that it can't overwrite the output of .get_config_path
-      options[:config] = args.delete(:config) if args[:config]
-      @opts = options # TODO 
-      options[:config] = get_config_path options
-      @opts = options # TODO 
-
-      if options[:config]
-        say_message :status, "Loading configuration file at #{relative_to_root(options[:config])}."
-        begin
-          config = YAML.load File.open(options[:config])
-          if config
-            options.merge! config
-            @opts = options # TODO 
-          else
-            say_message :warning, "The configuration file was empty. No changes made."
-          end
-        rescue Exception => e
-          raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
-        end
+      # Overwrite example defaults (used in Thor's help) with real defaults, if unchanged
+      EXAMPLE_OPTIONS.keys.each do |key|
+        options.delete(key) if options[key] == EXAMPLE_OPTIONS[key]
       end
+      @cli_options = DEFAULT_OPTIONS.dup.merge options
 
-      options[:data] = if args[:data]
-                         File.expand_path File.join(options[:project_root], args.delete(:data))
-                       elsif options[:config]
-                         File.join File.dirname(options[:config]), '.fontcustom-data'
-                       else
-                         File.join options[:project_root], '.fontcustom-data'
-                       end
-      @opts = options # TODO 
+      # required by FC::Util
+      @opts = @cli_options # TODO update this to use class attributes
+      @shell = Thor::Shell::Color.new
 
-      # Override with CLI arguments
-      args.delete(:input) if args[:input].nil? # Empty CLI commands pass :input as nil 
-      options.merge! args
-      options[:font_name] = options[:font_name].strip.gsub(/\W/, '-')
-      @opts = options # TODO 
-
-      options[:input] = get_input_paths options
-      @opts = options # TODO 
-      options[:output] = get_output_paths options
-      @opts = options # TODO 
-      options[:templates] = get_templates options
-      @opts = options # Temporary measure to give store options for Util
-      options
+      set_options
     end
 
-    def get_config_path(options)
-      @opts = options
-      if options[:config]
-        config = File.expand_path File.join(options[:project_root], options[:config])
+    def collect_options
+      # TODO temporary workaround
+      return Thor::CoreExt::HashWithIndifferentAccess.new Hash[ instance_variables.map { |name| [name[1..-1], instance_variable_get(name)] } ]
+    end
+
+    def set_options
+      set_config_path
+      load_config
+      merge_options
+      set_data_path
+      set_input_paths
+      set_output_paths
+      set_template_paths
+      # TODO resave @opts?
+    end
+
+    def set_config_path
+      @config = if @cli_options[:config]
+        path = File.expand_path File.join(@cli_options[:project_root], @cli_options[:config])
 
         # :config is the path to fontcustom.yml
-        if File.exists?(config) && ! File.directory?(config)
-          config
+        if File.exists?(path) && ! File.directory?(path)
+          path
 
         # :config is a dir containing fontcustom.yml
-        elsif File.exists? File.join(config, "fontcustom.yml")
-          File.join config, "fontcustom.yml"
+        elsif File.exists? File.join(path, "fontcustom.yml")
+          File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "The configuration file was not found. Check #{relative_to_root(options[:config])} and try again."
+          raise Fontcustom::Error, "The configuration file was not found. Check #{relative_to_root(path)} and try again."
         end
       else
         # fontcustom.yml is in the project_root
-        if File.exists? File.join(options[:project_root], "fontcustom.yml")
-          File.join options[:project_root], "fontcustom.yml"
+        if File.exists? File.join(@cli_options[:project_root], "fontcustom.yml")
+          File.join @cli_options[:project_root], "fontcustom.yml"
 
         # config/fontcustom.yml is in the project_root
-        elsif File.exists? File.join(options[:project_root], "config", "fontcustom.yml")
-          File.join options[:project_root], "config", "fontcustom.yml"
+        elsif File.exists? File.join(@cli_options[:project_root], "config", "fontcustom.yml")
+          File.join @cli_options[:project_root], "config", "fontcustom.yml"
 
         else
           false
@@ -97,61 +74,110 @@ module Fontcustom
       end
     end
 
-    def get_input_paths(options)
-      @opts = options
-      paths = if options[:input].is_a? Hash
-        input = Thor::CoreExt::HashWithIndifferentAccess.new options[:input]
-        raise Fontcustom::Error, "INPUT (as a hash) should contain a \"vectors\" key." unless input[:vectors]
-
-        input[:vectors] = File.expand_path File.join(options[:project_root], input[:vectors])
-        raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{relative_to_root(input[:vectors])} and try again." unless File.directory? input[:vectors]
-
-        if input[:templates]
-          input[:templates] = File.expand_path File.join(options[:project_root], input[:templates])
-          raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{relative_to_root(input[:templates])} and try again." unless File.directory? input[:templates]
-        else
-          input[:templates] = input[:vectors]
+    def load_config
+      @config_options = {}
+      if @config
+        say_message :status, "Loading configuration file at #{relative_to_root(@config)}."
+        begin
+          config = YAML.load File.open(@config)
+          @config_options = config if config # empty file returns false
+        rescue Exception => e
+          raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
         end
-        input
-      elsif options[:input].is_a? String
-        input = File.join options[:project_root], options[:input]
-        raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check #{relative_to_root(input)} and try again." unless File.directory? input
-        Thor::CoreExt::HashWithIndifferentAccess.new({
+      else
+        say_message :status, "No configuration file set. Using defaults."
+      end
+    end
+
+    def merge_options
+      @cli_options.delete_if { |key, val| val == DEFAULT_OPTIONS[key] }
+
+      options = DEFAULT_OPTIONS.dup
+      options = options.merge @config_options
+      options = options.merge @cli_options
+      remove_instance_variable :@config_options
+      remove_instance_variable :@cli_options
+
+      # :config is excluded since it's already been set
+      keys = %w|project_root input output data_cache templates font_name file_hash css_prefix preprocessor_path skip_first debug verbose|
+      keys.each { |key| instance_variable_set("@#{key}", options[key]) }
+
+      @font_name = @font_name.strip.gsub(/\W/, '-')
+    end
+
+    def set_data_path
+      @data_cache = if ! @data_cache.nil?
+        File.expand_path File.join(@project_root, @data_cache)
+      elsif @config
+        File.join File.dirname(@config), '.fontcustom-data'
+      else
+        File.join @project_root, '.fontcustom-data'
+      end
+    end
+
+    def set_input_paths
+      if @input.is_a? Hash
+        @input = Thor::CoreExt::HashWithIndifferentAccess.new @input
+
+        if @input.has_key? "vectors"
+          @input[:vectors] = File.expand_path File.join(@project_root, @input[:vectors])
+          unless File.directory? input[:vectors]
+            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{relative_to_root(input[:vectors])} and try again."
+          end
+        else
+          raise Fontcustom::Error, "INPUT (as a hash) should contain a \"vectors\" key."
+        end
+
+        if @input.has_key? "templates"
+          @input[:templates] = File.expand_path File.join(@project_root, @input[:templates])
+          unless File.directory? @input[:templates]
+            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{relative_to_root(input[:templates])} and try again."
+          end
+        else
+          @input[:templates] = @input[:vectors]
+        end
+      elsif @input.is_a? String
+        input = File.expand_path File.join(@project_root, @input)
+        unless File.directory? input
+          raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check #{relative_to_root(input)} and try again."
+        end
+        @input = Thor::CoreExt::HashWithIndifferentAccess.new({
           :vectors => input,
           :templates => input
         })
       end
 
-      if Dir[File.join(paths[:vectors], "*.{svg,eps}")].empty?
-        raise Fontcustom::Error, "#{relative_to_root(paths[:vectors])} doesn't contain any vectors (*.svg or *.eps files)."
+      if Dir[File.join(@input[:vectors], "*.{svg,eps}")].empty?
+        raise Fontcustom::Error, "#{relative_to_root(@input[:vectors])} doesn't contain any vectors (*.svg or *.eps files)."
       end
-
-      paths
     end
 
-    def get_output_paths(options)
-      @opts = options
-      if options[:output].is_a? Hash
-        output = Thor::CoreExt::HashWithIndifferentAccess.new options[:output]
-        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a \"fonts\" key." unless output[:fonts]
+    def set_output_paths
+      if @output.is_a? Hash
+        @output = Thor::CoreExt::HashWithIndifferentAccess.new @output
+        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a \"fonts\" key." unless @output.has_key? "fonts"
 
-        output.each do |key, val|
-          output[key] = File.expand_path File.join(options[:project_root], val)
-          raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check #{relative_to_root(val)} and try again." if File.exists?(val) && ! File.directory?(val)
+        @output.each do |key, val|
+          @output[key] = File.expand_path File.join(@project_root, val)
+          if File.exists?(val) && ! File.directory?(val)
+            raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check #{relative_to_root(val)} and try again."
+          end
         end
 
-        output[:css] ||= output[:fonts]
-        output[:preview] ||= output[:fonts]
-        output
+        @output[:css] ||= @output[:fonts]
+        @output[:preview] ||= @output[:fonts]
       else
-        if options[:output].is_a? String
-          output = File.expand_path File.join(options[:project_root], options[:output])
-          raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{relative_to_root(output)} and try again." if File.exists?(output) && ! File.directory?(output)
+        if @output.is_a? String
+          output = File.expand_path File.join(@project_root, @output)
+          if File.exists?(output) && ! File.directory?(output)
+            raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{relative_to_root(output)} and try again."
+          end
         else
-          output = File.join options[:project_root], options[:font_name]
-          say_message :status, "All generated files will be added into #{relative_to_root(output)} by default."
+          output = File.join @project_root, @font_name
+          say_message :status, "All generated files will be added into `#{relative_to_root(output)}/` by default."
         end
-        Thor::CoreExt::HashWithIndifferentAccess.new({
+
+        @output = Thor::CoreExt::HashWithIndifferentAccess.new({
           :fonts => output,
           :css => output,
           :preview => output
@@ -164,16 +190,18 @@ module Fontcustom
     #
     # Could arguably belong in Generator::Template, however, it's nice to
     # be able to catch template errors before any generator runs.
-    def get_templates(options)
-      @opts = options
+    def set_template_paths
       # ensure that preview has plain stylesheet to reference
-      options[:templates] << "css" if options[:templates].include?("preview") && ! options[:templates].include?("css")
+      @templates << "preview-css" if @templates.include?("preview") && ! @templates.include?("preview-css")
+
       template_path = File.join Fontcustom.gem_lib, "templates"
 
-      options[:templates].map do |template|
+      @templates = @templates.map do |template|
         case template
         when "preview"
           File.join template_path, "fontcustom-preview.html"
+        when "preview-css"
+          File.join template_path, "fontcustom-preview.css"
         when "css"
           File.join template_path, "fontcustom.css"
         when "scss"
@@ -187,7 +215,7 @@ module Fontcustom
         when "bootstrap-ie7-scss"
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
-          path = File.join options[:input][:templates], template
+          path = File.expand_path File.join(@input[:templates], template)
           raise Fontcustom::Error, "The custom template at #{relative_to_root(path)} does not exist." unless File.exists? path
           path
         end

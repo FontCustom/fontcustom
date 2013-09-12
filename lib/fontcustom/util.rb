@@ -1,5 +1,5 @@
 ##
-# Expects access to @shell and @opts
+# Expects access to @shell and FC::Options instance_variables
 module Fontcustom
   module Util
 

@@ -23,18 +23,21 @@ module Fontcustom
 
   module_function :compile, :gem_lib
 
+  ##
+  # These are used in Thor CLI but overridden when the Options class is built
   EXAMPLE_OPTIONS = {
     :project_root => "`pwd`",
-    :output => "PROJECT_ROOT/FONT_NAME",
-    :templates => "css preview"
+    :output => "PROJECT_ROOT/FONT_NAME"
   }
 
   ##
-  # Temporary holding spot for these constants
-  # :output, :config, and :data are build from arguments
+  # 
   DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
     :project_root => Dir.pwd,
-    :input => "",
+    :input => nil,
+    :output => nil,
+    :config => nil,
+    :data_cache => nil,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :file_hash => true,
@@ -50,8 +53,7 @@ module Fontcustom
     :glyphs => [],
     :paths => {
       :css_to_fonts => "",
-      :preprocessor_to_fonts => "",
-      :preview_to_css => ""
+      :preprocessor_to_fonts => ""
     }
   })
 end

@@ -9,31 +9,34 @@ module Fontcustom
 
     default_task :show_help
 
-    class_option :project_root, :aliases => "-r",
+    class_option :project_root, :aliases => "-r", :type => :string,
       :desc => "The root context for any relative paths (INPUT, OUTPUT, CONFIG).",
       :default => EXAMPLE_OPTIONS[:project_root]
 
-    class_option :output, :aliases => "-o",
+    class_option :output, :aliases => "-o", :type => :string,
       :desc => "Where generated files are saved. Can be fine-tuned if a configuration file is used.",
       :default => EXAMPLE_OPTIONS[:output]
 
-    class_option :config, :aliases => "-c",
+    class_option :config, :aliases => "-c", :type => :string,
       :desc => "Optional configuration file. PROJECT_ROOT/fontcustom.yml and PROJECT_ROOT/config/fontcustom.yml are loaded automatically."
 
-    class_option :templates, :aliases => "-t", :type => :array,
-      :desc => "List of templates to generate alongside fonts.",
-      :enum => %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
-      :default => EXAMPLE_OPTIONS[:templates]
+    class_option :data_cache, :aliases => "-d", :type => :string,
+      :desc => "Optional path to `.fontcustom-data`. Used for garbage collection."
 
-    class_option :font_name, :aliases => "-f",
+    class_option :templates, :aliases => "-t", :type => :array,
+      :desc => "Space-delinated array of templates to generate alongside fonts.",
+      :enum => %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
+      :default => DEFAULT_OPTIONS[:templates]
+
+    class_option :font_name, :aliases => "-f", :type => :string,
       :desc => "Set the font's name.",
       :default => DEFAULT_OPTIONS[:font_name]
 
-    class_option :css_prefix, :aliases => "-p",
+    class_option :css_prefix, :aliases => "-p", :type => :string,
       :desc => "Prefix for each glyph's CSS class.",
       :default => DEFAULT_OPTIONS[:css_prefix]
 
-    class_option :preprocessor_path, :aliases => "-s",
+    class_option :preprocessor_path, :aliases => "-s", :type => :string,
       :desc => "Special path used in CSS proprocessor templates."
 
     # TODO make this negative (no file hash)
@@ -57,7 +60,7 @@ module Fontcustom
     desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
     def compile(input = nil)
       opts = options.merge :input => input
-      opts = Fontcustom::Options.new.collect_options opts
+      opts = Fontcustom::Options.new(opts).collect_options
       Fontcustom::Generator::Font.start [opts]
       Fontcustom::Generator::Template.start [opts]
     rescue Fontcustom::Error => e
@@ -65,10 +68,12 @@ module Fontcustom
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
-    method_option :skip_first, :aliases => "-s", :type => :boolean, :desc => "Skip the initial compile upon watching. Default: false"
+    method_option :skip_first, :type => :boolean, 
+      :desc => "Skip the initial compile upon watching.",
+      :default => false
     def watch(input = nil)
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
-      opts = Fontcustom::Options.new.collect_options opts
+      opts = Fontcustom::Options.new(opts).collect_options
       Fontcustom::Watcher.new(opts).watch
     rescue Fontcustom::Error => e
       say_status :error, e.message

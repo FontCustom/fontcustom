@@ -1,8 +1,13 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Template do
+  # Silence messages without passing :verbose => false to everything
+  before(:each) do
+    Fontcustom::Options.any_instance.stub :say_message
+  end
+  
   def generator(options)
-    opts = Fontcustom::Options.new.collect_options options
+    opts = Fontcustom::Options.new(options).collect_options
     Fontcustom::Generator::Template.new([opts])
   end
 
@@ -20,7 +25,8 @@ describe Fontcustom::Generator::Template do
     it "should assign @data from data file" do
       gen = generator(
         :project_root => fixture("generators"),
-        :input => "../shared/vectors"
+        :input => "../shared/vectors",
+        :verbose => false
       )
       gen.get_data
       gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
@@ -71,7 +77,7 @@ describe Fontcustom::Generator::Template do
   end
 
   context "#make_relative_paths" do
-    it "should assign :css_to_fonts and :preview_to_css" do
+    it "should assign :css_to_fonts and :preprocessor_to_fonts" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
@@ -81,7 +87,6 @@ describe Fontcustom::Generator::Template do
       gen.make_relative_paths
       data = gen.instance_variable_get("@data")
       data[:paths][:css_to_fonts].should match("../../foo/fonts")
-      data[:paths][:preview_to_css].should match("output/css/")
       data[:paths][:preprocessor_to_fonts].should eq(data[:paths][:css_to_fonts])
     end
 
@@ -108,7 +113,6 @@ describe Fontcustom::Generator::Template do
       gen.make_relative_paths
       data = gen.instance_variable_get("@data")
       data[:paths][:css_to_fonts].should match("./")
-      data[:paths][:preview_to_css].should match("./")
     end
   end
 
@@ -165,8 +169,9 @@ describe Fontcustom::Generator::Template do
         gen
       end
 
+      # 6 times because preview also includes preview-css
       it "should output custom templates to their matching :output paths" do
-        subject.should_receive(:template).exactly(5).times do |*args|
+        subject.should_receive(:template).exactly(6).times do |*args|
           if File.basename(args[0]) == "custom.css"
             args[1].should == fixture("output/custom/custom.css")
           end
@@ -175,7 +180,7 @@ describe Fontcustom::Generator::Template do
       end
 
       it "should output css templates into :css" do
-        subject.should_receive(:template).exactly(5).times do |*args|
+        subject.should_receive(:template).exactly(6).times do |*args|
           name = File.basename(args[0])
           if %w|_fontcustom.scss fontcustom.css regular.css|.include? name
             args[1].should match(/output\/css\/#{name}/)
@@ -185,7 +190,7 @@ describe Fontcustom::Generator::Template do
       end
 
       it "should output fontcustom-preview.html into :preview" do
-        subject.should_receive(:template).exactly(5).times do |*args|
+        subject.should_receive(:template).exactly(6).times do |*args|
           if File.basename(args[0]) == "fontcustom-preview.html"
             args[1].should == fixture("output/views/fontcustom-preview.html")
           end
