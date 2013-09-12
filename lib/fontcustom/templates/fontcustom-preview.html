@@ -1,7 +1,7 @@
 <% scale = %w|12 14 16 18 21 24 36 48 60 72| %><!DOCTYPE html>
 <html>
   <head>
-    <title><%= @opts[:font_name] %> glyphs preview</title>
+    <title><%= @opts.font_name %> glyphs preview</title>
     <link rel="stylesheet" href="fontcustom-preview.css" />
 
     <style>
@@ -92,18 +92,18 @@
 
   <body>
     <div class="container">
-      <h1><%= @opts[:font_name] %> contains <%= @data[:glyphs].length %> glyphs:</h1> 
+      <h1><%= @opts.font_name %> contains <%= @glyphs.length %> glyphs:</h1> 
 
-      <% @data[:glyphs].each_with_index do |name, index| %>
+      <% @glyphs.each_with_index do |name, index| %>
       <div class="glyph">
         <div class="preview-glyphs">
-          <% scale.each do |n| %><i class="step <%= @opts[:css_prefix] + name %> size-<%= n %>"></i><% end %>
+          <% scale.each do |n| %><i class="step <%= @opts.css_prefix + name %> size-<%= n %>"></i><% end %>
         </div>
         <div class="preview-scale">
           <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
         </div>
         <div class="usage">
-          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts[:css_prefix] + name %>" />
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts.css_prefix + name %>" />
           <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
         </div>
       </div>

@@ -1,11 +1,10 @@
 # TODO
 
-* Use @opts.attr instead of hashes in generators
-
 * Allow absolute paths
 * Abstract path expansions
 * Include pull requests
 
+* Inline preview css
 * Improve error messages in Watcher and Fontcustom.rb
 * Have error messages `say_status` themselves?
 * Improve paths in messages (wrap in ticks)

@@ -1,63 +1,63 @@
 /* 
-  Icon Font: <%= @opts[:font_name] %>
+  Icon Font: <%= @opts.font_name %>
   Bootstrap Override
 */
 
 @font-face {
-  font-family: "<%= @opts[:font_name] %>";
-  src: url("<%= @data[:paths][:css_to_fonts] %>.eot");
-  src: url("<%= @data[:paths][:css_to_fonts] %>.eot?#iefix") format("embedded-opentype"),
-       url("<%= @data[:paths][:css_to_fonts] %>.woff") format("woff"),
-       url("<%= @data[:paths][:css_to_fonts] %>.ttf") format("truetype"),
-       url("<%= @data[:paths][:css_to_fonts] %>.svg#<%= @opts[:font_name] %>") format("svg");
+  font-family: "<%= @opts.font_name %>";
+  src: url("<%= @font_path %>.eot");
+  src: url("<%= @font_path %>.eot?#iefix") format("embedded-opentype"),
+       url("<%= @font_path %>.woff") format("woff"),
+       url("<%= @font_path %>.ttf") format("truetype"),
+       url("<%= @font_path %>.svg#<%= @opts.font_name %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
-[class^="<%= @opts[:css_prefix] %>"]:before, [class*=" <%= @opts[:css_prefix] %>"]:before {
-  font-family: "<%= @opts[:font_name] %>";
+[class^="<%= @opts.css_prefix %>"]:before, [class*=" <%= @opts.css_prefix %>"]:before {
+  font-family: "<%= @opts.font_name %>";
   font-weight: normal;
   font-style: normal;
   display: inline-block;
   text-decoration: inherit;
 }
 
-a [class^="<%= @opts[:css_prefix] %>"], a [class*=" <%= @opts[:css_prefix] %>"] {
+a [class^="<%= @opts.css_prefix %>"], a [class*=" <%= @opts.css_prefix %>"] {
   display: inline-block;
   text-decoration: inherit;
 }
 
-.<%= @opts[:css_prefix] %>large:before {
+.<%= @opts.css_prefix %>large:before {
   vertical-align: top;
   font-size: 1.333em;
 }
 
-.btn [class^="<%= @opts[:css_prefix] %>"], .btn [class*=" <%= @opts[:css_prefix] %>"] {
+.btn [class^="<%= @opts.css_prefix %>"], .btn [class*=" <%= @opts.css_prefix %>"] {
   line-height: 0.9em;
 }
 
-li [class^="<%= @opts[:css_prefix] %>"], li [class*=" <%= @opts[:css_prefix] %>"] {
+li [class^="<%= @opts.css_prefix %>"], li [class*=" <%= @opts.css_prefix %>"] {
   display: inline-block;
   width: 1.25em;
   text-align: center;
 }
 
-li .<%= @opts[:css_prefix] %>large[class^="<%= @opts[:css_prefix] %>"], li .<%= @opts[:css_prefix] %>large[class*=" <%= @opts[:css_prefix] %>"] {
+li .<%= @opts.css_prefix %>large[class^="<%= @opts.css_prefix %>"], li .<%= @opts.css_prefix %>large[class*=" <%= @opts.css_prefix %>"] {
   width: 1.875em;
 }
 
-li[class^="<%= @opts[:css_prefix] %>"], li[class*=" <%= @opts[:css_prefix] %>"] {
+li[class^="<%= @opts.css_prefix %>"], li[class*=" <%= @opts.css_prefix %>"] {
   margin-left: 0;
   list-style-type: none;
 }
 
-li[class^="<%= @opts[:css_prefix] %>"]:before, li[class*=" <%= @opts[:css_prefix] %>"]:before {
+li[class^="<%= @opts.css_prefix %>"]:before, li[class*=" <%= @opts.css_prefix %>"]:before {
   text-indent: -2em;
   text-align: center;
 }
 
-li[class^="<%= @opts[:css_prefix] %>"].<%= @opts[:css_prefix] %>large:before, li[class*=" <%= @opts[:css_prefix] %>"].<%= @opts[:css_prefix] %>large:before {
+li[class^="<%= @opts.css_prefix %>"].<%= @opts.css_prefix %>large:before, li[class*=" <%= @opts.css_prefix %>"].<%= @opts.css_prefix %>large:before {
   text-indent: -1.333em;
 }
-<% @data[:glyphs].each_with_index do |name, index| %>
-.<%= @opts[:css_prefix] + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+<% @glyphs.each_with_index do |name, index| %>
+.<%= @opts.css_prefix + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

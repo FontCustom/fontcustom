@@ -60,7 +60,9 @@ module Fontcustom
       end
 
       def generate
-        @opts = opts # make available to templates
+        @glyphs = @data[:glyphs]
+        @font_path = @data[:paths][:css_to_fonts]
+        @font_path_pre = @data[:paths][:preprocessor_to_fonts]
         begin
           created = []
           opts.templates.each do |source|
