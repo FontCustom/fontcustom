@@ -21,17 +21,11 @@ module Fontcustom
       end
       @cli_options = DEFAULT_OPTIONS.dup.merge options
 
-      # required by FC::Util
-      @opts = @cli_options # TODO update this to use class attributes
       @shell = Thor::Shell::Color.new
-
       set_options
     end
 
-    def collect_options
-      # TODO temporary workaround
-      return Thor::CoreExt::HashWithIndifferentAccess.new Hash[ instance_variables.map { |name| [name[1..-1], instance_variable_get(name)] } ]
-    end
+    private
 
     def set_options
       set_config_path
@@ -41,7 +35,6 @@ module Fontcustom
       set_input_paths
       set_output_paths
       set_template_paths
-      # TODO resave @opts?
     end
 
     def set_config_path
