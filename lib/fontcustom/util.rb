@@ -10,18 +10,18 @@ module Fontcustom
     end
 
     def say_changed(status, changed)
-      return unless opts(:verbose)
+      return unless base(:verbose)
       message = changed.map { |file| relative_to_root(file) }
       @shell.say_status status, message.join(" ")
     end
 
     def say_message(status, message)
-      return unless opts(:verbose)
+      return unless base(:verbose)
       @shell.say_status status, message
     end
 
     def relative_to_root(path)
-      path = path.sub(opts(:project_root), "")
+      path = path.sub(base(:project_root), "")
       path = path[1..-1] if path[0] == "/"
       path
     end
@@ -33,7 +33,7 @@ module Fontcustom
 
     private
 
-    def opts(sym)
+    def base(sym)
       # Generators have @opts, while Options has @cli_options
       if @opts
         @opts.send sym

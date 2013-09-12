@@ -7,12 +7,12 @@ describe Fontcustom::Watcher do
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
   end
-  
+
   def watcher(options)
     Fontcustom::Generator::Font.stub :start
     Fontcustom::Generator::Template.stub :start
-    opts = Fontcustom::Options.new(options).collect_options
-    opts[:blocking] = false # undocumented — non-blocking use of watcher for testing
+    opts = Fontcustom::Options.new(options)
+    opts.instance_variable_set :@is_test, true # undocumented — non-blocking use of watcher for testing
     Fontcustom::Watcher.new opts
   end
 

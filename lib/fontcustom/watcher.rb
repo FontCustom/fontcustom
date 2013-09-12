@@ -5,9 +5,9 @@ module Fontcustom
   class Watcher
     def initialize(opts)
       @opts = opts
-      @vector_listener = Listen.to(@opts[:input][:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+      @vector_listener = Listen.to(@opts.input[:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
 
-      templates = @opts[:templates].dup
+      templates = @opts.templates.dup
       templates.delete_if do |template|
         template.match Fontcustom.gem_lib
       end
@@ -15,26 +15,28 @@ module Fontcustom
         templates = templates.map do |template|
           File.basename template
         end
-        @template_listener = Listen.to(@opts[:input][:templates]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
+        @template_listener = Listen.to(@opts.input[:templates]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
       end
 
-      @opts[:blocking] = @opts[:blocking] == false ? false : true
-      unless @opts[:blocking]
-        @vector_listener = @vector_listener.polling_fallback_message(false) 
-        @template_listener = @template_listener.polling_fallback_message(false) if @template_listener 
+      # Modified to allow testing
+      @is_test = @opts.instance_variable_get :@is_test
+      if @is_test
+        @vector_listener = @vector_listener.polling_fallback_message(false)
+        @template_listener = @template_listener.polling_fallback_message(false) if @template_listener
       end
     end
 
     def watch
-      puts "Font Custom is watching your icons at #{@opts[:input][:vectors]}. Press Ctrl + C to stop."
-      compile unless @opts[:skip_first]
+      puts "Font Custom is watching your icons at #{@opts.input[:vectors]}. Press Ctrl + C to stop."
+      compile unless @opts.skip_first
 
-      if @opts[:blocking]
-        @vector_listener.start!
-        @template_listener.start! if @template_listener
-      else
+      # Non-blocking if test
+      if @is_test
         @vector_listener.start
         @template_listener.start if @template_listener
+      else
+        @vector_listener.start!
+        @template_listener.start! if @template_listener
       end
 
     rescue Fontcustom::Error => e
