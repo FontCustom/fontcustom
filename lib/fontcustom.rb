@@ -10,7 +10,7 @@ module Fontcustom
   ##
   # Clean Ruby API to workaround Thor
   def compile(options)
-    opts = Fontcustom::Options.new.collect_options options
+    opts = Fontcustom::Options.new options
     Fontcustom::Generator::Font.start [opts]
     Fontcustom::Generator::Template.start [opts]
   rescue Fontcustom::Error => e
