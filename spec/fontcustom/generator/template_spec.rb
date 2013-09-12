@@ -7,7 +7,7 @@ describe Fontcustom::Generator::Template do
   end
   
   def generator(options)
-    opts = Fontcustom::Options.new(options).collect_options
+    opts = Fontcustom::Options.new(options)
     Fontcustom::Generator::Template.new([opts])
   end
 

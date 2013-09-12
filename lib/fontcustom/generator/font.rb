@@ -15,22 +15,22 @@ module Fontcustom
       argument :opts
 
       def prepare_output_dirs
-        dirs = opts[:output].values.uniq
+        dirs = opts.output.values.uniq
         dirs.each do |dir|
           unless File.directory? dir
-            empty_directory dir, :verbose => opts[:verbose]
+            empty_directory dir, :verbose => opts.verbose
           end
         end
       end
 
       def get_data
-        if File.exists? opts[:data_cache]
+        if File.exists? opts.data_cache
           begin
-            data = File.read opts[:data_cache]
+            data = File.read opts.data_cache
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
           rescue JSON::ParserError
-            raise Fontcustom::Error, "#{opts[:data_cache]} is corrupted. Fix the JSON or delete the file to start from scratch."
+            raise Fontcustom::Error, "#{opts.data_cache} is corrupted. Fix the JSON or delete the file to start from scratch."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -48,7 +48,7 @@ module Fontcustom
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          overwrite_file opts[:data_cache], json
+          overwrite_file opts.data_cache, json
           say_changed :removed, deleted
         end
       end
@@ -56,9 +56,9 @@ module Fontcustom
       def generate
         # TODO align option naming conventions with python script
         # TODO remove name arg if default is already set in python (or rm from python)
-        name = opts[:font_name] ? " --name " + opts[:font_name] : ""
-        hash = opts[:file_hash] ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts[:input][:vectors]} #{opts[:output][:fonts] + name + hash} 2>&1"
+        name = opts.font_name ? " --name " + opts.font_name : ""
+        hash = opts.file_hash ? "" : " --nohash"
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash} 2>&1"
 
         output = `#{cmd}`.split("\n")
         @json = output[3] # JSON
@@ -73,7 +73,7 @@ module Fontcustom
           output = output[4..-1]
         end
 
-        if opts[:debug]
+        if opts.debug
           shell.say "DEBUG: (raw output from fontforge)"
           shell.say output
         end
@@ -87,7 +87,7 @@ module Fontcustom
         @json = JSON.parse(@json, :symbolize_names => true)
         @data.merge! @json
         @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-") }
-        @data[:fonts].map! { |font| File.join(@opts[:output][:fonts], font) }
+        @data[:fonts].map! { |font| File.join(opts.output[:fonts], font) }
       end
 
       def announce_files
@@ -96,7 +96,7 @@ module Fontcustom
 
       def save_data
         json = JSON.pretty_generate @data
-        overwrite_file opts[:data_cache], json
+        overwrite_file opts.data_cache, json
       end
     end
   end

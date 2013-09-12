@@ -12,3 +12,4 @@
 * On install hook / message to remind about fontforge
 * --silent instead of (or alongside?) --verbose
 * Configure colors for thor say
+* Test out that preview still works

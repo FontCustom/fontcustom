@@ -20,14 +20,14 @@ module Fontcustom
       end
 
       def get_data
-        if File.exists? opts[:data_cache]
-          @data = JSON.parse(File.read(opts[:data_cache]), :symbolize_names => true)
+        if File.exists? opts.data_cache
+          @data = JSON.parse(File.read(opts.data_cache), :symbolize_names => true)
         else
-          raise Fontcustom::Error, "#{relative_to_root(opts[:data_cache])} is required to generate templates, but I couldn't find it."
+          raise Fontcustom::Error, "#{relative_to_root(opts.data_cache)} is required to generate templates, but I couldn't find it."
         end
       rescue JSON::ParserError
         # Catches both empty and and malformed files
-        raise Fontcustom::Error, "#{relative_to_root(opts[:data_cache])} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate the data file. Old generated files may need to be deleted manually."
+        raise Fontcustom::Error, "#{relative_to_root(opts.data_cache)} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate the data file. Old generated files may need to be deleted manually."
       end
 
       def reset_output
@@ -41,19 +41,19 @@ module Fontcustom
         ensure
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
-          overwrite_file opts[:data_cache], json
+          overwrite_file opts.data_cache, json
           say_changed :removed, deleted
         end
       end
 
       def make_relative_paths
         name = File.basename @data[:fonts].first, File.extname(@data[:fonts].first)
-        fonts = Pathname.new opts[:output][:fonts]
-        css = Pathname.new opts[:output][:css]
-        preview = Pathname.new opts[:output][:preview]
+        fonts = Pathname.new opts.output[:fonts]
+        css = Pathname.new opts.output[:css]
+        preview = Pathname.new opts.output[:preview]
         @data[:paths][:css_to_fonts] = File.join fonts.relative_path_from(css).to_s, name
-        @data[:paths][:preprocessor_to_fonts] = if opts[:preprocessor_path] != ""
-          File.join opts[:preprocessor_path], name
+        @data[:paths][:preprocessor_to_fonts] = if opts.preprocessor_path != ""
+          File.join opts.preprocessor_path, name
         else
           @data[:paths][:css_to_fonts]
         end
@@ -63,17 +63,17 @@ module Fontcustom
         @opts = opts # make available to templates
         begin
           created = []
-          opts[:templates].each do |source|
+          opts.templates.each do |source|
             name = File.basename source
             ext = File.extname source
-            target = if opts[:output].keys.include? name
-                       File.join opts[:output][name], name
+            target = if opts.output.keys.include? name
+                       File.join opts.output[name], name
                      elsif %w|.css .scss .sass .less .stylus|.include? ext
-                       File.join opts[:output][:css], name
+                       File.join opts.output[:css], name
                      elsif name == "fontcustom-preview.html" || name == "fontcustom-preview.css"
-                       File.join opts[:output][:preview], name
+                       File.join opts.output[:preview], name
                      else
-                       File.join opts[:output][:fonts], name
+                       File.join opts.output[:fonts], name
                      end
 
             template source, target, :verbose => false
@@ -82,7 +82,7 @@ module Fontcustom
         ensure
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
-          overwrite_file opts[:data_cache], json
+          overwrite_file opts.data_cache, json
         end
       end
     end
