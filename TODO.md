@@ -1,5 +1,8 @@
 # 1.1.0 TODO
 
+* Verify that latest works
+* `fontcustom clean`
+
 * Include pull requests
 * Option to set icon size (auto, string, or hash)
 * Allow absolute paths
@@ -9,6 +12,7 @@
 * Have error messages `say_status` themselves?
 * Improve paths in messages (wrap in ticks)
 * Change outputed filenames to reflect font name
+* Change messages to conform with Thor's (created => create)
 
 * On install hook / message to remind about fontforge
 * --silent instead of (or alongside?) --verbose
