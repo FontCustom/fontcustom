@@ -194,7 +194,7 @@ describe Fontcustom::Generator::Font do
       )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
-      stdout.should =~ /created.+\.(woff|ttf|eot|svg)/
+      stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
 
     it "should print nothing if verbose is false" do

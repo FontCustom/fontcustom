@@ -1,20 +1,22 @@
 # 1.1.0 TODO
 
-* Verify that latest works
-* `fontcustom clean`
+* Investigate initial update to .fontcustom-data
+* Verify all templates work
 
 * Include pull requests
-* Option to set icon size (auto, string, or hash)
 * Allow absolute paths
 * Abstract path expansion into Util
+
+# Maybe
+
+* Option to set icon canvas size (auto, string, or hash)
+* `fontcustom clean`
 
 * Improve error messages in Watcher and Fontcustom.rb
 * Have error messages `say_status` themselves?
 * Improve paths in messages (wrap in ticks)
 * Change outputed filenames to reflect font name
-* Change messages to conform with Thor's (created => create)
 
-* On install hook / message to remind about fontforge
+* On install hook / message to remind about installing fontforge
 * --silent instead of (or alongside?) --verbose
 * Configure colors for thor say
-* Test out that preview still works

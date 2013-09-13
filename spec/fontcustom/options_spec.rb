@@ -113,20 +113,6 @@ describe Fontcustom::Options do
       o.send :load_config
       o.instance_variable_get(:@config_options).should == {}
     end
-
-    it "should report which configuration file it's using" do
-      o = options
-      o.instance_variable_set :@config, fixture("options/any-file-name.yml")
-      stdout = capture(:stdout) { o.send :load_config }
-      stdout.should match /options\/any-file-name\.yml/
-    end
-
-    it "should warn if no configuration file is used" do
-      o = options
-      o.instance_variable_set :@config, false
-      stdout = capture(:stdout) { o.send :load_config }
-      stdout.should match /No configuration/
-    end
   end
 
   context ".merge_options" do

@@ -73,7 +73,7 @@ module Fontcustom
                        File.join opts.output[name], name
                      elsif %w|.css .scss .sass .less .stylus|.include? ext
                        File.join opts.output[:css], name
-                     elsif name == "fontcustom-preview.html" || name == "fontcustom-preview.css"
+                     elsif name == "fontcustom-preview.html"
                        File.join opts.output[:preview], name
                      else
                        File.join opts.output[:fonts], name
