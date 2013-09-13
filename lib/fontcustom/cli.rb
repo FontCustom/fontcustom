@@ -25,7 +25,7 @@ module Fontcustom
 
     class_option :templates, :aliases => "-t", :type => :array,
       :desc => "Space-delinated array of templates to generate alongside fonts.",
-      :enum => %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
+      :enum => %w|preview css scss scss-rails bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
       :default => DEFAULT_OPTIONS[:templates]
 
     class_option :font_name, :aliases => "-f", :type => :string,

@@ -199,6 +199,8 @@ module Fontcustom
           File.join template_path, "fontcustom.css"
         when "scss"
           File.join template_path, "_fontcustom.scss"
+        when "scss-rails"
+          File.join template_path, "_fontcustom-rails.scss"
         when "bootstrap"
           File.join template_path, "fontcustom-bootstrap.css"
         when "bootstrap-scss"
