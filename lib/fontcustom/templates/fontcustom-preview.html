@@ -2,7 +2,6 @@
 <html>
   <head>
     <title><%= @opts.font_name %> glyphs preview</title>
-    <link rel="stylesheet" href="fontcustom-preview.css" />
 
     <style>
       /* Page Styles */
@@ -92,11 +91,11 @@
 
       @font-face {
         font-family: "<%= @opts.font_name %>";
-        src: url("<%= @font_path %>.eot");
-        src: url("<%= @font_path %>.eot?#iefix") format("embedded-opentype"),
-             url("<%= @font_path %>.woff") format("woff"),
-             url("<%= @font_path %>.ttf") format("truetype"),
-             url("<%= @font_path %>.svg#<%= @opts.font_name %>") format("svg");
+        src: url("<%= @data[:paths][:preview_to_fonts] %>.eot");
+        src: url("<%= @data[:paths][:preview_to_fonts] %>.eot?#iefix") format("embedded-opentype"),
+             url("<%= @data[:paths][:preview_to_fonts] %>.woff") format("woff"),
+             url("<%= @data[:paths][:preview_to_fonts] %>.ttf") format("truetype"),
+             url("<%= @data[:paths][:preview_to_fonts] %>.svg#<%= @opts.font_name %>") format("svg");
         font-weight: normal;
         font-style: normal;
       }

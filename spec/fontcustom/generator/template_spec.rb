@@ -77,16 +77,17 @@ describe Fontcustom::Generator::Template do
   end
 
   context "#make_relative_paths" do
-    it "should assign :css_to_fonts and :preprocessor_to_fonts" do
+    it "should assign :css_to_fonts, :preview_to_fonts, and :preprocessor_to_fonts" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :output => {:fonts => "foo/fonts", :css => "output/css", :preview => ""}
+        :output => {:fonts => "foo/fonts", :css => "output/css", :preview => "views/"}
       )
       gen.instance_variable_set "@data", data_file_contents
       gen.make_relative_paths
       data = gen.instance_variable_get("@data")
       data[:paths][:css_to_fonts].should match("../../foo/fonts")
+      data[:paths][:preview_to_fonts].should match("../foo/fonts")
       data[:paths][:preprocessor_to_fonts].should eq(data[:paths][:css_to_fonts])
     end
 

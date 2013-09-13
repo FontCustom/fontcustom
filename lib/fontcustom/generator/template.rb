@@ -42,7 +42,7 @@ module Fontcustom
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
           overwrite_file opts.data_cache, json
-          say_changed :removed, deleted
+          say_changed :delete, deleted
         end
       end
 
@@ -52,6 +52,7 @@ module Fontcustom
         css = Pathname.new opts.output[:css]
         preview = Pathname.new opts.output[:preview]
         @data[:paths][:css_to_fonts] = File.join fonts.relative_path_from(css).to_s, name
+        @data[:paths][:preview_to_fonts] = File.join fonts.relative_path_from(preview).to_s, name
         @data[:paths][:preprocessor_to_fonts] = if opts.preprocessor_path != ""
           File.join opts.preprocessor_path, name
         else
@@ -82,6 +83,7 @@ module Fontcustom
             created << target
           end
         ensure
+          say_changed :create, created
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
           overwrite_file opts.data_cache, json

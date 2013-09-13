@@ -29,7 +29,7 @@ module Fontcustom
 
     def overwrite_file(file, content = "")
       File.open(file, "w") { |f| f.write(content) }
-      say_changed :updated, [ file ]
+      say_changed :update, [ file ]
     end
 
     private

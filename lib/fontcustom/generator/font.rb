@@ -49,7 +49,7 @@ module Fontcustom
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
           overwrite_file opts.data_cache, json
-          say_changed :removed, deleted
+          say_changed :delete, deleted
         end
       end
 
@@ -91,7 +91,7 @@ module Fontcustom
       end
 
       def announce_files
-        say_changed :created, @data[:fonts]
+        say_changed :create, @data[:fonts]
       end
 
       def save_data
