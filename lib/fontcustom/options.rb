@@ -184,17 +184,12 @@ module Fontcustom
     # Could arguably belong in Generator::Template, however, it's nice to
     # be able to catch template errors before any generator runs.
     def set_template_paths
-      # ensure that preview has plain stylesheet to reference
-      @templates << "preview-css" if @templates.include?("preview") && ! @templates.include?("preview-css")
-
       template_path = File.join Fontcustom.gem_lib, "templates"
 
       @templates = @templates.map do |template|
         case template
         when "preview"
           File.join template_path, "fontcustom-preview.html"
-        when "preview-css"
-          File.join template_path, "fontcustom-preview.css"
         when "css"
           File.join template_path, "fontcustom.css"
         when "scss"

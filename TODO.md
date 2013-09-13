@@ -1,11 +1,9 @@
-# TODO
+# 1.1.0 TODO
 
-* Inline preview css
 * Include pull requests
-* Icon size (auto, string, or hash)
-
+* Option to set icon size (auto, string, or hash)
 * Allow absolute paths
-* Abstract path expansions
+* Abstract path expansion into Util
 
 * Improve error messages in Watcher and Fontcustom.rb
 * Have error messages `say_status` themselves?

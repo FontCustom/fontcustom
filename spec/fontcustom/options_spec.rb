@@ -403,19 +403,6 @@ describe Fontcustom::Options do
   end
 
   context ".set_template_paths" do
-    it "should ensure that 'preview-css' is included with 'preview'" do
-      o = options
-      o.instance_variable_set :@project_root, fixture
-      o.instance_variable_set :@input, { :templates => "shared/templates" }
-      o.instance_variable_set :@templates, %w|preview|
-      o.send :set_template_paths
-      templates = o.instance_variable_get :@templates
-      templates.should =~ [
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.css"),
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.html")
-      ]
-    end
-
     it "should expand shorthand for packaged templates" do
       o = options
       o.instance_variable_set :@project_root, fixture
@@ -425,7 +412,6 @@ describe Fontcustom::Options do
       templates = o.instance_variable_get :@templates
       templates.should =~ [
         File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.html"),
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.css"),
         File.join(Fontcustom.gem_lib, "templates", "fontcustom.css"),
         File.join(Fontcustom.gem_lib, "templates", "_fontcustom.scss"),
         File.join(Fontcustom.gem_lib, "templates", "fontcustom-bootstrap.css"),
