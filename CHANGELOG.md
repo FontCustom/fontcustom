@@ -1,3 +1,17 @@
+## 1.1.0
+
+More customizable interface for vastly improved workflow.
+
+* Specify where input vectors/templates are stored
+* Specify where output fonts/templates are saved
+* Stock templates are saved as `#{font_name}.css` instead of `_fontcustom.css`
+* More robust path handling (relative paths, customizable `project_root`)
+* User-friendly variables for usage in custom templates
+* Rails-friendly template
+* Allow captial letters in font names ([#92](https://github.com/FontCustom/fontcustom/issues/92))
+* More intuitive `fontcustom --version`
+* Improved status and error messages
+
 ## 1.0.1 (7/21/2013)
 
 Various bugfixes.
