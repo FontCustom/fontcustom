@@ -4,7 +4,6 @@
 * Allow absolute paths
 * Improve paths in messages (wrap in ticks)
 * Improve error messages in Watcher and Fontcustom.rb
-* Force file overwriting when using Thor template
 * Include pull requests
 
 # Maybe
