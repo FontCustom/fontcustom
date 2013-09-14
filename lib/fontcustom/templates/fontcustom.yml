@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------- #
 # Templates
 #   Included in Font Custom:
-#     preview, css, scss, bootstrap, bootstrap-scss, bootstrap-ie7,
+#     preview, css, scss, scss-rails, bootstrap, bootstrap-scss, bootstrap-ie7,
 #     bootstrap-ie7-scss
 #   Custom templates should be saved in the INPUT[:templates] directory.
 # ---------------------------------------------------------------------------- #
