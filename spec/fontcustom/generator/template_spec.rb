@@ -155,6 +155,23 @@ describe Fontcustom::Generator::Template do
       stdout.should == ""
     end
 
+    it "should rename stock templates according to opts.font_name" do
+      gen = generator(
+        :project_root => fixture("generators"),
+        :font_name => "Test Font",
+        :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
+        :templates => %W|scss css|,
+        :verbose => false
+      )
+      gen.instance_variable_set :@data, data_file_contents
+      gen.stub :template
+      gen.stub :overwrite_file
+      gen.should_receive(:template).exactly(2).times do |*args|
+        args[1].should match(/(Test-Font\.css|_Test-Font\.scss)/)
+      end
+      gen.generate
+    end
+
     context "when various output locations are given" do
       subject do
         gen = generator(

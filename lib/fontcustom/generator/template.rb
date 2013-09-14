@@ -64,20 +64,29 @@ module Fontcustom
         @glyphs = @data[:glyphs]
         @font_path = @data[:paths][:css_to_fonts]
         @font_path_pre = @data[:paths][:preprocessor_to_fonts]
+        created = []
+        packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss 
+                   fontcustom-bootstrap.css fontcustom-preview.html _fontcustom-bootstrap.scss _fontcustom.scss|
+        css_exts = %w|.css .scss .sass .less .stylus|
         begin
-          created = []
           opts.templates.each do |source|
             name = File.basename source
             ext = File.extname source
+            target = name.dup
+
+            if packaged.include?(name) && opts.font_name != DEFAULT_OPTIONS[:font_name]
+              target.sub! DEFAULT_OPTIONS[:font_name], opts.font_name
+            end
+
             target = if opts.output.keys.include? name
-                       File.join opts.output[name], name
-                     elsif %w|.css .scss .sass .less .stylus|.include? ext
-                       File.join opts.output[:css], name
-                     elsif name == "fontcustom-preview.html"
-                       File.join opts.output[:preview], name
-                     else
-                       File.join opts.output[:fonts], name
-                     end
+              File.join opts.output[name], target
+            elsif css_exts.include? ext
+              File.join opts.output[:css], target
+            elsif name == "fontcustom-preview.html"
+              File.join opts.output[:preview], target
+            else
+              File.join opts.output[:fonts], target
+            end
 
             template source, target, :verbose => false
             created << target
