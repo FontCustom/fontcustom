@@ -21,6 +21,11 @@ module Fontcustom
       @shell.say_status status, message
     end
 
+    def expand_path(path)
+      return path if path[0] == "/"
+      File.expand_path File.join(base(:project_root), path)
+    end
+
     def relative_to_root(path)
       path = path.sub(base(:project_root), "")
       path = path[1..-1] if path[0] == "/"

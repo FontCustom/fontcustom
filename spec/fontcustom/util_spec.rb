@@ -45,6 +45,27 @@ describe Fontcustom::Util do
     end
   end
 
+  context "#expand_path" do
+    it "should leave absolute paths alone" do
+      gen = Generator.new
+      path = gen.expand_path "/absolute/path"
+      path.should == "/absolute/path"
+    end
+
+    it "should prepend paths with :project_root" do
+      gen = Generator.new
+      path = gen.expand_path "generators"
+      path.should == fixture("generators")
+    end
+
+    it "should follow ../../ relative paths" do
+      gen = Generator.new
+      gen.cli_options[:project_root] = fixture("shared/vectors")
+      path = gen.expand_path "../../generators"
+      path.should == fixture("generators")
+    end
+  end
+
   context "#relative_to_root" do
     it "should trim project root from paths" do
       gen = Generator.new

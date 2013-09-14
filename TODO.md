@@ -1,7 +1,5 @@
 # 1.1.0 TODO
 
-* Abstract path expansion into Util
-* Allow absolute paths
 * Improve paths in messages (wrap in ticks)
 * Improve error messages in Watcher and Fontcustom.rb
 * Include pull requests

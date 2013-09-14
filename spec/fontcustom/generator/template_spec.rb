@@ -21,7 +21,6 @@ describe Fontcustom::Generator::Template do
       expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data is required/
     end
 
-    # TODO ensure data file is correct
     it "should assign @data from data file" do
       gen = generator(
         :project_root => fixture("generators"),

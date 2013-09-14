@@ -24,17 +24,6 @@ describe Fontcustom::Options do
 
   context ".set_config_path" do
     context "when :config is set" do
-      # TODO abstract this into Util?
-      it "should follow ../../ relative paths" do
-        args = {
-          :project_root => fixture("shared/vectors"),
-          :config => "../../options"
-        }
-        o = options args
-        o.send :set_config_path
-        o.instance_variable_get(:@config).should == fixture("options/fontcustom.yml")
-      end
-
       it "should use options[:config] if it's a file" do
         args = {
           :project_root => fixture,
@@ -156,6 +145,7 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@config, "path/to/config/fontcustom.yml"
       o.instance_variable_set :@data_cache, nil
+      o.remove_instance_variable :@cli_options
       o.send :set_data_path
       o.instance_variable_get(:@data_cache).should == "path/to/config/.fontcustom-data"
     end
@@ -166,6 +156,7 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@project_root, fixture
       o.instance_variable_set :@input, "shared/vectors-empty"
+      o.remove_instance_variable :@cli_options
       expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
     end
 
@@ -175,6 +166,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, hash
+        o.remove_instance_variable :@cli_options
         o.send :set_input_paths
         input = o.instance_variable_get :@input
         input[:templates].should == fixture("shared/vectors")
@@ -185,6 +177,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, hash
+        o.remove_instance_variable :@cli_options
         o.send :set_input_paths
         input = o.instance_variable_get :@input
         input[:templates].should == fixture("shared/templates")
@@ -195,6 +188,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, hash
+        o.remove_instance_variable :@cli_options
         expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /contain a "vectors" key/
       end
 
@@ -203,18 +197,8 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, hash
+        o.remove_instance_variable :@cli_options
         expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
-      end
-
-      it "should follow ../../ relative paths" do
-        hash = { :vectors => "../../shared/vectors", :templates => "../../shared/templates" }
-        o = options
-        o.instance_variable_set :@project_root, fixture("generators/mixed-output")
-        o.instance_variable_set :@input, hash
-        o.send :set_input_paths
-        input = o.instance_variable_get(:@input)
-        input[:vectors].should == fixture("shared/vectors")
-        input[:templates].should == fixture("shared/templates")
       end
     end
 
@@ -223,6 +207,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, "shared/vectors"
+        o.remove_instance_variable :@cli_options
         o.send :set_input_paths
         input = o.instance_variable_get :@input
         input.should have_key("vectors")
@@ -233,6 +218,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, "shared/vectors"
+        o.remove_instance_variable :@cli_options
         o.send :set_input_paths
         input = o.instance_variable_get :@input
         input[:templates].should == fixture("shared/vectors")
@@ -242,17 +228,8 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, "shared/not-a-dir"
+        o.remove_instance_variable :@cli_options
         expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
-      end
-
-      it "should follow ../../ relative paths" do
-        o = options
-        o.instance_variable_set :@project_root, fixture("generators/mixed-output")
-        o.instance_variable_set :@input, "../../shared/vectors"
-        o.send :set_input_paths
-        input = o.instance_variable_get(:@input)
-        input[:vectors].should == fixture("shared/vectors")
-        input[:templates].should == fixture("shared/vectors")
       end
     end
   end
@@ -265,6 +242,7 @@ describe Fontcustom::Options do
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@font_name, "Test-Font"
         o.instance_variable_set :@output, nil
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output[:fonts].should == fixture("Test-Font")
@@ -275,6 +253,8 @@ describe Fontcustom::Options do
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@font_name, "Test-Font"
         o.instance_variable_set :@output, nil
+        o.instance_variable_set :@verbose, true
+        o.remove_instance_variable :@cli_options
         stdout = capture(:stdout) { o.send :set_output_paths }
         stdout.should match("Test-Font")
       end
@@ -286,6 +266,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, hash
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output[:css].should == fixture("output/fonts")
@@ -301,6 +282,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, hash
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output[:css].should == fixture("output/styles")
@@ -315,6 +297,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, hash
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output["special.js"].should == fixture("assets/javascripts")
@@ -325,23 +308,8 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, hash
+        o.remove_instance_variable :@cli_options
         expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /contain a "fonts" key/
-      end
-
-      it "should follow ../../ relative paths" do
-        hash = {
-          :fonts => "../../output/fonts",
-          :css => "../../output/css",
-          :preview => "../../output/views"
-        }
-        o = options
-        o.instance_variable_set :@project_root, fixture("generators/mixed-output")
-        o.instance_variable_set :@output, hash
-        o.send :set_output_paths
-        output = o.instance_variable_get :@output
-        output[:fonts].should == fixture("output/fonts")
-        output[:css].should == fixture("output/css")
-        output[:preview].should == fixture("output/views")
       end
     end
 
@@ -350,6 +318,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, "output/fonts"
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output.should be_a(Hash)
@@ -362,6 +331,7 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, "output/fonts"
+        o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output[:css].should == fixture("output/fonts")
@@ -372,18 +342,8 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, "shared/not-a-dir"
+        o.remove_instance_variable :@cli_options
         expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /directory, not a file/
-      end
-
-      it "should follow ../../ relative paths" do
-        o = options
-        o.instance_variable_set :@project_root, fixture("generators/mixed-output")
-        o.instance_variable_set :@output, "../../something/else"
-        o.send :set_output_paths
-        output = o.instance_variable_get :@output
-        output[:fonts].should == fixture("something/else")
-        output[:css].should == fixture("something/else")
-        output[:preview].should == fixture("something/else")
       end
     end
   end
@@ -394,6 +354,7 @@ describe Fontcustom::Options do
       o.instance_variable_set :@project_root, fixture
       o.instance_variable_set :@input, { :templates => "shared/templates" }
       o.instance_variable_set :@templates, %w|preview css scss bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|
+      o.remove_instance_variable :@cli_options
       o.send :set_template_paths
       templates = o.instance_variable_get :@templates
       templates.should =~ [
@@ -412,6 +373,7 @@ describe Fontcustom::Options do
       o.instance_variable_set :@project_root, fixture
       o.instance_variable_set :@input, { :templates => fixture("shared/templates") }
       o.instance_variable_set :@templates, %w|custom.css|
+      o.remove_instance_variable :@cli_options
       o.send :set_template_paths
       templates = o.instance_variable_get :@templates
       templates.should =~ [fixture("shared/templates/custom.css")]
@@ -422,6 +384,7 @@ describe Fontcustom::Options do
       o.instance_variable_set :@project_root, fixture
       o.instance_variable_set :@input, { :templates => "shared/templates" }
       o.instance_variable_set :@templates, %w|fake-template.txt|
+      o.remove_instance_variable :@cli_options
       expect { o.send :set_template_paths }.to raise_error Fontcustom::Error, /does not exist/
     end
   end

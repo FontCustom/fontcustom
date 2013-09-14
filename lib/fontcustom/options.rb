@@ -39,7 +39,7 @@ module Fontcustom
 
     def set_config_path
       @config = if @cli_options[:config]
-        path = File.expand_path File.join(@cli_options[:project_root], @cli_options[:config])
+        path = expand_path @cli_options[:config]
 
         # :config is the path to fontcustom.yml
         if File.exists?(path) && ! File.directory?(path)
@@ -96,7 +96,7 @@ module Fontcustom
 
     def set_data_path
       @data_cache = if ! @data_cache.nil?
-        File.expand_path File.join(@project_root, @data_cache)
+        expand_path @data_cache
       elsif @config
         File.join File.dirname(@config), '.fontcustom-data'
       else
@@ -109,24 +109,24 @@ module Fontcustom
         @input = Thor::CoreExt::HashWithIndifferentAccess.new @input
 
         if @input.has_key? "vectors"
-          @input[:vectors] = File.expand_path File.join(@project_root, @input[:vectors])
-          unless File.directory? input[:vectors]
-            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{relative_to_root(input[:vectors])} and try again."
+          @input[:vectors] = expand_path @input[:vectors]
+          unless File.directory? @input[:vectors]
+            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{relative_to_root(@input[:vectors])} and try again."
           end
         else
           raise Fontcustom::Error, "INPUT (as a hash) should contain a \"vectors\" key."
         end
 
         if @input.has_key? "templates"
-          @input[:templates] = File.expand_path File.join(@project_root, @input[:templates])
+          @input[:templates] = expand_path @input[:templates]
           unless File.directory? @input[:templates]
-            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{relative_to_root(input[:templates])} and try again."
+            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{relative_to_root(@input[:templates])} and try again."
           end
         else
           @input[:templates] = @input[:vectors]
         end
       elsif @input.is_a? String
-        input = File.expand_path File.join(@project_root, @input)
+        input = expand_path @input
         unless File.directory? input
           raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check #{relative_to_root(input)} and try again."
         end
@@ -147,7 +147,7 @@ module Fontcustom
         raise Fontcustom::Error, "OUTPUT (as a hash) should contain a \"fonts\" key." unless @output.has_key? "fonts"
 
         @output.each do |key, val|
-          @output[key] = File.expand_path File.join(@project_root, val)
+          @output[key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
             raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check #{relative_to_root(val)} and try again."
           end
@@ -157,13 +157,13 @@ module Fontcustom
         @output[:preview] ||= @output[:fonts]
       else
         if @output.is_a? String
-          output = File.expand_path File.join(@project_root, @output)
+          output = expand_path @output
           if File.exists?(output) && ! File.directory?(output)
             raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{relative_to_root(output)} and try again."
           end
         else
           output = File.join @project_root, @font_name
-          say_message :status, "All generated files will be added into `#{relative_to_root(output)}/` by default."
+          say_message :status, "All generated files will be saved to `#{relative_to_root(output)}/`."
         end
 
         @output = Thor::CoreExt::HashWithIndifferentAccess.new({
@@ -201,9 +201,9 @@ module Fontcustom
         when "bootstrap-ie7-scss"
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
-          path = File.expand_path File.join(@input[:templates], template)
-          raise Fontcustom::Error, "The custom template at #{relative_to_root(path)} does not exist." unless File.exists? path
-          path
+          template = File.expand_path File.join(@input[:templates], template) unless template[0] == "/"
+          raise Fontcustom::Error, "The custom template at #{relative_to_root(template)} does not exist." unless File.exists? template
+          template
         end
       end
     end
