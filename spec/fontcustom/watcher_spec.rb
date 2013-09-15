@@ -28,7 +28,7 @@ describe Fontcustom::Watcher do
       # silence output
       capture(:stdout) do
         w.watch
-        w.stop
+        w.send :stop
       end
     end
 
@@ -43,7 +43,7 @@ describe Fontcustom::Watcher do
       )
       capture(:stdout) do
         w.watch
-        w.stop
+        w.send :stop
       end
     end
 
@@ -62,7 +62,7 @@ describe Fontcustom::Watcher do
           FileUtils.cp fixture("shared/vectors/C.svg"), fixture("shared/vectors/test.svg")
           sleep 1
         ensure
-          w.stop
+          w.send :stop
           new = fixture("shared/vectors/test.svg")
           FileUtils.rm(new) if File.exists?(new)
         end
@@ -89,7 +89,7 @@ describe Fontcustom::Watcher do
           File.open(template, "w") { |file| file.write(new) }
           sleep 1
         ensure
-          w.stop
+          w.send :stop
           File.open(template, "w") { |file| file.write(content) }
         end
       end
@@ -110,7 +110,7 @@ describe Fontcustom::Watcher do
           w.watch
           FileUtils.touch fixture("shared/vectors/non-vector-file")
         ensure
-          w.stop
+          w.send :stop
           new = fixture("shared/vectors/non-vector-file")
           FileUtils.rm(new) if File.exists?(new)
         end
