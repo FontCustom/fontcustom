@@ -1,30 +1,30 @@
 # ---------------------------------------------------------------------------- #
 # Project Info
-#   Learn more about these options by running `fontcustom help` or visit
-#   <http://fontcustom.com>.
+#   Default values shown. Learn more about these options by running 
+#   `fontcustom help` or visit <http://fontcustom.com>.
 # ---------------------------------------------------------------------------- #
 
-#font_name: My Custom Font
-#file_hash: false
-#css_prefix: glyph-
-#preprocessor_path: fonts/fontcustom
-#debug: true
-#verbose: false
+#font_name: fontcustom
+#file_hash: true
+#css_prefix: icon-
+#preprocessor_path: ""
+#debug: false
+#verbose: true
 
 
 # ---------------------------------------------------------------------------- #
 # Project Paths
-#   All paths are relative to PROJECT_ROOT (default: working directory).
-#   PROJECT_ROOT can be configured (absolute path recommended).
-#   For finer control, assign INPUT and OUTPUT as hashes instead of a strings.
+#   Relative paths are expanded from PROJECT_ROOT (default: working directory).
+#   INPUT and OUTPUT can be assigned as hashes instead of a strings.
 #   The OUPUT hash can route custom templates according to their filename.
 # ---------------------------------------------------------------------------- #
 
 #project_root: some/other/place
+#data_cache: tmp/fontcustom
 
 #input:
-#  vectors: app/assets/fontcustom/vectors
-#  templates: app/assets/fontcustom/templates
+#  vectors: app/assets/fonts/fontcustom/vectors
+#  templates: app/assets/fonts/fontcustom/templates
 
 #output:
 #  fonts: app/assets/fonts
