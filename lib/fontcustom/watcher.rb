@@ -29,7 +29,6 @@ module Fontcustom
     end
 
     def watch
-      say "Font Custom is watching your icons at `#{relative_to_root(@opts.input[:vectors])}`. Press Ctrl + C to stop.", :yellow
       compile unless @opts.skip_first
       start
     rescue SignalException # Catches Ctrl + C

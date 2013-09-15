@@ -50,7 +50,7 @@ module Fontcustom
           File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "The configuration file was not found. Check `#{relative_to_root(path)}` and try again."
+          raise Fontcustom::Error, "The configuration file wasn't found. Check `#{relative_to_root(path)}` and try again."
         end
       else
         # fontcustom.yml is in the project_root
@@ -69,12 +69,16 @@ module Fontcustom
 
     def load_config
       @config_options = {}
-      return unless @config
-      begin
-        config = YAML.load File.open(@config)
-        @config_options = config if config # empty file returns false
-      rescue Exception => e
-        raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
+      if @config
+        say_message :status, "Loading configuration file at `#{relative_to_root(@config)}`."
+        begin
+          config = YAML.load File.open(@config)
+          @config_options = config if config # empty file returns false
+        rescue Exception => e
+          raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
+        end
+      else
+        say_message :status, "No configuration file set. Generate one with `fontcustom config` to save your settings."
       end
     end
 
@@ -125,8 +129,8 @@ module Fontcustom
         else
           @input[:templates] = @input[:vectors]
         end
-      elsif @input.is_a? String
-        input = expand_path @input
+      else
+        input = @input ? expand_path(@input) : @project_root
         unless File.directory? input
           raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check `#{relative_to_root(input)}` and try again."
         end

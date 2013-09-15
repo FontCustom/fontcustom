@@ -30,8 +30,6 @@ module Fontcustom
     :output => "PROJECT_ROOT/FONT_NAME"
   }
 
-  ##
-  # 
   DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
     :project_root => Dir.pwd,
     :input => nil,

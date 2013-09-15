@@ -72,6 +72,7 @@ module Fontcustom
       :desc => "Skip the initial compile upon watching.",
       :default => false
     def watch(input = nil)
+      say "Font Custom is watching your icons. Press Ctrl + C to stop.", :yellow
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
       opts = Fontcustom::Options.new(opts)
       Fontcustom::Watcher.new(opts).watch
