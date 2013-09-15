@@ -64,7 +64,7 @@ module Fontcustom
       Fontcustom::Generator::Font.start [opts]
       Fontcustom::Generator::Template.start [opts]
     rescue Fontcustom::Error => e
-      say_status :error, e.message
+      say_status :error, e.message, :red
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
@@ -76,7 +76,7 @@ module Fontcustom
       opts = Fontcustom::Options.new(opts)
       Fontcustom::Watcher.new(opts).watch
     rescue Fontcustom::Error => e
-      say_status :error, e.message
+      say_status :error, e.message, :red
     end
 
     desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: `pwd`"

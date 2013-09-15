@@ -65,7 +65,7 @@ module Fontcustom
 
         # fontforge wrongly returns the following error message if only a single glyph.
         # We can strip it out and ignore it.
-        if @json == 'Warning: Font contained no glyphs'
+        if @json == "Warning: Font contained no glyphs"
           @json = output[4]
           output = output[5..-1]
         else
@@ -73,7 +73,7 @@ module Fontcustom
           output = output[4..-1]
         end
 
-        say_status :debug, output if opts.debug
+        say_status :debug, output, :red if opts.debug
 
         unless $?.success?
           raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details."

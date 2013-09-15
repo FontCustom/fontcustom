@@ -29,7 +29,7 @@ module Fontcustom
     end
 
     def watch
-      puts "Font Custom is watching your icons at `#{relative_to_root(@opts.input[:vectors])}`. Press Ctrl + C to stop."
+      say "Font Custom is watching your icons at `#{relative_to_root(@opts.input[:vectors])}`. Press Ctrl + C to stop.", :yellow
       compile unless @opts.skip_first
       start
     rescue SignalException # Catches Ctrl + C
@@ -51,19 +51,19 @@ module Fontcustom
     def stop
       @vector_listener.stop
       @template_listener.stop if @template_listener
-      puts "\nFont Custom is signing off. Good night and good luck."
+      say "\nFont Custom is signing off. Good night and good luck.", :yellow
     end
 
     def callback
       Proc.new do |modified, added, removed|
         begin
-          puts "  >> Changed: " + modified.join(", ") unless modified.empty?
-          puts "  >> Added: " + added.join(", ") unless added.empty?
-          puts "  >> Removed: " + removed.join(", ") unless removed.empty?
+          say_message :changed, modified.join(", ") unless modified.empty?
+          say_message :added, added.join(", ") unless added.empty?
+          say_message :removed, removed.join(", ") unless removed.empty?
           changed = modified + added + removed
           compile unless changed.empty?
         rescue Fontcustom::Error => e
-          @opts.say_message :error, e.message
+          say_message :error, e.message, :red
         end
       end
     end
@@ -71,6 +71,14 @@ module Fontcustom
     def compile
       Fontcustom::Generator::Font.start [@opts]
       Fontcustom::Generator::Template.start [@opts]
+    end
+
+    def say(*args)
+      @opts.instance_variable_get(:@shell).say *args
+    end
+
+    def say_message(*args)
+      @opts.say_message *args
     end
   end
 end
