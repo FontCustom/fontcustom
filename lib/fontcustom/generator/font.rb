@@ -30,7 +30,7 @@ module Fontcustom
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
           rescue JSON::ParserError
-            raise Fontcustom::Error, "#{opts.data_cache} is corrupted. Fix the JSON or delete the file to start from scratch."
+            raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Note: Any previously generated files will need to be deleted manually."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -73,13 +73,10 @@ module Fontcustom
           output = output[4..-1]
         end
 
-        if opts.debug
-          shell.say "DEBUG: (raw output from fontforge)"
-          shell.say output
-        end
+        say_status :debug, output if opts.debug
 
         unless $?.success?
-          raise Fontcustom::Error, "Compilation failed unexpectedly. Check your options and try again with --debug get more details."
+          raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details."
         end
       end
 

@@ -14,7 +14,7 @@ module Fontcustom
     Fontcustom::Generator::Font.start [opts]
     Fontcustom::Generator::Template.start [opts]
   rescue Fontcustom::Error => e
-    puts "ERROR: #{e.message}"
+    opts.say_message :error, e.message
   end
 
   def gem_lib

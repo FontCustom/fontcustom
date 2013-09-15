@@ -3,6 +3,8 @@ require "listen"
 
 module Fontcustom
   class Watcher
+    include Fontcustom::Util
+
     def initialize(opts)
       @opts = opts
       @vector_listener = Listen.to(@opts.input[:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
@@ -27,24 +29,23 @@ module Fontcustom
     end
 
     def watch
-      puts "Font Custom is watching your icons at #{@opts.input[:vectors]}. Press Ctrl + C to stop."
+      puts "Font Custom is watching your icons at `#{relative_to_root(@opts.input[:vectors])}`. Press Ctrl + C to stop."
       compile unless @opts.skip_first
+      start
+    rescue SignalException # Catches Ctrl + C
+      stop
+    end
 
-      # Non-blocking if test
-      if @is_test
+    private
+
+    def start
+      if @is_test # Non-blocking listener
         @vector_listener.start
         @template_listener.start if @template_listener
       else
         @vector_listener.start!
         @template_listener.start! if @template_listener
       end
-
-    rescue Fontcustom::Error => e
-      show_error e
-
-    # Catches Ctrl + C
-    rescue SignalException
-      stop
     end
 
     def stop
@@ -53,19 +54,16 @@ module Fontcustom
       puts "\nFont Custom is signing off. Good night and good luck."
     end
 
-    private
-
     def callback
       Proc.new do |modified, added, removed|
         begin
           puts "  >> Changed: " + modified.join(", ") unless modified.empty?
           puts "  >> Added: " + added.join(", ") unless added.empty?
           puts "  >> Removed: " + removed.join(", ") unless removed.empty?
-
           changed = modified + added + removed
           compile unless changed.empty?
         rescue Fontcustom::Error => e
-          show_error e
+          @opts.say_message :error, e.message
         end
       end
     end
@@ -73,10 +71,6 @@ module Fontcustom
     def compile
       Fontcustom::Generator::Font.start [@opts]
       Fontcustom::Generator::Template.start [@opts]
-    end
-
-    def show_error(err)
-      puts "ERROR: #{err.message}"
     end
   end
 end

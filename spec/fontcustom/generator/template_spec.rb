@@ -18,7 +18,7 @@ describe Fontcustom::Generator::Template do
         :input => "shared/vectors",
         :verbose => false
       )
-      expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data is required/
+      expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data/
     end
 
     it "should assign @data from data file" do

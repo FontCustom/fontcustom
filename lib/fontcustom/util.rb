@@ -6,14 +6,14 @@ module Fontcustom
     def check_fontforge
       fontforge = `which fontforge`
       if fontforge == "" || fontforge == "fontforge not found"
-        raise Fontcustom::Error, "Please install fontforge. Visit http://fontcustom.com for instructions."
+        raise Fontcustom::Error, "Please install fontforge. Visit <http://fontcustom.com> for instructions."
       end
     end
 
     def say_changed(status, changed)
       return unless base(:verbose)
       message = changed.map { |file| relative_to_root(file) }
-      @shell.say_status status, message.join(" ")
+      @shell.say_status status, message.join("\n#{" " * 14}") # magic number
     end
 
     def say_message(status, message)

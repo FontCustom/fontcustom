@@ -160,7 +160,7 @@ describe Fontcustom::Generator::Font do
         :output => "fake-dir-should-cause-failure",
         :debug => true
       )
-      expect { capture(:stdout) { gen.generate } }.to raise_error Fontcustom::Error, /failed unexpectedly/
+      expect { capture(:stdout) { gen.generate } }.to raise_error Fontcustom::Error, /failed/
     end
   end
 

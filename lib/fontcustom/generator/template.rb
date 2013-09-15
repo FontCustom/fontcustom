@@ -23,11 +23,10 @@ module Fontcustom
         if File.exists? opts.data_cache
           @data = JSON.parse(File.read(opts.data_cache), :symbolize_names => true)
         else
-          raise Fontcustom::Error, "#{relative_to_root(opts.data_cache)} is required to generate templates, but I couldn't find it."
+          raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is missing. This file is required to generate templates."
         end
       rescue JSON::ParserError
-        # Catches both empty and and malformed files
-        raise Fontcustom::Error, "#{relative_to_root(opts.data_cache)} is empty or corrupted. Try deleting the file and running Fontcustom::Generator::Font again to regenerate the data file. Old generated files may need to be deleted manually."
+        raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Note: Any previously generated files will need to be deleted manually."
       end
 
       def reset_output

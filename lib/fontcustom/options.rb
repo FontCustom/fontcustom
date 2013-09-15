@@ -50,7 +50,7 @@ module Fontcustom
           File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "The configuration file was not found. Check #{relative_to_root(path)} and try again."
+          raise Fontcustom::Error, "The configuration file was not found. Check `#{relative_to_root(path)}` and try again."
         end
       else
         # fontcustom.yml is in the project_root
@@ -111,7 +111,7 @@ module Fontcustom
         if @input.has_key? "vectors"
           @input[:vectors] = expand_path @input[:vectors]
           unless File.directory? @input[:vectors]
-            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check #{relative_to_root(@input[:vectors])} and try again."
+            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check `#{relative_to_root(@input[:vectors])}` and try again."
           end
         else
           raise Fontcustom::Error, "INPUT (as a hash) should contain a \"vectors\" key."
@@ -120,7 +120,7 @@ module Fontcustom
         if @input.has_key? "templates"
           @input[:templates] = expand_path @input[:templates]
           unless File.directory? @input[:templates]
-            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check #{relative_to_root(@input[:templates])} and try again."
+            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check `#{relative_to_root(@input[:templates])}` and try again."
           end
         else
           @input[:templates] = @input[:vectors]
@@ -128,7 +128,7 @@ module Fontcustom
       elsif @input.is_a? String
         input = expand_path @input
         unless File.directory? input
-          raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check #{relative_to_root(input)} and try again."
+          raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check `#{relative_to_root(input)}` and try again."
         end
         @input = Thor::CoreExt::HashWithIndifferentAccess.new({
           :vectors => input,
@@ -137,7 +137,7 @@ module Fontcustom
       end
 
       if Dir[File.join(@input[:vectors], "*.{svg,eps}")].empty?
-        raise Fontcustom::Error, "#{relative_to_root(@input[:vectors])} doesn't contain any vectors (*.svg or *.eps files)."
+        raise Fontcustom::Error, "`#{relative_to_root(@input[:vectors])}` doesn't contain any vectors (*.svg or *.eps files)."
       end
     end
 
@@ -149,7 +149,7 @@ module Fontcustom
         @output.each do |key, val|
           @output[key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
-            raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check #{relative_to_root(val)} and try again."
+            raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check `#{relative_to_root(val)}` and try again."
           end
         end
 
@@ -159,7 +159,7 @@ module Fontcustom
         if @output.is_a? String
           output = expand_path @output
           if File.exists?(output) && ! File.directory?(output)
-            raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check #{relative_to_root(output)} and try again."
+            raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check `#{relative_to_root(output)}` and try again."
           end
         else
           output = File.join @project_root, @font_name
@@ -202,7 +202,7 @@ module Fontcustom
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
           template = File.expand_path File.join(@input[:templates], template) unless template[0] == "/"
-          raise Fontcustom::Error, "The custom template at #{relative_to_root(template)} does not exist." unless File.exists? template
+          raise Fontcustom::Error, "The custom template at `#{relative_to_root(template)}` does not exist." unless File.exists? template
           template
         end
       end
