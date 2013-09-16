@@ -92,9 +92,6 @@ module Fontcustom
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
-        puts stdout.inspect
-        puts stderr.inspect
-        puts status.inspect
         [stdout, stderr, status]
       end
     end
