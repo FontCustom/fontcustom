@@ -25,10 +25,14 @@ RSpec.configure do |c|
     }
   end
 
-  def fontforge_output
-    "Copyright (c) 2000-2012 by George Williams.\n Executable based on sources from 14:57 GMT 31-Jul-2012-D.\n Library based on sources from 14:57 GMT 31-Jul-2012.\n#{data_file_contents.to_json}"
+  def fontforge_stdout
+    data_file_contents.to_json.to_s
   end
-
+  
+  def fontforge_stderr
+    "Copyright (c) 2000-2012 by George Williams.\n Executable based on sources from 14:57 GMT 31-Jul-2012-D.\n Library based on sources from 14:57 GMT 31-Jul-2012.\n"
+  end
+  
   def capture(stream)
     begin
       stream = stream.to_s

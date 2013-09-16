@@ -1,4 +1,5 @@
 require "json"
+require "open3"
 require "thor"
 require "thor/group"
 require "thor/actions"
@@ -58,26 +59,15 @@ module Fontcustom
         # TODO remove name arg if default is already set in python (or rm from python)
         name = opts.font_name ? " --name " + opts.font_name : ""
         hash = opts.file_hash ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash} 2>&1"
-
-        output = `#{cmd}`.split("\n")
-        @json = output[3] # JSON
-
-        # fontforge wrongly returns the following error message if only a single glyph.
-        # We can strip it out and ignore it.
-        if @json == "Warning: Font contained no glyphs"
-          @json = output[4]
-          output = output[5..-1]
-        else
-          @json = output[3]
-          output = output[4..-1]
-        end
-
-        say_status :debug, output, :red if opts.debug
-
-        unless $?.success?
-          raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details."
-        end
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash}"
+        
+        output, err, status = execute_and_clean(cmd)
+                
+        @json = output[0] #JSON
+        output = output[1..-1]
+        
+        say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug
+        raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details." unless status.success?
       end
 
       def collect_data
@@ -94,6 +84,18 @@ module Fontcustom
       def save_data
         json = JSON.pretty_generate @data
         overwrite_file opts.data_cache, json
+      end
+      
+      private
+      
+      def execute_and_clean cmd
+        stdout, stderr, status = Open3::capture3(cmd)
+        stdout = stdout.split("\n")
+        stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
+        puts stdout.inspect
+        puts stderr.inspect
+        puts status.inspect
+        [stdout, stderr, status]
       end
     end
   end

@@ -50,7 +50,7 @@ describe Fontcustom::Options do
           :config => "does-not-exist"
         }
         o = options args
-        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file was not found/
+        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file wasn't found/
       end
     end
 
