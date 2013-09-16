@@ -64,7 +64,7 @@ module Fontcustom
         @font_path = @data[:paths][:css_to_fonts]
         @font_path_pre = @data[:paths][:preprocessor_to_fonts]
         created = []
-        packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss 
+        packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss
                    fontcustom-bootstrap.css fontcustom-preview.html _fontcustom-bootstrap.scss _fontcustom.scss|
         css_exts = %w|.css .scss .sass .less .stylus|
         begin

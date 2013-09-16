@@ -60,12 +60,12 @@ module Fontcustom
         name = opts.font_name ? " --name " + opts.font_name : ""
         hash = opts.file_hash ? "" : " --nohash"
         cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash}"
-        
+
         output, err, status = execute_and_clean(cmd)
-                
+
         @json = output[0] #JSON
         output = output[1..-1]
-        
+
         say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug
         raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details." unless status.success?
       end
@@ -85,9 +85,9 @@ module Fontcustom
         json = JSON.pretty_generate @data
         overwrite_file opts.data_cache, json
       end
-      
+
       private
-      
+
       def execute_and_clean cmd
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")

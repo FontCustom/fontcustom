@@ -68,7 +68,7 @@ module Fontcustom
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
-    method_option :skip_first, :type => :boolean, 
+    method_option :skip_first, :type => :boolean,
       :desc => "Skip the initial compile upon watching.",
       :default => false
     def watch(input = nil)

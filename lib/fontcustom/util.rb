@@ -1,5 +1,5 @@
 ##
-# Needs access to @shell and an Options instance 
+# Needs access to @shell and an Options instance
 # (@opts in thor, @cli_options or self in Options)
 module Fontcustom
   module Util
