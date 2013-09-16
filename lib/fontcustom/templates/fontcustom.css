@@ -13,6 +13,9 @@
   font-style: normal;
 }
 
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
 <%= @glyphs.map {|name| ".#{@opts.css_prefix + name}:before"}.join(",\n") %> {
   font-family: "<%= @opts.font_name %>";
   font-style: normal;
