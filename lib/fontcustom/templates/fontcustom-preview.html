@@ -20,28 +20,39 @@
         font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
-      a, 
+      a,
       a:visited {
         color: #888;
         text-decoration: underline;
       }
-      a:hover, 
+      a:hover,
       a:focus { color: #000; }
 
-      h1 {
+      header {
         border-bottom: 2px solid #ddd;
+        margin-bottom: 20px;
+        overflow: hidden;
+        padding: 20px 0;
+      }
+
+      header h1 {
         color: #888;
+        float: left;
         font-size: 36px;
         font-weight: 300;
-        margin-bottom: 20px;
-        padding: 20px 0;
+      }
+
+      header a {
+        float: right;
+        font-size: 14px;
       }
 
       .container {
         margin: 0 auto;
-        min-width: 880px;
+        max-width: 1200px;
+        min-width: 960px;
         padding: 0 40px;
-        width: 80%;
+        width: 90%;
       }
 
       .glyph {
@@ -50,19 +61,40 @@
         margin-bottom: 20px;
       }
 
-      .preview-glyphs { vertical-align: bottom; } 
+      .preview-glyphs { vertical-align: bottom; }
 
-      .preview-scale { 
+      .preview-scale {
         color: #888;
-        font-size: 12px; 
+        font-size: 12px;
         margin-top: 5px;
       }
 
       .step {
         display: inline-block;
         line-height: 1;
+        position: relative;
         width: 10%;
       }
+
+      .step .letters,
+      .step i {
+        -webkit-transition: opacity .3s;
+        -moz-transition: opacity .3s;
+        -ms-transition: opacity .3s;
+        -o-transition: opacity .3s;
+        transition: opacity .3s;
+      }
+
+      .step:hover .letters { opacity: 1; }
+      .step:hover i { opacity: .3; }
+
+      .letters {
+        opacity: .3;
+        position: absolute;
+      }
+
+      .characters-off .letters { display: none; }
+      .characters-off .step:hover i { opacity: 1; }
 
       <% scale.each do |n| %>
       .size-<%= n %> { font-size: <%= n %>px; }
@@ -81,7 +113,7 @@
 
       .usage .class { width: 250px; }
 
-      .footer {
+      footer {
         color: #888;
         font-size: 12px;
         padding: 20px 0;
@@ -116,19 +148,33 @@
     </style>
 
     <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script>
+      function toggleCharacters() {
+        var page = document.getElementById('page');
+        if (page.className.indexOf('characters-off') === -1) {
+          page.className = 'container characters-off';
+        } else {
+          page.className = 'container';
+        }
+      }
+    </script>
   </head>
 
   <body>
-    <div class="container">
-      <h1><%= @opts.font_name %> contains <%= @glyphs.length %> glyphs:</h1> 
+    <div id="page" class="container">
+      <header>
+        <h1><%= @opts.font_name %> contains <%= @glyphs.length %> glyphs:</h1>
+        <a onclick="toggleCharacters(); return false;" href="#">Toggle Preview Characters</a>
+      </header>
 
       <% @glyphs.each_with_index do |name, index| %>
       <div class="glyph">
         <div class="preview-glyphs">
-          <% scale.each do |n| %><i class="step <%= @opts.css_prefix + name %> size-<%= n %>"></i><% end %>
+          <% scale.each do |n| %><span class="step size-<%= n %>"><span class="letters">Pp</span><i class="<%= @opts.css_prefix + name %>"></i></span><% end %>
         </div>
         <div class="preview-scale">
-          <% scale.each do |n| %><span class="step"><%= n %></span><% end %> 
+          <% scale.each do |n| %><span class="step"><%= n %></span><% end %>
         </div>
         <div class="usage">
           <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts.css_prefix + name %>" />
@@ -137,9 +183,9 @@
       </div>
       <% end %>
 
-      <div class="footer">
+      <footer>
         Made with love using <a href="http://fontcustom.com">Font Custom</a>.
-      </div>
+      </footer>
     </div>
   </body>
 </html>
