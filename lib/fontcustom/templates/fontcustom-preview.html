@@ -151,12 +151,8 @@
 
     <script>
       function toggleCharacters() {
-        var page = document.getElementById('page');
-        if (page.className.indexOf('characters-off') === -1) {
-          page.className = 'container characters-off';
-        } else {
-          page.className = 'container';
-        }
+        var body = document.getElementsByTagName('body')[0];
+        body.className = body.className === 'characters-off' ? '' : 'characters-off';
       }
     </script>
   </head>
