@@ -1,7 +1,7 @@
 require "fontcustom/version"
 require "fontcustom/error"
-require "fontcustom/options"
 require "fontcustom/util"
+require "fontcustom/options"
 require "fontcustom/generator/font"
 require "fontcustom/generator/template"
 require "thor/core_ext/hash_with_indifferent_access"
@@ -10,10 +10,10 @@ module Fontcustom
   ##
   # Clean Ruby API to workaround Thor
   def compile(options)
-    opts = Fontcustom::Options.new options
-    Fontcustom::Generator::Font.start [opts]
-    Fontcustom::Generator::Template.start [opts]
-  rescue Fontcustom::Error => e
+    opts = Options.new options
+    Generator::Font.start [opts]
+    Generator::Template.start [opts]
+  rescue Error => e
     opts.say_message :error, e.message, :red
   end
 
@@ -30,7 +30,7 @@ module Fontcustom
     :output => "PROJECT_ROOT/FONT_NAME"
   }
 
-  DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new({
+  DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new(
     :project_root => Dir.pwd,
     :input => nil,
     :output => nil,
@@ -43,9 +43,9 @@ module Fontcustom
     :preprocessor_path => "",
     :debug => false,
     :verbose => true
-  })
+  )
 
-  DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new({
+  DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new(
     :fonts => [],
     :templates => [],
     :glyphs => [],
@@ -53,5 +53,5 @@ module Fontcustom
       :css_to_fonts => "",
       :preprocessor_to_fonts => ""
     }
-  })
+  )
 end

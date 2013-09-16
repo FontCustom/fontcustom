@@ -3,7 +3,6 @@ require "open3"
 require "thor"
 require "thor/group"
 require "thor/actions"
-require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
   module Generator
@@ -31,7 +30,7 @@ module Fontcustom
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
           rescue JSON::ParserError
-            raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Note: Any previously generated files will need to be deleted manually."
+            raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup

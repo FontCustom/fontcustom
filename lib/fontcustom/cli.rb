@@ -5,7 +5,7 @@ require "fontcustom/watcher"
 
 module Fontcustom
   class CLI < Thor
-    include Actions
+    include Thor::Actions
 
     default_task :show_help
 
@@ -60,10 +60,10 @@ module Fontcustom
     desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
     def compile(input = nil)
       opts = options.merge :input => input
-      opts = Fontcustom::Options.new(opts)
-      Fontcustom::Generator::Font.start [opts]
-      Fontcustom::Generator::Template.start [opts]
-    rescue Fontcustom::Error => e
+      opts = Options.new(opts)
+      Generator::Font.start [opts]
+      Generator::Template.start [opts]
+    rescue Error => e
       say_status :error, e.message, :red
     end
 
@@ -74,9 +74,9 @@ module Fontcustom
     def watch(input = nil)
       say "Font Custom is watching your icons. Press Ctrl + C to stop.", :yellow
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
-      opts = Fontcustom::Options.new(opts)
-      Fontcustom::Watcher.new(opts).watch
-    rescue Fontcustom::Error => e
+      opts = Options.new(opts)
+      Watcher.new(opts).watch
+    rescue Error => e
       say_status :error, e.message, :red
     end
 
@@ -89,7 +89,7 @@ module Fontcustom
     method_option :version, :aliases => "-v", :type => :boolean, :default => false
     def show_help
       if options[:version]
-        puts "fontcustom-#{Fontcustom::VERSION}"
+        puts "fontcustom-#{VERSION}"
       else
         help
       end
