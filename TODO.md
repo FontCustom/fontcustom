@@ -9,4 +9,3 @@
 * Remove need for hash with indifferent access
 * Change JSON to YAML
 * Cleanup fontforge cmd / generate.py
-

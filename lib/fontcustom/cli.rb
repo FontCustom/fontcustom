@@ -37,7 +37,7 @@ module Fontcustom
       :default => DEFAULT_OPTIONS[:css_prefix]
 
     class_option :preprocessor_path, :aliases => "-s", :type => :string,
-      :desc => "Special path used in CSS proprocessor templates."
+      :desc => "Font path used in CSS proprocessor templates."
 
     # TODO make this negative (no file hash)
     class_option :file_hash, :type => :boolean,
