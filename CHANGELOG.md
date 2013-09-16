@@ -8,9 +8,11 @@ More customizable interface for vastly improved workflow.
 * More robust path handling (relative paths, customizable `project_root`)
 * User-friendly variables for usage in custom templates
 * Rails-friendly template
+* Helper characters in preview ([#107](https://github.com/FontCustom/fontcustom/pull/107))
+* More robust execution of fontforge command ([#114](https://github.com/FontCustom/fontcustom/pull/114))
 * Allow captial letters in font names ([#92](https://github.com/FontCustom/fontcustom/issues/92))
+* More helpful, colorful messages
 * More intuitive `fontcustom --version`
-* Improved status and error messages
 
 ## 1.0.1 (7/21/2013)
 
