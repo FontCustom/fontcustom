@@ -1,6 +1,6 @@
-# FontCustom v1.0.1
+# FontCustom v1.1.0
 
-**Generate custom icon webfonts from the comfort of the command line.**
+**Generate icon webfonts from the comfort of the command line.**
 
 [Full documentation](http://fontcustom.com)<br/>
 [Changelog](https://github.com/FontCustom/fontcustom/blob/master/CHANGELOG.md)<br/>
@@ -17,21 +17,46 @@ gem install fontcustom
 ## Quick Start
 
 ```sh
-fontcustom compile path/to/vectors                  # Compiles into `fontcustom`
-fontcustom compile path/to/vectors -o assets/fonts  # Compiles into `assets/fonts`
-fontcustom watch path/to/vectors -t=scss preview    # Compiles when vectors are changed/added/deleted
-                                                    # and includes a scss partial and glyph preview
+fontcustom compile path/to/vectors  # Compiles icons into `fontcustom/`
+fontcustom watch path/to/vectors    # Compiles when vectors are changed/added/removed
 
-fontcustom help                                     # to see all options
+fontcustom compile                  # Uses configuration options from `fontcustom.yml`
+fontcustom watch                    # or `config/fontcustom.yml`
+
+fontcustom help                     # See all options
 ```
 
-## Config
+## Configuration
 
-To avoid finger-fatigue, include a fontcustom.yml configuration file with your vectors:
+To avoid finger-fatigue, create a configuration file with `fontcustom config`. Typically, this should live in the directory where you plan on running `fontcustom` commands.
 
-```sh
-fontcustom config path/to/vectors       # Creates annotated config file
-vim path/to/vectors/fontcustom.yml      # Edit your fontcustom options
+```yml
+# Available Options (defaults shown)
+font_name: fontcustom                 # Names the font (also sets name and directory of generated files)
+project_root: (working dir)           # Context for all relative paths
+input: (project_root)                 # Where vectors and templates are located
+output: (project_root)/(font name)    # Where generated files will be saved
+file_hash: true                       # Include an asset-busting hash
+css_prefix: icon-                     # CSS class prefix
+preprocessor_path: ""                 # Font path used in CSS proprocessor templates
+data_cache: (same as fontcustom.yml)  # Sets location of data file
+debug: false                          # Output raw messages from fontforge
+verbose: true                         # Set to false to silence
+templates: [ css, preview ]           # Templates to generate alongside fonts
+                                      # Possible values: preview, css, scss, scss-rails, bootstrap, 
+                                      # bootstrap-scss, bootstrap-ie7, bootstrap-ie7-scss
+
+# Advanced input/output
+#   Set input or output as a hash for more control
+input:
+  vectors: path/to/vectors            # required
+  templates: path/to/templates
+
+output:
+  fonts: app/assets/fonts             # required
+  css: app/assets/stylesheets
+  preview: app/views/styleguide
+  custom-template.yml: custom/path    # set paths of custom templates by referencing their file name
 ```
 
 ---
