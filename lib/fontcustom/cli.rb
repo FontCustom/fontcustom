@@ -10,46 +10,45 @@ module Fontcustom
     default_task :show_help
 
     class_option :project_root, :aliases => "-r", :type => :string,
-      :desc => "The root context for any relative paths (INPUT, OUTPUT, CONFIG).",
+      :desc => "The root context for relative paths (INPUT, OUTPUT, CONFIG).",
       :default => EXAMPLE_OPTIONS[:project_root]
 
     class_option :output, :aliases => "-o", :type => :string,
-      :desc => "Where generated files are saved. Can be fine-tuned if a configuration file is used.",
+      :desc => "Where generated files are saved. Set different locations for different file types via a configuration file.",
       :default => EXAMPLE_OPTIONS[:output]
 
     class_option :config, :aliases => "-c", :type => :string,
-      :desc => "Optional configuration file. PROJECT_ROOT/fontcustom.yml and PROJECT_ROOT/config/fontcustom.yml are loaded automatically."
-
-    class_option :data_cache, :aliases => "-d", :type => :string,
-      :desc => "Optional path to `.fontcustom-data`. Used for garbage collection."
+      :desc => "Optional path to a configuration file.",
+      :default => EXAMPLE_OPTIONS[:config]
 
     class_option :templates, :aliases => "-t", :type => :array,
-      :desc => "Space-delinated array of templates to generate alongside fonts.",
+      :desc => "Space-delinated list of templates to generate alongside fonts.",
       :enum => %w|preview css scss scss-rails bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
-      :default => DEFAULT_OPTIONS[:templates]
+      :default => EXAMPLE_OPTIONS[:templates]
 
     class_option :font_name, :aliases => "-f", :type => :string,
-      :desc => "Set the font's name.",
+      :desc => "The font's name. Also determines the file names of generated templates.",
       :default => DEFAULT_OPTIONS[:font_name]
 
     class_option :css_prefix, :aliases => "-p", :type => :string,
       :desc => "Prefix for each glyph's CSS class.",
       :default => DEFAULT_OPTIONS[:css_prefix]
 
+    class_option :data_cache, :aliases => "-d", :type => :string,
+      :desc => "Path to a manifest of generated files. Used for garbage collection.",
+      :default => EXAMPLE_OPTIONS[:data_cache]
+
     class_option :preprocessor_path, :aliases => "-s", :type => :string,
-      :desc => "Font path used in CSS proprocessor templates."
+      :desc => "Optional font path for CSS proprocessor templates."
 
     class_option :no_hash, :aliases => "-h", :type => :boolean,
-      :desc => "Generate fonts without asset-busting hashes.",
-      :default => DEFAULT_OPTIONS[:no_hash]
+      :desc => "Generate fonts without asset-busting hashes."
 
     class_option :debug, :aliases => "-g", :type => :boolean,
-      :desc => "Display debugging messages.",
-      :default => DEFAULT_OPTIONS[:debug]
+      :desc => "Display debugging messages."
 
     class_option :quiet, :aliases => "-q", :type => :boolean,
-      :desc => "Hide status messages.",
-      :default => DEFAULT_OPTIONS[:quiet]
+      :desc => "Hide status messages."
 
     # Required for Thor::Actions#template
     def self.source_root

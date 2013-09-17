@@ -8,8 +8,7 @@ module Fontcustom
   class Options
     include Util
 
-    attr_reader :project_root, :input, :output, :config, :data_cache, :templates,
-      :font_name, :css_prefix, :preprocessor_path, :skip_first, :no_hash, :debug, :quiet
+    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :data_cache, :preprocessor_path, :no_hash, :debug, :quiet, :skip_first 
 
     def initialize(options = {})
       check_fontforge

@@ -26,7 +26,10 @@ module Fontcustom
   # These are used in Thor CLI but overridden when the Options class is built
   EXAMPLE_OPTIONS = {
     :project_root => "`pwd`",
-    :output => "PROJECT_ROOT/FONT_NAME"
+    :output => "PROJECT_ROOT/FONT_NAME",
+    :config => "PROJECT_ROOT/fontcustom.yml OR PROJECT_ROOT/config/fontcustom.yml",
+    :templates => "css preview",
+    :data_cache => "CONFIG_DIR/.fontcustom-data OR at PROJECT_ROOT/.fontcustom-data"
   }
 
   DEFAULT_OPTIONS = {
@@ -34,11 +37,11 @@ module Fontcustom
     :input => nil,
     :output => nil,
     :config => nil,
-    :data_cache => nil,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :css_prefix => "icon-",
-    :preprocessor_path => "",
+    :data_cache => nil,
+    :preprocessor_path => nil,
     :no_hash => false,
     :debug => false,
     :quiet => false

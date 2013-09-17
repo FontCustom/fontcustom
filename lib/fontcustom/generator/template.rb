@@ -51,7 +51,7 @@ module Fontcustom
         css = Pathname.new opts.output[:css]
         preview = Pathname.new opts.output[:preview]
         @font_path = File.join fonts.relative_path_from(css).to_s, name
-        @font_path_alt = opts.preprocessor_path != "" ? File.join(opts.preprocessor_path, name) : @font_path
+        @font_path_alt = opts.preprocessor_path.nil? ? @font_path : File.join(opts.preprocessor_path, name)
         @font_path_preview = File.join fonts.relative_path_from(preview).to_s, name
       end
 
