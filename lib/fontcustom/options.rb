@@ -9,10 +9,11 @@ module Fontcustom
     include Util
 
     attr_reader :project_root, :input, :output, :config, :data_cache, :templates,
-      :font_name, :file_hash, :css_prefix, :preprocessor_path, :skip_first, :debug, :verbose
+      :font_name, :css_prefix, :preprocessor_path, :skip_first, :no_hash, :debug, :quiet
 
     def initialize(options = {})
       check_fontforge
+      options = symbolize_hash(options)
 
       # Overwrite example defaults (used in Thor's help) with real defaults, if unchanged
       EXAMPLE_OPTIONS.keys.each do |key|
@@ -95,7 +96,7 @@ module Fontcustom
       remove_instance_variable :@cli_options
 
       # :config is excluded since it's already been set
-      keys = %w|project_root input output data_cache templates font_name file_hash css_prefix preprocessor_path skip_first debug verbose|
+      keys = %w|project_root input output data_cache templates font_name css_prefix preprocessor_path skip_first no_hash debug quiet|
       keys.each { |key| instance_variable_set("@#{key}", options[key.to_sym]) }
 
       @font_name = @font_name.strip.gsub(/\W/, "-")

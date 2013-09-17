@@ -6,7 +6,7 @@ describe Fontcustom::Util do
     attr_accessor :cli_options
 
     def initialize
-      @cli_options = { :project_root => fixture, :verbose => true }
+      @cli_options = { :project_root => fixture, :quiet => false }
       @shell = Thor::Shell::Color.new
     end
   end
@@ -27,19 +27,19 @@ describe Fontcustom::Util do
       output.should_not match(fixture)
     end
 
-    it "should not respond if :verbose is false" do
+    it "should not respond if :quiet is true " do
       changed = %w|a b c|.map { |file| fixture(file) }
       gen = Generator.new
-      gen.cli_options[:verbose] = false
+      gen.cli_options[:quiet] = true
       output = capture(:stdout) { gen.say_changed(:success, changed) }
       output.should == ""
     end
   end
 
   context "#say_message" do 
-    it "should not respond if :verbose is false" do
+    it "should not respond if :quiet is true" do
       gen = Generator.new
-      gen.cli_options[:verbose] = false
+      gen.cli_options[:quiet] = true
       output = capture(:stdout) { gen.say_message(:test, "Hello") }
       output.should == ""
     end

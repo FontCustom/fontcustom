@@ -1,6 +1,5 @@
 # 1.1.0 TODO
 
-* Cleanup fontforge cmd / generate.py
+* Remove unnecessary default options
 * Option to set icon canvas size (auto, string, or hash)
 * `fontcustom clean`
-* --silent instead of (or alongside?) --verbose

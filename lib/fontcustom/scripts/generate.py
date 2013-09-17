@@ -9,7 +9,7 @@ try:
 	import argparse
 	parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
 	parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
-	parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
+	parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', help='reference name of the font (no spaces)')
 	parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
 	args = parser.parse_args()
@@ -19,7 +19,7 @@ except ImportError:
 	# Older Pythons don't have argparse, so we use optparse instead
 	import optparse
 	parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
-	parser.add_option('--name', metavar='fontname', type='string', nargs='?', default='fontcustom', help='reference name of the font (no spaces)')
+	parser.add_option('--name', metavar='fontname', type='string', nargs='?', help='reference name of the font (no spaces)')
 	parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
 	(args, posargs) = parser.parse_args()

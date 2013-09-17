@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Template do
-  # Silence messages without passing :verbose => false to everything
+  # Silence messages without passing :quiet => true to everything
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
   end
@@ -16,7 +16,7 @@ describe Fontcustom::Generator::Template do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
-        :verbose => false
+        :quiet => true
       )
       expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data/
     end
@@ -25,7 +25,7 @@ describe Fontcustom::Generator::Template do
       gen = generator(
         :project_root => fixture("generators"),
         :input => "../shared/vectors",
-        :verbose => false
+        :quiet => true
       )
       gen.get_data
       gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
@@ -38,7 +38,7 @@ describe Fontcustom::Generator::Template do
         :project_root => fixture("generators"),
         :input => "../shared/vectors",
         :output => "mixed-output",
-        :verbose => false
+        :quiet => true
       )
       gen.stub :remove_file
       gen.stub :overwrite_file
@@ -123,7 +123,7 @@ describe Fontcustom::Generator::Template do
         :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
         :output => "mixed-output",
         :templates => %W|scss css custom.css|,
-        :verbose => false
+        :quiet => true
       )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
@@ -149,7 +149,7 @@ describe Fontcustom::Generator::Template do
       subject.generate
     end
 
-    it "should be silent if verbose is false" do
+    it "should be silent if :quiet is set" do
       stdout = capture(:stdout) { subject.generate }
       stdout.should == ""
     end
@@ -160,7 +160,7 @@ describe Fontcustom::Generator::Template do
         :font_name => "Test Font",
         :input => {:vectors => "../shared/vectors", :templates => "../shared/templates"},
         :templates => %W|scss css|,
-        :verbose => false
+        :quiet => true
       )
       gen.instance_variable_set :@data, data_file_contents
       gen.stub :template
@@ -178,7 +178,7 @@ describe Fontcustom::Generator::Template do
           :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
           :output => {:fonts => "output/fonts", :css => "output/css", :preview => "output/views", "custom.css" => "output/custom"},
           :templates => %W|scss preview css custom.css regular.css|,
-          :verbose => false
+          :quiet => true
         )
         gen.instance_variable_set :@data, data_file_contents
         gen.stub :template

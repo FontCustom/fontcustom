@@ -73,6 +73,7 @@ module Fontcustom
     end
 
     def say(*args)
+      return if @opts.quiet
       @opts.instance_variable_get(:@shell).say *args
     end
 

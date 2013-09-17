@@ -80,7 +80,7 @@ describe Fontcustom::Options do
 
   context ".load_config" do
     def args
-      { :project_root => fixture, :verbose => false }
+      { :project_root => fixture, :quiet => true }
     end
 
     it "should raise error if fontcustom.yml isn't valid" do
@@ -267,7 +267,6 @@ describe Fontcustom::Options do
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@font_name, "Test-Font"
         o.instance_variable_set :@output, nil
-        o.instance_variable_set :@verbose, true
         o.remove_instance_variable :@cli_options
         stdout = capture(:stdout) { o.send :set_output_paths }
         stdout.should match("Test-Font")

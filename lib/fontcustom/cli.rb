@@ -39,18 +39,17 @@ module Fontcustom
     class_option :preprocessor_path, :aliases => "-s", :type => :string,
       :desc => "Font path used in CSS proprocessor templates."
 
-    # TODO make this negative (no file hash)
-    class_option :file_hash, :type => :boolean,
-      :desc => "Option to generate font files with asset-busting hashes.",
-      :default => DEFAULT_OPTIONS[:file_hash]
+    class_option :no_hash, :aliases => "-h", :type => :boolean,
+      :desc => "Generate fonts without asset-busting hashes.",
+      :default => DEFAULT_OPTIONS[:no_hash]
 
-    class_option :debug, :type => :boolean,
-      :desc => "Display debug messages from fontforge.",
+    class_option :debug, :aliases => "-g", :type => :boolean,
+      :desc => "Display debugging messages.",
       :default => DEFAULT_OPTIONS[:debug]
 
-    class_option :verbose, :type => :boolean,
-      :desc => "Display verbose messages.",
-      :default => DEFAULT_OPTIONS[:verbose]
+    class_option :quiet, :aliases => "-q", :type => :boolean,
+      :desc => "Hide status messages.",
+      :default => DEFAULT_OPTIONS[:quiet]
 
     # Required for Thor::Actions#template
     def self.source_root
@@ -64,7 +63,7 @@ module Fontcustom
       Generator::Font.start [opts]
       Generator::Template.start [opts]
     rescue Fontcustom::Error => e
-      say_status :error, e.message, :red
+      opts.say_message :error, e.message, :red
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
@@ -72,12 +71,12 @@ module Fontcustom
       :desc => "Skip the initial compile upon watching.",
       :default => false
     def watch(input = nil)
-      say "Font Custom is watching your icons. Press Ctrl + C to stop.", :yellow
+      say "Font Custom is watching your icons. Press Ctrl + C to stop.", :yellow unless options[:quiet]
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
       opts = Options.new(opts)
       Watcher.new(opts).watch
     rescue Fontcustom::Error => e
-      say_status :error, e.message, :red
+      opts.say_message :error, e.message, :red
     end
 
     desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: `pwd`"

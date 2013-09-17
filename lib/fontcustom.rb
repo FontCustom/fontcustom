@@ -37,11 +37,11 @@ module Fontcustom
     :data_cache => nil,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
-    :file_hash => true,
     :css_prefix => "icon-",
     :preprocessor_path => "",
+    :no_hash => false,
     :debug => false,
-    :verbose => true
+    :quiet => false
   }
 
   DATA_MODEL = {

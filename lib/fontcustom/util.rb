@@ -11,13 +11,13 @@ module Fontcustom
     end
 
     def say_changed(status, changed)
-      return unless base(:verbose)
+      return if base(:quiet)
       message = changed.map { |file| relative_to_root(file) }
       @shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
     end
 
     def say_message(status, message, color = :yellow)
-      return unless base(:verbose)
+      return if base(:quiet) && status != :error
       @shell.say_status status, message, color
     end
 

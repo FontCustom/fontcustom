@@ -5,11 +5,11 @@
 # ---------------------------------------------------------------------------- #
 
 #font_name: fontcustom
-#file_hash: true
 #css_prefix: icon-
 #preprocessor_path: ""
+#no_hash: false
 #debug: false
-#verbose: true
+#quiet: false
 
 
 # ---------------------------------------------------------------------------- #

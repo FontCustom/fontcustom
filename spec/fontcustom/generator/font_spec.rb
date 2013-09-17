@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Font do
-  # Silence messages without passing :verbose => false to everything
+  # Silence messages without passing :quiet => true to everything
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
   end
@@ -45,7 +45,7 @@ describe Fontcustom::Generator::Font do
       options = {
         :project_root => fixture,
         :input => "shared/vectors",
-        :verbose => false
+        :quiet => true
       }
       gen = generator options
       gen.get_data
@@ -59,7 +59,7 @@ describe Fontcustom::Generator::Font do
         :config => "generators",
         :input => "shared/vectors",
         :output => "mixed-output",
-        :verbose => false
+        :quiet => true
       }
       gen = generator options
       gen.get_data
@@ -74,7 +74,7 @@ describe Fontcustom::Generator::Font do
         :data_cache => "generators/.fontcustom-data-corrupted",
         :input => "shared/vectors",
         :output => "mixed-output",
-        :verbose => false
+        :quiet => true
       }
       gen = generator options
       expect { gen.get_data }.to raise_error Fontcustom::Error, /corrupted/
@@ -87,7 +87,7 @@ describe Fontcustom::Generator::Font do
         :project_root => fixture,
         :input => "shared/vectors",
         :output => "mixed-output",
-        :verbose => false
+        :quiet => true
       }
       gen = generator options
       gen.stub :remove_file
@@ -131,7 +131,7 @@ describe Fontcustom::Generator::Font do
         :project_root => fixture,
         :input => "shared/vectors",
         :output => "mixed-output",
-        :verbose => false
+        :quiet => true
       )
       gen.stub(:execute_and_clean).and_return [fontforge_stdout.split("\n"), fontforge_stderr, double(:status, :success? => true)]
       gen
@@ -197,12 +197,12 @@ describe Fontcustom::Generator::Font do
       stdout.should =~ /create.+\.(woff|ttf|eot|svg)/
     end
 
-    it "should print nothing if verbose is false" do
+    it "should print nothing if :quiet is set" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
         :output => "output",
-        :verbose => false
+        :quiet => true
       )
       gen.instance_variable_set :@data, data_file_contents
       stdout = capture(:stdout) { gen.announce_files }
@@ -228,12 +228,12 @@ describe Fontcustom::Generator::Font do
       gen.save_data
     end
 
-    it "should be silent if verbose is false" do
+    it "should be silent if :quiet is set" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
         :output => "output",
-        :verbose => false
+        :quiet => true
       )
       gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)

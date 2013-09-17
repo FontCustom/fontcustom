@@ -12,7 +12,8 @@ More customizable interface for vastly improved workflow.
 * More robust execution of fontforge command ([#114](https://github.com/FontCustom/fontcustom/pull/114))
 * Allow captial letters in font names ([#92](https://github.com/FontCustom/fontcustom/issues/92))
 * More helpful, colorful messages
-* More intuitive `fontcustom --version`
+* More intuitive flags (`--verbose=false` => `--quiet`, `--file-hash=false` => `--no-hash`)
+* More intuitive version (`fontcustom version` => `fontcustom --version`)
 
 ## 1.0.1 (7/21/2013)
 

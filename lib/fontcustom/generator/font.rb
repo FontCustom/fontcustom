@@ -18,7 +18,7 @@ module Fontcustom
         dirs = opts.output.values.uniq
         dirs.each do |dir|
           unless File.directory? dir
-            empty_directory dir, :verbose => opts.verbose
+            empty_directory dir, :verbose => ! opts.quiet
           end
         end
       end
@@ -54,15 +54,11 @@ module Fontcustom
       end
 
       def generate
-        # TODO align option naming conventions with python script
-        # TODO remove name arg if default is already set in python (or rm from python)
-        name = opts.font_name ? " --name " + opts.font_name : ""
-        hash = opts.file_hash ? "" : " --nohash"
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash}"
-
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts]} --name #{opts.font_name}" 
+        cmd += " --nohash" if opts.no_hash
+        cmd += " --debug" if opts.debug
         output, err, status = execute_and_clean(cmd)
         @json = output.delete_at(0)
-
         say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug
         raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details." unless status.success?
       end
