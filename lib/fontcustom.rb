@@ -47,10 +47,6 @@ module Fontcustom
   DATA_MODEL = {
     :fonts => [],
     :templates => [],
-    :glyphs => [],
-    :paths => {
-      :css_to_fonts => "",
-      :preprocessor_to_fonts => ""
-    }
+    :glyphs => []
   }
 end

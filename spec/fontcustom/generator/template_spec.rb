@@ -76,21 +76,20 @@ describe Fontcustom::Generator::Template do
   end
 
   context "#make_relative_paths" do
-    it "should assign :css_to_fonts, :preview_to_fonts, and :preprocessor_to_fonts" do
+    it "should assign @font_path, @font_path_alt, and @font_path_preview" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
         :output => {:fonts => "foo/fonts", :css => "output/css", :preview => "views/"}
       )
-      gen.instance_variable_set "@data", data_file_contents
+      gen.instance_variable_set :@data, data_file_contents
       gen.make_relative_paths
-      data = gen.instance_variable_get("@data")
-      data[:paths][:css_to_fonts].should match("../../foo/fonts")
-      data[:paths][:preview_to_fonts].should match("../foo/fonts")
-      data[:paths][:preprocessor_to_fonts].should eq(data[:paths][:css_to_fonts])
+      gen.instance_variable_get(:@font_path).should match("../../foo/fonts")
+      gen.instance_variable_get(:@font_path_alt).should match("../../foo/fonts")
+      gen.instance_variable_get(:@font_path_preview).should match("../foo/fonts")
     end
 
-    it "should assign :preprocessor_to_css if :preprocessor_font_path is set" do
+    it "should assign @font_path_alt if :preprocessor_font_path is set" do
       gen = generator(
         :project_root => fixture,
         :preprocessor_font_path => "fonts/fontcustom",
@@ -99,8 +98,7 @@ describe Fontcustom::Generator::Template do
       )
       gen.instance_variable_set "@data", data_file_contents
       gen.make_relative_paths
-      data = gen.instance_variable_get("@data")
-      data[:paths][:preprocessor_to_fonts].should match("fonts/fontcustom")
+      gen.instance_variable_get(:@font_path_alt).should match("fonts/fontcustom")
     end
 
     it "should assign '.' when paths are the same" do
@@ -111,8 +109,7 @@ describe Fontcustom::Generator::Template do
       )
       gen.instance_variable_set "@data", data_file_contents
       gen.make_relative_paths
-      data = gen.instance_variable_get("@data")
-      data[:paths][:css_to_fonts].should match("./")
+      gen.instance_variable_get(:@font_path).should match("./")
     end
   end
 

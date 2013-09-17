@@ -50,19 +50,13 @@ module Fontcustom
         fonts = Pathname.new opts.output[:fonts]
         css = Pathname.new opts.output[:css]
         preview = Pathname.new opts.output[:preview]
-        @data[:paths][:css_to_fonts] = File.join fonts.relative_path_from(css).to_s, name
-        @data[:paths][:preview_to_fonts] = File.join fonts.relative_path_from(preview).to_s, name
-        @data[:paths][:preprocessor_to_fonts] = if opts.preprocessor_path != ""
-          File.join opts.preprocessor_path, name
-        else
-          @data[:paths][:css_to_fonts]
-        end
+        @font_path = File.join fonts.relative_path_from(css).to_s, name
+        @font_path_alt = opts.preprocessor_path != "" ? File.join(opts.preprocessor_path, name) : @font_path
+        @font_path_preview = File.join fonts.relative_path_from(preview).to_s, name
       end
 
       def generate
         @glyphs = @data[:glyphs]
-        @font_path = @data[:paths][:css_to_fonts]
-        @font_path_pre = @data[:paths][:preprocessor_to_fonts]
         created = []
         packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss
                    fontcustom-bootstrap.css fontcustom-preview.html _fontcustom-bootstrap.scss _fontcustom.scss|

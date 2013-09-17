@@ -17,11 +17,7 @@ RSpec.configure do |c|
         fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
       |,
       :templates => %w|fontcustom.css|,
-      :glyphs => %w|a_r3ally-exotic-f1le-name c d|,
-      :paths => {
-        :css_to_fonts => "",
-        :preprocessor_to_fonts => ""
-      }
+      :glyphs => %w|a_r3ally-exotic-f1le-name c d|
     }
   end
 
