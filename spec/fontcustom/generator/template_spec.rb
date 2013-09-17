@@ -189,7 +189,7 @@ describe Fontcustom::Generator::Template do
       # 6 times because preview also includes preview-css
       it "should output custom templates to their matching :output paths" do
         subject.should_receive(:template).exactly(5).times do |*args|
-          if File.basename(args[0]) == "custom.css"
+          if File.basename(args[0]) == :"custom.css"
             args[1].should == fixture("output/custom/custom.css")
           end
         end

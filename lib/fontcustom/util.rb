@@ -38,6 +38,10 @@ module Fontcustom
       # say_changed :update, [ file ]
     end
 
+    def symbolize_hash(hash)
+      hash.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
+    end
+
     private
 
     def base(sym)

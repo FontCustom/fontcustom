@@ -2,7 +2,6 @@ require "yaml"
 require "thor/shell"
 require "thor/shell/basic"
 require "thor/shell/color"
-require "thor/core_ext/hash_with_indifferent_access"
 require "fontcustom/util"
 
 module Fontcustom
@@ -73,7 +72,11 @@ module Fontcustom
         say_message :status, "Loading configuration file at `#{relative_to_root(@config)}`."
         begin
           config = YAML.load File.open(@config)
-          @config_options = config if config # empty file returns false
+          if config # empty YAML returns false
+            @config_options = symbolize_hash(config)
+          else
+            say_message :status, "Configuration file was empty. Using defaults."
+          end
         rescue Exception => e
           raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
         end
@@ -87,44 +90,43 @@ module Fontcustom
 
       options = DEFAULT_OPTIONS.dup
       options = options.merge @config_options
-      options = options.merge @cli_options
+      options = options.merge symbolize_hash(@cli_options)
       remove_instance_variable :@config_options
       remove_instance_variable :@cli_options
 
       # :config is excluded since it's already been set
       keys = %w|project_root input output data_cache templates font_name file_hash css_prefix preprocessor_path skip_first debug verbose|
-      keys.each { |key| instance_variable_set("@#{key}", options[key]) }
+      keys.each { |key| instance_variable_set("@#{key}", options[key.to_sym]) }
 
-      @font_name = @font_name.strip.gsub(/\W/, '-')
+      @font_name = @font_name.strip.gsub(/\W/, "-")
     end
 
     def set_data_path
       @data_cache = if ! @data_cache.nil?
         expand_path @data_cache
       elsif @config
-        File.join File.dirname(@config), '.fontcustom-data'
+        File.join File.dirname(@config), ".fontcustom-data"
       else
-        File.join @project_root, '.fontcustom-data'
+        File.join @project_root, ".fontcustom-data"
       end
     end
 
     def set_input_paths
       if @input.is_a? Hash
-        @input = Thor::CoreExt::HashWithIndifferentAccess.new @input
-
-        if @input.has_key? "vectors"
+        @input = symbolize_hash(@input)
+        if @input.has_key? :vectors
           @input[:vectors] = expand_path @input[:vectors]
           unless File.directory? @input[:vectors]
-            raise Fontcustom::Error, "INPUT[\"vectors\"] should be a directory. Check `#{relative_to_root(@input[:vectors])}` and try again."
+            raise Fontcustom::Error, "INPUT[:vectors] should be a directory. Check `#{relative_to_root(@input[:vectors])}` and try again."
           end
         else
-          raise Fontcustom::Error, "INPUT (as a hash) should contain a \"vectors\" key."
+          raise Fontcustom::Error, "INPUT (as a hash) should contain a :vectors key."
         end
 
-        if @input.has_key? "templates"
+        if @input.has_key? :templates
           @input[:templates] = expand_path @input[:templates]
           unless File.directory? @input[:templates]
-            raise Fontcustom::Error, "INPUT[\"templates\"] should be a directory. Check `#{relative_to_root(@input[:templates])}` and try again."
+            raise Fontcustom::Error, "INPUT[:templates] should be a directory. Check `#{relative_to_root(@input[:templates])}` and try again."
           end
         else
           @input[:templates] = @input[:vectors]
@@ -134,10 +136,7 @@ module Fontcustom
         unless File.directory? input
           raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check `#{relative_to_root(input)}` and try again."
         end
-        @input = Thor::CoreExt::HashWithIndifferentAccess.new({
-          :vectors => input,
-          :templates => input
-        })
+        @input = { :vectors => input, :templates => input }
       end
 
       if Dir[File.join(@input[:vectors], "*.{svg,eps}")].empty?
@@ -147,13 +146,13 @@ module Fontcustom
 
     def set_output_paths
       if @output.is_a? Hash
-        @output = Thor::CoreExt::HashWithIndifferentAccess.new @output
-        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a \"fonts\" key." unless @output.has_key? "fonts"
+        @output = symbolize_hash(@output)
+        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a :fonts key." unless @output.has_key? :fonts
 
         @output.each do |key, val|
           @output[key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
-            raise Fontcustom::Error, "OUTPUT[\"#{key}\"] should be a directory, not a file. Check `#{relative_to_root(val)}` and try again."
+            raise Fontcustom::Error, "OUTPUT[:#{key.to_s}] should be a directory, not a file. Check `#{relative_to_root(val)}` and try again."
           end
         end
 
@@ -170,11 +169,11 @@ module Fontcustom
           say_message :status, "All generated files will be saved to `#{relative_to_root(output)}/`."
         end
 
-        @output = Thor::CoreExt::HashWithIndifferentAccess.new({
+        @output = {
           :fonts => output,
           :css => output,
           :preview => output
-        })
+        }
       end
     end
 

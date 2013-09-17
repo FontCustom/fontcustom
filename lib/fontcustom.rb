@@ -4,7 +4,6 @@ require "fontcustom/util"
 require "fontcustom/options"
 require "fontcustom/generator/font"
 require "fontcustom/generator/template"
-require "thor/core_ext/hash_with_indifferent_access"
 
 module Fontcustom
   ##
@@ -13,7 +12,7 @@ module Fontcustom
     opts = Options.new options
     Generator::Font.start [opts]
     Generator::Template.start [opts]
-  rescue Error => e
+  rescue Fontcustom::Error => e
     opts.say_message :error, e.message, :red
   end
 
@@ -30,7 +29,7 @@ module Fontcustom
     :output => "PROJECT_ROOT/FONT_NAME"
   }
 
-  DEFAULT_OPTIONS = Thor::CoreExt::HashWithIndifferentAccess.new(
+  DEFAULT_OPTIONS = {
     :project_root => Dir.pwd,
     :input => nil,
     :output => nil,
@@ -43,9 +42,9 @@ module Fontcustom
     :preprocessor_path => "",
     :debug => false,
     :verbose => true
-  )
+  }
 
-  DATA_MODEL = Thor::CoreExt::HashWithIndifferentAccess.new(
+  DATA_MODEL = {
     :fonts => [],
     :templates => [],
     :glyphs => [],
@@ -53,5 +52,5 @@ module Fontcustom
       :css_to_fonts => "",
       :preprocessor_to_fonts => ""
     }
-  )
+  }
 end

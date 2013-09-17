@@ -28,9 +28,9 @@ module Fontcustom
           begin
             data = File.read opts.data_cache
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
-            @data = data.is_a?(Hash) ? Thor::CoreExt::HashWithIndifferentAccess.new(data) : Fontcustom::DATA_MODEL.dup
-          rescue JSON::ParserError
-            raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
+            @data = data.is_a?(Hash) ? symbolize_hash(data) : Fontcustom::DATA_MODEL.dup
+          rescue
+            raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.data_cache)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -61,17 +61,15 @@ module Fontcustom
         cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts] + name + hash}"
 
         output, err, status = execute_and_clean(cmd)
-
-        @json = output[0] #JSON
-        output = output[1..-1]
+        @json = output.delete_at(0)
 
         say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug
         raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details." unless status.success?
       end
 
       def collect_data
-        @json = JSON.parse(@json, :symbolize_names => true)
-        @data.merge! @json
+        json = JSON.parse(@json, :symbolize_names => true)
+        @data.merge! json
         @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-") }
         @data[:fonts].map! { |font| File.join(opts.output[:fonts], font) }
       end

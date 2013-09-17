@@ -203,7 +203,7 @@ describe Fontcustom::Options do
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@input, hash
         o.remove_instance_variable :@cli_options
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /contain a "vectors" key/
+        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /contain a :vectors key/
       end
 
       it "should raise an error if :vectors doesn't point to an existing directory" do
@@ -224,8 +224,8 @@ describe Fontcustom::Options do
         o.remove_instance_variable :@cli_options
         o.send :set_input_paths
         input = o.instance_variable_get :@input
-        input.should have_key("vectors")
-        input.should have_key("templates")
+        input.should have_key(:vectors)
+        input.should have_key(:templates)
       end
 
       it "should set :templates to match :vectors" do
@@ -314,7 +314,7 @@ describe Fontcustom::Options do
         o.remove_instance_variable :@cli_options
         o.send :set_output_paths
         output = o.instance_variable_get :@output
-        output["special.js"].should == fixture("assets/javascripts")
+        output[:"special.js"].should == fixture("assets/javascripts")
       end
 
       it "should raise an error if :fonts isn't set" do
@@ -323,7 +323,7 @@ describe Fontcustom::Options do
         o.instance_variable_set :@project_root, fixture
         o.instance_variable_set :@output, hash
         o.remove_instance_variable :@cli_options
-        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /contain a "fonts" key/
+        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /contain a :fonts key/
       end
     end
 
@@ -336,9 +336,9 @@ describe Fontcustom::Options do
         o.send :set_output_paths
         output = o.instance_variable_get :@output
         output.should be_a(Hash)
-        output.should have_key("fonts")
-        output.should have_key("css")
-        output.should have_key("preview")
+        output.should have_key(:fonts)
+        output.should have_key(:css)
+        output.should have_key(:preview)
       end
 
       it "should set :css and :preview to match :fonts" do

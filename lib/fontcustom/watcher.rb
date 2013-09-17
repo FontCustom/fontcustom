@@ -3,7 +3,7 @@ require "listen"
 
 module Fontcustom
   class Watcher
-    include Fontcustom::Util
+    include Util
 
     def initialize(opts)
       @opts = opts
@@ -68,8 +68,8 @@ module Fontcustom
     end
 
     def compile
-      Fontcustom::Generator::Font.start [@opts]
-      Fontcustom::Generator::Template.start [@opts]
+      Generator::Font.start [@opts]
+      Generator::Template.start [@opts]
     end
 
     def say(*args)

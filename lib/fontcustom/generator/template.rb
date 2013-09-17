@@ -21,12 +21,12 @@ module Fontcustom
 
       def get_data
         if File.exists? opts.data_cache
-          @data = JSON.parse(File.read(opts.data_cache), :symbolize_names => true)
+          @data = JSON.parse File.read(opts.data_cache), :symbolize_names => true
         else
           raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is missing. This file is required to generate templates."
         end
-      rescue JSON::ParserError
-        raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is empty or corrupted. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
+      rescue
+        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.data_cache)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
       end
 
       def reset_output
@@ -77,8 +77,8 @@ module Fontcustom
               target.sub! DEFAULT_OPTIONS[:font_name], opts.font_name
             end
 
-            target = if opts.output.keys.include? name
-              File.join opts.output[name], target
+            target = if opts.output.keys.include? name.to_sym
+              File.join opts.output[name.to_sym], target
             elsif css_exts.include? ext
               File.join opts.output[:css], target
             elsif name == "fontcustom-preview.html"

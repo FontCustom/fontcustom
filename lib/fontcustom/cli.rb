@@ -63,7 +63,7 @@ module Fontcustom
       opts = Options.new(opts)
       Generator::Font.start [opts]
       Generator::Template.start [opts]
-    rescue Error => e
+    rescue Fontcustom::Error => e
       say_status :error, e.message, :red
     end
 
@@ -76,7 +76,7 @@ module Fontcustom
       opts = options.merge :input => input, :skip_first => !! options[:skip_first]
       opts = Options.new(opts)
       Watcher.new(opts).watch
-    rescue Error => e
+    rescue Fontcustom::Error => e
       say_status :error, e.message, :red
     end
 
