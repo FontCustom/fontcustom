@@ -1,19 +1,20 @@
-## 1.1.0
+## 1.1.0 (9/22/2013)
 
 More customizable interface for vastly improved workflow.
 
-* Specify where input vectors/templates are stored
-* Specify where output fonts/templates are saved
+* Specify where input vectors/templates are stored ([#89](https://github.com/FontCustom/fontcustom/issues/89))
+* Specify where output fonts/templates are saved ([#89](https://github.com/FontCustom/fontcustom/issues/89))
 * Stock templates are saved as `#{font_name}.css` instead of `_fontcustom.css`
 * More robust path handling (relative paths, customizable `project_root`)
 * User-friendly variables for usage in custom templates
 * Rails-friendly template
+* Enable HTML data-attributes usage ([#118](https://github.com/FontCustom/fontcustom/pull/118))
 * Helper characters in preview ([#107](https://github.com/FontCustom/fontcustom/pull/107))
 * More robust execution of fontforge command ([#114](https://github.com/FontCustom/fontcustom/pull/114))
 * Allow captial letters in font names ([#92](https://github.com/FontCustom/fontcustom/issues/92))
 * More helpful, colorful messages
 * More intuitive flags (`--verbose=false` => `--quiet`, `--file-hash=false` => `--no-hash`)
-* More intuitive version (`fontcustom version` => `fontcustom --version`)
+* More intuitive version (`fontcustom version` => `fontcustom --version`) ([#115](https://github.com/FontCustom/fontcustom/issues/115))
 
 ## 1.0.1 (7/21/2013)
 
