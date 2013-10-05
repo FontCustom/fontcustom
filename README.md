@@ -36,7 +36,7 @@ font_name: fontcustom                 # Names the font (also sets name and direc
 project_root: (working dir)           # Context for all relative paths
 input: (project_root)                 # Where vectors and templates are located
 output: (project_root)/(font name)    # Where generated files will be saved
-file_hash: true                       # Include an asset-busting hash
+no_hash: false                        # Whether to include an asset-busting hash
 css_prefix: icon-                     # CSS class prefix
 preprocessor_path: ""                 # Font path used in CSS proprocessor templates
 data_cache: (same as fontcustom.yml)  # Sets location of data file
