@@ -3,20 +3,20 @@
 // Bootstrap IE7 Enabler
 //
 
-[class^="<%= @opts.css_prefix %>"],
-[class*=" <%= @opts.css_prefix %>"] {
+[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"],
+[class*=" <%= @opts.css_prefix %>"][class*=" <%= @opts.css_postfix %>"] {
   font-family: "<%= @opts.font_name %>";
   font-style: normal;
   font-weight: normal;
 }
 
-.btn.dropdown-toggle [class^="<%= @opts.css_prefix %>"],
-.btn.dropdown-toggle [class*=" <%= @opts.css_prefix %>"] {
+.btn.dropdown-toggle [class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"],
+.btn.dropdown-toggle [class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "] {
   line-height: 1.4em;
 }
 
-.<%= @opts.css_prefix %>large {
+.<%= @opts.css_prefix %>large<%= @opts.css_postfix %> {
   font-size: 1.3333em;
 }
 <% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= (61696+index).to_s(16) %>;&nbsp;'); }<% end %>
+.<%= @opts.css_prefix + name + @opts.css_postfix %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= (61696+index).to_s(16) %>;&nbsp;'); }<% end %>

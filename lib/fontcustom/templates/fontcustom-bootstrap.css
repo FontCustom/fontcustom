@@ -14,7 +14,7 @@
   font-style: normal;
 }
 
-[class^="<%= @opts.css_prefix %>"]:before, [class*=" <%= @opts.css_prefix %>"]:before {
+[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"]:before, [class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "]:before {
   font-family: "<%= @opts.font_name %>";
   font-weight: normal;
   font-style: normal;
@@ -22,42 +22,42 @@
   text-decoration: inherit;
 }
 
-a [class^="<%= @opts.css_prefix %>"], a [class*=" <%= @opts.css_prefix %>"] {
+a [class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"], a [class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "] {
   display: inline-block;
   text-decoration: inherit;
 }
 
-.<%= @opts.css_prefix %>large:before {
+.<%= @opts.css_prefix %>large<%= @opts.css_postfix %>:before {
   vertical-align: top;
   font-size: 1.333em;
 }
 
-.btn [class^="<%= @opts.css_prefix %>"], .btn [class*=" <%= @opts.css_prefix %>"] {
+.btn [class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"], .btn [class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "] {
   line-height: 0.9em;
 }
 
-li [class^="<%= @opts.css_prefix %>"], li [class*=" <%= @opts.css_prefix %>"] {
+li [class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"], li [class*=" <%= @opts.css_prefix %>"][class*=" <%= @opts.css_postfix %>"] {
   display: inline-block;
   width: 1.25em;
   text-align: center;
 }
 
-li .<%= @opts.css_prefix %>large[class^="<%= @opts.css_prefix %>"], li .<%= @opts.css_prefix %>large[class*=" <%= @opts.css_prefix %>"] {
+li .<%= @opts.css_prefix %>large<%= @opts.css_postfix %>[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"], li .<%= @opts.css_prefix %>large<%= @opts.css_postfix %>[class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "] {
   width: 1.875em;
 }
 
-li[class^="<%= @opts.css_prefix %>"], li[class*=" <%= @opts.css_prefix %>"] {
+li[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"], li[class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "] {
   margin-left: 0;
   list-style-type: none;
 }
 
-li[class^="<%= @opts.css_prefix %>"]:before, li[class*=" <%= @opts.css_prefix %>"]:before {
+li[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"]:before, li[class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "]:before {
   text-indent: -2em;
   text-align: center;
 }
 
-li[class^="<%= @opts.css_prefix %>"].<%= @opts.css_prefix %>large:before, li[class*=" <%= @opts.css_prefix %>"].<%= @opts.css_prefix %>large:before {
+li[class^="<%= @opts.css_prefix %>"][class$="<%= @opts.css_postfix %>"].<%= @opts.css_prefix %>large<%= @opts.css_postfix %>:before, li[class*=" <%= @opts.css_prefix %>"][class*="<%= @opts.css_postfix %> "].<%= @opts.css_prefix %>large<%= @opts.css_postfix %>:before {
   text-indent: -1.333em;
 }
 <% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+.<%= @opts.css_prefix + name + @opts.css_postfix %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

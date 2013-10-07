@@ -6,6 +6,7 @@
 
 #font_name: fontcustom
 #css_prefix: icon-
+#css_postfix: ""
 #preprocessor_path: ""
 #no_hash: false
 #debug: false
