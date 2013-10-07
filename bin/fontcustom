@@ -2,4 +2,21 @@
 
 require 'fontcustom/cli'
 
-Fontcustom::CLI.start(ARGV)
+# Hackup args since Thor can't handle leading dashes
+argv = ARGV.dup
+
+argv.each_with_index do |arg, i|
+  case arg
+  when /^-p$|^-x$/
+    argv[i + 1] = %{'#{argv[i + 1]}'} # quote with single quotes
+  when /^--(prefix|postfix)=(.+)$/
+    if $1 == 'prefix'
+      argv[i] = '-p'
+    else
+      argv[i] = '-x'
+    end
+    argv.insert(i + 1, %{'#{$2}'})
+  end
+end
+
+Fontcustom::CLI.start(argv)

@@ -29,6 +29,7 @@ module Fontcustom
     def set_options
       set_config_path
       load_config
+      cleanup_prefix_and_postfix_arguments
       merge_options
       set_data_path
       set_input_paths
@@ -209,6 +210,11 @@ module Fontcustom
           template
         end
       end
+    end
+
+    def cleanup_prefix_and_postfix_arguments
+      @cli_options[:css_prefix] = $1 if /^'(.*)'$/.match(@cli_options[:css_prefix])
+      @cli_options[:css_postfix] = $1 if /^'(.*)'$/.match(@cli_options[:css_postfix])
     end
   end
 end
