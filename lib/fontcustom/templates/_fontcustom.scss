@@ -16,7 +16,7 @@
 [data-icon]:before { content: attr(data-icon); }
 
 [data-icon]:before,
-<%= @glyphs.map {|name| ".#{@opts.css_prefix + name}:before"}.join(",\n") %> {
+<%= @glyphs.map {|name| ".#{@opts.css_prefix + name + @opts.css_postfix}:before"}.join(",\n") %> {
   font-family: "<%= @opts.font_name %>";
   font-style: normal;
   font-weight: normal;
@@ -28,4 +28,4 @@
   text-decoration: inherit;
 }
 <% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+.<%= @opts.css_prefix + name + @opts.css_postfix %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>

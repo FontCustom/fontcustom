@@ -40,6 +40,7 @@ module Fontcustom
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :css_prefix => "icon-",
+    :css_postfix => "",
     :data_cache => nil,
     :preprocessor_path => nil,
     :no_hash => false,

@@ -33,6 +33,10 @@ module Fontcustom
     class_option :css_prefix, :aliases => "-p", :type => :string,
       :desc => "Prefix for each glyph's CSS class.",
       :default => DEFAULT_OPTIONS[:css_prefix]
+    
+    class_option :css_postfix, :aliases => "-x", :type => :string,
+      :desc => "Postfix for each glyph's CSS class.",
+      :default => DEFAULT_OPTIONS[:css_postfix]
 
     class_option :data_cache, :aliases => "-d", :type => :string,
       :desc => "Path to a manifest of generated files. Used for garbage collection.",

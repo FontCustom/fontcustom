@@ -8,7 +8,7 @@ module Fontcustom
   class Options
     include Util
 
-    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :data_cache, :preprocessor_path, :no_hash, :debug, :quiet, :skip_first 
+    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :css_postfix, :data_cache, :preprocessor_path, :no_hash, :debug, :quiet, :skip_first 
 
     def initialize(options = {})
       check_fontforge
@@ -29,6 +29,7 @@ module Fontcustom
     def set_options
       set_config_path
       load_config
+      cleanup_prefix_and_postfix_arguments
       merge_options
       set_data_path
       set_input_paths
@@ -95,7 +96,7 @@ module Fontcustom
       remove_instance_variable :@cli_options
 
       # :config is excluded since it's already been set
-      keys = %w|project_root input output data_cache templates font_name css_prefix preprocessor_path skip_first no_hash debug quiet|
+      keys = %w|project_root input output data_cache templates font_name css_prefix css_postfix preprocessor_path skip_first no_hash debug quiet|
       keys.each { |key| instance_variable_set("@#{key}", options[key.to_sym]) }
 
       @font_name = @font_name.strip.gsub(/\W/, "-")
@@ -209,6 +210,11 @@ module Fontcustom
           template
         end
       end
+    end
+
+    def cleanup_prefix_and_postfix_arguments
+      @cli_options[:css_prefix] = $1 if /^'(.*)'$/.match(@cli_options[:css_prefix])
+      @cli_options[:css_postfix] = $1 if /^'(.*)'$/.match(@cli_options[:css_postfix])
     end
   end
 end
