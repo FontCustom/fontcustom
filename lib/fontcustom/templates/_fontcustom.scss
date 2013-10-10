@@ -28,4 +28,4 @@
   text-decoration: inherit;
 }
 <% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+.<%= @opts.css_prefix + name %>:before { content: "\<%= @data[:glyphcodes][index].to_s(16) %>"; }<% end %>

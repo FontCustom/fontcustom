@@ -19,4 +19,4 @@
   font-size: 1.3333em;
 }
 <% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= (61696+index).to_s(16) %>;&nbsp;'); }<% end %>
+.<%= @opts.css_prefix + name %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= @data[:glyphcodes][index].to_s(16) %>;&nbsp;'); }<% end %>

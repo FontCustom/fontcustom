@@ -5,6 +5,58 @@ import subprocess
 import tempfile
 import json
 
+def removeSwitchFromSvg( filePath ):
+	# hack removal of <switch> </switch> tags
+	svgfile = open(filePath, 'r+')
+	tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
+	svgtext = svgfile.read()
+	svgfile.seek(0)
+
+	# replace the <switch> </switch> tags with 'nothing'
+	svgtext = svgtext.replace('<switch>', '')
+	svgtext = svgtext.replace('</switch>', '')
+
+	tmpsvgfile.file.write(svgtext)
+
+	svgfile.close()
+	tmpsvgfile.file.close()
+
+	# end hack
+
+	return tmpsvgfile.name
+
+def createGlyph( font, dirname, filename, code, m ):
+	name, ext = os.path.splitext(filename)
+	filePath = os.path.join(dirname, filename)
+	size = os.path.getsize(filePath)
+
+	if ext in ['.svg', '.eps']:
+		if ext in ['.svg']:
+			tmpSvgPath = removeSwitchFromSvg(filePath)
+			filePath = tmpSvgPath
+
+		m.update(filename + str(size) + ';')
+		glyph = font.createChar(code)
+		glyph.importOutlines(filePath)
+
+		# if we created a temporary file, let's clean it up
+		if tmpSvgPath:
+			os.unlink(tmpSvgPath)
+
+		# glyph.left_side_bearing = KERNING
+		# glyph.right_side_bearing = KERNING
+		#glyph.width = 512
+
+		# possible optimization?
+		# glyph.simplify()
+		# glyph.round()
+		glyph.left_side_bearing = glyph.right_side_bearing = 0
+		glyph.round()
+
+		return name
+
+	return None
+
 try:
 	import argparse
 	parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
@@ -26,6 +78,13 @@ except ImportError:
 	indir = posargs[0]
 	outdir = posargs[1]
 
+glyphs = None
+glyphsPath = indir + "/glyphs.json"
+if os.path.exists(glyphsPath):
+	glyphsData = open(glyphsPath)
+	glyphs = json.load(glyphsData)
+	glyphsData.close()
+
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
 f.design_size = 16
@@ -36,57 +95,27 @@ f.descent = 64
 m = md5.new()
 cp = 0xf100
 files = []
+glyphcodes = []
 
 KERNING = 15
 
-for dirname, dirnames, filenames in os.walk(indir):
-	for filename in filenames:
-		name, ext = os.path.splitext(filename)
-		filePath = os.path.join(dirname, filename)
-		size = os.path.getsize(filePath)
-
-		if ext in ['.svg', '.eps']:
-			if ext in ['.svg']:
-				# hack removal of <switch> </switch> tags
-				svgfile = open(filePath, 'r+')
-				tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
-				svgtext = svgfile.read()
-				svgfile.seek(0)
-
-				# replace the <switch> </switch> tags with 'nothing'
-				svgtext = svgtext.replace('<switch>', '')
-				svgtext = svgtext.replace('</switch>', '')
-			
-				tmpsvgfile.file.write(svgtext)
-
-				svgfile.close()
-				tmpsvgfile.file.close()
-
-				filePath = tmpsvgfile.name
-				# end hack
-				
-			m.update(filename + str(size) + ';')
-			glyph = f.createChar(cp)
-			glyph.importOutlines(filePath)
-
-			# if we created a temporary file, let's clean it up
-			if tmpsvgfile:
-				os.unlink(tmpsvgfile.name)
-
-			# glyph.left_side_bearing = KERNING
-			# glyph.right_side_bearing = KERNING
-			#glyph.width = 512
-
-			# possible optimization?
-			# glyph.simplify()
-			# glyph.round()
-			glyph.left_side_bearing = glyph.right_side_bearing = 0
-			glyph.round()
-
-			files.append(name)
-			cp += 1
-
+if glyphs:
+	for g in glyphs:
+		code = int(g["code"], 16)
+		name = createGlyph(f, indir, g["file"], code, m)
+		files.append(name)
+		glyphcodes.append(code)
 		f.autoWidth(0, 0, 512)
+
+else:
+	for dirname, dirnames, filenames in os.walk(indir):
+		for filename in filenames:
+			name = createGlyph(f, dirname, filename, cp, m)
+			if name:
+				files.append(name)
+				glyphcodes.append(cp)
+				cp += 1
+				f.autoWidth(0, 0, 512)
 
 if args.nohash:
 	fontfile = outdir + '/' + args.name
@@ -126,4 +155,4 @@ subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hint
 
 # Describe output in JSON
 outname = os.path.basename(fontfile)
-print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files})
+print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files, 'glyphcodes': glyphcodes})
