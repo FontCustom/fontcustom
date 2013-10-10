@@ -98,8 +98,8 @@ gem install rspec
 rspec spec/fontcustom/generator/font_spec.rb
 
 # Pull latest changes from FontCustom/fontcustom.git
-git remote add fontcustom git@github.com:FontCustom/fontcustom.git
-git pull fontcustom master
+git remote add upstream git@github.com:FontCustom/fontcustom.git
+git pull upstream master
 ```
 
 Read more:
