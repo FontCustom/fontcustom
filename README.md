@@ -1,4 +1,4 @@
-# FontCustom v1.1.0
+# FontCustom v1.1.1
 
 **Generate icon webfonts from the comfort of the command line.**
 
