@@ -1,3 +1,9 @@
+## 1.1.1 (10/16/2013)
+
+* Relaxes JSON version requirement ([#125](https://github.com/FontCustom/fontcustom/pull/125))
+* Fixes ttf hinting ([#124](https://github.com/FontCustom/fontcustom/pull/124))
+* Cleans up README, fontcustom.yml template, .gitignore ([#123](https://github.com/FontCustom/fontcustom/pull/123), [#128](https://github.com/FontCustom/fontcustom/pull/128))
+
 ## 1.1.0 (9/22/2013)
 
 More customizable interface for vastly improved workflow.
