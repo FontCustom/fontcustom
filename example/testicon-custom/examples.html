@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ut-8"/>
+    <title>Example usage of Test Icon</title>
+    <link rel="stylesheet" href="testicon.css" />
+
+    <style>
+      * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        padding-bottom: 50px;
+      }
+
+      body {
+        background: #fff;
+        color: #464646;
+        font: 12px/16px Arial, sans-serif;
+      }
+
+      h1 {
+        line-height: 1.1;
+        font-size: 36px;
+        font-weight: normal;
+        padding: 20px 0;
+      }
+
+      .container {
+        margin: 0 auto;
+        width: 85%;
+      }
+
+      .example {
+        background: #eee;
+        padding: 10px;
+        border-radius: 2px;
+        width: 50%;
+        min-width: 270px;
+        max-width: 400px;
+        margin-top: 2em;
+      }
+
+      /*
+        Inline
+      */
+      #inline {
+      }
+
+      #inline span {
+        white-space: nowrap;
+      }
+
+      #inline span:before {
+        font-size: 16px;
+        margin-top: -4px;
+        vertical-align: middle;
+        margin-right: 2px;
+      }
+
+      /*
+        List & map
+      */
+      #listMap a {
+        color: #333;
+        padding: 2px 4px;
+        background: #ccc;
+        border-radius: 2px;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+
+      #listMap a:hover {
+        color: #fff;
+        background: #333;
+      }
+
+      #listMap a:after {
+        font-size: 16px;
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-left: 3px;
+      }
+
+      /*
+        List
+      */
+      #list {
+
+      }
+
+      #list ul {
+        list-style: none;
+        margin: 0;
+      }
+
+      #list li {
+        margin: 3px;
+      }
+
+      #list li:before {
+        font-size: 16px;
+        width: 16px;
+        text-align: center;
+        margin-top: -4px;
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+
+      /*
+        List perfect
+      */
+      #horizontalPerfect ul {
+        list-style: none;
+        margin: 0;
+        width: 40%;
+        display: inline-block;
+      }
+
+      #horizontalPerfect li {
+        margin: 3px;
+      }
+
+      #horizontalPerfect ul.perfect li span,
+      #horizontalPerfect ul.notPerfect li:before {
+        display: inline-block;
+        font-size: 16px;
+        width: 21px;
+        text-align: center;
+        margin-right: 4px;
+        margin-top: -4px;
+        vertical-align: middle;
+      }
+
+      /*
+        Button with text
+      */
+      #buttonText button {
+        padding: 5px 7px;
+        margin: 3px;
+      }
+
+      #buttonText button:before {
+        font-size: 16px;
+        line-height: 16px;
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
+      }
+
+      /*
+        Button with text styled
+      */
+      #buttonTextStyled button {
+        color: #fff;
+        padding: 5px 7px;
+        margin: 3px;
+        border: none;
+        border-radius: 2px;
+        background: #286F8A;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      #buttonTextStyled button:before {
+        font-size: 16px;
+        line-height: 16px;
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
+      }
+
+      /*
+        Button
+      */
+      #button button {
+        width: 36px;
+        height: 36px;
+        margin: 3px;
+        border: none;
+        border-radius: 2px;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      #button button:before {
+        font-size: 16px;
+        vertical-align: middle;
+        margin-top: -4px;
+      }
+
+      /*
+        Big symbol
+      */
+      #bigSymbol p {
+        line-height: 32px;
+      }
+
+      #bigSymbol a {
+        display: inline-block;
+        margin: 10px;
+        text-shadow: 1px 1px 0 #f5f9fa;
+        color: #c2c6c7;
+        -webkit-transition: all 250ms;
+        -moz-transition: all 250ms;
+        -o-transition: all 250ms;
+        transition: all 250ms;
+        text-decoration: none;
+      }
+
+      #bigSymbol a:hover {
+        color: #00a0d1;
+      }
+
+      #bigSymbol a:before {
+        font-size: 32px;
+        vertical-align: middle;
+        margin-top: -4px;
+        width: 32px;
+        text-align: center;
+      }
+
+      /*
+        More styles
+      */
+      #moreStyles button {
+        padding: 5px 7px;
+        margin: 3px;
+        outline: none;
+
+        background-color: #f8f8f8;
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#dedede));
+        background-image: -moz-linear-gradient(top,#fff,#dedede);
+        background-image: -o-linear-gradient(top,#fff,#dedede);
+        background-image: -ms-linear-gradient(top,#fff,#dedede);
+        background-image: linear-gradient(top,#fff,#dedede);
+        border: #ccc solid 1px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        color: #333;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        cursor: pointer;
+
+      }
+
+      #moreStyles button:focus,
+      #moreStyles button:hover,
+      #moreStyles button:active {
+        border: #ccc solid 1px;
+        border-color: #bbb;
+        background-color: #f8f8f8;
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#d9d9d9));
+        background-image: -moz-linear-gradient(top,#f8f8f8,#d9d9d9);
+        background-image: -o-linear-gradient(top,#f8f8f8,#d9d9d9);
+        background-image: -ms-linear-gradient(top,#f8f8f8,#d9d9d9);
+        background-image: linear-gradient(top,#f8f8f8,#d9d9d9);
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+
+      #moreStyles button:focus {
+        border-color: #0089CB;
+      }
+
+      #moreStyles button:active {
+        background-color: #efefef;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
+        -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
+        box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
+      }
+
+      #moreStyles button:before {
+        font-size: 16px;
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
+      }
+
+    </style>
+
+    <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Example usage of Test Icon</h1> 
+      <p><a href="testicon.html" title="Test Icon">Back to Test Icon</a></p>
+
+      <div id="inline" class="example">
+        <p>If you want you can <span class="t-icon-print">print</span> or <span class="t-icon-share">share</span> this page. And please feel free to take as many <span class="t-icon-camera">pictures</span> as you like.</p> 
+      </div>
+
+      <div id="listMap" class="example">
+        <p>Show it in a <a href="" class="t-icon-list-after">list</a> or on a <a href="" class="t-icon-location-after">map</a></p>
+      </div>
+
+      <div id="list" class="example">
+        <ul>
+          <li class="t-icon-home">Home</li>
+          <li class="t-icon-print">Print</li>
+          <li class="t-icon-share">Share</li>
+          <li class="t-icon-camera">Take picture</li>
+          <li class="t-icon-navigate">Navigate</li>
+        </ul>
+      </div>
+
+      <div id="horizontalPerfect" class="example">
+        <p>To get pixel perfect rendering with horizontally centered icons you might need extra elements. Left: perfect, right: non-perfect.</span>
+        <ul class="perfect">
+          <li><span class="t-icon-columns"></span>Columns</li>
+          <li><span class="t-icon-rows"></span>Rows</li>
+        </ul>
+        <ul class="notPerfect">
+          <li class="t-icon-columns">Columns</li>
+          <li class="t-icon-rows">Rows</li>
+        </ul>
+      </div>
+
+      <div id="button" class="example">
+        <button class="t-icon-print"></button>
+        <button class="t-icon-share"></button>
+        <button class="t-icon-camera"></button>
+      </div>
+
+      <div id="bigSymbol" class="example">
+        <p>
+          <a href="" class="t-icon-print"></a>
+          <a href="" class="t-icon-share"></a>
+          <a href="" class="t-icon-camera"></a>
+        </p>
+      </div>
+
+      <div id="buttonText" class="example">
+        <button class="t-icon-print">Print</button>
+        <button class="t-icon-share">Share</button>
+        <button class="t-icon-camera">Take picture</button>
+      </div>
+
+      <div id="buttonTextStyled" class="example">
+        <button class="t-icon-print">Print</button>
+        <button class="t-icon-share">Share</button>
+        <button class="t-icon-camera">Take picture</button>
+      </div>
+
+      <div id="moreStyles" class="example">
+        <button class="t-icon-print">Print</button>
+        <button class="t-icon-share">Share</button>
+        <button class="t-icon-camera">Take picture</button>
+      </div>
+
+    </div>
+  </body>
+</html>

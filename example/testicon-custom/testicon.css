@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "<%= @opts.font_name %>";
+  src: url("<%= @opts.font_name %>.eot?v=1");
+  src: url("<%= @opts.font_name %>.eot?#iefix&v=1") format("embedded-opentype"),
+       url("<%= @opts.font_name %>.woff?v=1") format("woff"),
+       url("<%= @opts.font_name %>.ttf?v=1") format("truetype"),
+       url("<%= @opts.font_name %>.svg?v=1#<%= @opts.font_name %>") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+<%= @glyphs.map {|name| ".#{@opts.css_prefix + name}:before"}.join(",\n") %>,
+<%= @glyphs.map {|name| ".#{@opts.css_prefix + name}-after:after"}.join(",\n") %> {
+  font-family: "<%= @opts.font_name %>";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  text-decoration: inherit;
+  line-height: inherit;
+}
+
+<% @glyphs.each_with_index do |name, index| %>
+.<%= @opts.css_prefix + name %>:before { content: "\<%= @data[:glyphcodes][index].to_s(16) %>"; }<% end %>
+
+<% @glyphs.each_with_index do |name, index| %>
+.<%= @opts.css_prefix + name %>-after:after { content: "\<%= @data[:glyphcodes][index].to_s(16) %>"; }<% end %>
