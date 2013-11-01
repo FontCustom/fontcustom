@@ -41,6 +41,10 @@ module Fontcustom
     class_option :preprocessor_path, :aliases => "-s", :type => :string,
       :desc => "Optional font path for CSS proprocessor templates."
 
+    class_option :autowidth, :aliases => "-a", :type => :boolean,
+      :desc => "Auto-size glyphs to their individual vector widths.",
+      :default => DEFAULT_OPTIONS[:autowidth]
+
     class_option :no_hash, :aliases => "-h", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 

@@ -11,6 +11,10 @@
 #debug: false
 #quiet: false
 
+# setting this to false allows the creation of stacking icons, since all glyphs
+# will retain their original positions.
+#autowidth: true
+
 
 # ---------------------------------------------------------------------------- #
 # Project Paths
