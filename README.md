@@ -42,6 +42,7 @@ preprocessor_path: ""                 # Font path used in CSS proprocessor templ
 data_cache: (same as fontcustom.yml)  # Sets location of data file
 debug: false                          # Output raw messages from fontforge
 quiet: false                          # Silence all output messages
+autowidth: true                       # Automatically size glyphs based on the width of their individual vectors
 templates: [ css, preview ]           # Templates to generate alongside fonts
                                       # Possible values: preview, css, scss, scss-rails, bootstrap, 
                                       # bootstrap-scss, bootstrap-ie7, bootstrap-ie7-scss

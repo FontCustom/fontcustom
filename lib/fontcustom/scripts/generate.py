@@ -10,6 +10,7 @@ try:
 	parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
 	parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
 	parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', help='reference name of the font (no spaces)')
+	parser.add_argument('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
 	parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
 	args = parser.parse_args()
@@ -20,6 +21,7 @@ except ImportError:
 	import optparse
 	parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
 	parser.add_option('--name', metavar='fontname', type='string', nargs='?', help='reference name of the font (no spaces)')
+	parser.add_option('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
 	parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
 	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
 	(args, posargs) = parser.parse_args()
@@ -56,7 +58,7 @@ for dirname, dirnames, filenames in os.walk(indir):
 				# replace the <switch> </switch> tags with 'nothing'
 				svgtext = svgtext.replace('<switch>', '')
 				svgtext = svgtext.replace('</switch>', '')
-			
+
 				tmpsvgfile.file.write(svgtext)
 
 				svgfile.close()
@@ -64,7 +66,7 @@ for dirname, dirnames, filenames in os.walk(indir):
 
 				filePath = tmpsvgfile.name
 				# end hack
-				
+
 			m.update(filename + str(size) + ';')
 			glyph = f.createChar(cp)
 			glyph.importOutlines(filePath)
@@ -75,18 +77,25 @@ for dirname, dirnames, filenames in os.walk(indir):
 
 			# glyph.left_side_bearing = KERNING
 			# glyph.right_side_bearing = KERNING
-			#glyph.width = 512
 
 			# possible optimization?
 			# glyph.simplify()
 			# glyph.round()
-			glyph.left_side_bearing = glyph.right_side_bearing = 0
-			glyph.round()
+
+			# set glyph size explicitly or automatically depending on autowidth
+			if args.autowidth:
+				glyph.left_side_bearing = glyph.right_side_bearing = 0
+				glyph.round()
+			else:
+				# force a manual size when autowidth is disabled
+				glyph.width = 512
 
 			files.append(name)
 			cp += 1
 
-		f.autoWidth(0, 0, 512)
+		# resize glyphs if autowidth is enabled
+		if args.autowidth:
+			f.autoWidth(0, 0, 512)
 
 if args.nohash:
 	fontfile = outdir + '/' + args.name

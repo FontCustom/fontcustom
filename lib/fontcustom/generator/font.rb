@@ -54,7 +54,8 @@ module Fontcustom
       end
 
       def generate
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts]} --name #{opts.font_name}" 
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{opts.input[:vectors]} #{opts.output[:fonts]} --name #{opts.font_name}"
+        cmd += " --autowidth" if opts.autowidth
         cmd += " --nohash" if opts.no_hash
         cmd += " --debug" if opts.debug
         output, err, status = execute_and_clean(cmd)
