@@ -1,4 +1,7 @@
 language: ruby
+before_install:
+  - brew update
+  - brew install fontforge
 rvm:
   - 2.0.0
   - 1.9.3
