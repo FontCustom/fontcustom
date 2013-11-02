@@ -91,8 +91,8 @@ module Fontcustom
       options = DEFAULT_OPTIONS.dup
       options = options.merge @config_options
       options = options.merge symbolize_hash(@cli_options)
-      remove_instance_variable :@config_options
-      remove_instance_variable :@cli_options
+      send :remove_instance_variable, :@config_options
+      send :remove_instance_variable, :@cli_options
 
       # :config is excluded since it's already been set
       keys = %w|project_root input output data_cache templates font_name css_prefix preprocessor_path skip_first autowidth no_hash debug quiet|
