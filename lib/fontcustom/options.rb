@@ -8,7 +8,7 @@ module Fontcustom
   class Options
     include Util
 
-    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :data_cache, :preprocessor_path, :autowidth, :no_hash, :debug, :quiet, :skip_first
+    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :manifest, :preprocessor_path, :autowidth, :no_hash, :debug, :quiet, :skip_first
 
     def initialize(options = {})
       check_fontforge
@@ -95,19 +95,19 @@ module Fontcustom
       send :remove_instance_variable, :@cli_options
 
       # :config is excluded since it's already been set
-      keys = %w|project_root input output data_cache templates font_name css_prefix preprocessor_path skip_first autowidth no_hash debug quiet|
+      keys = %w|project_root input output manifest templates font_name css_prefix preprocessor_path skip_first autowidth no_hash debug quiet|
       keys.each { |key| instance_variable_set("@#{key}", options[key.to_sym]) }
 
       @font_name = @font_name.strip.gsub(/\W/, "-")
     end
 
     def set_data_path
-      @data_cache = if ! @data_cache.nil?
-        expand_path @data_cache
+      @manifest = if ! @manifest.nil?
+        expand_path @manifest
       elsif @config
-        File.join File.dirname(@config), ".fontcustom-data"
+        File.join File.dirname(@config), ".fontcustom-manifest.json"
       else
-        File.join @project_root, ".fontcustom-data"
+        File.join @project_root, ".fontcustom-manifest.json"
       end
     end
 
@@ -139,8 +139,8 @@ module Fontcustom
         @input = { :vectors => input, :templates => input }
       end
 
-      if Dir[File.join(@input[:vectors], "*.{svg,eps}")].empty?
-        raise Fontcustom::Error, "`#{relative_to_root(@input[:vectors])}` doesn't contain any vectors (*.svg or *.eps files)."
+      if Dir[File.join(@input[:vectors], "*.svg")].empty?
+        raise Fontcustom::Error, "`#{relative_to_root(@input[:vectors])}` doesn't contain any SVGs."
       end
     end
 

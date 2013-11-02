@@ -40,7 +40,7 @@ describe Fontcustom::Generator::Font do
     end
   end
 
-  context "#get_data" do
+  context "#get_manifest" do
     it "should assign empty data model if data file is empty or missing" do
       options = {
         :project_root => fixture,
@@ -48,7 +48,7 @@ describe Fontcustom::Generator::Font do
         :quiet => true
       }
       gen = generator options
-      gen.get_data
+      gen.get_manifest
       data = gen.instance_variable_get("@data")
       data.should == Fontcustom::DATA_MODEL
     end
@@ -62,7 +62,7 @@ describe Fontcustom::Generator::Font do
         :quiet => true
       }
       gen = generator options
-      gen.get_data
+      gen.get_manifest
       data = gen.instance_variable_get("@data")
       data.should_not == Fontcustom::DATA_MODEL
     end
@@ -71,13 +71,13 @@ describe Fontcustom::Generator::Font do
       options = {
         :project_root => fixture,
         :config => "generators",
-        :data_cache => "generators/.fontcustom-data-corrupted",
+        :manifest => "generators/.fontcustom-manifest-corrupted.json",
         :input => "shared/vectors",
         :output => "mixed-output",
         :quiet => true
       }
       gen = generator options
-      expect { gen.get_data }.to raise_error Fontcustom::Error, /corrupted/
+      expect { gen.get_manifest }.to raise_error Fontcustom::Error, /corrupted/
     end
   end
 
@@ -114,7 +114,7 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should update the data file" do
-      file = fixture(".fontcustom-data")
+      file = fixture(".fontcustom-manifest.json")
       subject.should_receive(:overwrite_file).once.with(file, /"fonts":/)
       subject.reset_output
     end
@@ -219,7 +219,7 @@ describe Fontcustom::Generator::Font do
       )
       gen.stub :overwrite_file
       gen.instance_variable_set(:@data, data_file_contents)
-      file = File.join fixture(".fontcustom-data")
+      file = File.join fixture(".fontcustom-manifest.json")
       gen.should_receive(:overwrite_file).once.with do |path, content|
         path.should == file
         content.should match(/"fonts":/)

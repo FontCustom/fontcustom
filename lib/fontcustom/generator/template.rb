@@ -19,14 +19,14 @@ module Fontcustom
         File.join Fontcustom.gem_lib, "templates"
       end
 
-      def get_data
-        if File.exists? opts.data_cache
-          @data = JSON.parse File.read(opts.data_cache), :symbolize_names => true
+      def get_manifest
+        if File.exists? opts.manifest
+          @data = JSON.parse File.read(opts.manifest), :symbolize_names => true
         else
-          raise Fontcustom::Error, "`#{relative_to_root(opts.data_cache)}` is missing. This file is required to generate templates."
+          raise Fontcustom::Error, "`#{relative_to_root(opts.manifest)}` is missing. This file is required to generate templates."
         end
       rescue
-        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.data_cache)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
+        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.manifest)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
       end
 
       def reset_output
@@ -40,7 +40,7 @@ module Fontcustom
         ensure
           @data[:templates] = @data[:templates] - deleted
           json = JSON.pretty_generate @data
-          overwrite_file opts.data_cache, json
+          overwrite_file opts.manifest, json
           say_changed :delete, deleted
         end
       end
@@ -88,7 +88,7 @@ module Fontcustom
           say_changed :create, created
           @data[:templates] = (@data[:templates] + created).uniq
           json = JSON.pretty_generate @data
-          overwrite_file opts.data_cache, json
+          overwrite_file opts.manifest, json
         end
       end
     end

@@ -7,7 +7,7 @@
 #font_name: fontcustom
 #css_prefix: icon-
 #preprocessor_path: ""
-#autowidth: true
+#autowidth: false
 #no_hash: false
 #debug: false
 #quiet: false
@@ -21,7 +21,7 @@
 # --------------------------------------------------------------------------- #
 
 #project_root: some/other/place
-#data_cache: tmp/fontcustom
+#manifest: tmp/fontcustom
 
 #input:
 #  vectors: app/assets/fonts/fontcustom/vectors         # required

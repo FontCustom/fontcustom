@@ -29,7 +29,7 @@ module Fontcustom
     :output => "PROJECT_ROOT/FONT_NAME",
     :config => "PROJECT_ROOT/fontcustom.yml OR PROJECT_ROOT/config/fontcustom.yml",
     :templates => "css preview",
-    :data_cache => "CONFIG_DIR/.fontcustom-data OR at PROJECT_ROOT/.fontcustom-data"
+    :manifest => "CONFIG_DIR/.fontcustom-manifest.json OR PROJECT_ROOT/.fontcustom-manifest.json"
   }
 
   DEFAULT_OPTIONS = {
@@ -40,7 +40,7 @@ module Fontcustom
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :css_prefix => "icon-",
-    :data_cache => nil,
+    :manifest => nil,
     :preprocessor_path => nil,
     :autowidth => false,
     :no_hash => false,

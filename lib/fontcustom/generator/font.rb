@@ -23,14 +23,14 @@ module Fontcustom
         end
       end
 
-      def get_data
-        if File.exists? opts.data_cache
+      def get_manifest
+        if File.exists? opts.manifest
           begin
-            data = File.read opts.data_cache
+            data = File.read opts.manifest
             data = JSON.parse(data, :symbolize_names => true) unless data.empty?
             @data = data.is_a?(Hash) ? symbolize_hash(data) : Fontcustom::DATA_MODEL.dup
           rescue
-            raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.data_cache)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
+            raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.manifest)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
           end
         else
           @data = Fontcustom::DATA_MODEL.dup
@@ -48,7 +48,7 @@ module Fontcustom
         ensure
           @data[:fonts] = @data[:fonts] - deleted
           json = JSON.pretty_generate @data
-          overwrite_file opts.data_cache, json
+          overwrite_file opts.manifest, json
           say_changed :delete, deleted
         end
       end
@@ -77,7 +77,7 @@ module Fontcustom
 
       def save_data
         json = JSON.pretty_generate @data
-        overwrite_file opts.data_cache, json
+        overwrite_file opts.manifest, json
       end
 
       private

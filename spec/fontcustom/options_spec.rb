@@ -156,24 +156,24 @@ describe Fontcustom::Options do
   end
 
   context ".set_data_path" do
-    it "should set :data_cache in the config dir by default" do
+    it "should set :manifest in the config dir by default" do
       silent
       o = options
       o.instance_variable_set :@config, "path/to/config/fontcustom.yml"
-      o.instance_variable_set :@data_cache, nil
+      o.instance_variable_set :@manifest, nil
       o.send :remove_instance_variable, :@cli_options
       o.send :set_data_path
-      o.instance_variable_get(:@data_cache).should == "path/to/config/.fontcustom-data"
+      o.instance_variable_get(:@manifest).should == "path/to/config/.fontcustom-manifest.json"
     end
   end
 
   context "#send :set_input_paths" do
-    it "should raise error if input[:vectors] doesn't contain vectors" do
+    it "should raise error if input[:vectors] doesn't contain SVGs" do
       o = options
       o.instance_variable_set :@project_root, fixture
       o.instance_variable_set :@input, "shared/vectors-empty"
       o.send :remove_instance_variable, :@cli_options
-      expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /doesn't contain any vectors/
+      expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /doesn't contain any SVGs/
     end
 
     context "when @input is a hash" do

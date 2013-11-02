@@ -11,14 +11,14 @@ describe Fontcustom::Generator::Template do
     Fontcustom::Generator::Template.new([opts])
   end
 
-  context "#get_data" do
+  context "#get_manifest" do
     it "should raise error if data file doesn't exist" do
       gen = generator(
         :project_root => fixture,
         :input => "shared/vectors",
         :quiet => true
       )
-      expect { gen.get_data }.to raise_error Fontcustom::Error, /\.fontcustom-data/
+      expect { gen.get_manifest }.to raise_error Fontcustom::Error, /\.fontcustom-manifest\.json/
     end
 
     it "should assign @data from data file" do
@@ -27,7 +27,7 @@ describe Fontcustom::Generator::Template do
         :input => "../shared/vectors",
         :quiet => true
       )
-      gen.get_data
+      gen.get_manifest
       gen.instance_variable_get(:@data)[:templates].should =~ data_file_contents[:templates]
     end
   end
@@ -64,7 +64,7 @@ describe Fontcustom::Generator::Template do
     end
 
     it "should update the data file" do
-      file = fixture("generators/.fontcustom-data")
+      file = fixture("generators/.fontcustom-manifest.json")
       subject.should_receive(:overwrite_file).once.with(file, /"templates":/)
       subject.reset_output
     end
@@ -136,7 +136,7 @@ describe Fontcustom::Generator::Template do
     end
 
     it "should update data file with generated templates" do
-      file = fixture("generators/.fontcustom-data")
+      file = fixture("generators/.fontcustom-manifest.json")
       subject.should_receive(:overwrite_file).once.with do |path, content|
         path.should == file
         content.should match(/fontcustom\.css/)

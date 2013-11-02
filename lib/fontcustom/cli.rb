@@ -34,9 +34,9 @@ module Fontcustom
       :desc => "Prefix for each glyph's CSS class.",
       :default => DEFAULT_OPTIONS[:css_prefix]
 
-    class_option :data_cache, :aliases => "-m", :type => :string,
+    class_option :manifest, :aliases => "-m", :type => :string,
       :desc => "Path to a manifest of generated files. Used for garbage collection.",
-      :default => EXAMPLE_OPTIONS[:data_cache]
+      :default => EXAMPLE_OPTIONS[:manifest]
 
     class_option :preprocessor_path, :aliases => "-p", :type => :string,
       :desc => "Optional font path for CSS proprocessor templates."
