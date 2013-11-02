@@ -1,20 +1,31 @@
-# FontCustom
-
-**Generate icon webfonts from the comfort of the command line.**
-
 [![Gem Version](https://badge.fury.io/rb/fontcustom.png)](http://badge.fury.io/rb/fontcustom)
 [![Build Status](https://api.travis-ci.org/FontCustom/fontcustom.png)](https://travis-ci.org/FontCustom/fontcustom)
 [![Code Quality](https://codeclimate.com/github/FontCustom/fontcustom.png)](https://codeclimate.com/github/FontCustom/fontcustom)
 
-[Full documentation](http://fontcustom.com)<br/>
+# Font Custom
+
+**Icon fonts from the command line.**
+
+Generate cross-browser compatible icon fonts and related files (e.g. @font-face CSS) from a collection of SVGs.
+
+[Documentation](http://fontcustom.com)<br/>
 [Changelog](https://github.com/FontCustom/fontcustom/blob/master/CHANGELOG.md)<br/>
-[Feedback and issues](https://github.com/FontCustom/fontcustom/issues)
+[Support](https://github.com/FontCustom/fontcustom/issues)<br/>
+[Contribute!](https://github.com/FontCustom/fontcustom/blob/master/CONTRIBUTING.md)
 
 ## Installation
 
+Requires **Ruby 1.9.2+**, **FontForge** with Python scripting.
+
 ```sh
-# Requires FontForge
+# On Mac
 brew install fontforge eot-utils ttfautohint
+gem install fontcustom
+
+# On Linux
+sudo apt-get install fontforge ttfautohint
+wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
+unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom
 ```
 
@@ -25,34 +36,37 @@ fontcustom compile path/to/vectors  # Compiles icons into `fontcustom/`
 fontcustom watch path/to/vectors    # Compiles when vectors are changed/added/removed
 
 fontcustom compile                  # Uses configuration options from `fontcustom.yml`
-fontcustom watch                    # or `config/fontcustom.yml`
+fontcustom watch                    
 
+fontcustom config                   # Generate a blank a configuration file
 fontcustom help                     # See all options
 ```
 
 ## Configuration
 
-To avoid finger-fatigue, create a configuration file with `fontcustom config`. Typically, this should live in the directory where you plan on running `fontcustom` commands.
+To save options between compiles, create a configuration file with `fontcustom config`. This should live in the directory where you plan on running `fontcustom` commands.
 
 ```yml
-# Available Options (defaults shown)
-font_name: fontcustom                 # Names the font (also sets name and directory of generated files)
-project_root: (working dir)           # Context for all relative paths
+# General Options (defaults shown)
+font_name: fontcustom                 # Names the font and sets the name and directory
+                                      # of generated files
+project_root: (pwd)                   # Context for all relative paths
 input: (project_root)                 # Where vectors and templates are located
 output: (project_root)/(font name)    # Where generated files will be saved
-no_hash: false                        # Remove asset-busting hashes from generated files
+config: (pwd)/fontcustom.yml          # Optional path to a configuration file
+templates: [ css, preview ]           # Templates to generate alongside fonts
+                                      # Possible values: preview, css, scss, 
+                                      # scss-rails, bootstrap, bootstrap-scss, 
+                                      # bootstrap-ie7, bootstrap-ie7-scss
 css_prefix: icon-                     # CSS class prefix
+no_hash: false                        # Don't add asset-busting hashes
 preprocessor_path: ""                 # Font path used in CSS proprocessor templates
-data_cache: (same as fontcustom.yml)  # Sets location of data file
+autowidth: false                      # Automatically size glyphs based on the width of
+                                      # their individual vectors
 debug: false                          # Output raw messages from fontforge
 quiet: false                          # Silence all output messages
-autowidth: true                       # Automatically size glyphs based on the width of their individual vectors
-templates: [ css, preview ]           # Templates to generate alongside fonts
-                                      # Possible values: preview, css, scss, scss-rails, bootstrap, 
-                                      # bootstrap-scss, bootstrap-ie7, bootstrap-ie7-scss
 
-# Advanced input/output
-#   Set input or output as a hash for more control
+# For more control over file locations, set input/output as Yaml hashes
 input:
   vectors: path/to/vectors            # required
   templates: path/to/templates
@@ -61,12 +75,11 @@ output:
   fonts: app/assets/fonts             # required
   css: app/assets/stylesheets
   preview: app/views/styleguide
-  custom-template.yml: custom/path    # set paths of custom templates by referencing their file name
+  custom-template.yml: custom/path
 ```
 
 ---
 
-[Contributor Guidelines](https://github.com/FontCustom/fontcustom/blob/master/CONTRIBUTING.md)<br/>
 [Licenses](https://github.com/FontCustom/fontcustom/blob/master/LICENSES.txt)
 
 Brought to you by [@endtwist](https://github.com/endtwist) and [@ezYZ](https://github.com/ezYZ)
