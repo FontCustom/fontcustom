@@ -125,7 +125,8 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@config_options, {}
       o.send :merge_options
-      o.instance_variables.length.should == Fontcustom::DEFAULT_OPTIONS.length + 2 # @shell, @mock_proxy (rspec)
+      o.remove_instance_variable(:@mock_proxy) if o.instance_variable_get :@mock_proxy
+      o.instance_variables.length.should == Fontcustom::DEFAULT_OPTIONS.length + 1 # @shell
     end
 
     it "should overwrite defaults with config file" do
