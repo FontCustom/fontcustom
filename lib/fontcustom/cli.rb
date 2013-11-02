@@ -34,21 +34,20 @@ module Fontcustom
       :desc => "Prefix for each glyph's CSS class.",
       :default => DEFAULT_OPTIONS[:css_prefix]
 
-    class_option :data_cache, :aliases => "-d", :type => :string,
+    class_option :data_cache, :aliases => "-m", :type => :string,
       :desc => "Path to a manifest of generated files. Used for garbage collection.",
       :default => EXAMPLE_OPTIONS[:data_cache]
 
-    class_option :preprocessor_path, :aliases => "-s", :type => :string,
+    class_option :preprocessor_path, :aliases => "-p", :type => :string,
       :desc => "Optional font path for CSS proprocessor templates."
 
     class_option :autowidth, :aliases => "-a", :type => :boolean,
-      :desc => "Auto-size glyphs to their individual vector widths.",
-      :default => DEFAULT_OPTIONS[:autowidth]
+      :desc => "Auto-size glyphs to their individual vector widths."
 
-    class_option :no_hash, :aliases => "-h", :type => :boolean,
+    class_option :no_hash, :aliases => "-n", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 
-    class_option :debug, :aliases => "-g", :type => :boolean,
+    class_option :debug, :aliases => "-d", :type => :boolean,
       :desc => "Display debugging messages."
 
     class_option :quiet, :aliases => "-q", :type => :boolean,
