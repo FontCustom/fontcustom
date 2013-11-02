@@ -42,7 +42,7 @@ module Fontcustom
     :css_prefix => "icon-",
     :data_cache => nil,
     :preprocessor_path => nil,
-    :autowidth => true,
+    :autowidth => false,
     :no_hash => false,
     :debug => false,
     :quiet => false

@@ -1,48 +1,46 @@
-# ---------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------- #
 # Project Info
 #   Default values shown. Learn more about these options by running
-#   `fontcustom help` or visit <http://fontcustom.com>.
-# ---------------------------------------------------------------------------- #
+#   `fontcustom help` or visiting <http://fontcustom.com>.
+# --------------------------------------------------------------------------- #
 
 #font_name: fontcustom
 #css_prefix: icon-
 #preprocessor_path: ""
+#autowidth: true
 #no_hash: false
 #debug: false
 #quiet: false
 
-# setting this to false allows the creation of stacking icons, since all glyphs
-# will retain their original positions.
-#autowidth: true
 
-
-# ---------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------- #
 # Project Paths
-#   Relative paths are expanded from PROJECT_ROOT (default: working directory).
-#   INPUT and OUTPUT can be assigned as hashes instead of a strings.
-#   The OUPUT hash can route custom templates according to their filename.
-# ---------------------------------------------------------------------------- #
+#   Relative paths are expanded from PROJECT_ROOT (defaults to the directory
+#   where the fontcustom command is run). INPUT and OUTPUT can be strings or
+#   hashes or file types / names.
+# --------------------------------------------------------------------------- #
 
 #project_root: some/other/place
 #data_cache: tmp/fontcustom
 
 #input:
-#  vectors: app/assets/fonts/fontcustom/vectors
+#  vectors: app/assets/fonts/fontcustom/vectors         # required
 #  templates: app/assets/fonts/fontcustom/templates
 
 #output:
-#  fonts: app/assets/fonts
+#  fonts: app/assets/fonts                              # required
 #  css: app/assets/stylesheets
 #  preview: app/views/styleguide
 #  my-custom-template.yml: config
 
 
-# ---------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------- #
 # Templates
 #   Included in Font Custom:
 #     preview, css, scss, scss-rails, bootstrap, bootstrap-scss, bootstrap-ie7,
 #     bootstrap-ie7-scss
-#   Custom templates should be saved in the INPUT[:templates] directory.
-# ---------------------------------------------------------------------------- #
+#   Custom templates should be saved in the INPUT[:templates] directory and
+#   referenced by their base file name.
+# --------------------------------------------------------------------------- #
 
 #templates: [ scss, preview, my-custom-template.yml ]
