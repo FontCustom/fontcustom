@@ -1,6 +1,10 @@
-# FontCustom v1.1.1
+# FontCustom
 
 **Generate icon webfonts from the comfort of the command line.**
+
+[![Gem Version](https://badge.fury.io/rb/fontcustom.png)](http://badge.fury.io/rb/fontcustom)
+[![Build Status](https://api.travis-ci.org/FontCustom/fontcustom.png)](https://travis-ci.org/FontCustom/fontcustom)
+[![Code Quality](https://codeclimate.com/github/FontCustom/fontcustom.png)](https://codeclimate.com/github/FontCustom/fontcustom)
 
 [Full documentation](http://fontcustom.com)<br/>
 [Changelog](https://github.com/FontCustom/fontcustom/blob/master/CHANGELOG.md)<br/>
