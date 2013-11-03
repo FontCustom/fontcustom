@@ -3,13 +3,6 @@
 # (@opts in thor, @cli_options or self in Options)
 module Fontcustom
   module Util
-    def check_fontforge
-      fontforge = `which fontforge`
-      if fontforge == "" || fontforge == "fontforge not found"
-        raise Fontcustom::Error, "Please install fontforge. Visit <http://fontcustom.com> for instructions."
-      end
-    end
-
     def say_changed(status, changed)
       return if base(:quiet)
       message = changed.map { |file| relative_to_root(file) }
@@ -36,10 +29,6 @@ module Fontcustom
     def overwrite_file(file, content = "")
       File.open(file, "w") { |f| f.write(content) }
       # say_changed :update, [ file ]
-    end
-
-    def symbolize_hash(hash)
-      hash.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
     end
 
     private

@@ -2,15 +2,11 @@
 
 ```
 Manifest
-  options:
-    (all options)
-  glyphs:
-    {:name => codepoint}
-  fonts:
-  templates:
-  checksum:
-    current:
-    previous:
+  options: {}
+  glyphs: {:name => codepoint}
+  fonts: []
+  templates: []
+  checksum: string 
 ```
 
 ### FC::Options
@@ -62,3 +58,4 @@ should populate manifest with templates
 * rename Options to OptionsParser
 * shorten options (e.g. :project_root => :root)
 * remove redundant requires
+* more robust fontforge check than `which`

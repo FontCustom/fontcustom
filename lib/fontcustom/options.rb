@@ -2,26 +2,26 @@ require "yaml"
 require "thor/shell"
 require "thor/shell/basic"
 require "thor/shell/color"
-require "fontcustom/util"
 
 module Fontcustom
   class Options
-    include Util
+    include Fontcustom::Utility
 
-    attr_reader :project_root, :input, :output, :config, :templates, :font_name, :css_prefix, :manifest, :preprocessor_path, :autowidth, :no_hash, :debug, :quiet, :skip_first
+    attr_accessor :options
 
-    def initialize(options = {})
-      check_fontforge
-      options = symbolize_hash(options)
+    def initialize(cli_options = {})
+      @cli_options = symbolize_hash(cli_options)
+    end
 
+    def parse
+    end
+
+    def overwrite_examples 
       # Overwrite example defaults (used in Thor's help) with real defaults, if unchanged
       EXAMPLE_OPTIONS.keys.each do |key|
         options.delete(key) if options[key] == EXAMPLE_OPTIONS[key]
       end
       @cli_options = DEFAULT_OPTIONS.dup.merge options
-
-      @shell = Thor::Shell::Color.new
-      set_options
     end
 
     private

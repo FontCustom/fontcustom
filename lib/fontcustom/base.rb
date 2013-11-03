@@ -5,9 +5,8 @@ module Fontcustom
     include Fontcustom::Utility
 
     def initialize(cli_options)
-      @options = Fontcustom::Options.new(cli_options)
-      @manifest = @options[:manifest]
-      Fontcustom::Generator::Manifest.new(@options)
+      check_fontforge
+      init_manifest(cli_options)
     end
 
     def compile
@@ -22,6 +21,19 @@ module Fontcustom
     end
 
     private
+
+    def check_fontforge
+      fontforge = `which fontforge`
+      if fontforge == "" || fontforge == "fontforge not found"
+        raise Fontcustom::Error, "Please install fontforge. Visit <http://fontcustom.com> for instructions."
+      end
+    end
+
+    def init_manifest(cli_options)
+      @options = Fontcustom::Options.new(cli_options)
+      @manifest = @options[:manifest]
+      Fontcustom::Generator::Manifest.new(@options)
+    end
 
     # Calculates a hash of vectors and templates
     def checksum
