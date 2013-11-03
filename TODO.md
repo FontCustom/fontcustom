@@ -13,27 +13,24 @@ Manifest
     previous:
 ```
 
-### FC::Base
-
-should pass CLI options to FC::Options
-should init a FC::Gen::Manifest with options
-should set checksum[:current] to md5 hash of vectors, templates, and options
-when checksum[:current] != checksum[:previous]
-  should init a FC::Gen::Font with manifest_path
-  should init a FC::Gen::Template with manifest_path
-  should set checksum[:previous] to checksum[:current]
-when checksum[:current] == checksum[:previous]
-  should show "no change" message
-
 ### FC::Options
 
 should parse CLI options
+should return a hash of all options
+
+### FC::Util
+
+should read from manifest
+should save to manifest
+should garbage collect a list of files
+should update manifest while garbage collecting
 
 ### FC::Gen::Manifest
 
 should read manifest
 should create manifest if it doesn't exist
 should overwrite manifest with any changed options
+should export representation of itself
 
 ### FC::Gen::Font
 
@@ -58,9 +55,10 @@ should garbage collect old templates
 should generate templates
 should populate manifest with templates
 
-### FC::Util
+---
 
-should read from manifest
-should save to manifest
-should garbage collect a list of files
-should update manifest while garbage collecting
+### Maybe
+
+* rename Options to OptionsParser
+* shorten options (e.g. :project_root => :root)
+* remove redundant requires

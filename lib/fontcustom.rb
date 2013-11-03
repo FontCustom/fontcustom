@@ -1,35 +1,28 @@
 require "fontcustom/version"
 require "fontcustom/error"
 require "fontcustom/util"
+require "fontcustom/utility"
+require "fontcustom/base"
 require "fontcustom/options"
+require "fontcustom/generator/manifest"
 require "fontcustom/generator/font"
 require "fontcustom/generator/template"
 
 module Fontcustom
-  ##
-  # Clean Ruby API to workaround Thor
-  def compile(options)
-    opts = Options.new options
-    Generator::Font.start [opts]
-    Generator::Template.start [opts]
-  rescue Fontcustom::Error => e
-    opts.say_message :error, e.message, :red
-  end
-
   def gem_lib
     File.expand_path(File.join(File.dirname(__FILE__), "fontcustom"))
   end
-
-  module_function :compile, :gem_lib
+  module_function :gem_lib
 
   ##
-  # These are used in Thor CLI but overridden when the Options class is built
+  # Hack to get Thor to show more helpful defaults in `fontcustom help`. These
+  # are overwritten in Fontcustom::Options.
   EXAMPLE_OPTIONS = {
     :project_root => "`pwd`",
     :output => "PROJECT_ROOT/FONT_NAME",
     :config => "PROJECT_ROOT/fontcustom.yml OR PROJECT_ROOT/config/fontcustom.yml",
     :templates => "css preview",
-    :manifest => "CONFIG_DIR/.fontcustom-manifest.json OR PROJECT_ROOT/.fontcustom-manifest.json"
+    :manifest => "CONFIG_DIR/.fontcustom-manifest.json -or- PROJECT_ROOT/.fontcustom-manifest.json"
   }
 
   DEFAULT_OPTIONS = {
@@ -46,11 +39,5 @@ module Fontcustom
     :no_hash => false,
     :debug => false,
     :quiet => false
-  }
-
-  DATA_MODEL = {
-    :fonts => [],
-    :templates => [],
-    :glyphs => []
   }
 end
