@@ -5,8 +5,8 @@
   * Renames :data_cache to :manifest
 * Sets the stage for a more streamlined, predictable workflow
   * Drops EPS support (was buggy and unused)
-  * Turns glyph width adjustment into an option (off by default) ([#137](https://github.com/FontCustom/fontcustom/pull/137)
-* Relaxes all dependency version requirements ([#127](https://github.com/FontCustom/fontcustom/issues/127)
+  * Turns glyph width adjustment into an option (off by default) ([#137](https://github.com/FontCustom/fontcustom/pull/137))
+* Relaxes all dependency version requirements ([#127](https://github.com/FontCustom/fontcustom/issues/127))
 
 ## 1.1.1 (10/16/2013)
 
