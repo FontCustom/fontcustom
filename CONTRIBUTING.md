@@ -1,14 +1,27 @@
-# Contributor Guidelines
+## Help make Font Custom better!
 
-Thanks for helping make Font Custom better. This project was born out of an overheard conversation between two devs in a NYC coffee shop — it's come a long ways thanks to the support of folks like you.
+This project was born out of an overheard conversation between two devs in a
+NYC coffee shop — it's come a long ways thanks to your support.
 
-## Conventions
+### Wishlist / Roadmap
 
-We try to follow the [Github ruby styleguide](https://github.com/styleguide/ruby) as much as possible. 
+* Ruby on Rails integration
+* Compass integration
+* Base 64 encode fonts into CSS
+* Templates for LESS, stylus, etc.
+* Ligature support
+* Windows support
+* Make better use of Thor
 
-If you catch a typo or a particularly unsightly piece of code — please _do_ let us know. No such thing as too small of an improvement.
+### Conventions
 
-## Process
+We try to follow the [Github ruby styleguide](https://github.com/styleguide/ruby) 
+as much as possible. 
+
+If you catch a typo or a block of code that could be more elegant — please let
+us know. No such thing as too small of an improvement.
+
+### Process
 
 * Visit [issues](https://github.com/FontCustom/fontcustom/issues) for ideas.
 * Fork the repo.
