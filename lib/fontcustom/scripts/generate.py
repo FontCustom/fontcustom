@@ -59,9 +59,7 @@ def createGlyph( font, dirname, filename, code, m ):
         m.update(filename + str(size) + ';')
         glyph = font.createChar(code)
         glyph.importOutlines(filePath)
-
-        if tmpSvgPath:
-            os.unlink(tmpSvgPath)
+        os.unlink(filePath)
 
         if args.autowidth:
             glyph.left_side_bearing = glyph.right_side_bearing = 0
