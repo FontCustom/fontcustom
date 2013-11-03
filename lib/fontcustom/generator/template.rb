@@ -57,6 +57,7 @@ module Fontcustom
 
       def generate
         @glyphs = @data[:glyphs]
+        @glyphcodes = @data[:glyphcodes]
         created = []
         packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss
                    fontcustom-bootstrap.css fontcustom-preview.html _fontcustom-bootstrap.scss _fontcustom.scss|

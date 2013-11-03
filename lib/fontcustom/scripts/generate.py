@@ -5,6 +5,10 @@ import subprocess
 import tempfile
 import json
 
+#
+# Parse Arguments
+#
+
 try:
     import argparse
     parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
@@ -28,64 +32,97 @@ except ImportError:
     indir = posargs[0]
     outdir = posargs[1]
 
+#
+# Generator Functions
+#
+
+def removeSwitchFromSvg( file ):
+    svgfile = open(file, 'r+')
+    tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
+    svgtext = svgfile.read()
+    svgfile.seek(0)
+    svgtext = svgtext.replace('<switch>', '')
+    svgtext = svgtext.replace('</switch>', '')
+    tmpsvgfile.file.write(svgtext)
+    svgfile.close()
+    tmpsvgfile.file.close()
+
+    return tmpsvgfile.name
+
+def createGlyph( font, dirname, filename, code, m ):
+    name, ext = os.path.splitext(filename)
+    filePath = os.path.join(dirname, filename)
+    size = os.path.getsize(filePath)
+
+    if ext == '.svg':
+        filePath = removeSwitchFromSvg(filePath)
+        m.update(filename + str(size) + ';')
+        glyph = font.createChar(code)
+        glyph.importOutlines(filePath)
+
+        if tmpSvgPath:
+            os.unlink(tmpSvgPath)
+
+        if args.autowidth:
+            glyph.left_side_bearing = glyph.right_side_bearing = 0
+            glyph.round()
+        else:
+            glyph.width = 512
+
+        return name
+
+    return None
+
+#
+# Import Glyphs
+#
+
+glyphs = None
+glyphsPath = indir + "/glyphs.json"
+if os.path.exists(glyphsPath):
+    glyphsData = open(glyphsPath)
+    glyphs = json.load(glyphsData)
+    glyphsData.close()
+
+#
+# Assign Font Info
+
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
 f.design_size = 16
 f.em = 512
 f.ascent = 448
 f.descent = 64
+f.fontname = args.name
+f.familyname = args.name
+f.fullname = args.name
 
 m = md5.new()
 cp = 0xf100
 files = []
+glyphcodes = []
 
 KERNING = 15
 
-for dirname, dirnames, filenames in os.walk(indir):
-    for filename in filenames:
-        name, ext = os.path.splitext(filename)
-        filePath = os.path.join(dirname, filename)
-        size = os.path.getsize(filePath)
+if glyphs:
+    for g in glyphs:
+        code = int(g["code"], 16)
+        name = createGlyph(f, indir, g["file"], code, m)
+        files.append(name)
+        glyphcodes.append(code)
+else:
+    for dirname, dirnames, filenames in os.walk(indir):
+        for filename in filenames:
+            name = createGlyph(f, dirname, filename, cp, m)
+            if name:
+                files.append(name)
+                glyphcodes.append(cp)
+                cp += 1
 
-        if ext == '.svg':
-            # hack removal of <switch> </switch> tags
-            svgfile = open(filePath, 'r+')
-            tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
-            svgtext = svgfile.read()
-            svgfile.seek(0)
+#
+# Generate TTF and SVG
+#
 
-            # replace the <switch> </switch> tags with 'nothing'
-            svgtext = svgtext.replace('<switch>', '')
-            svgtext = svgtext.replace('</switch>', '')
-
-            tmpsvgfile.file.write(svgtext)
-
-            svgfile.close()
-            tmpsvgfile.file.close()
-
-            filePath = tmpsvgfile.name
-            # end hack
-
-            m.update(filename + str(size) + ';')
-            glyph = f.createChar(cp)
-            glyph.importOutlines(filePath)
-
-            # if we created a temporary file, let's clean it up
-            if tmpsvgfile:
-                os.unlink(tmpsvgfile.name)
-
-            # set glyph size explicitly or automatically depending on autowidth
-            if args.autowidth:
-                glyph.left_side_bearing = glyph.right_side_bearing = 0
-                glyph.round()
-            else:
-                # force a manual size when autowidth is disabled
-                glyph.width = 512
-
-            files.append(name)
-            cp += 1
-
-# resize glyphs if autowidth is enabled
 if args.autowidth:
     f.autoWidth(0, 0, 512)
 
@@ -95,11 +132,11 @@ else:
     hashStr = m.hexdigest()
     fontfile = outdir + '/' + args.name + '_' + hashStr
 
-f.fontname = args.name
-f.familyname = args.name
-f.fullname = args.name
 f.generate(fontfile + '.ttf')
 f.generate(fontfile + '.svg')
+
+# Hint the TTF file
+subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
 
 # Fix SVG header for webkit
 # from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
@@ -108,6 +145,10 @@ svgtext = svgfile.read()
 svgfile.seek(0)
 svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
 svgfile.close()
+
+#
+# Convert WOFF
+#
 
 scriptPath = os.path.dirname(os.path.realpath(__file__))
 try:
@@ -118,13 +159,16 @@ except OSError:
     # sfnt2woff from source, simplifying install.
     subprocess.call(['sfnt2woff', fontfile + '.ttf'])
 
-# eotlitetool.py script to generate IE7-compatible .eot fonts
+#
+# Convert EOT for IE7
+#
+
 subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
 subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
 
-# Hint the TTF file
-subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
-
+#
 # Describe output in JSON
+#
+
 outname = os.path.basename(fontfile)
-print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files})
+print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files, 'glyphcodes': glyphcodes})

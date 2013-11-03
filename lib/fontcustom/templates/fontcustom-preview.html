@@ -147,7 +147,7 @@
         text-decoration: inherit;
       }
       <% @glyphs.each_with_index do |name, index| %>
-      .<%= @opts.css_prefix + name %>:before { content: "\<%= (61696+index).to_s(16) %>"; }<% end %>
+      .<%= @opts.css_prefix + name %>:before { content: "\<%= @data[:glyphcodes][index].to_s(16) %>"; }<% end %>
     </style>
 
     <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -177,7 +177,7 @@
         </div>
         <div class="usage">
           <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".<%= @opts.css_prefix + name %>" />
-          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= (61696+index).to_s(16) %>;" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= @data[:glyphcodes][index].to_s(16) %>;" />
         </div>
       </div>
       <% end %>
