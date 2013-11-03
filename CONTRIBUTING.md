@@ -1,121 +1,51 @@
 ## Help make Font Custom better!
 
 This project was born out of an overheard conversation between two devs in a
-NYC coffee shop — it's come a long ways thanks to your support.
+NYC coffee shop — it's come a long ways thanks to your support. Here's what's
+on the menu:
 
-### Wishlist / Roadmap
-
-* Ruby on Rails integration
-* Compass integration
+* **Ruby on Rails integration**
+* **Compass integration**
 * Base 64 encode fonts into CSS
 * Templates for LESS, stylus, etc.
 * Ligature support
 * Windows support
 * Make better use of Thor
 
-### Conventions
+Just [file an issue](https://github.com/FontCustom/fontcustom/issues) if you
+have an idea or would like to claim one.
 
-We try to follow the [Github ruby styleguide](https://github.com/styleguide/ruby) 
-as much as possible. 
+### Rules of Thumb
 
 If you catch a typo or a block of code that could be more elegant — please let
 us know. No such thing as too small of an improvement.
 
-### Process
+* Spaces instead of tabs, please.
+* Develop in a topic branch.
+* Include passing tests if applicable.
+* Follow the [Github ruby styleguide](https://github.com/styleguide/ruby) as
+  much as possible.
 
-* Visit [issues](https://github.com/FontCustom/fontcustom/issues) for ideas.
-* Fork the repo.
-* Create a topic branch. `git checkout -b my_sweet_feature`
-* Add your tests. Run tests with `rake`.
-* Develop your feature.
-* Once all tests are passing, submit a pull request!
+### Getting Started
 
-## On a Mac
+You'll need:
 
-Developing Fontcustom on a Mac could involve the following steps.
+* Fontforge with Python scripting (easiest via [Homebrew](http://brew.sh/) on Mac)
+* Ruby 1.9.2+ (via [rbenv](https://github.com/sstephenson/rbenv), [RVM](https://rvm.io/), etc.)
+* Rubygems
+  * Bundler
+  * Rake
+  * Rspec
 
-```sh
-# Install Homebrew
-ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+Some helpful links:
 
-# Or update Homebrew
-brew doctor
-brew update
-
-# Install Ruby
-brew install rbenv ruby-build
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-source ~/.bash_profile
-rbenv install 2.0.0-p247
-rbenv rehash
-
-# Switch to using the new Ruby (global) or
-#   or
-# Switch to using the new Ruby for the current folder
-#   or
-# Switch to using the new Roby for the current shell
-rbenv global 2.0.0-p247
-#rbenv local 2.0.0-p247
-#rbenv shell 2.0.0-p247
-
-
-#
-# Alt 1. Bundler
-#
-
-# Install Bundler
-gem install bundler
-rbenv rehash
-
-# Setup Bundler
-mkdir ~/.bundle
-touch ~/.bundle/config
-echo 'BUNDLE_PATH: vendor/bundle' >> ~/.bundle/config
-
-# Bundle install Fontcustom
-bundle install
-
-# Build example fonts
-cd example/testicon
-bundle exec fontcustom compile .
-cd example/testicon-custom
-bundle exec fontcustom compile .
-
-
-#
-# Alt 2. Build & install gem
-#
-
-gem build fontcustom.gemspec
-gem install fontcustom-XXX.gem
-
-# Build example fonts
-cd example/testicon
-fontcustom compile .
-cd example/testicon-custom
-fontcuston compile .
-
-
-#
-# Test
-#
-
-# Test all
-rake
-
-# Install Rspec for testing
-# http://rspec.info
-gem install rspec
-
-# Run specific test
-rspec spec/fontcustom/generator/font_spec.rb
-
-# Pull latest changes from FontCustom/fontcustom.git
-git remote add upstream git@github.com:FontCustom/fontcustom.git
-git pull upstream master
-```
-
-Read more:
 * http://createdbypete.com/articles/ruby-on-rails-development-with-mac-os-x-mountain-lion/
 * http://guides.rubygems.org/make-your-own-gem/
 
+---
+
+That's all there is to it. Thanks again, and please don't hesitate to reach out:
+
+[Github Issues](https://github.com/FontCustom/fontcustom/issues)<br>
+[@ezYZ](https://twitter.com/ezYZ)<br>
+[@endtwist](https://twitter.com/endtwist)
