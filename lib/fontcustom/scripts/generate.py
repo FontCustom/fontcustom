@@ -6,27 +6,27 @@ import tempfile
 import json
 
 try:
-	import argparse
-	parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
-	parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
-	parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', help='reference name of the font (no spaces)')
-	parser.add_argument('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
-	parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
-	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
-	args = parser.parse_args()
-	indir = args.dir[0]
-	outdir = args.dir[1]
+    import argparse
+    parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
+    parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
+    parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', help='reference name of the font (no spaces)')
+    parser.add_argument('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
+    parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
+    parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
+    args = parser.parse_args()
+    indir = args.dir[0]
+    outdir = args.dir[1]
 except ImportError:
-	# Older Pythons don't have argparse, so we use optparse instead
-	import optparse
-	parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
-	parser.add_option('--name', metavar='fontname', type='string', nargs='?', help='reference name of the font (no spaces)')
-	parser.add_option('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
-	parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
-	parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
-	(args, posargs) = parser.parse_args()
-	indir = posargs[0]
-	outdir = posargs[1]
+    # Older Pythons don't have argparse, so we use optparse instead
+    import optparse
+    parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
+    parser.add_option('--name', metavar='fontname', type='string', nargs='?', help='reference name of the font (no spaces)')
+    parser.add_option('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
+    parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
+    parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
+    (args, posargs) = parser.parse_args()
+    indir = posargs[0]
+    outdir = posargs[1]
 
 f = fontforge.font()
 f.encoding = 'UnicodeFull'
@@ -42,66 +42,58 @@ files = []
 KERNING = 15
 
 for dirname, dirnames, filenames in os.walk(indir):
-	for filename in filenames:
-		name, ext = os.path.splitext(filename)
-		filePath = os.path.join(dirname, filename)
-		size = os.path.getsize(filePath)
+    for filename in filenames:
+        name, ext = os.path.splitext(filename)
+        filePath = os.path.join(dirname, filename)
+        size = os.path.getsize(filePath)
 
-		if ext in ['.svg', '.eps']:
-			if ext in ['.svg']:
-				# hack removal of <switch> </switch> tags
-				svgfile = open(filePath, 'r+')
-				tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
-				svgtext = svgfile.read()
-				svgfile.seek(0)
+        if ext == '.svg':
+            # hack removal of <switch> </switch> tags
+            svgfile = open(filePath, 'r+')
+            tmpsvgfile = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
+            svgtext = svgfile.read()
+            svgfile.seek(0)
 
-				# replace the <switch> </switch> tags with 'nothing'
-				svgtext = svgtext.replace('<switch>', '')
-				svgtext = svgtext.replace('</switch>', '')
+            # replace the <switch> </switch> tags with 'nothing'
+            svgtext = svgtext.replace('<switch>', '')
+            svgtext = svgtext.replace('</switch>', '')
 
-				tmpsvgfile.file.write(svgtext)
+            tmpsvgfile.file.write(svgtext)
 
-				svgfile.close()
-				tmpsvgfile.file.close()
+            svgfile.close()
+            tmpsvgfile.file.close()
 
-				filePath = tmpsvgfile.name
-				# end hack
+            filePath = tmpsvgfile.name
+            # end hack
 
-			m.update(filename + str(size) + ';')
-			glyph = f.createChar(cp)
-			glyph.importOutlines(filePath)
+            m.update(filename + str(size) + ';')
+            glyph = f.createChar(cp)
+            glyph.importOutlines(filePath)
 
-			# if we created a temporary file, let's clean it up
-			if tmpsvgfile:
-				os.unlink(tmpsvgfile.name)
+            # if we created a temporary file, let's clean it up
+            if tmpsvgfile:
+                os.unlink(tmpsvgfile.name)
 
-			# glyph.left_side_bearing = KERNING
-			# glyph.right_side_bearing = KERNING
+            # set glyph size explicitly or automatically depending on autowidth
+            if args.autowidth:
+                glyph.left_side_bearing = glyph.right_side_bearing = 0
+                glyph.round()
+            else:
+                # force a manual size when autowidth is disabled
+                glyph.width = 512
 
-			# possible optimization?
-			# glyph.simplify()
-			# glyph.round()
+            files.append(name)
+            cp += 1
 
-			# set glyph size explicitly or automatically depending on autowidth
-			if args.autowidth:
-				glyph.left_side_bearing = glyph.right_side_bearing = 0
-				glyph.round()
-			else:
-				# force a manual size when autowidth is disabled
-				glyph.width = 512
-
-			files.append(name)
-			cp += 1
-
-		# resize glyphs if autowidth is enabled
-		if args.autowidth:
-			f.autoWidth(0, 0, 512)
+# resize glyphs if autowidth is enabled
+if args.autowidth:
+    f.autoWidth(0, 0, 512)
 
 if args.nohash:
-	fontfile = outdir + '/' + args.name
+    fontfile = outdir + '/' + args.name
 else:
-	hashStr = m.hexdigest()
-	fontfile = outdir + '/' + args.name + '_' + hashStr
+    hashStr = m.hexdigest()
+    fontfile = outdir + '/' + args.name + '_' + hashStr
 
 f.fontname = args.name
 f.familyname = args.name
@@ -119,12 +111,12 @@ svgfile.close()
 
 scriptPath = os.path.dirname(os.path.realpath(__file__))
 try:
-	subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+    subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
 except OSError:
-	# If the local version of sfnt2woff fails (i.e., on Linux), try to use the
-	# global version. This allows us to avoid forcing OS X users to compile
-	# sfnt2woff from source, simplifying install.
-	subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+    # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
+    # global version. This allows us to avoid forcing OS X users to compile
+    # sfnt2woff from source, simplifying install.
+    subprocess.call(['sfnt2woff', fontfile + '.ttf'])
 
 # eotlitetool.py script to generate IE7-compatible .eot fonts
 subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
