@@ -3,7 +3,7 @@ require "listen"
 
 module Fontcustom
   class Watcher
-    include Util
+    include Utility
 
     def initialize(opts)
       @opts = opts

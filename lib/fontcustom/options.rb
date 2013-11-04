@@ -5,7 +5,7 @@ require "thor/shell/color"
 
 module Fontcustom
   class Options
-    include Fontcustom::Utility
+    include Utility
 
     attr_accessor :options
 

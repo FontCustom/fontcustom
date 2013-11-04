@@ -7,7 +7,7 @@ require "thor/actions"
 module Fontcustom
   module Generator
     class Font < Thor::Group
-      include Util
+      include Utility
       include Thor::Actions
 
       # Instead of passing each option individually we're passing the entire options hash as an argument.

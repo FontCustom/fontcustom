@@ -2,7 +2,7 @@ require "digest/sha2"
 
 module Fontcustom
   class Base
-    include Fontcustom::Utility
+    include Utility
 
     def initialize(cli_options)
       check_fontforge

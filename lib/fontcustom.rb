@@ -1,6 +1,5 @@
 require "fontcustom/version"
 require "fontcustom/error"
-require "fontcustom/util"
 require "fontcustom/utility"
 require "fontcustom/base"
 require "fontcustom/options"

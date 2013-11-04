@@ -7,8 +7,23 @@ module Fontcustom
     # 
     # Options
     #
+    
+    class HashWithMethodAccess
+      def initialize(hash = {})
+        @hash = hash
+      end
+      
+      def method_missing(method)
+        @hash[method.to_sym]
+      end
+    end
+
     def symbolize_hash(hash)
       hash.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
+    end
+
+    def methodize_hash(hash)
+      HashWithMethodAccess.new(hash)
     end
 
     #
@@ -28,23 +43,12 @@ module Fontcustom
     end
 
     #
-    # Messages
-    #
-    
-    def say_message(status, message, color = :yellow)
-      #return if _options(:quiet) && status != :error
-      #@shell.say_status status, message, color
-    end
-
-    def say_changed(status, changed)
-      #return if _options(:quiet)
-      #message = changed.map { |file| relative_to_root(file) }
-      #@shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
-    end
-
-    #
     # Manifest
     #
+
+    def overwrite_file(file, content = "")
+      File.open(file, "w") { |f| f.write(content) }
+    end
 
     def get_manifest
       manifest = File.read _options[:manifest]
@@ -56,6 +60,22 @@ module Fontcustom
     end
 
     def set_manifest(key, val)
+    end
+
+    #
+    # Messages
+    # TODO
+    #
+    
+    def say_message(status, message, color = :yellow)
+      #return if _options(:quiet) && status != :error
+      #@shell.say_status status, message, color
+    end
+
+    def say_changed(status, changed)
+      #return if _options(:quiet)
+      #message = changed.map { |file| relative_to_root(file) }
+      #@shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
     end
 
     private
