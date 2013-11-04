@@ -9,11 +9,6 @@ Manifest
   checksum: string 
 ```
 
-### FC::Options
-
-should parse CLI options
-should return a hash of all options
-
 ### FC::Util
 
 should read from manifest
@@ -55,6 +50,7 @@ should populate manifest with templates
 
 ### Maybe
 
+* Options should load previous options from manifest
 * rename Options to OptionsParser
 * shorten options (e.g. :project_root => :root)
 * remove redundant requires

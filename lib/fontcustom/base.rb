@@ -30,8 +30,7 @@ module Fontcustom
     end
 
     def init_manifest(cli_options)
-      @options = Fontcustom::Options.new(cli_options)
-      @manifest = @options[:manifest]
+      @options = Fontcustom::Options.new(cli_options).options
       Fontcustom::Generator::Manifest.new(@options)
     end
 

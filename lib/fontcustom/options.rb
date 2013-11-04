@@ -11,33 +11,34 @@ module Fontcustom
 
     def initialize(cli_options = {})
       @cli_options = symbolize_hash(cli_options)
-    end
-
-    def parse
-    end
-
-    def overwrite_examples 
-      # Overwrite example defaults (used in Thor's help) with real defaults, if unchanged
-      EXAMPLE_OPTIONS.keys.each do |key|
-        options.delete(key) if options[key] == EXAMPLE_OPTIONS[key]
-      end
-      @cli_options = DEFAULT_OPTIONS.dup.merge options
+      parse_options
     end
 
     private
 
-    def set_options
+    def parse_options
+      overwrite_examples
       set_config_path
       load_config
       merge_options
-      set_data_path
+      clean_font_name
+      set_manifest_path
       set_input_paths
       set_output_paths
       set_template_paths
     end
 
+    # We give Thor fake defaults to generate more useful help messages.
+    # Here, we delete any CLI options that match those examples.
+    def overwrite_examples
+      EXAMPLE_OPTIONS.keys.each do |key|
+        @cli_options.delete(key) if @cli_options[key] == EXAMPLE_OPTIONS[key]
+      end
+      @cli_options = DEFAULT_OPTIONS.dup.merge @cli_options
+    end
+
     def set_config_path
-      @config = if @cli_options[:config]
+      @cli_options[:config] = if @cli_options[:config]
         path = expand_path @cli_options[:config]
 
         # :config is the path to fontcustom.yml
@@ -68,10 +69,10 @@ module Fontcustom
 
     def load_config
       @config_options = {}
-      if @config
-        say_message :status, "Loading configuration file at `#{relative_to_root(@config)}`."
+      if @cli_options[:config]
+        say_message :status, "Loading configuration file at `#{relative_to_root(@cli_options[:config])}`."
         begin
-          config = YAML.load File.open(@config)
+          config = YAML.load File.open(@cli_options[:config])
           if config # empty YAML returns false
             @config_options = symbolize_hash(config)
           else
@@ -81,95 +82,88 @@ module Fontcustom
           raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
         end
       else
-        say_message :status, "No configuration file set. Generate one with `fontcustom config` to save your settings."
+        say_message :status, "No configuration file set. Generate one with `fontcustom config` to preserve options between compiles."
       end
     end
 
     def merge_options
       @cli_options.delete_if { |key, val| val == DEFAULT_OPTIONS[key] }
-
-      options = DEFAULT_OPTIONS.dup
-      options = options.merge @config_options
-      options = options.merge symbolize_hash(@cli_options)
-      send :remove_instance_variable, :@config_options
-      send :remove_instance_variable, :@cli_options
-
-      # :config is excluded since it's already been set
-      keys = %w|project_root input output manifest templates font_name css_prefix preprocessor_path skip_first autowidth no_hash debug quiet|
-      keys.each { |key| instance_variable_set("@#{key}", options[key.to_sym]) }
-
-      @font_name = @font_name.strip.gsub(/\W/, "-")
+      @options = DEFAULT_OPTIONS.dup.merge(@config_options).merge(@cli_options)
     end
 
-    def set_data_path
-      @manifest = if ! @manifest.nil?
-        expand_path @manifest
-      elsif @config
-        File.join File.dirname(@config), ".fontcustom-manifest.json"
+    def clean_font_name
+      @options[:font_name].strip!.gsub!(/\W/, "-")
+    end
+
+    def set_manifest_path
+      @options[:manifest] = if ! @options[:manifest].nil?
+        expand_path @options[:manifest]
+      elsif @options[:config]
+        File.join File.dirname(@options[:config]), ".fontcustom-manifest.json"
       else
-        File.join @project_root, ".fontcustom-manifest.json"
+        File.join @options[:project_root], ".fontcustom-manifest.json"
       end
     end
 
     def set_input_paths
-      if @input.is_a? Hash
-        @input = symbolize_hash(@input)
-        if @input.has_key? :vectors
-          @input[:vectors] = expand_path @input[:vectors]
-          unless File.directory? @input[:vectors]
-            raise Fontcustom::Error, "INPUT[:vectors] should be a directory. Check `#{relative_to_root(@input[:vectors])}` and try again."
+      if @options[:input].is_a? Hash
+        @options[:input] = symbolize_hash(@options[:input])
+        if @options[:input].has_key? :vectors
+          @options[:input][:vectors] = expand_path @options[:input][:vectors]
+          unless File.directory? @options[:input][:vectors]
+            raise Fontcustom::Error, "INPUT[:vectors] should be a directory. Check `#{relative_to_root(@options[:input][:vectors])}` and try again."
           end
         else
           raise Fontcustom::Error, "INPUT (as a hash) should contain a :vectors key."
         end
 
-        if @input.has_key? :templates
-          @input[:templates] = expand_path @input[:templates]
-          unless File.directory? @input[:templates]
-            raise Fontcustom::Error, "INPUT[:templates] should be a directory. Check `#{relative_to_root(@input[:templates])}` and try again."
+        if @options[:input].has_key? :templates
+          @options[:input][:templates] = expand_path @options[:input][:templates]
+          unless File.directory? @options[:input][:templates]
+            raise Fontcustom::Error, "INPUT[:templates] should be a directory. Check `#{relative_to_root(@options[:input][:templates])}` and try again."
           end
         else
-          @input[:templates] = @input[:vectors]
+          @options[:input][:templates] = @options[:input][:vectors]
         end
       else
-        input = @input ? expand_path(@input) : @project_root
+        input = @options[:input] ? expand_path(@options[:input]) : @options[:project_root]
         unless File.directory? input
           raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check `#{relative_to_root(input)}` and try again."
         end
-        @input = { :vectors => input, :templates => input }
+        @options[:input] = { :vectors => input, :templates => input }
       end
 
-      if Dir[File.join(@input[:vectors], "*.svg")].empty?
-        raise Fontcustom::Error, "`#{relative_to_root(@input[:vectors])}` doesn't contain any SVGs."
+      if Dir[File.join(@options[:input][:vectors], "*.svg")].empty?
+        raise Fontcustom::Error, "`#{relative_to_root(@options[:input][:vectors])}` doesn't contain any SVGs."
       end
     end
 
     def set_output_paths
-      if @output.is_a? Hash
-        @output = symbolize_hash(@output)
-        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a :fonts key." unless @output.has_key? :fonts
+      if @options[:output].is_a? Hash
+        @options[:output] = symbolize_hash(@options[:output])
+        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a :fonts key." unless @options[:output].has_key? :fonts
 
-        @output.each do |key, val|
-          @output[key] = expand_path val
+        @options[:output].each do |key, val|
+          @options[:output][key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
             raise Fontcustom::Error, "OUTPUT[:#{key.to_s}] should be a directory, not a file. Check `#{relative_to_root(val)}` and try again."
           end
         end
 
-        @output[:css] ||= @output[:fonts]
-        @output[:preview] ||= @output[:fonts]
+        @options[:output][:css] ||= @options[:output][:fonts]
+        @options[:output][:preview] ||= @options[:output][:fonts]
       else
-        if @output.is_a? String
-          output = expand_path @output
+        if @options[:output].is_a? String
+          output = expand_path @options[:output]
           if File.exists?(output) && ! File.directory?(output)
             raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check `#{relative_to_root(output)}` and try again."
           end
         else
-          output = File.join @project_root, @font_name
+          output = File.join @options[:project_root], @options[:font_name]
           say_message :status, "All generated files will be saved to `#{relative_to_root(output)}/`."
         end
 
-        @output = {
+        @options[:output] = {
           :fonts => output,
           :css => output,
           :preview => output
@@ -185,7 +179,7 @@ module Fontcustom
     def set_template_paths
       template_path = File.join Fontcustom.gem_lib, "templates"
 
-      @templates = @templates.map do |template|
+      @options[:templates] = @options[:templates].map do |template|
         case template
         when "preview"
           File.join template_path, "fontcustom-preview.html"
@@ -204,7 +198,7 @@ module Fontcustom
         when "bootstrap-ie7-scss"
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
-          template = File.expand_path File.join(@input[:templates], template) unless template[0] == "/"
+          template = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
           raise Fontcustom::Error, "The custom template at `#{relative_to_root(template)}` does not exist." unless File.exists? template
           template
         end
