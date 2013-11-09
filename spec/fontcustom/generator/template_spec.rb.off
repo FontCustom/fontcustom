@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Fontcustom::Generator::Template do
-  # Silence messages without passing :quiet => true to everything
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
   end

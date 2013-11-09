@@ -4,17 +4,17 @@ require "json"
 module Fontcustom
   module Utility
 
-    # 
+    #
     # Options
     #
-    
-    class HashWithMethodAccess
-      def initialize(hash = {})
-        @hash = hash
-      end
-      
-      def method_missing(method)
-        @hash[method.to_sym]
+
+    module HashWithMethodAccess
+      def method_missing(method, arg = nil)
+        if method[-1, 1] == "="
+          self[method[0...-1].to_sym] = arg
+        else
+          self[method.to_sym]
+        end
       end
     end
 
@@ -23,7 +23,7 @@ module Fontcustom
     end
 
     def methodize_hash(hash)
-      HashWithMethodAccess.new(hash)
+      hash.extend HashWithMethodAccess
     end
 
     #
@@ -43,30 +43,45 @@ module Fontcustom
     end
 
     #
-    # Manifest
+    # Manifest / Files
     #
 
-    def overwrite_file(file, content = "")
+    def write_file(file, content = "", message = nil, message_body = nil)
       File.open(file, "w") { |f| f.write(content) }
+      if message
+        body = message_body || relative_to_root(file)
+        say_message message, body
+      end
+    end
+
+    def garbage_collect(files)
     end
 
     def get_manifest
-      manifest = File.read _options[:manifest]
-      if ! manifest.empty?
+      begin
+        manifest = File.read _options[:manifest]
         JSON.parse(manifest, :symbolize_names => true)
-      else
-        # Empty manifest error
+      rescue JSON::ParserError
+        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(_options[:manifest])}`. Did you modify the file?"
       end
     end
 
     def set_manifest(key, val)
+      @manifest ||= get_manifest
+      if key == :all
+        @manifest = val
+      else
+        @manifest[key] = val
+      end
+      json = JSON.pretty_generate @manifest
+      write_file _options[:manifest], json, :update
     end
 
     #
     # Messages
     # TODO
     #
-    
+
     def say_message(status, message, color = :yellow)
       #return if _options(:quiet) && status != :error
       #@shell.say_status status, message, color

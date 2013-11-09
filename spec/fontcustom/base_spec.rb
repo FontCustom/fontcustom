@@ -1,17 +1,16 @@
 require 'spec_helper'
 
 describe Fontcustom::Base do
+  #context "#compile" do
+    #context "when checksum != manifest[:checksum]" do
+      #it "should call .start_generators"
+      #it "should set manifest[:checksum]"
+    #end
 
-  context "#compile" do
-    context "when checksum[:current] != checksum[:previous]" do
-      it "should call .start_generators"
-      it "should set checksum[:previous] to checksum[:current]"
-    end
-
-    context "when checksum[:current] == checksum[:previous]" do
-      it "should show 'no change' message"
-    end
-  end
+    #context "when checksum == manifest[:checksum]" do
+      #it "should show 'no change' message"
+    #end
+  #end
 
   context ".check_fontforge" do
     it "should raise error if fontforge isn't installed" do
@@ -21,18 +20,17 @@ describe Fontcustom::Base do
     end
   end
 
-  context ".init_manifest" do
-    it "should pass CLI options to FC::Options"
-    it "should assign @manifest from options"
-    it "should init a FC::Gen::Manifest with options"
-  end
+  #context ".init_manifest" do
+    #it "should pass CLI options to FC::Options"
+    #it "should assign @manifest from options"
+    #it "should init a FC::Gen::Manifest with options"
+  #end
 
   context ".checksum" do
     it "should return hash of all vectors and templates" do
       Fontcustom::Base.any_instance.stub :check_fontforge
       Fontcustom::Base.any_instance.stub :init_manifest
-
-      base = Fontcustom::Base.new(:options => "foo")
+      base = Fontcustom::Base.new({})
       base.instance_variable_set :@options, {
         :input => {:vectors => fixture("shared/vectors")}, 
         :templates => Dir.glob(File.join(fixture("shared/templates"), "*"))

@@ -1,21 +1,5 @@
 ## TODO
 
-```
-Manifest
-  options: {}
-  glyphs: {:name => codepoint}
-  fonts: []
-  templates: []
-  checksum: string 
-```
-
-### FC::Util
-
-should read from manifest
-should save to manifest
-should garbage collect a list of files
-should update manifest while garbage collecting
-
 ### FC::Gen::Manifest
 
 should read manifest
@@ -48,10 +32,14 @@ should populate manifest with templates
 
 ---
 
-### Maybe
+### Must Have
 
 * Options should load previous options from manifest
+* Integration tests (aruba?)
+
+### Nice to Have
+
+* more robust fontforge check than `which`
 * rename Options to OptionsParser
 * shorten options (e.g. :project_root => :root)
 * remove redundant requires
-* more robust fontforge check than `which`
