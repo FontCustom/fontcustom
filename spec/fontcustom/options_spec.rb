@@ -17,7 +17,7 @@ describe Fontcustom::Options do
       o.send :overwrite_examples
       cli = o.instance_variable_get(:@cli_options)
       Fontcustom::EXAMPLE_OPTIONS.keys.each do |key|
-        cli[key].should == Fontcustom::DEFAULT_OPTIONS[key]
+        cli[key].should == Fontcustom::DEFAULT_OPTIONS[key] unless key == :project_root
       end
     end
   end
