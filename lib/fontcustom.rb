@@ -25,7 +25,7 @@ module Fontcustom
   }
 
   DEFAULT_OPTIONS = {
-    :project_root => Dir.pwd,
+    :project_root => nil,
     :input => nil,
     :output => nil,
     :config => nil,

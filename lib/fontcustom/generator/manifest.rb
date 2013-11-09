@@ -31,7 +31,7 @@ module Fontcustom
           :options => @options,
           :templates => []
         )
-        write_file @options[:manifest], json
+        write_file @options[:manifest], json, :create
       end
     end
   end

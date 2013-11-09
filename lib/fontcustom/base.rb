@@ -14,7 +14,7 @@ module Fontcustom
       manifest = get_manifest
       if current_hash != manifest[:checksum]
         start_generators
-        update_manifest :checksum, current_hash
+        set_manifest :checksum, current_hash
       else
         # "no change" message
       end

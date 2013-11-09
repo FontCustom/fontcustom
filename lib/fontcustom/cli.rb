@@ -60,12 +60,7 @@ module Fontcustom
 
     desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
     def compile(input = nil)
-      opts = options.merge :input => input
-      opts = Options.new(opts)
-      Generator::Font.start [opts]
-      Generator::Template.start [opts]
-    rescue Fontcustom::Error => e
-      opts.say_message :error, e.message, :red
+      Base.new(options.merge(:input => input)).compile
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"

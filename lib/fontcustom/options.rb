@@ -35,6 +35,7 @@ module Fontcustom
         @cli_options.delete(key) if @cli_options[key] == EXAMPLE_OPTIONS[key]
       end
       @cli_options = DEFAULT_OPTIONS.dup.merge @cli_options
+      @cli_options[:project_root] ||= Dir.pwd
     end
 
     def set_config_path
@@ -92,7 +93,7 @@ module Fontcustom
     end
 
     def clean_font_name
-      @options[:font_name].strip!.gsub!(/\W/, "-")
+      @options[:font_name] = @options[:font_name].strip.gsub(/\W/, "-")
     end
 
     def set_manifest_path

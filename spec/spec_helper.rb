@@ -1,13 +1,14 @@
-require 'rspec'
-require 'json'
-require File.expand_path('../../lib/fontcustom.rb', __FILE__)
+require "rspec"
+require "json"
+require "fileutils"
+require File.expand_path("../../lib/fontcustom.rb", __FILE__)
 
 RSpec.configure do |c|
   def fixture(path = "")
-    File.join(File.expand_path('../fixtures', __FILE__), path)
+    File.join(File.expand_path("../fixtures", __FILE__), path)
   end
 
-  # TODO use real values after refator is complete
+  # TODO use real values after refactor is complete
   def manifest_contents
     {
       :checksum => "abc",
@@ -40,5 +41,18 @@ RSpec.configure do |c|
       eval("$#{stream} = #{stream.upcase}")
     end
     result
+  end
+
+  def live_test(name)
+    test = fixture File.join("sandbox", name)
+    begin
+      FileUtils.mkdir test
+      FileUtils.cp_r fixture("shared/vectors"), test
+      FileUtils.cd test do
+        yield(test)
+      end
+    ensure
+      FileUtils.rm_r test
+    end
   end
 end
