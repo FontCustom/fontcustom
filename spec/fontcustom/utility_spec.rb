@@ -10,6 +10,13 @@ describe Fontcustom::Utility do
     end
   end
 
+  it "should include Thor::Action methods" do
+    gen = Generator.new
+    %w|template add_file remove_file|.each do |method|
+      gen.should respond_to(method.to_sym)
+    end
+  end
+
   context "#symbolize_hash" do
     it "should turn string keys into symbols" do
       gen = Generator.new

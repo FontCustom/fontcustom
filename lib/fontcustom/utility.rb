@@ -1,8 +1,10 @@
 require "json"
+require "thor/actions"
 
 # Requires access to @options or @cli_options
 module Fontcustom
   module Utility
+    include Thor::Actions
 
     #
     # Options

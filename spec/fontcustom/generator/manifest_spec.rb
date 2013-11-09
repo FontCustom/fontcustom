@@ -3,12 +3,12 @@ require "spec_helper"
 describe Fontcustom::Generator::Manifest do
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
+    Fontcustom::Generator::Manifest.stub :update_or_create_manifest
   end
 
-  #context "#update_or_create_manifest" do
-    #it "should call .update_manifest if manifest exists"
-    #it "should call .create_manifest if manifest doesn't exist"
-  #end
+  def generator(options = {})
+    Fontcustom::Generator::Manifest.new options
+  end
 
   #context ".update_manifest" do
     #it "should update manifest with changed options"
