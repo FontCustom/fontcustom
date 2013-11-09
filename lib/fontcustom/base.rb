@@ -30,7 +30,9 @@ module Fontcustom
     end
 
     def init_manifest(cli_options)
-      @options = Fontcustom::Options.new(cli_options).options
+      manifest = cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
+      manifest_options = File.exists?(manifest) ? get_manifest(manifest)[:options] : {}
+      @options = Fontcustom::Options.new(cli_options, manifest_options).options
       Fontcustom::Generator::Manifest.new(@options)
     end
 

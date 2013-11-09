@@ -20,11 +20,28 @@ describe Fontcustom::Base do
     end
   end
 
-  #context ".init_manifest" do
-    #it "should pass CLI options to FC::Options"
-    #it "should assign @manifest from options"
-    #it "should init a FC::Gen::Manifest with options"
-  #end
+  context ".init_manifest" do
+    before(:each) do
+      Fontcustom::Base.any_instance.stub :check_fontforge
+      Fontcustom::Generator::Manifest.stub :new
+    end
+
+    it "should pass CLI options to FC::Options" do
+      opts = double "options"
+      opts.should_receive :options
+      Fontcustom::Options.should_receive(:new).with({:foo => "bar"}, {}).and_return opts
+      Fontcustom::Base.new :foo => "bar"
+    end
+
+    it "should pass previous manifest's options to FC::Options" do
+      opts = double "options"
+      opts.should_receive :options
+      options = {:manifest => fixture("generators/.fontcustom-manifest.json")}
+      previous_options = {:foo => "bar", :baz => "bum"}
+      Fontcustom::Options.should_receive(:new).with(options, previous_options).and_return opts
+      Fontcustom::Base.new options 
+    end
+  end
 
   context ".checksum" do
     it "should return hash of all vectors and templates" do
@@ -33,7 +50,7 @@ describe Fontcustom::Base do
       Fontcustom::Base.any_instance.stub :init_manifest
       base = Fontcustom::Base.new({})
       base.instance_variable_set :@options, {
-        :input => {:vectors => fixture("shared/vectors")}, 
+        :input => {:vectors => fixture("shared/vectors")},
         :templates => Dir.glob(File.join(fixture("shared/templates"), "*"))
       }
       hash = base.send :checksum

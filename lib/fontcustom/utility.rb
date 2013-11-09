@@ -57,12 +57,12 @@ module Fontcustom
     def garbage_collect(files)
     end
 
-    def get_manifest
+    def get_manifest(file = _options[:manifest])
       begin
-        manifest = File.read _options[:manifest]
+        manifest = File.read file
         JSON.parse(manifest, :symbolize_names => true)
       rescue JSON::ParserError
-        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(_options[:manifest])}`. Did you modify the file?"
+        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root file}`. Did you modify the file?"
       end
     end
 

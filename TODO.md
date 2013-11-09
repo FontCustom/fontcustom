@@ -1,12 +1,5 @@
 ## TODO
 
-### FC::Gen::Manifest
-
-should read manifest
-should create manifest if it doesn't exist
-should overwrite manifest with any changed options
-should export representation of itself
-
 ### FC::Gen::Font
 
 should read manifest
@@ -31,11 +24,6 @@ should generate templates
 should populate manifest with templates
 
 ---
-
-### Must Have
-
-* Options should load previous options from manifest
-* Integration tests (aruba?)
 
 ### Nice to Have
 

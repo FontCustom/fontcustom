@@ -9,8 +9,9 @@ module Fontcustom
 
     attr_accessor :options
 
-    def initialize(cli_options = {})
+    def initialize(cli_options = {}, manifest_options = {})
       @cli_options = symbolize_hash(cli_options)
+      @manifest_options = symbolize_hash(manifest_options)
       parse_options
     end
 
@@ -89,7 +90,7 @@ module Fontcustom
 
     def merge_options
       @cli_options.delete_if { |key, val| val == DEFAULT_OPTIONS[key] }
-      @options = DEFAULT_OPTIONS.dup.merge(@config_options).merge(@cli_options)
+      @options = DEFAULT_OPTIONS.merge(@manifest_options).merge(@config_options).merge(@cli_options)
     end
 
     def clean_font_name
