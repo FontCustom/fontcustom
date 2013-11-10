@@ -1,15 +1,5 @@
 ## TODO
 
-### FC::Gen::Font
-
-should read manifest
-should create glyph code points if they don't exist
-should add code points for any new glyphs
-should populate manifest with glyphs
-should garbage collect old fonts
-should call fontforge
-should announce new fonts after generation completes
-
 ### generate.py
 
 should read manifest
@@ -29,5 +19,6 @@ should populate manifest with templates
 
 * more robust fontforge check than `which`
 * rename Options to OptionsParser
-* shorten options (e.g. :project_root => :root)
+* trim options specs down
+* rename options for succintness (e.g. :project_root => :root)
 * remove redundant requires

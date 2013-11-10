@@ -45,8 +45,7 @@ module Fontcustom
     end
 
     def start_generators
-      # noop until Options, Utility, and Manifest are refactored
-      #Fontcustom::Generator::Font.new(@options)
+      Fontcustom::Generator::Font.new(@options[:manifest])
       #Fontcustom::Generator::Template.new(@options)
     end
   end
