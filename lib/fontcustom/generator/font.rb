@@ -50,43 +50,51 @@ module Fontcustom
 
       def set_glyph_info
         codepoint = if ! @manifest[:glyphs].empty?
-          @manifest[:glyphs].values.max + 1
+          codepoints = @manifest[:glyphs].values.map { |data| data[:codepoint] }
+          codepoints.max + 1
         else
           0xf100
         end
 
-        svgs = Dir.glob File.join(@options[:input][:vectors], "*.svg")
-        svgs.map! do |name|
-          name = File.basename name, ".svg"
-          name.strip.gsub(/\W/, "-").downcase
+        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+        glyphs = {}
+        files.each do |file|
+          name = File.basename file, ".svg"
+          name = name.strip.gsub(/\W/, "-").downcase
+          glyphs[name.to_sym] = { :source => file }
         end
 
-        # Dir.glob returns a different order depending on ruby 
+        # Dir.glob returns a different order depending on ruby
         # version/platform, so we have to sort it first
-        svgs.sort.each do |name|
-          name = name.to_sym
+        glyphs = glyphs.sort_by { |key, val| key.to_s }
+        glyphs.each do |name, data|
           unless @manifest[:glyphs].has_key? name
-            @manifest[:glyphs][name] = codepoint
+            data[:codepoint] = codepoint
+            @manifest[:glyphs][name] = data
             codepoint = codepoint + 1
           end
         end
+
         set_manifest :glyphs, @manifest[:glyphs]
       end
 
       def create_fonts
-        #cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options[:manifest]}"
-        #`#{cmd}`
-        #output, err, status = execute_and_clean(cmd)
-        #@json = output.delete_at(0)
-        #say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug
-        #raise Fontcustom::Error, "`fontforge` compilation failed. Try again with --debug for more details." unless status.success?
-      end
-
-      def execute_and_clean(cmd)
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options[:manifest]}"
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
-        [stdout, stderr, status]
+
+        if status.success?
+          @manifest = get_manifest
+          say_changed :create, @manifest[:fonts]
+        else
+          debug_msg = " Try again with --debug for more details."
+          if @options[:debug]
+            say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}", :red
+            debug_msg = ""
+          end
+          raise Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
+        end
       end
     end
   end

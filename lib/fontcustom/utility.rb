@@ -78,21 +78,21 @@ module Fontcustom
 
     def get_manifest(file = _options[:manifest])
       begin
-        manifest = File.read file
-        JSON.parse(manifest, :symbolize_names => true)
+        json = File.read file
+        JSON.parse(json, :symbolize_names => true)
       rescue JSON::ParserError
         raise Fontcustom::Error, "Couldn't parse `#{relative_to_root file}`. Did you modify the file?"
       end
     end
 
     def set_manifest(key, val)
-      @manifest ||= get_manifest
       if key == :all
-        @manifest = val
+        manifest = val
       else
-        @manifest[key] = val
+        manifest = get_manifest
+        manifest[key] = val
       end
-      json = JSON.pretty_generate @manifest
+      json = JSON.pretty_generate manifest
       write_file _options[:manifest], json, :update
     end
 

@@ -23,7 +23,9 @@ describe Fontcustom::Base do
   context ".init_manifest" do
     before(:each) do
       Fontcustom::Base.any_instance.stub :check_fontforge
-      Fontcustom::Generator::Manifest.stub :new
+      manifest = double("manifest")
+      manifest.should_receive(:manifest).and_return(manifest_contents)
+      Fontcustom::Generator::Manifest.stub(:new).and_return manifest
     end
 
     it "should pass CLI options to FC::Options" do

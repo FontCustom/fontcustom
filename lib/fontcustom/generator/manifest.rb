@@ -3,6 +3,8 @@ module Fontcustom
     class Manifest
       include Utility
 
+      attr_reader :manifest
+
       def initialize(options)
         @options = options
         update_or_create_manifest
@@ -19,18 +21,19 @@ module Fontcustom
       private
 
       def update_manifest
-        manifest = get_manifest
+        @manifest = get_manifest
         set_manifest :options, @options if manifest[:options] != @options
       end
 
       def create_manifest
-        json = JSON.pretty_generate(
+        @manifest = {
           :checksum => "",
           :fonts => [],
           :glyphs => {},
           :options => @options,
           :templates => []
-        )
+        }
+        json = JSON.pretty_generate @manifest
         write_file @options[:manifest], json, :create
       end
     end

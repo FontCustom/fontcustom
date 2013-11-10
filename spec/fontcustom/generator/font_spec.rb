@@ -41,17 +41,25 @@ describe Fontcustom::Generator::Font do
       manifest = {:glyphs => {}}
       gen.instance_variable_set :@options, options
       gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:set_manifest).with(:glyphs, {:"a_r3ally-exotic-f1le-name" => 61696, :c => 61697, :d => 61698})
+      gen.should_receive(:set_manifest).with(:glyphs, {
+        :"a_r3ally-exotic-f1le-name" => hash_including(:codepoint => 61696), 
+        :c => hash_including(:codepoint => 61697), 
+        :d => hash_including(:codepoint => 61698)
+      })
       gen.send :set_glyph_info
     end
 
     it "should not change codepoints of existing glyphs" do
       gen = generator
       options = {:input => {:vectors => fixture("shared/vectors")}}
-      manifest = {:glyphs => {:c => 61699}}
+      manifest = {:glyphs => {:c => {:source => "foo", :codepoint => 61699}}}
       gen.instance_variable_set :@options, options
       gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:set_manifest).with(:glyphs, {:"a_r3ally-exotic-f1le-name" => 61700, :c => 61699, :d => 61701})
+      gen.should_receive(:set_manifest).with(:glyphs, {
+        :"a_r3ally-exotic-f1le-name" => hash_including(:codepoint => 61700), 
+        :c => hash_including(:codepoint => 61699), 
+        :d => hash_including(:codepoint => 61701)
+      })
       gen.send :set_glyph_info
     end
   end

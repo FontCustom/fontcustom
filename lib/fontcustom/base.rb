@@ -11,10 +11,10 @@ module Fontcustom
 
     def compile
       current_hash = checksum
-      manifest = get_manifest
-      if current_hash != manifest[:checksum]
-        start_generators
+      if current_hash != @manifest[:checksum]
+        # FIXME ensure that old checksum is preserved in case compilation fails
         set_manifest :checksum, current_hash
+        start_generators
       else
         # "no change" message
       end
@@ -30,10 +30,10 @@ module Fontcustom
     end
 
     def init_manifest(cli_options)
-      manifest = cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
-      manifest_options = File.exists?(manifest) ? get_manifest(manifest)[:options] : {}
+      file = cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
+      manifest_options = File.exists?(file) ? get_manifest(file)[:options] : {}
       @options = Fontcustom::Options.new(cli_options, manifest_options).options
-      Fontcustom::Generator::Manifest.new(@options)
+      @manifest = Fontcustom::Generator::Manifest.new(@options).manifest
     end
 
     # Calculates a hash of vectors and templates

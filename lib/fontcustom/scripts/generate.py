@@ -1,39 +1,52 @@
 import fontforge
 import os
-import md5
 import subprocess
 import tempfile
 import json
 
 #
 # Parse Arguments
+# Older Pythons don't have argparse, so we use optparse instead
 #
 
 try:
     import argparse
-    parser = argparse.ArgumentParser(description='Convert a directory of svg and eps files into a unified font file.')
-    parser.add_argument('dir', metavar='directory', type=unicode, nargs=2, help='directory of vector files')
-    parser.add_argument('--name', metavar='fontname', type=unicode, nargs='?', help='reference name of the font (no spaces)')
-    parser.add_argument('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
-    parser.add_argument('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
-    parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('manifest', help='Path to .fontcustom-manifest.json')
     args = parser.parse_args()
-    indir = args.dir[0]
-    outdir = args.dir[1]
 except ImportError:
-    # Older Pythons don't have argparse, so we use optparse instead
     import optparse
-    parser = optparse.OptionParser(description='Convert a directory of svg and eps files into a unified font file.')
-    parser.add_option('--name', metavar='fontname', type='string', nargs='?', help='reference name of the font (no spaces)')
-    parser.add_option('--autowidth', '-a', action='store_true', help='automatically size generated glyphs to their vector width')
-    parser.add_option('--nohash', '-n', action='store_true', help='disable hash fingerprinting of font files')
-    parser.add_argument('--debug', '-d', action='store_true', help='display debug messages')
-    (args, posargs) = parser.parse_args()
-    indir = posargs[0]
-    outdir = posargs[1]
+    parser = optparse.OptionParser()
+    parser.add_option('manifest', help='Path to .fontcustom-manifest.json')
+    (nothing, args) = parser.parse_args()
 
 #
-# Generator Functions
+# Load Manifest
+#
+
+manifestfile = open(args.manifest, 'r+')
+manifest = json.load(manifestfile)
+options = manifest['options']
+
+#
+# Font
+#
+
+font = fontforge.font()
+font.encoding = 'UnicodeFull'
+font.design_size = 16
+font.em = 512
+font.ascent = 448
+font.descent = 64
+font.fontname = options['font_name']
+font.familyname = options['font_name']
+font.fullname = options['font_name']
+
+# NOTE not referenced anywhere, safe to remove?
+KERNING = 15
+
+#
+# Glyphs
 #
 
 def removeSwitchFromSvg( file ):
@@ -49,89 +62,39 @@ def removeSwitchFromSvg( file ):
 
     return tmpsvgfile.name
 
-def createGlyph( font, dirname, filename, code, m ):
-    name, ext = os.path.splitext(filename)
-    filePath = os.path.join(dirname, filename)
-    size = os.path.getsize(filePath)
+def createGlyph( name, source, code ):
+    frag, ext = os.path.splitext(source)
 
     if ext == '.svg':
-        filePath = removeSwitchFromSvg(filePath)
-        m.update(filename + str(size) + ';')
+        temp = removeSwitchFromSvg(source)
         glyph = font.createChar(code)
-        glyph.importOutlines(filePath)
-        os.unlink(filePath)
+        glyph.importOutlines(temp)
+        os.unlink(temp)
 
-        if args.autowidth:
+        if options['autowidth']:
             glyph.left_side_bearing = glyph.right_side_bearing = 0
             glyph.round()
         else:
             glyph.width = 512
 
-        return name
-
-    return None
-
-#
-# Import Glyphs
-#
-
-glyphs = None
-glyphsPath = indir + "/glyphs.json"
-if os.path.exists(glyphsPath):
-    glyphsData = open(glyphsPath)
-    glyphs = json.load(glyphsData)
-    glyphsData.close()
-
-#
-# Assign Font Info
-
-f = fontforge.font()
-f.encoding = 'UnicodeFull'
-f.design_size = 16
-f.em = 512
-f.ascent = 448
-f.descent = 64
-f.fontname = args.name
-f.familyname = args.name
-f.fullname = args.name
-
-m = md5.new()
-cp = 0xf100
-files = []
-glyphcodes = []
-
-KERNING = 15
-
-if glyphs:
-    for g in glyphs:
-        code = int(g["code"], 16)
-        name = createGlyph(f, indir, g["file"], code, m)
-        files.append(name)
-        glyphcodes.append(code)
-else:
-    for dirname, dirnames, filenames in os.walk(indir):
-        for filename in filenames:
-            name = createGlyph(f, dirname, filename, cp, m)
-            if name:
-                files.append(name)
-                glyphcodes.append(cp)
-                cp += 1
+for glyph, data in manifest['glyphs'].iteritems():
+    name = createGlyph(glyph, data['source'], data['codepoint'])
 
 #
 # Generate TTF and SVG
 #
 
-if args.autowidth:
-    f.autoWidth(0, 0, 512)
+if options['autowidth']:
+    font.autoWidth(0, 0, 512)
 
-if args.nohash:
-    fontfile = outdir + '/' + args.name
-else:
-    hashStr = m.hexdigest()
-    fontfile = outdir + '/' + args.name + '_' + hashStr
+fontfile = options['output']['fonts'] + '/' + options['font_name']
+if not options['no_hash']:
+    fontfile += '_' + manifest['checksum'][:32]
 
-f.generate(fontfile + '.ttf')
-f.generate(fontfile + '.svg')
+font.generate(fontfile + '.ttf')
+font.generate(fontfile + '.svg')
+manifest['fonts'].append(fontfile + '.ttf')
+manifest['fonts'].append(fontfile + '.svg')
 
 # Hint the TTF file
 subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
@@ -156,6 +119,7 @@ except OSError:
     # global version. This allows us to avoid forcing OS X users to compile
     # sfnt2woff from source, simplifying install.
     subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+manifest['fonts'].append(fontfile + '.woff')
 
 #
 # Convert EOT for IE7
@@ -163,10 +127,13 @@ except OSError:
 
 subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
 subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+manifest['fonts'].append(fontfile + '.eot')
 
 #
-# Describe output in JSON
+# Update Manifest
 #
 
-outname = os.path.basename(fontfile)
-print json.dumps({'fonts': [outname + '.ttf', outname + '.woff', outname + '.eot', outname + '.svg'], 'glyphs': files, 'glyphcodes': glyphcodes})
+manifestfile.seek(0)
+manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True))
+manifestfile.truncate()
+manifestfile.close()
