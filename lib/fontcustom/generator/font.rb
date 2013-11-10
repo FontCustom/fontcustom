@@ -66,16 +66,17 @@ module Fontcustom
 
         # Dir.glob returns a different order depending on ruby
         # version/platform, so we have to sort it first
-        glyphs = glyphs.sort_by { |key, val| key.to_s }
+        glyphs = Hash[glyphs.sort_by { |key, val| key.to_s }]
         glyphs.each do |name, data|
-          unless @manifest[:glyphs].has_key? name
+          if @manifest[:glyphs].has_key? name
+           data[:codepoint] = @manifest[:glyphs][name][:codepoint]
+          else
             data[:codepoint] = codepoint
-            @manifest[:glyphs][name] = data
             codepoint = codepoint + 1
           end
         end
 
-        set_manifest :glyphs, @manifest[:glyphs]
+        set_manifest :glyphs, glyphs
       end
 
       def create_fonts
