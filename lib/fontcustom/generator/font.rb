@@ -54,10 +54,17 @@ module Fontcustom
         else
           0xf100
         end
+
         svgs = Dir.glob File.join(@options[:input][:vectors], "*.svg")
-        svgs.each do |name| 
+        svgs.map! do |name|
           name = File.basename name, ".svg"
-          name = name.strip.gsub(/\W/, "-").downcase.to_sym
+          name.strip.gsub(/\W/, "-").downcase
+        end
+
+        # Dir.glob returns a different order depending on ruby 
+        # version/platform, so we have to sort it first
+        svgs.sort.each do |name|
+          name = name.to_sym
           unless @manifest[:glyphs].has_key? name
             @manifest[:glyphs][name] = codepoint
             codepoint = codepoint + 1
