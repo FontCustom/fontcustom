@@ -43,16 +43,16 @@ RSpec.configure do |c|
     result
   end
 
-  def live_test(name)
-    test = fixture File.join("sandbox", name)
+  def live_test(copy = [])
+    testdir = fixture File.join("sandbox", "test")
     begin
-      FileUtils.mkdir test
-      FileUtils.cp_r fixture("shared/vectors"), test
-      FileUtils.cd test do
-        yield(test)
+      FileUtils.mkdir testdir
+      copy.each { |file| FileUtils.cp_r file, testdir }
+      FileUtils.cd testdir do
+        yield(testdir)
       end
     ensure
-      FileUtils.rm_r test
+      FileUtils.rm_r testdir
     end
   end
 end

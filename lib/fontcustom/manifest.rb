@@ -21,7 +21,7 @@ module Fontcustom
 
     def update_manifest
       @manifest = get_manifest
-      set_manifest :options, @options if manifest[:options] != @options
+      set_manifest :options, @options if @manifest[:options] != @options
     end
 
     def create_manifest
