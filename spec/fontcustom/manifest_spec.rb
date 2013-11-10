@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe Fontcustom::Generator::Manifest do
+describe Fontcustom::Manifest do
   before(:each) do
     Fontcustom::Options.any_instance.stub :say_message
-    Fontcustom::Generator::Manifest.stub :update_or_create_manifest
+    Fontcustom::Manifest.stub :update_or_create_manifest
   end
 
   def generator(options = {})
-    Fontcustom::Generator::Manifest.new options
+    Fontcustom::Manifest.new options
   end
 
   #context ".update_manifest" do

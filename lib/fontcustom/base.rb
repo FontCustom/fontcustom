@@ -33,7 +33,7 @@ module Fontcustom
       file = cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
       manifest_options = File.exists?(file) ? get_manifest(file)[:options] : {}
       @options = Fontcustom::Options.new(cli_options, manifest_options).options
-      @manifest = Fontcustom::Generator::Manifest.new(@options).manifest
+      @manifest = Fontcustom::Manifest.new(@options).manifest
     end
 
     # Calculates a hash of vectors and templates
@@ -46,7 +46,7 @@ module Fontcustom
 
     def start_generators
       Fontcustom::Generator::Font.new(@options[:manifest]).generate
-      #Fontcustom::Generator::Template.new(@options)
+      Fontcustom::Generator::Template.new(@options[:manifest]).generate
     end
   end
 end
