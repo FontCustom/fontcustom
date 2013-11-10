@@ -5,7 +5,7 @@ import tempfile
 import json
 
 #
-# Parse Arguments
+# Manifest / Options
 # Older Pythons don't have argparse, so we use optparse instead
 #
 
@@ -19,10 +19,6 @@ except ImportError:
     parser = optparse.OptionParser()
     parser.add_option('manifest', help='Path to .fontcustom-manifest.json')
     (nothing, args) = parser.parse_args()
-
-#
-# Load Manifest
-#
 
 manifestfile = open(args.manifest, 'r+')
 manifest = json.load(manifestfile)
@@ -41,6 +37,8 @@ font.descent = 64
 font.fontname = options['font_name']
 font.familyname = options['font_name']
 font.fullname = options['font_name']
+if options['autowidth']:
+    font.autoWidth(0, 0, 512)
 
 # NOTE not referenced anywhere, safe to remove?
 KERNING = 15
@@ -81,59 +79,49 @@ for glyph, data in manifest['glyphs'].iteritems():
     name = createGlyph(glyph, data['source'], data['codepoint'])
 
 #
-# Generate TTF and SVG
+# Generate Files
 #
 
-if options['autowidth']:
-    font.autoWidth(0, 0, 512)
-
-fontfile = options['output']['fonts'] + '/' + options['font_name']
-if not options['no_hash']:
-    fontfile += '_' + manifest['checksum'][:32]
-
-font.generate(fontfile + '.ttf')
-font.generate(fontfile + '.svg')
-manifest['fonts'].append(fontfile + '.ttf')
-manifest['fonts'].append(fontfile + '.svg')
-
-# Hint the TTF file
-subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
-
-# Fix SVG header for webkit
-# from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
-svgfile = open(fontfile + '.svg', 'r+')
-svgtext = svgfile.read()
-svgfile.seek(0)
-svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
-svgfile.close()
-
-#
-# Convert WOFF
-#
-
-scriptPath = os.path.dirname(os.path.realpath(__file__))
 try:
-    subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
-except OSError:
-    # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
-    # global version. This allows us to avoid forcing OS X users to compile
-    # sfnt2woff from source, simplifying install.
-    subprocess.call(['sfnt2woff', fontfile + '.ttf'])
-manifest['fonts'].append(fontfile + '.woff')
+    fontfile = options['output']['fonts'] + '/' + options['font_name']
+    if not options['no_hash']:
+        fontfile += '_' + manifest['checksum'][:32]
 
-#
-# Convert EOT for IE7
-#
+    # Generate TTF and SVG
+    font.generate(fontfile + '.ttf')
+    font.generate(fontfile + '.svg')
+    manifest['fonts'].append(fontfile + '.ttf')
+    manifest['fonts'].append(fontfile + '.svg')
 
-subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
-manifest['fonts'].append(fontfile + '.eot')
+    # Hint the TTF file
+    subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
 
-#
-# Update Manifest
-#
+    # Fix SVG header for webkit
+    # from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
+    svgfile = open(fontfile + '.svg', 'r+')
+    svgtext = svgfile.read()
+    svgfile.seek(0)
+    svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
+    svgfile.close()
 
-manifestfile.seek(0)
-manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True))
-manifestfile.truncate()
-manifestfile.close()
+    # Convert WOFF
+    scriptPath = os.path.dirname(os.path.realpath(__file__))
+    try:
+        subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+    except OSError:
+        # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
+        # global version. This allows us to avoid forcing OS X users to compile
+        # sfnt2woff from source, simplifying install.
+        subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+    manifest['fonts'].append(fontfile + '.woff')
+
+    # Convert EOT for IE7
+    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
+    subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    manifest['fonts'].append(fontfile + '.eot')
+
+finally:
+    manifestfile.seek(0)
+    manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True))
+    manifestfile.truncate()
+    manifestfile.close()
