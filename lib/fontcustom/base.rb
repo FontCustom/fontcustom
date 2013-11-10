@@ -45,7 +45,7 @@ module Fontcustom
     end
 
     def start_generators
-      Fontcustom::Generator::Font.new(@options[:manifest])
+      Fontcustom::Generator::Font.new(@options[:manifest]).generate
       #Fontcustom::Generator::Template.new(@options)
     end
   end

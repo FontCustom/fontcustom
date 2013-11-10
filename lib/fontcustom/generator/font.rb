@@ -12,13 +12,14 @@ module Fontcustom
       def initialize(manifest)
         @manifest = get_manifest(manifest)
         @options = methodize_hash @manifest[:options]
+        enable_thor_actions
       end
 
       def generate
         create_output_dirs
         delete_old_fonts
-        update_glyphs
-        run_fontforge
+        set_glyph_info
+        create_fonts
       end
 
       private
@@ -66,8 +67,8 @@ module Fontcustom
       end
 
       def create_fonts
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options[:manifest]}"
-        `#{cmd}`
+        #cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options[:manifest]}"
+        #`#{cmd}`
         #output, err, status = execute_and_clean(cmd)
         #@json = output.delete_at(0)
         #say_status :debug, "#{err}\n#{' ' * 14}#{output}", :red if opts.debug

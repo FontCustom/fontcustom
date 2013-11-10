@@ -1,10 +1,27 @@
 require "json"
 require "thor/actions"
+require "thor/shell"
+require "thor/shell/basic"
+require "thor/shell/color"
 
 # Requires access to @options or @cli_options
 module Fontcustom
   module Utility
     include Thor::Actions
+
+    #
+    # Hacks that allow Thor::Actions to be included in generic classes
+    #
+    
+    def enable_thor_actions
+      @destination_stack = [_options[:project_root]]
+      @shell = Thor::Shell::Color.new
+
+      (class << self; self; end).class_eval do
+        define_method("shell") { @shell }
+        define_method("options") { {:pretend => false} }
+      end
+    end
 
     #
     # Options
