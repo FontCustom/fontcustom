@@ -28,6 +28,7 @@ describe Fontcustom::CLI do
         Fontcustom::Generator::Template.stub :new
         Fontcustom::CLI.start ["compile", "vectors", "--quiet"]
         manifest = File.join test, ".fontcustom-manifest.json"
+        Dir.glob(File.join(test, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should == 4 
         File.read(manifest).should match(/"fonts":.+generate_fonts\/fontcustom\/fontcustom_.+\.ttf"/m)
       end
     end
