@@ -11,7 +11,7 @@ module Fontcustom
 
       def initialize(manifest)
         @manifest = get_manifest(manifest)
-        @options = methodize_hash @manifest[:options]
+        @options = @manifest[:options]
         enable_thor_actions
       end
 

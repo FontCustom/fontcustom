@@ -1,49 +1,26 @@
 require "json"
 require "pathname"
-require "thor"
-require "thor/group"
-require "thor/actions"
 
 module Fontcustom
   module Generator
-    class Template < Thor::Group
+    class Template
       include Utility
-      include Thor::Actions
 
-      # Instead of passing each option individually we're passing the entire options hash as an argument.
-      # This is DRYier, easier to maintain.
-      argument :opts
+      def initialize(manifest)
+        @manifest = get_manifest(manifest)
+        @options = @manifest[:options]
+        enable_thor_ations
+      end
 
       # Required for Thor::Actions#template
       def self.source_root
         File.join Fontcustom.gem_lib, "templates"
       end
 
-      def get_manifest
-        if File.exists? opts.manifest
-          @data = JSON.parse File.read(opts.manifest), :symbolize_names => true
-        else
-          raise Fontcustom::Error, "`#{relative_to_root(opts.manifest)}` is missing. This file is required to generate templates."
-        end
-      rescue
-        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root(opts.manifest)}`. Delete it to start from scratch. Any previously generated files will need to be deleted manually."
+      def generate
       end
 
-      def reset_output
-        return if @data[:templates].empty?
-        begin
-          deleted = []
-          @data[:templates].each do |file|
-            remove_file file, :verbose => false
-            deleted << file
-          end
-        ensure
-          @data[:templates] = @data[:templates] - deleted
-          json = JSON.pretty_generate @data
-          overwrite_file opts.manifest, json
-          say_changed :delete, deleted
-        end
-      end
+      private
 
       def make_relative_paths
         name = File.basename @data[:fonts].first, File.extname(@data[:fonts].first)
@@ -55,7 +32,7 @@ module Fontcustom
         @font_path_preview = File.join fonts.relative_path_from(preview).to_s, name
       end
 
-      def generate
+      def create_files
         @glyphs = @data[:glyphs]
         @glyphcodes = @data[:glyphcodes]
         created = []

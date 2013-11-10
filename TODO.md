@@ -15,4 +15,4 @@ should populate manifest with templates
 * trim options specs down
 * rename options for succintness (e.g. :project_root => :root)
 * remove redundant requires
-* trim manifest size (relative paths?)
+* more flexible input/ouput hashes (regex or file extensions)

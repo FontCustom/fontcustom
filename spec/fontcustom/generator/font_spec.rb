@@ -8,12 +8,8 @@ describe Fontcustom::Generator::Font do
 
   context "#generate" do
     it "should set manifest[:glyphs] (integration)", :integration => true do
-      files = [
-        fixture("shared/vectors"),
-        fixture("generators/.fontcustom-manifest-base.json")
-      ]
-      live_test files do |testdir|
-        manifest = File.join testdir, ".fontcustom-manifest-base.json"
+      live_test do |testdir|
+        manifest = test_manifest
         gen = Fontcustom::Generator::Font.new manifest
         gen.stub :create_fonts
         gen.generate
@@ -22,12 +18,8 @@ describe Fontcustom::Generator::Font do
     end
 
     it "should generate fonts (integration)", :integration => true do
-      files = [
-        fixture("shared/vectors"),
-        fixture("generators/.fontcustom-manifest-base.json")
-      ]
-      live_test files do |testdir|
-        manifest = File.join testdir, ".fontcustom-manifest-base.json"
+      live_test do |testdir|
+        manifest = test_manifest
         Fontcustom::Generator::Font.new(manifest).generate
         Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should == 4
         File.read(manifest).should match(/"fonts":.+sandbox\/test\/fontcustom\/fontcustom_.+\.ttf"/m)

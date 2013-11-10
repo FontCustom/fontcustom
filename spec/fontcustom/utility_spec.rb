@@ -83,7 +83,7 @@ describe Fontcustom::Utility do
       gen = Generator.new
       options = { :project_root => fixture("generators"), :manifest => fixture("generators/.fontcustom-manifest.json") }
       gen.instance_variable_set :@options, options
-      gen.get_manifest.should == manifest_contents
+      gen.get_manifest.keys.should == manifest_contents.keys
     end
 
     it "should raise an error if the file is empty" do

@@ -9,21 +9,54 @@ RSpec.configure do |c|
   end
 
   # TODO use real values after refactor is complete
-  def manifest_contents
+  def manifest_contents(root = Dir.pwd)
     {
-      :checksum => "abc",
-      :fonts => %w|
-        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff
-        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf
-        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot
-        fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg
-      |,
-      :glyphs => %w|a_r3ally-exotic-f1le-name c d|,
+      :checksum => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c",
+      :fonts => [
+        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.ttf",
+        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.svg",
+        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.woff",
+        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.eot"
+      ],
+      :glyphs => {
+        :"a_r3ally-exotic-f1le-name" => {
+          :codepoint => 61696,
+          :source => "#{root}/vectors/a_R3ally-eXotic f1Le Name.svg"
+        },
+        :c => {
+          :codepoint => 61697,
+          :source => "#{root}/vectors/C.svg"
+        },  
+        :d => {
+          :codepoint => 61698,
+          :source => "#{root}/vectors/D.svg"}
+        },
       :options => {
-        :foo => "bar",
-        :baz => "bum"
+        :autowidth => false,
+        :config => false,
+        :css_prefix => "icon-",
+        :debug => false,
+        :font_name => "fontcustom",
+        :input => {
+          :templates => "#{root}/vectors",
+          :vectors => "#{root}/vectors"
+        },
+        :manifest => "#{root}/.fontcustom-manifest.json",
+        :no_hash => false,
+        :output => {
+          :css => "#{root}/fontcustom",
+          :fonts => "#{root}/fontcustom",
+          :preview => "#{root}/fontcustom"
+        },
+        :preprocessor_path => nil,
+        :project_root => "#{root}",
+        :quiet => true,
+        :templates => [
+          "#{Fontcustom.gem_lib}/templates/fontcustom.css",
+          "#{Fontcustom.gem_lib}/templates/fontcustom-preview.html"
+        ]
       },
-      :templates => %w|fontcustom.css|
+      :templates => []
     }
   end
 
@@ -43,16 +76,23 @@ RSpec.configure do |c|
     result
   end
 
-  def live_test(copy = [])
+  def live_test
     testdir = fixture File.join("sandbox", "test")
     begin
       FileUtils.mkdir testdir
-      copy.each { |file| FileUtils.cp_r file, testdir }
+      FileUtils.cp_r fixture("shared/vectors"), testdir
       FileUtils.cd testdir do
         yield(testdir)
       end
     ensure
       FileUtils.rm_r testdir
     end
+  end
+
+  def test_manifest(options = {:input => "vectors"})
+    content = JSON.pretty_generate(manifest_contents)
+    manifest = File.join Dir.pwd, ".fontcustom-manifest.json"
+    File.open(manifest, "w") { |f| f.write(content) }
+    manifest
   end
 end
