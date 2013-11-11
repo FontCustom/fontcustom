@@ -41,50 +41,34 @@ describe Fontcustom::Generator::Font do
     end
   end
 
-  context ".delete_old_fonts" do
-    #it "should delete all fonts in @manifest[:fonts]"
-
-    it "should clear :fonts from manifest" do
-      gen = generator
-      gen.stub :say_changed
-      manifest = {:fonts => %w|fonts/a.ttf fonts/a.eot fonts/a.woff fonts/a.svg|}
-      gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:set_manifest).with(:fonts, [])
-      gen.send :delete_old_fonts
-      gen.instance_variable_get(:@manifest)[:fonts].should == []
-    end
-  end
-
   context ".set_glyph_info" do
     it "should set :glyphs in manifest" do
       gen = generator
-      options = {:input => {:vectors => fixture("shared/vectors")}}
-      manifest = {:glyphs => {}}
-      gen.instance_variable_set :@options, options
-      gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:set_manifest).with(:glyphs, {
-        :"a_r3ally-exotic-f1le-name" => hash_including(:codepoint => 61696),
-        :c => hash_including(:codepoint => 61697),
-        :d => hash_including(:codepoint => 61698)
-      })
+      gen.instance_variable_set :@options, :input => {:vectors => fixture("shared/vectors")}
+      gen.instance_variable_set :@manifest, :glyphs => {}
+
+      gen.should_receive(:save_manifest)
       gen.send :set_glyph_info
+      manifest = gen.instance_variable_get(:@manifest)
+      manifest[:glyphs][:"a_r3ally-exotic-f1le-name"].should include(:codepoint => 61696)
+      manifest[:glyphs][:c].should include(:codepoint => 61697)
+      manifest[:glyphs][:d].should include(:codepoint => 61698)
     end
 
     it "should not change codepoints of existing glyphs" do
       gen = generator
-      options = {:input => {:vectors => fixture("shared/vectors")}}
-      manifest = {:glyphs => {:c => {:source => "foo", :codepoint => 61699}}}
-      gen.instance_variable_set :@options, options
-      gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:set_manifest).with(:glyphs, {
-        :"a_r3ally-exotic-f1le-name" => hash_including(:codepoint => 61700),
-        :c => hash_including(:codepoint => 61699),
-        :d => hash_including(:codepoint => 61701)
-      })
+      gen.instance_variable_set :@options, :input => {:vectors => fixture("shared/vectors")}
+      gen.instance_variable_set :@manifest, :glyphs => {:c => {:source => "foo", :codepoint => 61699}}
+
+      gen.should_receive(:save_manifest)
       gen.send :set_glyph_info
+      manifest = gen.instance_variable_get(:@manifest)
+      manifest[:glyphs][:"a_r3ally-exotic-f1le-name"].should include(:codepoint => 61700)
+      manifest[:glyphs][:c].should include(:codepoint => 61699)
+      manifest[:glyphs][:d].should include(:codepoint => 61701)
     end
   end
 
-  context ".run_fontforge" do
-  end
+  #context ".run_fontforge" do
+  #end
 end

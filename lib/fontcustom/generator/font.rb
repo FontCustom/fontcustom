@@ -34,18 +34,7 @@ module Fontcustom
       end
 
       def delete_old_fonts
-        return if @manifest[:fonts].empty?
-        begin
-          deleted = []
-          @manifest[:fonts].each do |file|
-            remove_file file, :verbose => false
-            deleted << file
-          end
-        ensure
-          @manifest[:fonts] = @manifest[:fonts] - deleted
-          set_manifest :fonts, @manifest[:fonts]
-          say_changed :delete, deleted
-        end
+        delete_from_manifest(:fonts)
       end
 
       def set_glyph_info
@@ -76,7 +65,8 @@ module Fontcustom
           end
         end
 
-        set_manifest :glyphs, glyphs
+        @manifest[:glyphs] = glyphs
+        save_manifest
       end
 
       def create_fonts

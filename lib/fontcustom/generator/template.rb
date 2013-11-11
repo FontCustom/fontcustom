@@ -12,12 +12,12 @@ module Fontcustom
         enable_thor_ations
       end
 
+      def generate
+      end
+
       # Required for Thor::Actions#template
       def self.source_root
         File.join Fontcustom.gem_lib, "templates"
-      end
-
-      def generate
       end
 
       private

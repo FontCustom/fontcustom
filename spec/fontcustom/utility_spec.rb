@@ -101,14 +101,20 @@ describe Fontcustom::Utility do
     end
   end
 
-  context "#set_manifest" do
-    it "should update the manifest" do
+  #context "#save_manifest" do
+    #it "should update the manifest" do
+    #end
+  #end
+
+  context "#delete_from_manifest" do
+    it "should empty key from manifest" do
       gen = Generator.new
-      options = { :manifest => fixture("generators/.fontcustom-manifest.json") }
-      gen.instance_variable_set :@options, options
-      contents = manifest_contents.merge :checksum => "123"
-      gen.should_receive(:write_file).with(options[:manifest], /"checksum":\s+"123"/, :update)
-      gen.set_manifest :checksum, "123"
+      gen.stub :say_changed
+      manifest = {:fonts => %w|fonts/a.ttf fonts/a.eot fonts/a.woff fonts/a.svg|}
+      gen.instance_variable_set :@manifest, manifest
+      gen.should_receive(:save_manifest)
+      gen.delete_from_manifest :fonts
+      gen.instance_variable_get(:@manifest)[:fonts].should == []
     end
   end
 

@@ -73,9 +73,6 @@ module Fontcustom
       end
     end
 
-    def garbage_collect(files)
-    end
-
     def get_manifest(file = _options[:manifest])
       begin
         json = File.read file
@@ -85,15 +82,25 @@ module Fontcustom
       end
     end
 
-    def set_manifest(key, val)
-      if key == :all
-        manifest = val
-      else
-        manifest = get_manifest
-        manifest[key] = val
-      end
-      json = JSON.pretty_generate manifest
+    def save_manifest
+      json = JSON.pretty_generate @manifest
       write_file _options[:manifest], json, :update
+    end
+
+    def delete_from_manifest(key)
+      files = @manifest[key]
+      return if files.empty?
+      begin
+        deleted = []
+        @manifest[key].each do |file|
+          remove_file file, :verbose => false
+          deleted << file
+        end
+      ensure
+        @manifest[key] = @manifest[key] - deleted
+        save_manifest
+        say_changed :delete, deleted
+      end
     end
 
     #

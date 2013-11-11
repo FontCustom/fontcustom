@@ -13,7 +13,8 @@ module Fontcustom
       current_hash = checksum
       if current_hash != @manifest[:checksum]
         # FIXME ensure that old checksum is preserved in case compilation fails
-        set_manifest :checksum, current_hash
+        @manifest[:checksum] = current_hash 
+        save_manifest
         start_generators
       else
         # "no change" message
