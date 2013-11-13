@@ -177,10 +177,10 @@ describe Fontcustom::Generator::Font do
       data = gen.instance_variable_get(:@data)
       data[:glyphs].should =~ ["c", "d", "a_r3ally-exotic-f1le-name"]
       data[:fonts].should =~ [
-        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot"),
-        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg"),
-        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf"),
-        fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff")
+        gen.relative_to_root(fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.eot")),
+        gen.relative_to_root(fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.svg")),
+        gen.relative_to_root(fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.ttf")),
+        gen.relative_to_root(fixture("output/fontcustom_cc5ce52f2ae4f9ce2e7ee8131bbfee1e.woff"))
       ]
     end
   end
