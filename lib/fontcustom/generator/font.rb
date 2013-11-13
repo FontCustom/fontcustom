@@ -68,7 +68,7 @@ module Fontcustom
         json = JSON.parse(@json, :symbolize_names => true)
         @data.merge! json
         @data[:glyphs].map! { |glyph| glyph.gsub(/\W/, "-") }
-        @data[:fonts].map! { |font| File.join(opts.output[:fonts], font) }
+        @data[:fonts].map! { |font| File.join(relative_to_root(opts.output[:fonts]), font) }
       end
 
       def announce_files

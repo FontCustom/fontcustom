@@ -87,6 +87,7 @@ module Fontcustom
         ensure
           say_changed :create, created
           @data[:templates] = (@data[:templates] + created).uniq
+          @data[:templates].map! { |template| relative_to_root(template) }
           json = JSON.pretty_generate @data
           overwrite_file opts.manifest, json
         end
