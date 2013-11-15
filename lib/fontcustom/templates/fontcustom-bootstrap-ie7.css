@@ -1,22 +1,22 @@
 /*
-  Icon Font: <%= @opts.font_name %>
+  Icon Font: <%= @options[:font_name] %>
   Bootstrap IE7 Enabler
 */
 
-[class^="<%= @opts.css_prefix %>"],
-[class*=" <%= @opts.css_prefix %>"] {
-  font-family: "<%= @opts.font_name %>";
+[class^="<%= @options[:css_prefix] %>"],
+[class*=" <%= @options[:css_prefix] %>"] {
+  font-family: "<%= @options[:font_name] %>";
   font-style: normal;
   font-weight: normal;
 }
 
-.btn.dropdown-toggle [class^="<%= @opts.css_prefix %>"],
-.btn.dropdown-toggle [class*=" <%= @opts.css_prefix %>"] {
+.btn.dropdown-toggle [class^="<%= @options[:css_prefix] %>"],
+.btn.dropdown-toggle [class*=" <%= @options[:css_prefix] %>"] {
   line-height: 1.4em;
 }
 
-.<%= @opts.css_prefix %>large {
+.<%= @options[:css_prefix] %>large {
   font-size: 1.3333em;
 }
-<% @glyphs.each_with_index do |name, index| %>
-.<%= @opts.css_prefix + name %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= @data[:glyphcodes][index].to_s(16) %>;&nbsp;'); }<% end %>
+<% @glyphs.each do |name, value| %>
+.<%= @options[:css_prefix] + name.to_s %> { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= value[:codepoint].to_s(16) %>;&nbsp;'); }<% end %>

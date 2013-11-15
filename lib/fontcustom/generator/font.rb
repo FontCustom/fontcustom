@@ -1,8 +1,5 @@
 require "json"
 require "open3"
-require "thor"
-require "thor/group"
-require "thor/actions"
 
 module Fontcustom
   module Generator

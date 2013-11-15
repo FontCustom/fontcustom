@@ -1,18 +1,14 @@
 ## TODO
 
-### FC::Gen::Template
+### 1.3.0
 
-should read manifest
-should garbage collect old templates
-should generate templates
-should populate manifest with templates
+* store relative paths in manifest (rebuild in generator/util)
+* more flexible input/ouput hashes (regex or file extensions)
+* error messages around generators
 
----
-
-### Nice to Have
+### Low Priority
 
 * more robust fontforge check than `which`
-* trim options specs down
-* rename options for succintness (e.g. :project_root => :root)
 * remove redundant requires
-* more flexible input/ouput hashes (regex or file extensions)
+* rename options for succintness (e.g. :project_root => :root)
+* trim options specs down

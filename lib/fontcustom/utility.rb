@@ -16,6 +16,7 @@ module Fontcustom
     def enable_thor_actions
       @destination_stack = [_options[:project_root]]
       @shell = Thor::Shell::Color.new
+      @source_paths = [File.join(Fontcustom.gem_lib, "templates")]
 
       (class << self; self; end).class_eval do
         define_method("shell") { @shell }

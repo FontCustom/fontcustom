@@ -76,7 +76,7 @@ RSpec.configure do |c|
     result
   end
 
-  def live_test
+  def live_test(cleanup = true)
     testdir = fixture File.join("sandbox", "test")
     begin
       FileUtils.mkdir testdir
@@ -85,14 +85,15 @@ RSpec.configure do |c|
         yield(testdir)
       end
     ensure
-      FileUtils.rm_r testdir
+      FileUtils.rm_r testdir if cleanup
     end
   end
 
-  def test_manifest(options = {:input => "vectors"})
-    content = JSON.pretty_generate(manifest_contents)
-    manifest = File.join Dir.pwd, ".fontcustom-manifest.json"
-    File.open(manifest, "w") { |f| f.write(content) }
-    manifest
+  def test_manifest(options = {:input => fixture("shared/vectors"), :quiet => true})
+    base = Fontcustom::Base.new options
+    manifest = base.instance_variable_get :@manifest
+    manifest[:checksum] = base.send :checksum
+    base.save_manifest
+    base.instance_variable_get(:@options)[:manifest]
   end
 end
