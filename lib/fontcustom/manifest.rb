@@ -2,7 +2,7 @@ module Fontcustom
   class Manifest
     include Utility
 
-    attr_reader :manifest
+    attr_accessor :manifest
 
     def initialize(options)
       @options = options

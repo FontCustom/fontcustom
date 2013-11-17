@@ -2,9 +2,11 @@
 
 ### 1.3.0
 
+* enable messages again
 * store relative paths in manifest (rebuild in generator/util)
 * more flexible input/ouput hashes (regex or file extensions)
 * error messages around generators
+* redirect fontcustom.com to github repo (no fontcustom.com)
 
 ### Low Priority
 

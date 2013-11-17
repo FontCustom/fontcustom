@@ -6,10 +6,11 @@ module Fontcustom
     class Font
       include Utility
 
+      attr_reader :manifest, :options
+
       def initialize(manifest)
         @manifest = get_manifest(manifest)
         @options = @manifest[:options]
-        enable_thor_actions
       end
 
       def generate

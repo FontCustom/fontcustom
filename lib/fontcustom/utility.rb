@@ -10,18 +10,24 @@ module Fontcustom
     include Thor::Actions
 
     #
-    # Hacks that allow Thor::Actions to be included in generic classes
+    # Hacks that allow Thor::Actions and Thor::Shell to be used in Fontcustom classes.
     #
     
-    def enable_thor_actions
-      @destination_stack = [_options[:project_root]]
-      @shell = Thor::Shell::Color.new
-      @source_paths = [File.join(Fontcustom.gem_lib, "templates")]
+    def self.shell
+      @shell || Thor::Shell::Color.new
+    end
 
-      (class << self; self; end).class_eval do
-        define_method("shell") { @shell }
-        define_method("options") { {:pretend => false} }
-      end
+    def shell
+      Fontcustom::Utility.shell
+    end
+
+    def destination_root
+      @destination_stack ||= [_options[:project_root]]
+      @destination_stack.last
+    end
+
+    def source_paths
+      @source_paths ||= [File.join(Fontcustom.gem_lib, "templates")]
     end
 
     #
@@ -110,14 +116,14 @@ module Fontcustom
     #
 
     def say_message(status, message, color = :yellow)
-      #return if _options(:quiet) && status != :error
-      #@shell.say_status status, message, color
+      return if _options[:quiet] && status != :error
+      shell.say_status status, message, color
     end
 
     def say_changed(status, changed)
-      #return if _options(:quiet)
-      #message = changed.map { |file| relative_to_root(file) }
-      #@shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
+      return if _options[:quiet]
+      message = changed.map { |file| relative_to_root(file) }
+      shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
     end
 
     private

@@ -1,7 +1,4 @@
 require "yaml"
-require "thor/shell"
-require "thor/shell/basic"
-require "thor/shell/color"
 
 module Fontcustom
   class Options
