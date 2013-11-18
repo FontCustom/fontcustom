@@ -17,7 +17,7 @@ module Fontcustom
         save_manifest
         start_generators
       else
-        # "no change" message
+        say_message :status, "No changes detected. Skipping compilation."
       end
     end
 

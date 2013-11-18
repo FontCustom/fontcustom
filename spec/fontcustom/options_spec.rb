@@ -47,7 +47,7 @@ describe Fontcustom::Options do
           :project_root => fixture,
           :config => "does-not-exist"
         )
-        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file wasn't found/
+        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file/
       end
     end
 
@@ -73,13 +73,23 @@ describe Fontcustom::Options do
   end
 
   context ".load_config" do
+    it "should warn if fontcustom.yml is blank" do
+      o = options
+      o.instance_variable_set :@cli_options, {
+        :project_root => fixture,
+        :config => fixture("options/fontcustom-empty.yml")
+      }
+      o.should_receive(:say_message).with :warn, /was empty/
+      o.send :load_config
+    end
+
     it "should raise error if fontcustom.yml isn't valid" do
       o = options
       o.instance_variable_set :@cli_options, {
         :project_root => fixture,
         :config => fixture("options/fontcustom-malformed.yml")
       }
-      expect { o.send :load_config }.to raise_error Fontcustom::Error, /failed to load/
+      expect { o.send :load_config }.to raise_error Fontcustom::Error, /Couldn't read/
     end
 
     it "should assign empty hash :config is false" do
@@ -92,34 +102,17 @@ describe Fontcustom::Options do
       o.instance_variable_get(:@config_options).should == {}
     end
 
-    it "should assign empty hash if fontcustom.yml is blank" do
-      o = options
-      o.instance_variable_set :@cli_options, {
-        :project_root => fixture,
-        :config => fixture("options/fontcustom-empty.yml")
-      }
-      o.send :load_config
-      o.instance_variable_get(:@config_options).should == {}
-    end
-
-    it "should report which configuration file it's using" do
-      o = options
-      o.instance_variable_set :@cli_options, {
-        :project_root => fixture,
-        :config => fixture("options/any-file-name.yml")
-      }
-      o.should_receive(:say_message).with :status, /options\/any-file-name\.yml/
-      o.send :load_config
-    end
-
-    it "should warn if no configuration file is used" do
-      o = options
-      o.instance_variable_set :@cli_options, {
-        :project_root => fixture,
-        :config => false
-      }
-      o.should_receive(:say_message).with :status, /No configuration/
-      o.send :load_config
+    context "when :debug is true" do
+      it "should report which configuration file it's using" do
+        o = options
+        o.instance_variable_set :@cli_options, {
+          :project_root => fixture,
+          :config => fixture("options/any-file-name.yml"),
+          :debug => true
+        }
+        o.should_receive(:say_message).with :debug, /Using settings/
+        o.send :load_config
+      end
     end
   end
 
@@ -211,15 +204,17 @@ describe Fontcustom::Options do
         o = options
         o.options = {
           :project_root => fixture,
+          :config => "fontcustom.yml",
           :input => { :templates => "shared/templates" }
         }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /contain a :vectors key/
+        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /have a :vectors key/
       end
 
       it "should raise an error if :vectors doesn't point to an existing directory" do
         o = options
         o.options = {
           :project_root => fixture,
+          :config => "fontcustom.yml",
           :input => { :vectors => "shared/not-a-dir" }
         }
         expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
@@ -252,6 +247,7 @@ describe Fontcustom::Options do
         o = options
         o.options = {
           :project_root => fixture,
+          :config => "fontcustom.yml",
           :input => "shared/not-a-dir"
         }
         expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
@@ -271,14 +267,17 @@ describe Fontcustom::Options do
         o.options[:output][:fonts].should == fixture("Test-Font")
       end
 
-      it "should print a warning" do
-        o = options
-        o.options = {
-          :project_root => fixture,
-          :font_name => "Test-Font"
-        }
-        o.should_receive(:say_message).with :status, /Test-Font/
-        o.send :set_output_paths
+      context "when :debug is true" do
+        it "should print a warning" do
+          o = options
+          o.options = {
+            :project_root => fixture,
+            :debug => true,
+            :font_name => "Test-Font"
+          }
+          o.should_receive(:say_message).with :debug, /Test-Font/
+          o.send :set_output_paths
+        end
       end
     end
 
@@ -326,9 +325,10 @@ describe Fontcustom::Options do
         o = options
         o.options = {
           :project_root => fixture,
+          :config => "fontcustom.yml",
           :output => { :css => "output/styles" }
         }
-        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /contain a :fonts key/
+        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /have a :fonts key/
       end
     end
 
@@ -361,9 +361,10 @@ describe Fontcustom::Options do
         o = options
         o.options = {
           :project_root => fixture,
+          :config => "fontcustom.yml",
           :output => "shared/not-a-dir"
         }
-        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /directory, not a file/
+        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /should be a directory/
       end
     end
   end
@@ -407,7 +408,7 @@ describe Fontcustom::Options do
         :input => { :templates => fixture("shared/templates") },
         :templates => %w|fake-template.txt|
       }
-      expect { o.send :set_template_paths }.to raise_error Fontcustom::Error, /does not exist/
+      expect { o.send :set_template_paths }.to raise_error Fontcustom::Error, /doesn't exist/
     end
   end
 end

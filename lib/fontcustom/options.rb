@@ -28,6 +28,7 @@ module Fontcustom
 
     # We give Thor fake defaults to generate more useful help messages.
     # Here, we delete any CLI options that match those examples.
+    # TODO There's *got* a be a cleaner way to customize Thor help messages.
     def overwrite_examples
       EXAMPLE_OPTIONS.keys.each do |key|
         @cli_options.delete(key) if @cli_options[key] == EXAMPLE_OPTIONS[key]
@@ -49,7 +50,7 @@ module Fontcustom
           File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "The configuration file wasn't found. Check `#{relative_to_root(path)}` and try again."
+          raise Fontcustom::Error, "No configuration file at `#{relative_to_root(path)}`."
         end
       else
         # fontcustom.yml is in the project_root
@@ -69,26 +70,23 @@ module Fontcustom
     def load_config
       @config_options = {}
       if @cli_options[:config]
-        say_message :status, "Loading configuration file at `#{relative_to_root(@cli_options[:config])}`."
+        say_message :debug, "Using settings from `#{relative_to_root(@cli_options[:config])}`." if @cli_options[:debug]
         begin
           config = YAML.load File.open(@cli_options[:config])
           if config # empty YAML returns false
             @config_options = symbolize_hash(config)
           else
-            say_message :status, "Configuration file was empty. Using defaults."
+            say_message :warn, "`#{relative_to_root(@cli_options[:config])}` was empty."
           end
         rescue Exception => e
-          raise Fontcustom::Error, "The configuration file failed to load. Message: #{e.message}"
+          raise Fontcustom::Error, "Couldn't read `#{relative_to_root(@cli_options[:config])}`. Error: #{e.message}"
         end
-      else
-        say_message :status, "No configuration file set. Generate one with `fontcustom config` to preserve options between compiles."
       end
     end
 
     def merge_options
       @cli_options.delete_if { |key, val| val == DEFAULT_OPTIONS[key] }
       @options = DEFAULT_OPTIONS.merge(@manifest_options).merge(@config_options).merge(@cli_options)
-      @options = methodize_hash @options
     end
 
     def clean_font_name
@@ -111,16 +109,16 @@ module Fontcustom
         if @options[:input].has_key? :vectors
           @options[:input][:vectors] = expand_path @options[:input][:vectors]
           unless File.directory? @options[:input][:vectors]
-            raise Fontcustom::Error, "INPUT[:vectors] should be a directory. Check `#{relative_to_root(@options[:input][:vectors])}` and try again."
+            raise Fontcustom::Error, "INPUT[:vectors] (`#{relative_to_root(@options[:input][:vectors])}`) should be a directory."
           end
         else
-          raise Fontcustom::Error, "INPUT (as a hash) should contain a :vectors key."
+          raise Fontcustom::Error, "INPUT should have a :vectors key."
         end
 
         if @options[:input].has_key? :templates
           @options[:input][:templates] = expand_path @options[:input][:templates]
           unless File.directory? @options[:input][:templates]
-            raise Fontcustom::Error, "INPUT[:templates] should be a directory. Check `#{relative_to_root(@options[:input][:templates])}` and try again."
+            raise Fontcustom::Error, "INPUT[:templates] (`#{relative_to_root(@options[:input][:templates])}`) should be a directory."
           end
         else
           @options[:input][:templates] = @options[:input][:vectors]
@@ -128,7 +126,7 @@ module Fontcustom
       else
         input = @options[:input] ? expand_path(@options[:input]) : @options[:project_root]
         unless File.directory? input
-          raise Fontcustom::Error, "INPUT (as a string) should be a directory. Check `#{relative_to_root(input)}` and try again."
+          raise Fontcustom::Error, "INPUT (`#{relative_to_root(input)}`) should be a directory."
         end
         @options[:input] = { :vectors => input, :templates => input }
       end
@@ -141,12 +139,12 @@ module Fontcustom
     def set_output_paths
       if @options[:output].is_a? Hash
         @options[:output] = symbolize_hash(@options[:output])
-        raise Fontcustom::Error, "OUTPUT (as a hash) should contain a :fonts key." unless @options[:output].has_key? :fonts
+        raise Fontcustom::Error, "OUTPUT should have a :fonts key." unless @options[:output].has_key? :fonts
 
         @options[:output].each do |key, val|
           @options[:output][key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
-            raise Fontcustom::Error, "OUTPUT[:#{key.to_s}] should be a directory, not a file. Check `#{relative_to_root(val)}` and try again."
+            raise Fontcustom::Error, "OUTPUT[:#{key.to_s}] (`#{relative_to_root(@options[:output][key])}`) should be a directory."
           end
         end
 
@@ -156,11 +154,11 @@ module Fontcustom
         if @options[:output].is_a? String
           output = expand_path @options[:output]
           if File.exists?(output) && ! File.directory?(output)
-            raise Fontcustom::Error, "OUTPUT should be a directory, not a file. Check `#{relative_to_root(output)}` and try again."
+            raise Fontcustom::Error, "OUTPUT (`#{relative_to_root(output)}`) should be a directory."
           end
         else
           output = File.join @options[:project_root], @options[:font_name]
-          say_message :status, "All generated files will be saved to `#{relative_to_root(output)}/`."
+          say_message :debug, "Generated files will be saved to `#{relative_to_root(output)}/`." if @options[:debug]
         end
 
         @options[:output] = {
@@ -199,7 +197,7 @@ module Fontcustom
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
           template = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
-          raise Fontcustom::Error, "The custom template at `#{relative_to_root(template)}` does not exist." unless File.exists? template
+          raise Fontcustom::Error, "Custom template `#{relative_to_root(template)}` doesn't exist." unless File.exists? template
           template
         end
       end

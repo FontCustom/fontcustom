@@ -61,6 +61,7 @@ module Fontcustom
       File.expand_path File.join(_options[:project_root], path)
     end
 
+    # TODO Is this robust enough?
     def relative_to_root(path)
       path = path.sub(_options[:project_root], "")
       path = path[1..-1] if path[0] == "/"
@@ -91,7 +92,7 @@ module Fontcustom
 
     def save_manifest
       json = JSON.pretty_generate @manifest
-      write_file _options[:manifest], json, :update
+      write_file _options[:manifest], json
     end
 
     def delete_from_manifest(key)
