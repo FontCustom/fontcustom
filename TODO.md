@@ -3,7 +3,6 @@
 ### 1.3.0
 
 * error messages around generators
-* add font / template names to checksum string
 * store relative paths in manifest (rebuild in generator/util)
 * more flexible input/ouput hashes (regex or file extensions)
 * redirect fontcustom.com to github repo (use wiki for documentation)
