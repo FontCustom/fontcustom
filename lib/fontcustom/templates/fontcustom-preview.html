@@ -132,6 +132,13 @@
         font-style: normal;
       }
 
+      @media screen and (-webkit-min-device-pixel-ratio:0) {
+          @font-face {
+              font-family: "<%= @opts.font_name %>";
+              src: url("<%= @font_path_preview %>.svg#<%= @opts.font_name %>") format("svg");
+          }
+      }
+
       [data-icon]:before { content: attr(data-icon); }
 
       [data-icon]:before,
