@@ -6,9 +6,9 @@
   font-family: "<%= @opts.font_name %>";
   src: font-url("<%= @font_path_alt %>.eot");
   src: font-url("<%= @font_path_alt %>.eot?#iefix") format("embedded-opentype"),
-       font-url("<%= @font_path_alt %>.svg#<%= @opts.font_name %>") format("svg"),
        font-url("<%= @font_path_alt %>.woff") format("woff"),
-       font-url("<%= @font_path_alt %>.ttf") format("truetype");
+       font-url("<%= @font_path_alt %>.ttf") format("truetype"),
+       font-url("<%= @font_path_alt %>.svg#<%= @opts.font_name %>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
