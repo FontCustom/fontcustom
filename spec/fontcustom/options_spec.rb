@@ -89,7 +89,7 @@ describe Fontcustom::Options do
         :project_root => fixture,
         :config => fixture("options/fontcustom-malformed.yml")
       }
-      expect { o.send :load_config }.to raise_error Fontcustom::Error, /Couldn't read/
+      expect { o.send :load_config }.to raise_error Fontcustom::Error, /Error parsing/
     end
 
     it "should assign empty hash :config is false" do

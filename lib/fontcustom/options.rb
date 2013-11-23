@@ -50,7 +50,7 @@ module Fontcustom
           File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "No configuration file at `#{relative_to_root(path)}`."
+          raise Fontcustom::Error, "No configuration file found at `#{relative_to_root(path)}`."
         end
       else
         # fontcustom.yml is in the project_root
@@ -76,10 +76,10 @@ module Fontcustom
           if config # empty YAML returns false
             @config_options = symbolize_hash(config)
           else
-            say_message :warn, "`#{relative_to_root(@cli_options[:config])}` was empty."
+            say_message :warn, "`#{relative_to_root(@cli_options[:config])}` was empty. Using defaults."
           end
         rescue Exception => e
-          raise Fontcustom::Error, "Couldn't read `#{relative_to_root(@cli_options[:config])}`. Error: #{e.message}"
+          raise Fontcustom::Error, "Error parsing `#{relative_to_root(@cli_options[:config])}`:\n#{e.message}"
         end
       end
     end
@@ -109,16 +109,23 @@ module Fontcustom
         if @options[:input].has_key? :vectors
           @options[:input][:vectors] = expand_path @options[:input][:vectors]
           unless File.directory? @options[:input][:vectors]
-            raise Fontcustom::Error, "INPUT[:vectors] (`#{relative_to_root(@options[:input][:vectors])}`) should be a directory."
+            raise Fontcustom::Error, 
+              "INPUT[:vectors] (`#{relative_to_root(@options[:input][:vectors])}`) should be "\
+              "a directory. Check `#{relative_to_root(@options[:config])}` or your CLI options."
           end
         else
-          raise Fontcustom::Error, "INPUT should have a :vectors key."
+          raise Fontcustom::Error, 
+            "INPUT should have a :vectors key. Check `#{relative_to_root(@options[:config])}` "\
+            "or your CLI options."
         end
 
         if @options[:input].has_key? :templates
           @options[:input][:templates] = expand_path @options[:input][:templates]
           unless File.directory? @options[:input][:templates]
-            raise Fontcustom::Error, "INPUT[:templates] (`#{relative_to_root(@options[:input][:templates])}`) should be a directory."
+            raise Fontcustom::Error, 
+              "INPUT[:templates] (`#{relative_to_root(@options[:input][:templates])}`) "\
+              "should be a directory. Check `#{relative_to_root(@options[:config])}` or "\
+              "your CLI options."
           end
         else
           @options[:input][:templates] = @options[:input][:vectors]
@@ -126,7 +133,9 @@ module Fontcustom
       else
         input = @options[:input] ? expand_path(@options[:input]) : @options[:project_root]
         unless File.directory? input
-          raise Fontcustom::Error, "INPUT (`#{relative_to_root(input)}`) should be a directory."
+          raise Fontcustom::Error, 
+            "INPUT (`#{relative_to_root(input)}`) should be a directory. Check "\
+            "`#{relative_to_root(@options[:config])}` or your CLI options."
         end
         @options[:input] = { :vectors => input, :templates => input }
       end
@@ -139,12 +148,18 @@ module Fontcustom
     def set_output_paths
       if @options[:output].is_a? Hash
         @options[:output] = symbolize_hash(@options[:output])
-        raise Fontcustom::Error, "OUTPUT should have a :fonts key." unless @options[:output].has_key? :fonts
+        unless @options[:output].has_key? :fonts
+          raise Fontcustom::Error, 
+            "OUTPUT should have a :fonts key. Check `#{relative_to_root(@options[:config])}` "\
+            "or your CLI options."
+        end
 
         @options[:output].each do |key, val|
           @options[:output][key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
-            raise Fontcustom::Error, "OUTPUT[:#{key.to_s}] (`#{relative_to_root(@options[:output][key])}`) should be a directory."
+            raise Fontcustom::Error, 
+              "OUTPUT[:#{key.to_s}] (`#{relative_to_root(@options[:output][key])}`) should be "\
+              "a directory. Check `#{relative_to_root(@options[:config])}` or your CLI options."
           end
         end
 
@@ -154,7 +169,9 @@ module Fontcustom
         if @options[:output].is_a? String
           output = expand_path @options[:output]
           if File.exists?(output) && ! File.directory?(output)
-            raise Fontcustom::Error, "OUTPUT (`#{relative_to_root(output)}`) should be a directory."
+            raise Fontcustom::Error, 
+              "OUTPUT (`#{relative_to_root(output)}`) should be a directory. Check "\
+              "`#{relative_to_root(@options[:config])}` or your CLI options."
           end
         else
           output = File.join @options[:project_root], @options[:font_name]
@@ -197,7 +214,12 @@ module Fontcustom
           File.join template_path, "_fontcustom-bootstrap-ie7.scss"
         else
           template = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
-          raise Fontcustom::Error, "Custom template `#{relative_to_root(template)}` doesn't exist." unless File.exists? template
+          unless File.exists? template
+            config = @options[:config] ? " `#{relative_to_root(@options[:config])}` or" : ""
+            raise Fontcustom::Error,
+              "Custom template `#{relative_to_root(template)}` doesn't exist. "\
+              "Check#{config} your CLI options."
+          end
           template
         end
       end

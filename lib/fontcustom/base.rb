@@ -5,8 +5,9 @@ module Fontcustom
     include Utility
 
     def initialize(cli_options)
+      @cli_options = cli_options
       check_fontforge
-      init_manifest(cli_options)
+      init_manifest
     end
 
     def compile
@@ -30,10 +31,10 @@ module Fontcustom
       end
     end
 
-    def init_manifest(cli_options)
-      file = cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
+    def init_manifest
+      file = @cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
       manifest_options = File.exists?(file) ? get_manifest(file)[:options] : {}
-      @options = Fontcustom::Options.new(cli_options, manifest_options).options
+      @options = Fontcustom::Options.new(@cli_options, manifest_options).options
       @manifest = Fontcustom::Manifest.new(@options).manifest
     end
 

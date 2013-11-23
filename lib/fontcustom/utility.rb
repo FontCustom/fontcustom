@@ -113,7 +113,6 @@ module Fontcustom
 
     #
     # Messages
-    # TODO
     #
 
     def say_message(status, message, color = :yellow)

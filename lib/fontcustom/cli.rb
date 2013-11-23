@@ -5,7 +5,7 @@ require "fontcustom/watcher"
 
 module Fontcustom
   class CLI < Thor
-    include Thor::Actions
+    include Utility
 
     default_task :show_help
 
@@ -61,6 +61,9 @@ module Fontcustom
     desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
     def compile(input = nil)
       Base.new(options.merge(:input => input)).compile
+    rescue Fontcustom::Error => e
+      say_status :error, e.message, :red
+      puts e.backtrace.join("\n") if options[:debug]
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
@@ -73,7 +76,7 @@ module Fontcustom
       opts = Options.new(opts)
       Watcher.new(opts).watch
     rescue Fontcustom::Error => e
-      opts.say_message :error, e.message, :red
+      say_status :error, e.message, :red
     end
 
     desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: `pwd`"
