@@ -86,7 +86,9 @@ module Fontcustom
         json = File.read file
         JSON.parse(json, :symbolize_names => true)
       rescue JSON::ParserError
-        raise Fontcustom::Error, "Couldn't parse `#{relative_to_root file}`. Did you modify the file?"
+        raise Fontcustom::Error, 
+          "Couldn't parse `#{relative_to_root file}`. Fix the invalid "\
+          "JSON or delete the file to start from scratch."
       end
     end
 

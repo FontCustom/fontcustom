@@ -41,17 +41,8 @@ describe Fontcustom::Base do
     it "should pass CLI options to FC::Options" do
       opts = double "options"
       opts.should_receive :options
-      Fontcustom::Options.should_receive(:new).with({:foo => "bar"}, {}).and_return opts
+      Fontcustom::Options.should_receive(:new).with({:foo => "bar"}).and_return opts
       Fontcustom::Base.new :foo => "bar"
-    end
-
-    it "should pass previous manifest's options to FC::Options" do
-      opts = double "options"
-      opts.should_receive :options
-      cli_options = {:manifest => fixture("generators/.fontcustom-manifest.json")}
-      manifest_options = {:css_prefix => "test-"}
-      Fontcustom::Options.should_receive(:new).with(cli_options, hash_including(manifest_options)).and_return opts
-      Fontcustom::Base.new cli_options
     end
   end
 

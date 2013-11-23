@@ -27,14 +27,13 @@ module Fontcustom
     def check_fontforge
       fontforge = `which fontforge`
       if fontforge == "" || fontforge == "fontforge not found"
-        raise Fontcustom::Error, "Please install fontforge. Visit <http://fontcustom.com> for instructions."
+        raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
       end
     end
 
     def init_manifest
       file = @cli_options[:manifest] || File.join(Dir.pwd, ".fontcustom-manifest.json")
-      manifest_options = File.exists?(file) ? get_manifest(file)[:options] : {}
-      @options = Fontcustom::Options.new(@cli_options, manifest_options).options
+      @options = Fontcustom::Options.new(@cli_options).options
       @manifest = Fontcustom::Manifest.new(@options).manifest
     end
 

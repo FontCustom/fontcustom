@@ -2,6 +2,7 @@
 
 ### 1.3.0
 
+* more robust checksum (store both previous and last)
 * error messages around generators
 * store relative paths in manifest (rebuild in generator/util)
 * more flexible input/ouput hashes (regex or file extensions)

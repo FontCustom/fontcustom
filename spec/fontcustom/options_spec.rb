@@ -117,17 +117,8 @@ describe Fontcustom::Options do
   end
 
   context ".merge_options" do
-    it "should overwrite defaults with manifest options" do
+    it "should overwrite defaults with config options" do
       o = options
-      o.instance_variable_set :@manifest_options, { :input => "manifest" }
-      o.instance_variable_set :@config_options, {}
-      o.send :merge_options
-      o.options[:input].should == "manifest"
-    end
-
-    it "should overwrite defaults and manifest options with config options" do
-      o = options
-      o.instance_variable_set :@manifest_options, { :input => "manifest" }
       o.instance_variable_set :@config_options, { :input => "config" }
       o.send :merge_options
       o.options[:input].should == "config"
@@ -135,7 +126,6 @@ describe Fontcustom::Options do
 
     it "should overwrite config file and defaults with CLI options" do
       o = options
-      o.instance_variable_set :@manifest_options, { :input => "manifest", :output => "manifest_output" }
       o.instance_variable_set :@config_options, { :input => "config", :output => "output" }
       o.instance_variable_set :@cli_options, { :input => "cli" }
       o.send :merge_options
