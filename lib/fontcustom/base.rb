@@ -38,12 +38,13 @@ module Fontcustom
       @manifest = Fontcustom::Manifest.new(@options).manifest
     end
 
-    # Calculates a hash of vectors and templates (content and filenames)
+    # Calculates a hash of vectors, options, and templates (content and filenames)
     def checksum
       files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
-      files += @options[:templates]
+      files += Dir.glob File.join(@options[:input][:templates], "*")
       content = files.map { |file| File.read(file) }.join
-      content += files.join
+      content << files.join
+      content << @options.flatten(2).join
       Digest::SHA2.hexdigest(content).to_s
     end
 
