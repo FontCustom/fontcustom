@@ -85,7 +85,7 @@ for glyph, data in manifest['glyphs'].iteritems():
 try:
     fontfile = options['output']['fonts'] + '/' + options['font_name']
     if not options['no_hash']:
-        fontfile += '_' + manifest['checksum'][:32]
+        fontfile += '_' + manifest['checksum']['current'][:32]
 
     # Generate TTF and SVG
     font.generate(fontfile + '.ttf')

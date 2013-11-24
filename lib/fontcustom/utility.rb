@@ -17,8 +17,16 @@ module Fontcustom
       @shell || Thor::Shell::Color.new
     end
 
+    def behavior
+      :invoke
+    end
+
     def shell
       Fontcustom::Utility.shell
+    end
+
+    def say_status(*args)
+      shell.say_status *args
     end
 
     def destination_root
@@ -119,13 +127,13 @@ module Fontcustom
 
     def say_message(status, message, color = :yellow)
       return if _options[:quiet] && status != :error
-      shell.say_status status, message, color
+      say_status status, message, color
     end
 
     def say_changed(status, changed)
       return if _options[:quiet]
       message = changed.map { |file| relative_to_root(file) }
-      shell.say_status status, message.join("\n#{" " * 14}"), :green # magic number
+      say_status status, message.join("\n#{" " * 14}"), :green # magic number
     end
 
     private

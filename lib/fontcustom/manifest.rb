@@ -29,7 +29,7 @@ module Fontcustom
 
     def create_manifest
       @manifest = {
-        :checksum => "",
+        :checksum => { :current => "", :previous => "" },
         :fonts => [],
         :glyphs => {},
         :options => @options,

@@ -2,18 +2,13 @@ require "spec_helper"
 
 describe Fontcustom::Base do
   context "#compile" do
-    #context "when checksum != manifest[:checksum]" do
-      #it "should call .start_generators"
-      #it "should set manifest[:checksum]"
-    #end
-
-    context "when checksum equals manifest[:checksum]" do
+    context "when [:checksum][:current] equals [:checksum][:previous]" do
       it "should show 'no change' message" do
         Fontcustom::Base.any_instance.stub :init_manifest
         Fontcustom::Base.any_instance.stub :check_fontforge
         base = Fontcustom::Base.new({})
         base.stub(:checksum).and_return("abc")
-        base.instance_variable_set :@manifest, {:checksum => "abc"}
+        base.instance_variable_set :@manifest, {:checksum => {:previous => "abc", :current => ""}}
         base.instance_variable_set :@options, {:quiet => false}
 
         output = capture(:stdout) { base.compile }

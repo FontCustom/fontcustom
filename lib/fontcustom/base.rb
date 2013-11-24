@@ -11,12 +11,13 @@ module Fontcustom
     end
 
     def compile
-      current_hash = checksum
-      if current_hash != @manifest[:checksum]
-        # FIXME ensure that old checksum is preserved in case compilation fails
-        @manifest[:checksum] = current_hash 
+      @manifest[:checksum][:current] = checksum
+      if @manifest[:checksum][:current] != @manifest[:checksum][:previous]
         save_manifest
         start_generators
+        @manifest = get_manifest
+        @manifest[:checksum][:previous] = @manifest[:checksum][:current]
+        save_manifest
       else
         say_message :status, "No changes detected. Skipping compilation."
       end

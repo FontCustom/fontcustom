@@ -73,15 +73,16 @@ module Fontcustom
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
 
+        debug_msg = " Try again with --debug for more details."
+        if @options[:debug]
+          say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}", :red
+          debug_msg = ""
+        end
+
         if status.success?
           @manifest = get_manifest
           say_changed :create, @manifest[:fonts]
         else
-          debug_msg = " Try again with --debug for more details."
-          if @options[:debug]
-            say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}", :red
-            debug_msg = ""
-          end
           raise Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
         end
       end

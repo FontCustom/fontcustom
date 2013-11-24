@@ -8,10 +8,12 @@ RSpec.configure do |c|
     File.join(File.expand_path("../fixtures", __FILE__), path)
   end
 
-  # TODO use real values after refactor is complete
   def manifest_contents(root = Dir.pwd)
     {
-      :checksum => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c",
+      :checksum => {
+        :current => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c", 
+        :previous => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c"
+      },
       :fonts => [
         "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.ttf",
         "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.svg",
@@ -92,7 +94,7 @@ RSpec.configure do |c|
   def test_manifest(options = {:input => fixture("shared/vectors"), :quiet => true})
     base = Fontcustom::Base.new options
     manifest = base.instance_variable_get :@manifest
-    manifest[:checksum] = base.send :checksum
+    manifest[:checksum] = {:current => base.send(:checksum), :previous => ""}
     base.save_manifest
     base.instance_variable_get(:@options)[:manifest]
   end
