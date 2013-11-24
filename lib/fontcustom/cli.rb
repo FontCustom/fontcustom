@@ -50,6 +50,9 @@ module Fontcustom
     class_option :debug, :aliases => "-d", :type => :boolean,
       :desc => "Display debugging messages."
 
+    class_option :force, :aliases => "-F", :type => :boolean,
+      :desc => "Forces compilation, even if inputs have not changed."
+
     class_option :quiet, :aliases => "-q", :type => :boolean,
       :desc => "Hide status messages."
 

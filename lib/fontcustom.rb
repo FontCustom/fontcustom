@@ -19,7 +19,7 @@ module Fontcustom
   EXAMPLE_OPTIONS = {
     :project_root => "`pwd`",
     :output => "PROJECT_ROOT/FONT_NAME",
-    :config => "PROJECT_ROOT/fontcustom.yml OR PROJECT_ROOT/config/fontcustom.yml",
+    :config => "PROJECT_ROOT/fontcustom.yml -or- PROJECT_ROOT/config/fontcustom.yml",
     :templates => "css preview",
     :manifest => "CONFIG_DIR/.fontcustom-manifest.json -or- PROJECT_ROOT/.fontcustom-manifest.json"
   }
@@ -37,6 +37,7 @@ module Fontcustom
     :autowidth => false,
     :no_hash => false,
     :debug => false,
+    :force => false,
     :quiet => false
   }
 end

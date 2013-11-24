@@ -2,8 +2,8 @@
 
 ### 1.3.0
 
+* change css_prefix to css_selector
 * error messages around generators
-* add --force option to bypass checksum
 * store relative paths in manifest (rebuild in generator/util)
 * more flexible input/ouput hashes (regex or file extensions)
 * redirect fontcustom.com to github repo (use wiki for documentation)

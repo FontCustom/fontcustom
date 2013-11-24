@@ -12,7 +12,7 @@ module Fontcustom
 
     def compile
       @manifest[:checksum][:current] = checksum
-      if @manifest[:checksum][:current] != @manifest[:checksum][:previous]
+      if @options[:force] || @manifest[:checksum][:current] != @manifest[:checksum][:previous]
         save_manifest
         start_generators
         @manifest = get_manifest
