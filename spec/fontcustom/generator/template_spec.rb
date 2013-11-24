@@ -8,7 +8,7 @@ describe Fontcustom::Generator::Template do
         manifest = test_manifest(
           :input => "vectors", 
           :quiet => true,
-          :templates => %w|preview css scss scss-rails bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|
+          :templates => %w|preview css scss scss-rails|
         )
         Fontcustom::Generator::Font.new(manifest).generate
         gen = Fontcustom::Generator::Template.new manifest

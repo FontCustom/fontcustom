@@ -22,17 +22,17 @@ module Fontcustom
       :default => EXAMPLE_OPTIONS[:config]
 
     class_option :templates, :aliases => "-t", :type => :array,
-      :desc => "Space-delinated list of templates to generate alongside fonts.",
-      :enum => %w|preview css scss scss-rails bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|,
+      :desc => "Space-delinated list of files to generate alongside fonts. Use stock templates or choose your own.",
+      :enum => %w|preview css scss scss-rails|,
       :default => EXAMPLE_OPTIONS[:templates]
 
     class_option :font_name, :aliases => "-f", :type => :string,
       :desc => "The font's name. Also determines the file names of generated templates.",
       :default => DEFAULT_OPTIONS[:font_name]
 
-    class_option :css_prefix, :aliases => "-p", :type => :string,
-      :desc => "Prefix for each glyph's CSS class.",
-      :default => DEFAULT_OPTIONS[:css_prefix]
+    class_option :css_selector, :aliases => "-s", :type => :string,
+      :desc => "Format of generated CSS selector. \"{{glyph}}\" is substituted for the glyph name.",
+      :default => DEFAULT_OPTIONS[:css_selector]
 
     class_option :manifest, :aliases => "-m", :type => :string,
       :desc => "Path to a manifest of generated files. Used for garbage collection.",

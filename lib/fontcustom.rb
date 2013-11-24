@@ -31,7 +31,7 @@ module Fontcustom
     :config => nil,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
-    :css_prefix => "icon-",
+    :css_selector => ".icon-{{glyph}}",
     :manifest => nil,
     :preprocessor_path => nil,
     :autowidth => false,

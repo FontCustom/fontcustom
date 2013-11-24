@@ -74,6 +74,52 @@ module Fontcustom
           save_manifest
         end
       end
+
+      #
+      # Template Helpers
+      #
+
+      def font_name
+        @options[:font_name]
+      end
+
+      def font_face(style = :normal)
+        case style
+        when :rails
+          url = "font-url"
+          path = @font_path_alt
+        when :preview
+          url = "url"
+          path = @font_path_preview
+        else
+          url = "url"
+          path = @font_path
+        end
+%Q|@font-face {
+  font-family: "#{font_name}";
+  src: #{url}("#{path}.eot");
+  src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
+       #{url}("#{path}.woff") format("woff"),
+       #{url}("#{path}.ttf") format("truetype"),
+       #{url}("#{path}.svg##{font_name}") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}|
+      end
+
+      def glyph_selectors
+        output = @glyphs.map do |name, value|
+          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+        end
+        output.join ",\n"
+      end
+
+      def glyphs
+        output = @glyphs.map do |name, value|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}\" }|
+        end
+        output.join "\n"
+      end
     end
   end
 end

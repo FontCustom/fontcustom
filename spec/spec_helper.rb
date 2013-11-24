@@ -36,7 +36,7 @@ RSpec.configure do |c|
       :options => {
         :autowidth => false,
         :config => false,
-        :css_prefix => "icon-",
+        :css_selector => ".icon-{{glyph}}",
         :debug => false,
         :font_name => "fontcustom",
         :input => {
