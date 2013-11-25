@@ -1,8 +1,8 @@
 ## 1.3.0.beta (11/25/2013)
 
-The big news: fixed glyph code points. Automatically assigned for now, but changing them by hand is just a matter of modifying the generated `.fontcustom-manifest.json`.
+**Delete your old `.fontcustom-manifest.json` and output directories before using this version.**
 
-Lots of internal changes / streamlining on this one. A few breaking changes (`css_prefix`, custom template syntax, possibly others). Error messages and docs are still a bit sparse — my apologies in advance.
+The big news: fixed glyph code points. Automatically assigned for now, but changing them by hand is just a matter of modifying the generated `.fontcustom-manifest.json`. A few breaking changes (`css_prefix`, custom template syntax, possibly others). Error messages and docs are currently sparse — my apologies in advance.
 
 * Fixed glyph code points ([#56](https://github.com/FontCustom/fontcustom/issues/56))
 * Changes `css_prefix` to `css_selector` to allow greater flexibility ([#126](https://github.com/FontCustom/fontcustom/pull/126))
