@@ -8,11 +8,11 @@ The big news: fixed glyph code points. Automatically assigned for now, but chang
 * Changes `css_prefix` to `css_selector` to allow greater flexibility ([#126](https://github.com/FontCustom/fontcustom/pull/126))
 * Skips compilation if inputs have not changed (and `force` option to bypass checks)
 * Adds CSS template helpers for convenience and DRYness
-* Drops bootstrap templates (maintaince overhead, unsure if anyone was using them)
+* Drops bootstrap templates (maintenance overhead, unsure if anyone was using them)
 
 Next up:
 
-* Storing relative paths in the manifest for collaborative editing ([#149](https://github.com/FontCustom/fontcustom/pull/149))
+* Storing relative paths for collaborative editing ([#149](https://github.com/FontCustom/fontcustom/pull/149))
 
 ## 1.2.0 (11/2/2013)
 
