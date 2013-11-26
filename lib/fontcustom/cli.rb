@@ -61,7 +61,7 @@ module Fontcustom
       File.join Fontcustom.gem_lib, "templates"
     end
 
-    desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg and *.eps files in INPUT. Default: `pwd`"
+    desc "compile [INPUT] [OPTIONS]", "Generates webfonts and templates from *.svg files in INPUT. Default: `pwd`"
     def compile(input = nil)
       Base.new(options.merge(:input => input)).compile
     rescue Fontcustom::Error => e

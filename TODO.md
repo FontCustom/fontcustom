@@ -4,7 +4,12 @@
 
 * tests, error messages, and docs for generate.py / SVG bugs
 * tests, error messages, and docs for template generator
+
 * store relative paths in manifest (rebuild in generator/util)
+* Ensure :css_selector is `.strip`ed and has "{{glyph}}" in it
+* Detect old manifest / show error message
+
+* Add more travis CLI rubies / thor versions?
 * documentation for template helpers
 * redirect fontcustom.com to github repo (use wiki for documentation)
 
