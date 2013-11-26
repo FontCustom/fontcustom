@@ -8,6 +8,7 @@
 * store relative paths in manifest (rebuild in generator/util)
 * Ensure :css_selector is `.strip`ed and has "{{glyph}}" in it
 * Detect old manifest / show error message
+* In template/fontcustom.yml, clarify that input/output can be hashes
 
 * Add more travis CLI rubies / thor versions?
 * documentation for template helpers
