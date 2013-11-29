@@ -207,7 +207,7 @@ describe Fontcustom::Options do
           :config => "fontcustom.yml",
           :input => { :vectors => "shared/not-a-dir" }
         }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
+        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
       end
     end
 
@@ -240,7 +240,7 @@ describe Fontcustom::Options do
           :config => "fontcustom.yml",
           :input => "shared/not-a-dir"
         }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /should be a directory/
+        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
       end
     end
   end
@@ -354,7 +354,7 @@ describe Fontcustom::Options do
           :config => "fontcustom.yml",
           :output => "shared/not-a-dir"
         }
-        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /should be a directory/
+        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /isn't a directory/
       end
     end
   end

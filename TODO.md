@@ -5,8 +5,9 @@
 * tests, error messages, and docs for generate.py / SVG bugs
 * tests, error messages, and docs for template generator
 
+* don't downcase classes
 * store relative paths in manifest (rebuild in generator/util)
-* Ensure :css_selector is `.strip`ed and has "{{glyph}}" in it
+* Ensure :css_selector is `.strip`ed and has exactly one "{{glyph}}" in it
 * Detect old manifest / show error message
 * In template/fontcustom.yml, clarify that input/output can be hashes
 
