@@ -13,7 +13,7 @@ describe Fontcustom::Generator::Font do
         gen = Fontcustom::Generator::Font.new manifest
         gen.stub :create_fonts
         gen.generate
-        File.read(manifest).should match(/"glyphs":.+"c":/m)
+        File.read(manifest).should match(/"glyphs":.+"C":/m)
       end
     end
 
@@ -50,22 +50,22 @@ describe Fontcustom::Generator::Font do
       gen.should_receive(:save_manifest)
       gen.send :set_glyph_info
       manifest = gen.instance_variable_get(:@manifest)
-      manifest[:glyphs][:"a_r3ally-exotic-f1le-name"].should include(:codepoint => 61696)
-      manifest[:glyphs][:c].should include(:codepoint => 61697)
-      manifest[:glyphs][:d].should include(:codepoint => 61698)
+      manifest[:glyphs][:C].should include(:codepoint => 61696)
+      manifest[:glyphs][:D].should include(:codepoint => 61697)
+      manifest[:glyphs][:"a_R3ally-eXotic-f1Le-Name"].should include(:codepoint => 61698)
     end
 
     it "should not change codepoints of existing glyphs" do
       gen = generator
       gen.instance_variable_set :@options, :input => {:vectors => fixture("shared/vectors")}
-      gen.instance_variable_set :@manifest, :glyphs => {:c => {:source => "foo", :codepoint => 61699}}
+      gen.instance_variable_set :@manifest, :glyphs => {:C => {:source => "foo", :codepoint => 61699}}
 
       gen.should_receive(:save_manifest)
       gen.send :set_glyph_info
       manifest = gen.instance_variable_get(:@manifest)
-      manifest[:glyphs][:"a_r3ally-exotic-f1le-name"].should include(:codepoint => 61700)
-      manifest[:glyphs][:c].should include(:codepoint => 61699)
-      manifest[:glyphs][:d].should include(:codepoint => 61701)
+      manifest[:glyphs][:C].should include(:codepoint => 61699)
+      manifest[:glyphs][:D].should include(:codepoint => 61700)
+      manifest[:glyphs][:"a_R3ally-eXotic-f1Le-Name"].should include(:codepoint => 61701)
     end
   end
 

@@ -19,6 +19,7 @@ module Fontcustom
       load_config
       merge_options
       clean_font_name
+      clean_css_selector
       set_manifest_path
       set_input_paths
       set_output_paths
@@ -90,6 +91,14 @@ module Fontcustom
 
     def clean_font_name
       @options[:font_name] = @options[:font_name].strip.gsub(/\W/, "-")
+    end
+
+    def clean_css_selector
+      unless @options[:css_selector].include? "{{glyph}}"
+        raise Fontcustom::Error,
+          "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
+      end
+      @options[:css_selector] = @options[:css_selector].strip.gsub(/[^\{\}\w]/, "-")
     end
 
     def set_manifest_path
