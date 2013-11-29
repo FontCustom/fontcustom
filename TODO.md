@@ -2,7 +2,6 @@
 
 ### 1.3.0
 
-* tests, error messages, and docs for generate.py / SVG bugs
 * tests, error messages, and docs for template generator
 
 * don't downcase classes
@@ -15,9 +14,10 @@
 * documentation for template helpers
 * redirect fontcustom.com to github repo (use wiki for documentation)
 
-### Low Priority
+### Future
 
 * conserve code points: http://stackoverflow.com/questions/8794430/ruby-finding-lowest-free-id-in-an-id-array
+* strip /fill: rgba(...)/ from SVGs so that transparent SVGs don't fail
 * more flexible input/ouput hashes (regex or file extensions)
 * sass template with variables
 * less template with variables

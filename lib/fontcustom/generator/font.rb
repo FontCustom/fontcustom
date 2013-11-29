@@ -73,9 +73,13 @@ module Fontcustom
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
 
+        if stderr.include? "Failed to parse color rgba("
+          say_message :warn, "Transparent glyphs are not supported. Check your SVGs."
+        end
+
         debug_msg = " Try again with --debug for more details."
         if @options[:debug]
-          say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}", :red
+          say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}"
           debug_msg = ""
         end
 

@@ -62,7 +62,7 @@ module Fontcustom
           changed = modified + added + removed
           compile unless changed.empty?
         rescue Fontcustom::Error => e
-          say_message :error, e.message, :red
+          say_message :error, e.message
         end
       end
     end

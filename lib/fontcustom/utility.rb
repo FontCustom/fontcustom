@@ -125,8 +125,9 @@ module Fontcustom
     # Messages
     #
 
-    def say_message(status, message, color = :yellow)
+    def say_message(status, message, color = nil)
       return if _options[:quiet] && status != :error
+      color = :red if [:error, :debug, :warn].include?(status)
       say_status status, message, color
     end
 
