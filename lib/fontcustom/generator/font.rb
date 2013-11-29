@@ -47,7 +47,7 @@ module Fontcustom
         glyphs = {}
         files.each do |file|
           name = File.basename file, ".svg"
-          name = name.strip.gsub(/\W/, "-").downcase
+          name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
         end
 
