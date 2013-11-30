@@ -42,36 +42,42 @@ module Fontcustom
       def create_files
         @glyphs = @manifest[:glyphs]
         created = []
-        packaged = %w|fontcustom-bootstrap-ie7.css fontcustom.css _fontcustom-bootstrap-ie7.scss _fontcustom-rails.scss
-                   fontcustom-bootstrap.css fontcustom-preview.html _fontcustom-bootstrap.scss _fontcustom.scss|
-        css_exts = %w|.css .scss .sass .less .stylus|
         begin
           @options[:templates].each do |source|
-            name = File.basename source
-            ext = File.extname source
-            target = name.dup
-
-            if packaged.include?(name) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
-              target.sub! DEFAULT_OPTIONS[:font_name], @options[:font_name]
+            begin
+              target = template_target source
+              template source, target, :verbose => false, :force => true
+            rescue => e
+              raise Fontcustom::Error, "Could not generate template `#{relative_to_root(source)}`:#{line_break + e.message}" 
             end
-
-            target = if @options[:output].keys.include? name.to_sym
-              File.join @options[:output][name.to_sym], target
-            elsif css_exts.include? ext
-              File.join @options[:output][:css], target
-            elsif name == "fontcustom-preview.html"
-              File.join @options[:output][:preview], target
-            else
-              File.join @options[:output][:fonts], target
-            end
-
-            template source, target, :verbose => false, :force => true
             created << target
           end
         ensure
           say_changed :create, created
           @manifest[:templates] = (@manifest[:templates] + created).uniq
           save_manifest
+        end
+      end
+
+      def template_target(source)
+        packaged = %w|fontcustom.css _fontcustom.scss _fontcustom-rails.scss fontcustom-preview.html|
+        css_exts = %w|.css .scss .sass .less .stylus|
+        name = File.basename source
+        ext = File.extname source
+        target = name.dup
+
+        if packaged.include?(name) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
+          target.sub! DEFAULT_OPTIONS[:font_name], @options[:font_name]
+        end
+
+        if @options[:output].keys.include? name.to_sym
+          File.join @options[:output][name.to_sym], target
+        elsif css_exts.include? ext
+          File.join @options[:output][:css], target
+        elsif name == "fontcustom-preview.html"
+          File.join @options[:output][:preview], target
+        else
+          File.join @options[:output][:fonts], target
         end
       end
 

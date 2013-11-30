@@ -134,7 +134,12 @@ module Fontcustom
     def say_changed(status, changed)
       return if _options[:quiet]
       message = changed.map { |file| relative_to_root(file) }
-      say_status status, message.join("\n#{" " * 14}"), :green # magic number
+      say_status status, message.join(line_break)
+    end
+
+   # magic number for Thor say_status line breaks
+    def line_break
+      "\n#{" " * 14}"
     end
 
     private

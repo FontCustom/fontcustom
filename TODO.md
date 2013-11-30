@@ -2,7 +2,6 @@
 
 ### 1.3.0
 
-* tests, error messages, and docs for template generator
 * store relative paths in manifest (rebuild in generator/util)
 
 * Detect old manifest / show error message

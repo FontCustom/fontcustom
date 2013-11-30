@@ -78,7 +78,8 @@ module Fontcustom
 
         debug_msg = " Try again with --debug for more details."
         if @options[:debug]
-          say_message :debug, "#{stderr}\n#{' ' * 14}#{stdout}"
+          messages = stderr.split("\n") + stdout
+          say_message :debug, messages.join(line_break)
           debug_msg = ""
         end
 
