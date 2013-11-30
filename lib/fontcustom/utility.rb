@@ -70,7 +70,7 @@ module Fontcustom
     end
 
     # TODO Is this robust enough?
-    def relative_to_root(path)
+    def relative_path(path)
       path = path.sub(_options[:project_root], "")
       path = path[1..-1] if path[0] == "/"
       path = "." if path.empty?
@@ -84,7 +84,7 @@ module Fontcustom
     def write_file(file, content = "", message = nil, message_body = nil)
       File.open(file, "w") { |f| f.write(content) }
       if message
-        body = message_body || relative_to_root(file)
+        body = message_body || relative_path(file)
         say_message message, body
       end
     end
@@ -95,7 +95,7 @@ module Fontcustom
         JSON.parse(json, :symbolize_names => true)
       rescue JSON::ParserError
         raise Fontcustom::Error, 
-          "Couldn't parse `#{relative_to_root file}`. Fix the invalid "\
+          "Couldn't parse `#{relative_path file}`. Fix the invalid "\
           "JSON or delete the file to start from scratch."
       end
     end
@@ -133,7 +133,7 @@ module Fontcustom
 
     def say_changed(status, changed)
       return if _options[:quiet]
-      message = changed.map { |file| relative_to_root(file) }
+      message = changed.map { |file| relative_path(file) }
       say_status status, message.join(line_break)
     end
 

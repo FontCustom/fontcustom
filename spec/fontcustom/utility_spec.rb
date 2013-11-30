@@ -118,16 +118,16 @@ describe Fontcustom::Utility do
     end
   end
 
-  context "#relative_to_root" do
+  context "#relative_path" do
     it "should trim project root from paths" do
       gen = Generator.new
-      path = gen.relative_to_root fixture "test/path"
+      path = gen.relative_path fixture "test/path"
       path.should == "test/path"
     end
 
     it "should trim beginning slash" do
       gen = Generator.new
-      path = gen.relative_to_root "/test/path"
+      path = gen.relative_path "/test/path"
       path.should == "test/path"
     end
   end

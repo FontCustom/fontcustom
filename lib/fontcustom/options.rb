@@ -50,7 +50,7 @@ module Fontcustom
           File.join path, "fontcustom.yml"
 
         else
-          raise Fontcustom::Error, "No configuration file found at `#{relative_to_root(path)}`."
+          raise Fontcustom::Error, "No configuration file found at `#{relative_path(path)}`."
         end
       else
         # fontcustom.yml is in the project_root
@@ -70,16 +70,16 @@ module Fontcustom
     def load_config
       @config_options = {}
       if @cli_options[:config]
-        say_message :debug, "Using settings from `#{relative_to_root(@cli_options[:config])}`." if @cli_options[:debug]
+        say_message :debug, "Using settings from `#{relative_path(@cli_options[:config])}`." if @cli_options[:debug]
         begin
           config = YAML.load File.open(@cli_options[:config])
           if config # empty YAML returns false
             @config_options = symbolize_hash(config)
           else
-            say_message :warn, "`#{relative_to_root(@cli_options[:config])}` was empty. Using defaults."
+            say_message :warn, "`#{relative_path(@cli_options[:config])}` was empty. Using defaults."
           end
         rescue Exception => e
-          raise Fontcustom::Error, "Error parsing `#{relative_to_root(@cli_options[:config])}`:\n#{e.message}"
+          raise Fontcustom::Error, "Error parsing `#{relative_path(@cli_options[:config])}`:\n#{e.message}"
         end
       end
     end
@@ -135,7 +135,7 @@ module Fontcustom
       end
 
       if Dir[File.join(@options[:input][:vectors], "*.svg")].empty?
-        raise Fontcustom::Error, "`#{relative_to_root(@options[:input][:vectors])}` doesn't contain any SVGs."
+        raise Fontcustom::Error, "`#{relative_path(@options[:input][:vectors])}` doesn't contain any SVGs."
       end
     end
 
@@ -151,7 +151,7 @@ module Fontcustom
           @options[:output][key] = expand_path val
           if File.exists?(val) && ! File.directory?(val)
             raise Fontcustom::Error,
-              "Output `#{relative_to_root(@options[:output][key])}` exists but isn't a directory. Check your options."
+              "Output `#{relative_path(@options[:output][key])}` exists but isn't a directory. Check your options."
           end
         end
 
@@ -162,11 +162,11 @@ module Fontcustom
           output = expand_path @options[:output]
           if File.exists?(output) && ! File.directory?(output)
             raise Fontcustom::Error,
-              "Output `#{relative_to_root(output)}` exists but isn't a directory. Check your options."
+              "Output `#{relative_path(output)}` exists but isn't a directory. Check your options."
           end
         else
           output = File.join @options[:project_root], @options[:font_name]
-          say_message :debug, "Generated files will be saved to `#{relative_to_root(output)}/`." if @options[:debug]
+          say_message :debug, "Generated files will be saved to `#{relative_path(output)}/`." if @options[:debug]
         end
 
         @options[:output] = {
@@ -207,7 +207,7 @@ module Fontcustom
           template = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
           unless File.exists? template
             raise Fontcustom::Error,
-              "Custom template `#{relative_to_root(template)}` doesn't exist. Check your options."
+              "Custom template `#{relative_path(template)}` doesn't exist. Check your options."
           end
           template
         end
@@ -217,10 +217,10 @@ module Fontcustom
     def check_input(dir)
       if ! File.exists? dir
         raise Fontcustom::Error,
-          "Input `#{relative_to_root(dir)}` doesn't exist. Check your options."
+          "Input `#{relative_path(dir)}` doesn't exist. Check your options."
       elsif ! File.directory? dir
         raise Fontcustom::Error,
-          "Input `#{relative_to_root(dir)}` isn't a directory. Check your options."
+          "Input `#{relative_path(dir)}` isn't a directory. Check your options."
       end
     end
   end

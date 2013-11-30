@@ -50,7 +50,7 @@ module Fontcustom
           name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
           if File.read(file).include? "rgba"
-            say_message :warn, "`#{relative_to_root(file)}` contains transparency and will be skipped."
+            say_message :warn, "`#{relative_path(file)}` contains transparency and will be skipped."
           end
         end
 
