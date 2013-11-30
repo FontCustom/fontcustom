@@ -3,7 +3,6 @@
 ### 1.3.0
 
 * store relative paths in manifest (rebuild in generator/util)
-* In template/fontcustom.yml, clarify that input/output can be hashes
 
 * reactivate watcher
 * Detect old manifest / show error message

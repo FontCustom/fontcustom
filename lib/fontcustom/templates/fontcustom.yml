@@ -1,6 +1,6 @@
 # --------------------------------------------------------------------------- #
 # Project Info
-#   Default values shown. Learn more about these options by running
+#   Defaults shown. Learn more about these options by running
 #   `fontcustom help` or visiting <http://fontcustom.com>.
 # --------------------------------------------------------------------------- #
 
@@ -15,20 +15,27 @@
 
 
 # --------------------------------------------------------------------------- #
-# Project Paths
-#   Relative paths are expanded from PROJECT_ROOT (defaults to the directory
-#   where the fontcustom command is run). INPUT and OUTPUT can be strings or
-#   hashes or file types / names.
+# Input Paths
 # --------------------------------------------------------------------------- #
 
-#project_root: some/other/place
-#manifest: tmp/fontcustom
+#input: assets/fonts/fontcustom/source                  # as a string
 
-#input:
+# OR
+
+#input:                                                 # as a hash
 #  vectors: app/assets/fonts/fontcustom/vectors         # required
 #  templates: app/assets/fonts/fontcustom/templates
 
-#output:
+
+# --------------------------------------------------------------------------- #
+# Output Paths
+# --------------------------------------------------------------------------- #
+
+#output: assets/fonts/fontcustom                        # as a string
+
+# OR
+
+#output:                                                # as a hash
 #  fonts: app/assets/fonts                              # required
 #  css: app/assets/stylesheets
 #  preview: app/views/styleguide
@@ -37,10 +44,12 @@
 
 # --------------------------------------------------------------------------- #
 # Templates
-#   Included in Font Custom:
-#     preview, css, scss, scss-rails
+#   Included in Font Custom: preview, css, scss, scss-rails
 #   Custom templates should be saved in the INPUT[:templates] directory and
-#   referenced by their base file name.
+#   referenced by their baserame.
 # --------------------------------------------------------------------------- #
 
-#templates: [ scss, preview, my-custom-template.yml ]
+#templates:
+# - scss
+# - preview
+# - my-custom-template.yml
