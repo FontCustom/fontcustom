@@ -49,6 +49,9 @@ module Fontcustom
           name = File.basename file, ".svg"
           name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
+          if File.read(file).include? "rgba"
+            say_message :warn, "`#{relative_to_root(file)}` contains transparency and will be skipped."
+          end
         end
 
         # Dir.glob returns a different order depending on ruby
@@ -72,10 +75,6 @@ module Fontcustom
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
-
-        if stderr.include? "Failed to parse color rgba("
-          say_message :warn, "Transparent glyphs are not supported. Check your SVGs."
-        end
 
         debug_msg = " Try again with --debug for more details."
         if @options[:debug]
