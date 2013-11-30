@@ -42,31 +42,22 @@ fontcustom help                     # See all options
 ### Configuration
 
 To preserve options between compiles, create a configuration file with
-`fontcustom config`. This should live in the directory where you plan on
-running `fontcustom` commands. Most of the following can also be used as
-command line flags (`--css-selector`, etc.).
+`fontcustom config`. This should live in the directory where you run
+all `fontcustom` commands. Each of the following has its own command 
+line flag (`--css-selector`, etc.). Defaults values are shown.
+
+**Basics**
 
 ```yml
-# (defaults shown)
-font_name: fontcustom                 # Names the font and sets the name and directory
-                                      # of generated files
 project_root: (pwd)                   # Context for all relative paths
 input: (project_root)                 # Where vectors and templates are located
 output: (project_root)/(font name)    # Where generated files will be saved
 config: (pwd)/fontcustom.yml          # Optional path to a configuration file
-templates: [ css, preview ]           # Templates to generate alongside fonts
-                                      # Possible values: preview, css, scss, scss-rails
-css_selector: .icon-{{glyph}}         # Template for CSS classes
-                                      6
-preprocessor_path: ""                 # Font path used in proprocessor templates (Sass, etc.)
-no_hash: false                        # Don't add asset-busting hashes to font files
-autowidth: false                      # Automatically size glyphs based on the width of
-                                      # their individual vectors
 debug: false                          # Output raw messages from fontforge
 quiet: false                          # Silence all messages except errors
 
-# For more control over file locations,
-# set input and output as Yaml hashes
+# For more control over file locations, set
+# input and output as hashes instead of strings
 input:
   vectors: path/to/vectors            # required
   templates: path/to/templates
@@ -75,8 +66,38 @@ output:
   fonts: app/assets/fonts             # required
   css: app/assets/stylesheets
   preview: app/views/styleguide
-  6
 ```
+
+**Fonts**
+
+```yml
+font_name: fontcustom                 # Also sets the default output directory and
+                                      # the name of generated stock templates
+no_hash: false                        # Don't add asset-busting hashes to font files
+autowidth: false                      # Automatically size glyphs based on the width of
+                                      # their individual vectors
+```
+
+**Templates**
+
+```yml
+templates: [ css, preview ]           # List of templates to generate alongside fonts
+                                      # Possible values: preview, css, scss, scss-rails
+css_selector: .icon-{{glyph}}         # CSS selector format (`{{glyph}}` is replaced)
+preprocessor_path: ""                 # Font path used in proprocessor templates (Sass, etc.)
+
+# Custom templates should live in the `input` 
+# or `input[:templates]` directory and be added
+# to `templates` as their basename:
+templates: [ preview, VectorIcons.less ]
+```
+
+Custom templates have access to `@options`, `@manifest`, and the following ERB helpers:
+
+* `font_name` 
+* `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
+* `glyph_selectors`: comma-separated list of all selectors
+* `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
 
 ### SVG Guidelines
 

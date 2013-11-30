@@ -3,9 +3,10 @@
 ### 1.3.0
 
 * store relative paths in manifest (rebuild in generator/util)
-
-* Detect old manifest / show error message
 * In template/fontcustom.yml, clarify that input/output can be hashes
+
+* reactivate watcher
+* Detect old manifest / show error message
 
 * Add more travis CLI rubies / thor versions?
 * documentation for template helpers
