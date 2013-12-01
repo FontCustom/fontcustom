@@ -98,7 +98,7 @@ module Fontcustom
         raise Fontcustom::Error,
           "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
       end
-      @options[:css_selector] = @options[:css_selector].strip.gsub(/[^\{\}\w]/, "-")
+      @options[:css_selector] = @options[:css_selector].strip.gsub(/[^\.#\{\}\w]/, "-")
     end
 
     def set_manifest_path
