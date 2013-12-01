@@ -2,7 +2,7 @@
 
 ### 1.3.0
 
-* store relative paths in manifest (rebuild in generator/util)
+* store relative paths in manifest
 
 * reactivate watcher
 * Detect old manifest / show error message

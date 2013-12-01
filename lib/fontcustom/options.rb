@@ -7,6 +7,7 @@ module Fontcustom
     attr_accessor :options
 
     def initialize(cli_options = {})
+      @manifest = cli_options[:manifest]
       @cli_options = symbolize_hash(cli_options)
       parse_options
     end
@@ -20,7 +21,6 @@ module Fontcustom
       merge_options
       clean_font_name
       clean_css_selector
-      set_manifest_path
       set_input_paths
       set_output_paths
       set_template_paths
@@ -34,7 +34,6 @@ module Fontcustom
         @cli_options.delete(key) if @cli_options[key] == EXAMPLE_OPTIONS[key]
       end
       @cli_options = DEFAULT_OPTIONS.dup.merge @cli_options
-      @cli_options[:project_root] ||= Dir.pwd
     end
 
     def set_config_path
@@ -54,12 +53,12 @@ module Fontcustom
         end
       else
         # fontcustom.yml is in the project_root
-        if File.exists? File.join(@cli_options[:project_root], "fontcustom.yml")
-          File.join @cli_options[:project_root], "fontcustom.yml"
+        if File.exists? File.join(project_root, "fontcustom.yml")
+          File.join project_root, "fontcustom.yml"
 
         # config/fontcustom.yml is in the project_root
-        elsif File.exists? File.join(@cli_options[:project_root], "config", "fontcustom.yml")
-          File.join @cli_options[:project_root], "config", "fontcustom.yml"
+        elsif File.exists? File.join(project_root, "config", "fontcustom.yml")
+          File.join project_root, "config", "fontcustom.yml"
 
         else
           false
@@ -84,9 +83,11 @@ module Fontcustom
       end
     end
 
+    # TODO validate keys
     def merge_options
       @cli_options.delete_if { |key, val| val == DEFAULT_OPTIONS[key] }
       @options = DEFAULT_OPTIONS.merge(@config_options).merge(@cli_options)
+      @options.delete :manifest
     end
 
     def clean_font_name
@@ -99,16 +100,6 @@ module Fontcustom
           "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
       end
       @options[:css_selector] = @options[:css_selector].strip.gsub(/[^\.#\{\}\w]/, "-")
-    end
-
-    def set_manifest_path
-      @options[:manifest] = if ! @options[:manifest].nil?
-        expand_path @options[:manifest]
-      elsif @options[:config]
-        File.join File.dirname(@options[:config]), ".fontcustom-manifest.json"
-      else
-        File.join @options[:project_root], ".fontcustom-manifest.json"
-      end
     end
 
     def set_input_paths
@@ -129,7 +120,7 @@ module Fontcustom
           @options[:input][:templates] = @options[:input][:vectors]
         end
       else
-        input = @options[:input] ? expand_path(@options[:input]) : @options[:project_root]
+        input = @options[:input] ? expand_path(@options[:input]) : project_root
         check_input input 
         @options[:input] = { :vectors => input, :templates => input }
       end
@@ -165,7 +156,7 @@ module Fontcustom
               "Output `#{relative_path(output)}` exists but isn't a directory. Check your options."
           end
         else
-          output = File.join @options[:project_root], @options[:font_name]
+          output = File.join project_root, @options[:font_name]
           say_message :debug, "Generated files will be saved to `#{relative_path(output)}/`." if @options[:debug]
         end
 

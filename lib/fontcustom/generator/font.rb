@@ -9,8 +9,8 @@ module Fontcustom
       attr_reader :manifest, :options
 
       def initialize(manifest)
-        @manifest = get_manifest(manifest)
-        @options = @manifest[:options]
+        @manifest = Fontcustom::Manifest.new manifest
+        @options = @manifest.get :options
       end
 
       def generate
@@ -32,12 +32,13 @@ module Fontcustom
       end
 
       def delete_old_fonts
-        delete_from_manifest(:fonts)
+        @manifest.delete :fonts
       end
 
       def set_glyph_info
-        codepoint = if ! @manifest[:glyphs].empty?
-          codepoints = @manifest[:glyphs].values.map { |data| data[:codepoint] }
+        manifest_glyphs = @manifest.get :glyphs
+        codepoint = if ! manifest_glyphs.empty?
+          codepoints = manifest_glyphs.values.map { |data| data[:codepoint] }
           codepoints.max + 1
         else
           0xf100
@@ -58,20 +59,18 @@ module Fontcustom
         # version/platform, so we have to sort it first
         glyphs = Hash[glyphs.sort_by { |key, val| key.to_s }]
         glyphs.each do |name, data|
-          if @manifest[:glyphs].has_key? name
-           data[:codepoint] = @manifest[:glyphs][name][:codepoint]
+          if manifest_glyphs.has_key? name
+           data[:codepoint] = manifest_glyphs[name][:codepoint]
           else
             data[:codepoint] = codepoint
             codepoint = codepoint + 1
           end
         end
-
-        @manifest[:glyphs] = glyphs
-        save_manifest
+        @manifest.set :glyphs, glyphs
       end
 
       def create_fonts
-        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@options[:manifest]}"
+        cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@manifest.manifest}"
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
@@ -84,8 +83,8 @@ module Fontcustom
         end
 
         if status.success?
-          @manifest = get_manifest
-          say_changed :create, @manifest[:fonts]
+          @manifest.reload
+          say_changed :create, @manifest.get(:fonts)
         else
           raise Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
         end

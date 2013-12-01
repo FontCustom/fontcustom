@@ -4,14 +4,18 @@ describe Fontcustom::Base do
   context "#compile" do
     context "when [:checksum][:current] equals [:checksum][:previous]" do
       it "should show 'no change' message" do
-        Fontcustom::Base.any_instance.stub :init_manifest
         Fontcustom::Base.any_instance.stub :check_fontforge
-        base = Fontcustom::Base.new({})
-        base.stub(:checksum).and_return("abc")
-        base.instance_variable_set :@manifest, {:checksum => {:previous => "abc", :current => ""}}
-        base.instance_variable_set :@options, {:quiet => false}
+        options = double("options")
+        options.stub(:options).and_return({})
+        Fontcustom::Options.stub(:new).and_return options
 
-        output = capture(:stdout) { base.compile }
+        output = capture(:stdout) do
+          base = Fontcustom::Base.new({})
+          manifest = base.instance_variable_get :@manifest
+          manifest.stub(:get).and_return :previous => "abc"
+          base.stub(:checksum).and_return "abc"
+          base.compile
+        end
         output.should match(/No changes/)
       end
     end
@@ -22,22 +26,6 @@ describe Fontcustom::Base do
       Fontcustom::Base.any_instance.stub :init_manifest
       Fontcustom::Base.any_instance.stub(:"`").and_return("")
       expect { Fontcustom::Base.new(:option => "foo") }.to raise_error Fontcustom::Error, /fontforge/
-    end
-  end
-
-  context ".init_manifest" do
-    before(:each) do
-      Fontcustom::Base.any_instance.stub :check_fontforge
-      manifest = double("manifest")
-      manifest.should_receive(:manifest).and_return(manifest_contents)
-      Fontcustom::Manifest.stub(:new).and_return manifest
-    end
-
-    it "should pass CLI options to FC::Options" do
-      opts = double "options"
-      opts.should_receive :options
-      Fontcustom::Options.should_receive(:new).with({:foo => "bar"}).and_return opts
-      Fontcustom::Base.new :foo => "bar"
     end
   end
 

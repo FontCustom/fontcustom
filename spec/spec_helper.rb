@@ -78,24 +78,21 @@ RSpec.configure do |c|
     result
   end
 
-  def live_test(cleanup = true)
+  def live_test
     testdir = fixture File.join("sandbox", "test")
-    begin
-      FileUtils.mkdir testdir
-      FileUtils.cp_r fixture("shared/vectors"), testdir
-      FileUtils.cd testdir do
-        yield(testdir)
-      end
-    ensure
-      FileUtils.rm_r testdir if cleanup
+    FileUtils.rm_r testdir
+    FileUtils.mkdir testdir
+    FileUtils.cp_r fixture("shared/vectors"), testdir
+    FileUtils.cd testdir do
+      yield(testdir)
     end
   end
 
-  def test_manifest(options = {:input => fixture("shared/vectors"), :quiet => true})
+  def test_manifest(options = { :input => "vectors", :quiet => true })
     base = Fontcustom::Base.new options
     manifest = base.instance_variable_get :@manifest
-    manifest[:checksum] = {:current => base.send(:checksum), :previous => ""}
-    base.save_manifest
-    base.instance_variable_get(:@options)[:manifest]
+    checksum = base.send :checksum
+    manifest.set :checksum, { :current => checksum, :previous => "" }
+    manifest
   end
 end

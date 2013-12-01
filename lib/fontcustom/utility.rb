@@ -4,7 +4,9 @@ require "thor/shell"
 require "thor/shell/basic"
 require "thor/shell/color"
 
-# Requires access to @options or @cli_options
+# Requires access to:
+#   @options or @cli_options
+#   @manifest
 module Fontcustom
   module Utility
     include Thor::Actions
@@ -12,17 +14,17 @@ module Fontcustom
     #
     # Hacks that allow Thor::Actions and Thor::Shell to be used in Fontcustom classes.
     #
-    
+
     def self.shell
       @shell || Thor::Shell::Color.new
     end
 
-    def behavior
-      :invoke
-    end
-
     def shell
       Fontcustom::Utility.shell
+    end
+
+    def behavior
+      :invoke
     end
 
     def say_status(*args)
@@ -30,7 +32,7 @@ module Fontcustom
     end
 
     def destination_root
-      @destination_stack ||= [_options[:project_root]]
+      @destination_stack ||= [project_root]
       @destination_stack.last
     end
 
@@ -64,21 +66,29 @@ module Fontcustom
     # Paths
     #
 
+    def project_root
+      if @manifest.is_a? String
+        File.dirname @manifest
+      else
+        File.dirname @manifest.manifest
+      end
+    end
+
     def expand_path(path)
       return path if path[0] == "/" # ignore absolute paths
-      File.expand_path File.join(_options[:project_root], path)
+      File.expand_path File.join(project_root, path)
     end
 
     # TODO Is this robust enough?
     def relative_path(path)
-      path = path.sub(_options[:project_root], "")
+      path = path.sub(project_root, "")
       path = path[1..-1] if path[0] == "/"
       path = "." if path.empty?
       path
     end
 
     #
-    # Manifest / Files
+    # File Manipulation
     #
 
     def write_file(file, content = "", message = nil, message_body = nil)
@@ -86,38 +96,6 @@ module Fontcustom
       if message
         body = message_body || relative_path(file)
         say_message message, body
-      end
-    end
-
-    def get_manifest(file = _options[:manifest])
-      begin
-        json = File.read file
-        JSON.parse(json, :symbolize_names => true)
-      rescue JSON::ParserError
-        raise Fontcustom::Error, 
-          "Couldn't parse `#{relative_path file}`. Fix the invalid "\
-          "JSON or delete the file to start from scratch."
-      end
-    end
-
-    def save_manifest
-      json = JSON.pretty_generate @manifest
-      write_file _options[:manifest], json
-    end
-
-    def delete_from_manifest(key)
-      files = @manifest[key]
-      return if files.empty?
-      begin
-        deleted = []
-        @manifest[key].each do |file|
-          remove_file file, :verbose => false
-          deleted << file
-        end
-      ensure
-        @manifest[key] = @manifest[key] - deleted
-        save_manifest
-        say_changed :delete, deleted
       end
     end
 

@@ -17,22 +17,18 @@ module Fontcustom
   # Hack to get Thor to show more helpful defaults in `fontcustom help`. These
   # are overwritten in Fontcustom::Options.
   EXAMPLE_OPTIONS = {
-    :project_root => "`pwd`",
-    :output => "PROJECT_ROOT/FONT_NAME",
-    :config => "PROJECT_ROOT/fontcustom.yml -or- PROJECT_ROOT/config/fontcustom.yml",
-    :templates => "css preview",
-    :manifest => "CONFIG_DIR/.fontcustom-manifest.json -or- PROJECT_ROOT/.fontcustom-manifest.json"
+    :output => "./FONT_NAME",
+    :config => "./fontcustom.yml -or- ./config/fontcustom.yml",
+    :templates => "css preview"
   }
 
   DEFAULT_OPTIONS = {
-    :project_root => nil,
     :input => nil,
     :output => nil,
     :config => nil,
     :templates => %w|css preview|,
     :font_name => "fontcustom",
     :css_selector => ".icon-{{glyph}}",
-    :manifest => nil,
     :preprocessor_path => nil,
     :autowidth => false,
     :no_hash => false,

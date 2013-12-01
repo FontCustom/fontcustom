@@ -9,10 +9,6 @@ module Fontcustom
 
     default_task :show_help
 
-    class_option :project_root, :aliases => "-r", :type => :string,
-      :desc => "The root context for relative paths (INPUT, OUTPUT, CONFIG).",
-      :default => EXAMPLE_OPTIONS[:project_root]
-
     class_option :output, :aliases => "-o", :type => :string,
       :desc => "Where generated files are saved. Set different locations for different file types via a configuration file.",
       :default => EXAMPLE_OPTIONS[:output]
@@ -33,10 +29,6 @@ module Fontcustom
     class_option :css_selector, :aliases => "-s", :type => :string,
       :desc => "Format of generated CSS selector. \"{{glyph}}\" is substituted for the glyph name.",
       :default => DEFAULT_OPTIONS[:css_selector]
-
-    class_option :manifest, :aliases => "-m", :type => :string,
-      :desc => "Path to a manifest of generated files. Used for garbage collection.",
-      :default => EXAMPLE_OPTIONS[:manifest]
 
     class_option :preprocessor_path, :aliases => "-p", :type => :string,
       :desc => "Optional font path for CSS proprocessor templates."

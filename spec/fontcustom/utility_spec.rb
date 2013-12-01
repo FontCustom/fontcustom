@@ -3,10 +3,11 @@ require "spec_helper"
 describe Fontcustom::Utility do
   class Generator
     include Fontcustom::Utility
-    attr_accessor :options
+    attr_accessor :options, :manifest
 
     def initialize
-      @options = { :project_root => fixture, :quiet => false }
+      @options = { :quiet => false }
+      @manifest = fixture ".fontcustom-manifest.json"
     end
   end
 
@@ -47,7 +48,7 @@ describe Fontcustom::Utility do
       path.should == "/absolute/path"
     end
 
-    it "should prepend paths with :project_root" do
+    it "should prepend paths with project_root" do
       gen = Generator.new
       path = gen.expand_path "generators"
       path.should == fixture("generators")
@@ -55,7 +56,7 @@ describe Fontcustom::Utility do
 
     it "should follow parent (../../) relative paths" do
       gen = Generator.new
-      gen.options[:project_root] = fixture "shared/vectors"
+      gen.manifest = fixture "shared/vectors/.fontcustom-manifest.json"
       path = gen.expand_path "../../generators"
       path.should == fixture("generators")
     end
@@ -68,53 +69,6 @@ describe Fontcustom::Utility do
       File.should_receive(:open).with(fixture("shared/test"), "w").and_yield file
       file.should_receive(:write).with("testing")
       gen.write_file fixture("shared/test"), "testing"
-    end
-
-    #it "should output a message"
-  end
-
-  #context "#garbage_collect" do
-    #it "should delete files from passed array"
-    #it "should update the manifest after completion"
-  #end
-
-  context "#get_manifest" do
-    it "should return a manifest hash" do
-      gen = Generator.new
-      options = { :project_root => fixture("generators"), :manifest => fixture("generators/.fontcustom-manifest.json") }
-      gen.instance_variable_set :@options, options
-      gen.get_manifest.keys.should == manifest_contents.keys
-    end
-
-    it "should raise an error if the file is empty" do
-      gen = Generator.new
-      options = { :project_root => fixture("generators"), :manifest => fixture("generators/.fontcustom-manifest-empty.json") }
-      gen.instance_variable_set :@options, options
-      expect { gen.get_manifest }.to raise_error Fontcustom::Error, /Couldn't parse/
-    end
-
-    it "should raise an error if the file is corrupted" do
-      gen = Generator.new
-      options = { :project_root => fixture("generators"), :manifest => fixture("generators/.fontcustom-manifest-corrupted.json") }
-      gen.instance_variable_set :@options, options
-      expect { gen.get_manifest }.to raise_error Fontcustom::Error, /Couldn't parse/
-    end
-  end
-
-  #context "#save_manifest" do
-    #it "should update the manifest" do
-    #end
-  #end
-
-  context "#delete_from_manifest" do
-    it "should empty key from manifest" do
-      gen = Generator.new
-      gen.stub :say_changed
-      manifest = {:fonts => %w|fonts/a.ttf fonts/a.eot fonts/a.woff fonts/a.svg|}
-      gen.instance_variable_set :@manifest, manifest
-      gen.should_receive(:save_manifest)
-      gen.delete_from_manifest :fonts
-      gen.instance_variable_get(:@manifest)[:fonts].should == []
     end
   end
 
