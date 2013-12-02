@@ -5,15 +5,17 @@ describe Fontcustom::Generator::Template do
     it "should generate templates (integration)", :integration => true do
       live_test do |testdir|
         FileUtils.cp_r fixture("generators/mixed-output"), "fontcustom"
-        manifest = test_manifest(
+        test_manifest(
           :input => "vectors", 
           :quiet => true,
           :templates => %w|preview css scss scss-rails|
         )
+        manifest = File.join testdir, ".fontcustom-manifest.json"
         Fontcustom::Generator::Font.new(manifest).generate
-        gen = Fontcustom::Generator::Template.new manifest
+        Fontcustom::Generator::Template.new(manifest).generate
 
-        gen.generate
+        content = File.read manifest
+        content.should match(/sandbox\/test\/fontcustom\/fontcustom-preview.html/)
       end
     end
   end

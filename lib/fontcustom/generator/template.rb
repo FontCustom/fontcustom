@@ -9,12 +9,12 @@ module Fontcustom
       attr_reader :manifest, :options
 
       def initialize(manifest)
-        @manifest = get_manifest(manifest)
-        @options = @manifest[:options]
+        @manifest = Fontcustom::Manifest.new manifest
+        @options = @manifest.get :options
       end
 
       def generate
-        if ! @manifest[:fonts].empty?
+        if ! @manifest.get(:fonts).empty?
           delete_old_templates
           set_relative_paths
           create_files
@@ -26,21 +26,23 @@ module Fontcustom
       private
 
       def delete_old_templates
-        delete_from_manifest(:templates)
+        @manifest.delete :templates
       end
 
       def set_relative_paths
-        name = File.basename @manifest[:fonts].first, File.extname(@manifest[:fonts].first)
-        fonts = Pathname.new @options[:output][:fonts]
-        css = Pathname.new @options[:output][:css]
-        preview = Pathname.new @options[:output][:preview]
-        @font_path = File.join fonts.relative_path_from(css).to_s, name
+        fonts = @manifest.get :fonts
+        name = File.basename fonts.first, File.extname(fonts.first)
+        fonts_path = Pathname.new @options[:output][:fonts]
+        css_path = Pathname.new @options[:output][:css]
+        preview_path = Pathname.new @options[:output][:preview]
+        @font_path = File.join fonts_path.relative_path_from(css_path).to_s, name
         @font_path_alt = @options[:preprocessor_path].nil? ? @font_path : File.join(@options[:preprocessor_path], name)
-        @font_path_preview = File.join fonts.relative_path_from(preview).to_s, name
+        @font_path_preview = File.join fonts_path.relative_path_from(preview_path).to_s, name
       end
 
       def create_files
-        @glyphs = @manifest[:glyphs]
+        @glyphs = @manifest.get :glyphs
+        existing = @manifest.get :templates
         created = []
         begin
           @options[:templates].each do |source|
@@ -54,8 +56,7 @@ module Fontcustom
           end
         ensure
           say_changed :create, created
-          @manifest[:templates] = (@manifest[:templates] + created).uniq
-          save_manifest
+          @manifest.set :templates, (existing + created).uniq
         end
       end
 
@@ -122,7 +123,7 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}\" }|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
       end

@@ -6,9 +6,9 @@
 
 * reactivate watcher
 * Detect old manifest / show error message
+* Template helper that returns a hash of glyphs and pre-formatted codes
 
 * Add more travis CLI rubies / thor versions?
-* documentation for template helpers
 * redirect fontcustom.com to github repo (use wiki for documentation)
 
 ### Future

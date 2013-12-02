@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe Fontcustom::Base do
+  before(:each) { Fontcustom::Manifest.any_instance.stub(:write_file) }
+
   context "#compile" do
     context "when [:checksum][:current] equals [:checksum][:previous]" do
       it "should show 'no change' message" do
@@ -23,7 +25,6 @@ describe Fontcustom::Base do
 
   context ".check_fontforge" do
     it "should raise error if fontforge isn't installed" do
-      Fontcustom::Base.any_instance.stub :init_manifest
       Fontcustom::Base.any_instance.stub(:"`").and_return("")
       expect { Fontcustom::Base.new(:option => "foo") }.to raise_error Fontcustom::Error, /fontforge/
     end
@@ -33,7 +34,6 @@ describe Fontcustom::Base do
     it "should return hash of all vectors and templates" do
       pending "SHA2 is different on CI servers. Why?"
       Fontcustom::Base.any_instance.stub :check_fontforge
-      Fontcustom::Base.any_instance.stub :init_manifest
       base = Fontcustom::Base.new({})
       base.instance_variable_set :@options, {
         :input => {:vectors => fixture("shared/vectors")},

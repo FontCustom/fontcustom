@@ -104,13 +104,13 @@ module Fontcustom
     #
 
     def say_message(status, message, color = nil)
-      return if _options[:quiet] && status != :error
+      return if options[:quiet] && status != :error
       color = :red if [:error, :debug, :warn].include?(status)
       say_status status, message, color
     end
 
     def say_changed(status, changed)
-      return if _options[:quiet]
+      return if options[:quiet]
       message = changed.map { |file| relative_path(file) }
       say_status status, message.join(line_break)
     end
@@ -122,7 +122,7 @@ module Fontcustom
 
     private
 
-    def _options
+    def options
       @options || @cli_options
     end
   end
