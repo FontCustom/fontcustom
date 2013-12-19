@@ -2,12 +2,14 @@
 
 ### 1.3.0
 
-* more helpful messages when running without INPUT
 * reactivate watcher
+* more helpful messages when running without INPUT
 * redirect fontcustom.com to github repo (use wiki for documentation)
 
 ### Future
 
+* Include fontcustom version in manifest / checksum
+* Error message if using the wrong version of ruby
 * Add more travis CLI rubies / thor versions?
 * Detect old manifest / show error message
 * Template helper that returns a hash of glyphs and pre-formatted codes
@@ -18,5 +20,3 @@
 * less template with variables
 * more robust fontforge check than `which`
 * remove redundant requires
-* rename options for succintness (e.g. :project_root => :root)
-* trim options specs down
