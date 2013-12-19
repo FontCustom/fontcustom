@@ -41,27 +41,6 @@ describe Fontcustom::Utility do
     end
   end
 
-  context "#expand_path" do
-    it "should leave absolute paths alone" do
-      gen = Generator.new
-      path = gen.expand_path "/absolute/path"
-      path.should == "/absolute/path"
-    end
-
-    it "should prepend paths with project_root" do
-      gen = Generator.new
-      path = gen.expand_path "generators"
-      path.should == fixture("generators")
-    end
-
-    it "should follow parent (../../) relative paths" do
-      gen = Generator.new
-      gen.manifest = fixture "shared/vectors/.fontcustom-manifest.json"
-      path = gen.expand_path "../../generators"
-      path.should == fixture("generators")
-    end
-  end
-
   context "#write_file" do
     it "should replace the contents of a file" do
       gen = Generator.new
@@ -69,20 +48,6 @@ describe Fontcustom::Utility do
       File.should_receive(:open).with(fixture("shared/test"), "w").and_yield file
       file.should_receive(:write).with("testing")
       gen.write_file fixture("shared/test"), "testing"
-    end
-  end
-
-  context "#relative_path" do
-    it "should trim project root from paths" do
-      gen = Generator.new
-      path = gen.relative_path fixture "test/path"
-      path.should == "test/path"
-    end
-
-    it "should trim beginning slash" do
-      gen = Generator.new
-      path = gen.relative_path "/test/path"
-      path.should == "test/path"
     end
   end
 

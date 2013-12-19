@@ -24,7 +24,7 @@ describe Fontcustom::Generator::Font do
         manifest = File.join Dir.pwd, ".fontcustom-manifest.json"
         Fontcustom::Generator::Font.new(manifest).generate
         Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should == 4
-        File.read(manifest).should match(/"fonts":.+sandbox\/test\/fontcustom\/fontcustom_.+\.ttf"/m)
+        File.read(manifest).should match(/"fonts":.*fontcustom\/fontcustom_.+\.ttf"/m)
       end
     end
   end

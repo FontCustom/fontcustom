@@ -15,7 +15,7 @@ describe Fontcustom::Generator::Template do
         Fontcustom::Generator::Template.new(manifest).generate
 
         content = File.read manifest
-        content.should match(/sandbox\/test\/fontcustom\/fontcustom-preview.html/)
+        content.should match(/fontcustom\/fontcustom-preview.html/)
       end
     end
   end

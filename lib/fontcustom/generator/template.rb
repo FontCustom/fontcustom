@@ -50,7 +50,7 @@ module Fontcustom
               target = template_target source
               template source, target, :verbose => false, :force => true
             rescue => e
-              raise Fontcustom::Error, "Could not generate template `#{relative_path(source)}`:#{line_break + e.message}" 
+              raise Fontcustom::Error, "Could not generate template `#{source}`:#{line_break + e.message}" 
             end
             created << target
           end

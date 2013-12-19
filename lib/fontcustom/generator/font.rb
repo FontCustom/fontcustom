@@ -26,7 +26,8 @@ module Fontcustom
         dirs = @options[:output].values.uniq
         dirs.each do |dir|
           unless File.directory? dir
-            empty_directory dir, :verbose => ! @options[:quiet]
+            empty_directory dir, :verbose => false
+            say_message :create, dir
           end
         end
       end
@@ -41,6 +42,8 @@ module Fontcustom
           codepoints = manifest_glyphs.values.map { |data| data[:codepoint] }
           codepoints.max + 1
         else
+          # Offset to work around Chrome Windows bug
+          # https://github.com/FontCustom/fontcustom/issues/1
           0xf100
         end
 
@@ -51,7 +54,7 @@ module Fontcustom
           name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
           if File.read(file).include? "rgba"
-            say_message :warn, "`#{relative_path(file)}` contains transparency and will be skipped."
+            say_message :warn, "`#{file}` contains transparency and will be skipped."
           end
         end
 

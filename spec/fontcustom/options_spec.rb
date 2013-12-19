@@ -26,40 +26,52 @@ describe Fontcustom::Options do
   context ".set_config_path" do
     context "when :config is set" do
       it "should use options[:config] if it's a file" do
-        o = options :config => "options/any-file-name.yml"
-        o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == fixture("options/any-file-name.yml")
+        FileUtils.cd fixture do
+          o = options :config => "options/any-file-name.yml"
+          o.send :set_config_path
+          o.instance_variable_get(:@cli_options)[:config].should == "options/any-file-name.yml"
+        end
       end
 
       it "should search for fontcustom.yml if options[:config] is a dir" do
-        o = options :config => "options/config-is-in-dir"
-        o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == fixture("options/config-is-in-dir/fontcustom.yml")
+        FileUtils.cd fixture do
+          o = options :config => "options/config-is-in-dir"
+          o.send :set_config_path
+          o.instance_variable_get(:@cli_options)[:config].should == "options/config-is-in-dir/fontcustom.yml"
+        end
       end
 
       it "should raise error if :config doesn't exist" do
-        o = options :config => "does-not-exist"
-        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file/
+        FileUtils.cd fixture do
+          o = options :config => "does-not-exist"
+          expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file/
+        end
       end
     end
 
     context "when :config is not set" do
       it "should find fontcustom.yml in the same dir as the manifest" do
-        o = options :manifest => fixture("options/.fontcustom-manifest.json")
-        o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == fixture("options/fontcustom.yml")
+        FileUtils.cd fixture("options") do
+          o = options
+          o.send :set_config_path
+          o.instance_variable_get(:@cli_options)[:config].should == "fontcustom.yml"
+        end
       end
 
       it "should find fontcustom.yml at config/fontcustom.yml" do
-        o = options :manifest => fixture("options/rails-like/.fontcustom-manifest.json")
-        o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == fixture("options/rails-like/config/fontcustom.yml")
+        FileUtils.cd fixture("options/rails-like") do
+          o = options
+          o.send :set_config_path
+          o.instance_variable_get(:@cli_options)[:config].should == "config/fontcustom.yml"
+        end
       end
 
       it "should be false if nothing is found" do
-        o = options :manifest => fixture("options/no-config-here/.fontcustom-manifest.json")
-        o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == false
+        FileUtils.cd fixture do
+          o = options :manifest => "options/no-config-here/.fontcustom-manifest.json"
+          o.send :set_config_path
+          o.instance_variable_get(:@cli_options)[:config].should == false
+        end
       end
     end
   end
@@ -127,81 +139,87 @@ describe Fontcustom::Options do
 
   context ".set_input_paths" do
     it "should raise error if input[:vectors] doesn't contain SVGs" do
-      o = options
-      o.options = { :input => "shared/vectors-empty" }
-      expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /doesn't contain any SVGs/
+      FileUtils.cd fixture("shared") do
+        o = options
+        o.options = { :input => "vectors-empty" }
+        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /doesn't contain any SVGs/
+      end
     end
 
     context "when :input is a hash" do
       it "should set :templates as :vectors if :templates isn't set" do
-        o = options
-        o.options = { :input => { :vectors => "shared/vectors" } }
-        o.send :set_input_paths
-        o.options[:input][:templates].should == fixture("shared/vectors")
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = { :input => { :vectors => "vectors" } }
+          o.send :set_input_paths
+          o.options[:input][:templates].should == "vectors"
+        end
       end
 
       it "should preserve :templates if it's set" do
-        o = options
-        o.options = { :input => { :vectors => "shared/vectors", :templates => "shared/templates" } }
-        o.send :set_input_paths
-        o.options[:input][:templates].should == fixture("shared/templates")
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = { :input => { :vectors => "vectors", :templates => "templates" } }
+          o.send :set_input_paths
+          o.options[:input][:templates].should == "templates"
+        end
       end
 
       it "should raise an error if :vectors isn't set" do
-        o = options
-        o.options = {
-          :config => "fontcustom.yml",
-          :input => { :templates => "shared/templates" }
-        }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /have a :vectors key/
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = { :input => { :templates => "templates" } }
+          expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /have a :vectors key/
+        end
       end
 
       it "should raise an error if :vectors doesn't point to an existing directory" do
-        o = options
-        o.options = {
-          :config => "fontcustom.yml",
-          :input => { :vectors => "shared/not-a-dir" }
-        }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = {
+            :config => "fontcustom.yml",
+            :input => { :vectors => "not-a-dir" }
+          }
+          expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        end
       end
     end
 
     context "when :input is a string" do
       it "should return a hash of locations" do
-        o = options
-        o.options = { :input => "shared/vectors" }
-        o.send :set_input_paths
-        o.options[:input].should have_key(:vectors)
-        o.options[:input].should have_key(:templates)
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = { :input => "vectors" }
+          o.send :set_input_paths
+          o.options[:input].should have_key(:vectors)
+          o.options[:input].should have_key(:templates)
+        end
       end
 
       it "should set :templates to match :vectors" do
-        o = options
-        o.options = { :input => "shared/vectors" }
-        o.send :set_input_paths
-        o.options[:input][:templates].should == fixture("shared/vectors")
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = { :input => "vectors" }
+          o.send :set_input_paths
+          o.options[:input][:templates].should == "vectors"
+        end
       end
 
       it "should raise an error if :vectors doesn't point to a directory" do
-        o = options
-        o.options = {
-          :config => "fontcustom.yml",
-          :input => "shared/not-a-dir"
-        }
-        expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = {
+            :config => "fontcustom.yml",
+            :input => "not-a-dir"
+          }
+          expect { o.send :set_input_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        end
       end
     end
   end
 
   context ".set_output_paths" do
     context "when :output is nil" do
-      it "should default to project_root/:font_name" do
-        o = options
-        o.options = { :font_name => "Test-Font" }
-        o.send :set_output_paths
-        o.options[:output][:fonts].should == fixture("Test-Font")
-      end
-
       context "when :debug is true" do
         it "should print a warning" do
           o = options
@@ -220,13 +238,13 @@ describe Fontcustom::Options do
         o = options
         o.options = { :output => { :fonts => "output/fonts" } }
         o.send :set_output_paths
-        o.options[:output][:css].should == fixture("output/fonts")
-        o.options[:output][:preview].should == fixture("output/fonts")
+        o.options[:output][:css].should == "output/fonts"
+        o.options[:output][:preview].should == "output/fonts"
       end
 
       it "should preserve :css and :preview if they do exist" do
         o = options
-        o.options = { 
+        o.options = {
           :output => {
             :fonts => "output/fonts",
             :css => "output/styles",
@@ -234,20 +252,20 @@ describe Fontcustom::Options do
           }
         }
         o.send :set_output_paths
-        o.options[:output][:css].should == fixture("output/styles")
-        o.options[:output][:preview].should == fixture("output/preview")
+        o.options[:output][:css].should == "output/styles"
+        o.options[:output][:preview].should == "output/preview"
       end
 
       it "should create additional paths if they are given" do
         o = options
-        o.options = { 
+        o.options = {
           :output => {
             :fonts => "output/fonts",
             "special.js" => "assets/javascripts"
           }
         }
         o.send :set_output_paths
-        o.options[:output][:"special.js"].should == fixture("assets/javascripts")
+        o.options[:output][:"special.js"].should == "assets/javascripts"
       end
 
       it "should raise an error if :fonts isn't set" do
@@ -275,17 +293,19 @@ describe Fontcustom::Options do
         o = options
         o.options = { :output => "output/fonts" }
         o.send :set_output_paths
-        o.options[:output][:css].should == fixture("output/fonts")
-        o.options[:output][:preview].should == fixture("output/fonts")
+        o.options[:output][:css].should == "output/fonts"
+        o.options[:output][:preview].should == "output/fonts"
       end
 
       it "should raise an error if :fonts exists but isn't a directory" do
-        o = options
-        o.options = {
-          :config => "fontcustom.yml",
-          :output => "shared/not-a-dir"
-        }
-        expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        FileUtils.cd fixture("shared") do
+          o = options
+          o.options = {
+            :config => "fontcustom.yml",
+            :output => "not-a-dir"
+          }
+          expect { o.send :set_output_paths }.to raise_error Fontcustom::Error, /isn't a directory/
+        end
       end
     end
   end

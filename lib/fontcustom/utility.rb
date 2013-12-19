@@ -74,19 +74,6 @@ module Fontcustom
       end
     end
 
-    def expand_path(path)
-      return path if path[0] == "/" # ignore absolute paths
-      File.expand_path File.join(project_root, path)
-    end
-
-    # TODO Is this robust enough?
-    def relative_path(path)
-      path = path.sub(project_root, "")
-      path = path[1..-1] if path[0] == "/"
-      path = "." if path.empty?
-      path
-    end
-
     #
     # File Manipulation
     #
@@ -94,7 +81,7 @@ module Fontcustom
     def write_file(file, content = "", message = nil, message_body = nil)
       File.open(file, "w") { |f| f.write(content) }
       if message
-        body = message_body || relative_path(file)
+        body = message_body || file
         say_message message, body
       end
     end
@@ -111,8 +98,7 @@ module Fontcustom
 
     def say_changed(status, changed)
       return if options[:quiet]
-      message = changed.map { |file| relative_path(file) }
-      say_status status, message.join(line_break)
+      say_status status, changed.join(line_break)
     end
 
    # magic number for Thor say_status line breaks
