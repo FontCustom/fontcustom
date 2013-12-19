@@ -23,7 +23,7 @@ module Fontcustom
       clean_css_selector
       set_input_paths
       set_output_paths
-      set_template_paths
+      check_template_paths
     end
 
     # We give Thor fake defaults to generate more useful help messages.
@@ -157,39 +157,13 @@ module Fontcustom
       end
     end
 
-    # Translates shorthand to full path of packages templates, otherwise,
-    # it checks input and pwd for the template.
-    #
-    # Could arguably belong in Generator::Template, however, it's nice to
-    # be able to catch template errors before any generator runs.
-    def set_template_paths
-      template_path = File.join Fontcustom.gem_lib, "templates"
-
-      @options[:templates] = @options[:templates].map do |template|
-        case template
-        when "preview"
-          File.join template_path, "fontcustom-preview.html"
-        when "css"
-          File.join template_path, "fontcustom.css"
-        when "scss"
-          File.join template_path, "_fontcustom.scss"
-        when "scss-rails"
-          File.join template_path, "_fontcustom-rails.scss"
-        when "bootstrap"
-          File.join template_path, "fontcustom-bootstrap.css"
-        when "bootstrap-scss"
-          File.join template_path, "_fontcustom-bootstrap.scss"
-        when "bootstrap-ie7"
-          File.join template_path, "fontcustom-bootstrap-ie7.css"
-        when "bootstrap-ie7-scss"
-          File.join template_path, "_fontcustom-bootstrap-ie7.scss"
-        else
-          template = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
-          unless File.exists? template
-            raise Fontcustom::Error,
-              "Custom template `#{template}` doesn't exist. Check your options."
-          end
-          template
+    def check_template_paths
+      @options[:templates].each do |template|
+        next if %w|preview css scss scss-rails|.include? template
+        path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
+        unless File.exists? path
+          raise Fontcustom::Error,
+            "Custom template `#{template}` doesn't exist. Check your options."
         end
       end
     end

@@ -47,10 +47,9 @@ module Fontcustom
         begin
           @options[:templates].each do |source|
             begin
-              target = template_target source
+              source = get_source_path(source)
+              target = get_target_path(source)
               template source, target, :verbose => false, :force => true
-            rescue => e
-              raise Fontcustom::Error, "Could not generate template `#{source}`:#{line_break + e.message}" 
             end
             created << target
           end
@@ -60,26 +59,44 @@ module Fontcustom
         end
       end
 
-      def template_target(source)
-        packaged = %w|fontcustom.css _fontcustom.scss _fontcustom-rails.scss fontcustom-preview.html|
-        css_exts = %w|.css .scss .sass .less .stylus|
-        name = File.basename source
-        ext = File.extname source
-        target = name.dup
+      def get_source_path(template)
+        template_path = File.join Fontcustom.gem_lib, "templates"
 
-        if packaged.include?(name) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
+        case template
+        when "preview"
+          File.join template_path, "fontcustom-preview.html"
+        when "css"
+          File.join template_path, "fontcustom.css"
+        when "scss"
+          File.join template_path, "_fontcustom.scss"
+        when "scss-rails"
+          File.join template_path, "_fontcustom-rails.scss"
+        else
+          File.join @options[:input][:templates], template
+        end
+      end
+
+      def get_target_path(source)
+        ext = File.extname source
+        base = File.basename source
+        css_exts = %w|.css .scss .sass .less .stylus|
+        packaged = %w|fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss|
+
+        target = if @options[:output].keys.include? base.to_sym
+          File.join @options[:output][base.to_sym], source
+        elsif ext && css_exts.include?(ext)
+          File.join @options[:output][:css], base
+        elsif source.match(/fontcustom-preview\.html/)
+          File.join @options[:output][:preview], base
+        else
+          File.join @options[:output][:fonts], base
+        end
+
+        if packaged.include?(base) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
           target.sub! DEFAULT_OPTIONS[:font_name], @options[:font_name]
         end
 
-        if @options[:output].keys.include? name.to_sym
-          File.join @options[:output][name.to_sym], target
-        elsif css_exts.include? ext
-          File.join @options[:output][:css], target
-        elsif name == "fontcustom-preview.html"
-          File.join @options[:output][:preview], target
-        else
-          File.join @options[:output][:fonts], target
-        end
+        target
       end
 
       #

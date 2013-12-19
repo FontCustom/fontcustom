@@ -37,7 +37,7 @@ module Fontcustom
     end
 
     def source_paths
-      @source_paths ||= [File.join(Fontcustom.gem_lib, "templates")]
+      @source_paths ||= [File.join(Fontcustom.gem_lib, "templates"), Dir.pwd]
     end
 
     #

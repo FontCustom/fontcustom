@@ -310,43 +310,14 @@ describe Fontcustom::Options do
     end
   end
 
-  context ".set_template_paths" do
-    it "should expand shorthand for packaged templates" do
-      o = options
-      o.options = {
-        :input => { :templates => "shared/templates" },
-        :templates => %w|preview css scss scss-rails bootstrap bootstrap-scss bootstrap-ie7 bootstrap-ie7-scss|
-      }
-      o.send :set_template_paths
-      o.options[:templates].should =~ [
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-preview.html"),
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom.css"),
-        File.join(Fontcustom.gem_lib, "templates", "_fontcustom.scss"),
-        File.join(Fontcustom.gem_lib, "templates", "_fontcustom-rails.scss"),
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-bootstrap.css"),
-        File.join(Fontcustom.gem_lib, "templates", "_fontcustom-bootstrap.scss"),
-        File.join(Fontcustom.gem_lib, "templates", "fontcustom-bootstrap-ie7.css"),
-        File.join(Fontcustom.gem_lib, "templates", "_fontcustom-bootstrap-ie7.scss")
-      ]
-    end
-
-    it "should find custom templates in :template_path" do
-      o = options
-      o.options = {
-        :input => { :templates => fixture("shared/templates") },
-        :templates => %w|custom.css|
-      }
-      o.send :set_template_paths
-      o.options[:templates].should =~ [fixture("shared/templates/custom.css")]
-    end
-
+  context ".check_template_paths" do
     it "should raise an error if a template does not exist" do
       o = options
       o.options = {
         :input => { :templates => fixture("shared/templates") },
         :templates => %w|fake-template.txt|
       }
-      expect { o.send :set_template_paths }.to raise_error Fontcustom::Error, /doesn't exist/
+      expect { o.send :check_template_paths }.to raise_error Fontcustom::Error, /doesn't exist/
     end
   end
 end
