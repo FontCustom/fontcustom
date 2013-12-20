@@ -4,8 +4,6 @@ module Fontcustom
   class Options
     include Utility
 
-    attr_accessor :options
-
     def initialize(cli_options = {})
       @manifest = cli_options[:manifest]
       @cli_options = symbolize_hash(cli_options)
@@ -60,11 +58,11 @@ module Fontcustom
     def load_config
       @config_options = {}
       if @cli_options[:config]
-        say_message :debug, "Using settings from `#{@cli_options[:config]}`." if @cli_options[:debug]
         begin
           config = YAML.load File.open(@cli_options[:config])
           if config # empty YAML returns false
             @config_options = symbolize_hash(config)
+            say_message :debug, "Using settings from `#{@cli_options[:config]}`." if @cli_options[:debug] || @config_options[:debug]
           else
             say_message :warn, "`#{@cli_options[:config]}` was empty. Using defaults."
           end
@@ -109,7 +107,12 @@ module Fontcustom
           @options[:input][:templates] = @options[:input][:vectors]
         end
       else
-        input = @options[:input] ? @options[:input] : "."
+        if @options[:input]
+          input = @options[:input]
+        else
+          input = "."
+          say_message :warn, "No input directory given. Using present working directory."
+        end
         check_input input
         @options[:input] = { :vectors => input, :templates => input }
       end
@@ -163,7 +166,7 @@ module Fontcustom
         path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
         unless File.exists? path
           raise Fontcustom::Error,
-            "Custom template `#{template}` doesn't exist. Check your options."
+            "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."
         end
       end
     end

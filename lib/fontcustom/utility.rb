@@ -106,10 +106,8 @@ module Fontcustom
       "\n#{" " * 14}"
     end
 
-    private
-
     def options
-      @options || @cli_options
+      @options || @cli_options || @config_options || {}
     end
   end
 end

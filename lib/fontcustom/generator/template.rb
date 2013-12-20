@@ -6,7 +6,7 @@ module Fontcustom
     class Template
       include Utility
 
-      attr_reader :manifest, :options
+      attr_reader :manifest
 
       def initialize(manifest)
         @manifest = Fontcustom::Manifest.new manifest

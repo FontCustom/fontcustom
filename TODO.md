@@ -3,7 +3,6 @@
 ### 1.3.0
 
 * reactivate watcher
-* more helpful messages when running without INPUT
 
 * redirect fontcustom.com to github repo (use wiki for documentation)
 * fix failing travis-ci specs
