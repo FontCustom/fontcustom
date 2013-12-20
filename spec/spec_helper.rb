@@ -8,30 +8,30 @@ RSpec.configure do |c|
     File.join(File.expand_path("../fixtures", __FILE__), path)
   end
 
-  def manifest_contents(root = Dir.pwd)
+  def manifest_contents
     {
       :checksum => {
         :current => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c", 
         :previous => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c"
       },
       :fonts => [
-        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.ttf",
-        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.svg",
-        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.woff",
-        "#{root}/fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.eot"
+        "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.ttf",
+        "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.svg",
+        "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.woff",
+        "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.eot"
       ],
       :glyphs => {
         :"a_r3ally-exotic-f1le-name" => {
           :codepoint => 61696,
-          :source => "#{root}/vectors/a_R3ally-eXotic f1Le Name.svg"
+          :source => "vectors/a_R3ally-eXotic f1Le Name.svg"
         },
         :c => {
           :codepoint => 61697,
-          :source => "#{root}/vectors/C.svg"
+          :source => "vectors/C.svg"
         },  
         :d => {
           :codepoint => 61698,
-          :source => "#{root}/vectors/D.svg"}
+          :source => "vectors/D.svg"}
         },
       :options => {
         :autowidth => false,
@@ -39,23 +39,23 @@ RSpec.configure do |c|
         :css_selector => ".icon-{{glyph}}",
         :debug => false,
         :font_name => "fontcustom",
+        :force => true,
         :input => {
-          :templates => "#{root}/vectors",
-          :vectors => "#{root}/vectors"
+          :templates => "vectors",
+          :vectors => "vectors"
         },
-        :manifest => "#{root}/.fontcustom-manifest.json",
         :no_hash => false,
         :output => {
-          :css => "#{root}/fontcustom",
-          :fonts => "#{root}/fontcustom",
-          :preview => "#{root}/fontcustom"
+          :css => "fontcustom",
+          :fonts => "fontcustom",
+          :preview => "fontcustom"
         },
         :preprocessor_path => nil,
-        :project_root => "#{root}",
         :quiet => true,
         :templates => [
-          "#{Fontcustom.gem_lib}/templates/fontcustom.css",
-          "#{Fontcustom.gem_lib}/templates/fontcustom-preview.html"
+          "css",
+          "scss",
+          "preview"
         ]
       },
       :templates => []

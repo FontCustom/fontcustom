@@ -2,11 +2,11 @@
 
 ### 1.3.0
 
-* update manifest content in spec_helper
-* fix failing travis-ci specs
 * reactivate watcher
 * more helpful messages when running without INPUT
+
 * redirect fontcustom.com to github repo (use wiki for documentation)
+* fix failing travis-ci specs
 
 ### Future
 
