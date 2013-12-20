@@ -123,7 +123,7 @@ subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -
 subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
 
 # Hint the TTF file
-subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+subprocess.call('ttfautohint -s -f -n -W ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
 
 # Describe output in JSON
 outname = os.path.basename(fontfile)
