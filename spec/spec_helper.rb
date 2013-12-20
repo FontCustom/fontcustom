@@ -80,7 +80,7 @@ RSpec.configure do |c|
 
   def live_test
     testdir = fixture File.join("sandbox", "test")
-    FileUtils.rm_r testdir
+    FileUtils.rm_r testdir if File.directory?(testdir)
     FileUtils.mkdir testdir
     FileUtils.cp_r fixture("shared/vectors"), testdir
     FileUtils.cd testdir do
