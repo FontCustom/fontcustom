@@ -109,6 +109,9 @@ svgfile.seek(0)
 svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
 svgfile.close()
 
+# Hint the TTF file
+subprocess.call('ttfautohint -s -f -n -W ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+
 scriptPath = os.path.dirname(os.path.realpath(__file__))
 try:
     subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
@@ -121,9 +124,6 @@ except OSError:
 # eotlitetool.py script to generate IE7-compatible .eot fonts
 subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
 subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
-
-# Hint the TTF file
-subprocess.call('ttfautohint -s -f -n -W ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
 
 # Describe output in JSON
 outname = os.path.basename(fontfile)
