@@ -91,7 +91,7 @@ module Fontcustom
     #
 
     def say_message(status, message, color = nil)
-      return if options[:quiet] && status != :error
+      return if options[:quiet] && status != :error && status != :debug
       color = :red if [:error, :debug, :warn].include?(status)
       say_status status, message, color
     end
@@ -107,7 +107,11 @@ module Fontcustom
     end
 
     def options
-      @options || @cli_options || @config_options || {}
+      if @data
+        @data[:options]
+      else
+        @options || @cli_options || @config_options || {}
+      end
     end
   end
 end
