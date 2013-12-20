@@ -4,42 +4,34 @@
 #   `fontcustom help` or visiting <http://fontcustom.com>.
 # --------------------------------------------------------------------------- #
 
-#font_name: fontcustom
-#css_selector: .icon-{{glyph}}
-#preprocessor_path: ""
-#autowidth: false
-#no_hash: false
-#force: false
-#debug: false
-#quiet: false
+font_name: fontcustom
+css_selector: .icon-{{glyph}}
+preprocessor_path: ""
+autowidth: false
+no_hash: false
+force: false
+debug: false
+quiet: false
 
 
 # --------------------------------------------------------------------------- #
 # Input Paths
 # --------------------------------------------------------------------------- #
 
-#input: assets/fonts/fontcustom/source                  # as a string
-
-# OR
-
-#input:                                                 # as a hash
-#  vectors: app/assets/fonts/fontcustom/vectors         # required
-#  templates: app/assets/fonts/fontcustom/templates
+input:
+  vectors: app/assets/fonts/fontcustom/vectors         # required
+  templates: app/assets/fonts/fontcustom/templates
 
 
 # --------------------------------------------------------------------------- #
 # Output Paths
 # --------------------------------------------------------------------------- #
 
-#output: assets/fonts/fontcustom                        # as a string
-
-# OR
-
-#output:                                                # as a hash
-#  fonts: app/assets/fonts                              # required
-#  css: app/assets/stylesheets
-#  preview: app/views/styleguide
-#  my-custom-template.yml: config
+output:
+  fonts: app/assets/fonts                              # required
+  css: app/assets/stylesheets
+  preview: app/views/styleguide
+  #my-custom-template.yml: path/to/template/output
 
 
 # --------------------------------------------------------------------------- #
@@ -49,7 +41,7 @@
 #   referenced by their baserame.
 # --------------------------------------------------------------------------- #
 
-#templates:
-# - scss
-# - preview
-# - my-custom-template.yml
+templates:
+ - scss
+ - preview
+ #- my-custom-template.yml

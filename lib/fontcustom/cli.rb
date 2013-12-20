@@ -74,7 +74,7 @@ module Fontcustom
       say_status :error, e.message, :red
     end
 
-    desc "config [DIR]", "Generates an annotated configuration file (fontcustom.yml) in DIR. Default: `pwd`"
+    desc "config [DIR]", "Generates a starter configuration file (fontcustom.yml) in DIR. Default: `pwd`"
     def config(dir = Dir.pwd)
       template "fontcustom.yml", File.join(dir, "fontcustom.yml")
     end
