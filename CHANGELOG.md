@@ -1,18 +1,20 @@
-## 1.3.0.beta (11/25/2013)
+## 1.3.0 (12/24/2013)
 
-**Delete your old `.fontcustom-manifest.json` and output directories before using this version.**
+**If upgrading from 1.2.0, delete your old `.fontcustom-manifest.json` and output directories first.**
 
-The big news: fixed glyph code points. Automatically assigned for now, but changing them by hand is just a matter of modifying the generated `.fontcustom-manifest.json`. A few breaking changes (`css_prefix`, custom template syntax, possibly others). Error messages and docs are currently sparse — my apologies in advance.
+The big news: fixed glyph code points. Automatically assigned for now, but changing them by hand is just a matter of modifying the generated `.fontcustom-manifest.json`. A few breaking changes (`css_prefix`, custom template syntax, possibly others).
 
-* Fixed glyph code points ([#56](https://github.com/FontCustom/fontcustom/issues/56))
+* Adds fixed glyph code points ([#56](https://github.com/FontCustom/fontcustom/issues/56))
+* Drops bootstrap templates (maintenance overhead, unsure if anyone was using them)
+* Stores relative paths for collaborative editing ([#149](https://github.com/FontCustom/fontcustom/pull/149))
 * Changes `css_prefix` to `css_selector` to allow greater flexibility ([#126](https://github.com/FontCustom/fontcustom/pull/126))
 * Skips compilation if inputs have not changed (and `force` option to bypass checks)
 * Adds CSS template helpers for convenience and DRYness
-* Drops bootstrap templates (maintenance overhead, unsure if anyone was using them)
-
-Next up:
-
-* Storing relative paths for collaborative editing ([#149](https://github.com/FontCustom/fontcustom/pull/149))
+* Improves rendering on Chrome Windows ([#143](https://github.com/FontCustom/fontcustom/pull/143))
+* Improves Windows hinting ([#160](https://github.com/FontCustom/fontcustom/pull/160))
+* Fixes Python 2.6 optsparse syntax ([#159](https://github.com/FontCustom/fontcustom/issues/159))
+* Fixes bug where changes in custom templates were not detected by `watch`
+* Improves error and debuggging messages
 
 ## 1.2.0 (11/2/2013)
 
