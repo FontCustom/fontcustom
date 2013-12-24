@@ -102,8 +102,8 @@ module Fontcustom
     end
 
    # magic number for Thor say_status line breaks
-    def line_break
-      "\n#{" " * 14}"
+    def line_break(n = 14)
+      "\n#{" " * n}"
     end
 
     def options

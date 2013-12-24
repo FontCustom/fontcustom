@@ -1,4 +1,5 @@
 require "yaml"
+require "pp"
 
 module Fontcustom
   class Options
@@ -22,6 +23,7 @@ module Fontcustom
       set_input_paths
       set_output_paths
       check_template_paths
+      print_debug if @options[:debug]
     end
 
     # We give Thor fake defaults to generate more useful help messages.
@@ -179,6 +181,12 @@ module Fontcustom
         raise Fontcustom::Error,
           "Input `#{dir}` isn't a directory. Check your options."
       end
+    end
+
+    def print_debug
+      message = line_break(16) 
+      message << @options.pretty_inspect.split("\n ").join(line_break(16))
+      say_message :debug, "Using options:#{message}"
     end
   end
 end
