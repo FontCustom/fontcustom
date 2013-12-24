@@ -2,10 +2,7 @@
 
 ### 1.3.0
 
-* reactivate watcher
-
 * redirect fontcustom.com to github repo (use wiki for documentation)
-* fix failing travis-ci specs
 
 ### Future
 

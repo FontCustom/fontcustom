@@ -4,6 +4,11 @@ require "fileutils"
 require File.expand_path("../../lib/fontcustom.rb", __FILE__)
 
 RSpec.configure do |c|
+  c.before(:all) do
+    FileUtils.cd fixture
+    puts "Running `cd #{Dir.pwd}`"
+  end
+
   def fixture(path = "")
     File.join(File.expand_path("../fixtures", __FILE__), path)
   end

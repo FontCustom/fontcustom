@@ -5,31 +5,29 @@ module Fontcustom
   class Watcher
     include Utility
 
-    def initialize(opts)
-      @opts = opts
-      @vector_listener = Listen.to(@opts.input[:vectors]).relative_paths(true).filter(/\.(eps|svg)$/).change(&callback)
+    def initialize(options, is_test = false)
+      @base = Fontcustom::Base.new options
+      @options = @base.options
+      @is_test = is_test
 
-      templates = @opts.templates.dup
-      templates.delete_if do |template|
-        template.match Fontcustom.gem_lib
-      end
-      unless templates.empty?
-        templates = templates.map do |template|
-          File.basename template
-        end
-        @template_listener = Listen.to(@opts.input[:templates]).relative_paths(true).filter(/(#{templates.join("|")})/).change(&callback)
+      templates = @options[:templates].dup.map { |template| File.basename(template) }
+      packaged = %w|preview css scss scss-rails|
+      templates.delete_if { |template| packaged.include?(template) }
+
+      if templates.empty?
+        @listener = Listen.to(@options[:input][:vectors])
+      else
+        @listener = Listen.to(@options[:input][:vectors], @options[:input][:templates])
       end
 
-      # Modified to allow testing
-      @is_test = @opts.instance_variable_get :@is_test
-      if @is_test
-        @vector_listener = @vector_listener.polling_fallback_message(false)
-        @template_listener = @template_listener.polling_fallback_message(false) if @template_listener
-      end
+      @listener = @listener.relative_paths(true)
+      @listener = @listener.filter(/(#{templates.join("|")}|.+\.svg)$/)
+      @listener = @listener.change(&callback)
+      @listener = @listener.polling_fallback_message(false) if @is_test
     end
 
     def watch
-      compile unless @opts.skip_first
+      compile unless @options[:skip_first]
       start
     rescue SignalException # Catches Ctrl + C
       stop
@@ -39,18 +37,15 @@ module Fontcustom
 
     def start
       if @is_test # Non-blocking listener
-        @vector_listener.start
-        @template_listener.start if @template_listener
+        @listener.start
       else
-        @vector_listener.start!
-        @template_listener.start! if @template_listener
+        @listener.start!
       end
     end
 
     def stop
-      @vector_listener.stop
-      @template_listener.stop if @template_listener
-      say "\nFont Custom is signing off. Good night and good luck.", :yellow
+      @listener.stop
+      shell.say "\nFont Custom is signing off. Good night and good luck.", :yellow
     end
 
     def callback
@@ -68,17 +63,7 @@ module Fontcustom
     end
 
     def compile
-      Generator::Font.start [@opts]
-      Generator::Template.start [@opts]
-    end
-
-    def say(*args)
-      return if @opts.quiet
-      @opts.instance_variable_get(:@shell).say *args
-    end
-
-    def say_message(*args)
-      @opts.say_message *args
+      @base.compile
     end
   end
 end

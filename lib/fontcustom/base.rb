@@ -15,13 +15,15 @@ module Fontcustom
     def compile
       current = checksum
       previous = @manifest.get(:checksum)[:previous]
+
+      say_message :status, "Forcing compile." if @options[:force]
       if @options[:force] || current != previous
         @manifest.set :checksum, {:previous => previous, :current => current}
         start_generators
         @manifest.reload
         @manifest.set :checksum, {:previous => current, :current => current}
       else
-        say_message :status, "No changes detected. Skipping compilation."
+        say_message :status, "No changes detected. Skipping compile."
       end
     end
 

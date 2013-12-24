@@ -26,26 +26,20 @@ describe Fontcustom::Options do
   context ".set_config_path" do
     context "when :config is set" do
       it "should use options[:config] if it's a file" do
-        FileUtils.cd fixture do
-          o = options :config => "options/any-file-name.yml"
-          o.send :set_config_path
-          o.instance_variable_get(:@cli_options)[:config].should == "options/any-file-name.yml"
-        end
+        o = options :config => "options/any-file-name.yml"
+        o.send :set_config_path
+        o.instance_variable_get(:@cli_options)[:config].should == "options/any-file-name.yml"
       end
 
       it "should search for fontcustom.yml if options[:config] is a dir" do
-        FileUtils.cd fixture do
-          o = options :config => "options/config-is-in-dir"
-          o.send :set_config_path
-          o.instance_variable_get(:@cli_options)[:config].should == "options/config-is-in-dir/fontcustom.yml"
-        end
+        o = options :config => "options/config-is-in-dir"
+        o.send :set_config_path
+        o.instance_variable_get(:@cli_options)[:config].should == "options/config-is-in-dir/fontcustom.yml"
       end
 
       it "should raise error if :config doesn't exist" do
-        FileUtils.cd fixture do
-          o = options :config => "does-not-exist"
-          expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file/
-        end
+        o = options :config => "does-not-exist"
+        expect { o.send :set_config_path }.to raise_error Fontcustom::Error, /configuration file/
       end
     end
 
@@ -67,11 +61,9 @@ describe Fontcustom::Options do
       end
 
       it "should be false if nothing is found" do
-        FileUtils.cd fixture do
-          o = options :manifest => "options/no-config-here/.fontcustom-manifest.json"
-          o.send :set_config_path
-          o.instance_variable_get(:@cli_options)[:config].should == false
-        end
+        o = options :manifest => "options/no-config-here/.fontcustom-manifest.json"
+        o.send :set_config_path
+        o.instance_variable_get(:@cli_options)[:config].should == false
       end
     end
   end

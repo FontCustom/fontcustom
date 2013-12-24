@@ -4,27 +4,27 @@ require "fontcustom/watcher"
 
 describe Fontcustom::Watcher do
   # Silence messages without passing :quiet => true to everything
-  before(:each) do
-    Fontcustom::Options.any_instance.stub :say_message
-  end
+  #before(:each) do
+    #Fontcustom::Options.any_instance.stub :say_message
+  #end
 
   def watcher(options)
-    Fontcustom::Generator::Font.stub :start
-    Fontcustom::Generator::Template.stub :start
-    opts = Fontcustom::Options.new(options)
-    opts.instance_variable_set :@is_test, true # undocumented — non-blocking use of watcher for testing
-    Fontcustom::Watcher.new opts
+    Fontcustom::Manifest.any_instance.stub :write_file
+    Fontcustom::Base.any_instance.stub :compile
+
+    # undocumented — non-blocking use of watcher for testing
+    Fontcustom::Watcher.new options, true
   end
 
   context "#watch" do
-    it "should call generators on init" do
-      Fontcustom::Generator::Font.should_receive(:start).once
-      Fontcustom::Generator::Template.should_receive(:start).once
+    it "should compile on init" do
+      Fontcustom::Base.any_instance.should_receive(:compile).once
+
       w = watcher(
-        :project_root => fixture,
         :input => "shared/vectors",
         :output => "output"
       )
+
       # silence output
       capture(:stdout) do
         w.watch
@@ -33,14 +33,14 @@ describe Fontcustom::Watcher do
     end
 
     it "should not call generators on init if options[:skip_first] is passed" do
-      Fontcustom::Generator::Font.should_not_receive(:start)
-      Fontcustom::Generator::Template.should_not_receive(:start)
+      Fontcustom::Base.any_instance.should_not_receive(:compile)
+
       w = watcher(
-        :project_root => fixture,
         :input => "shared/vectors",
         :output => "output",
         :skip_first => true
       )
+
       capture(:stdout) do
         w.watch
         w.send :stop
@@ -48,14 +48,14 @@ describe Fontcustom::Watcher do
     end
 
     it "should call generators when vectors change" do
-      Fontcustom::Generator::Font.should_receive(:start).once
-      Fontcustom::Generator::Template.should_receive(:start).once
+      Fontcustom::Base.any_instance.should_receive(:compile).once
+
       w = watcher(
-        :project_root => fixture,
         :input => "shared/vectors",
         :output => "output",
         :skip_first => true
       )
+
       capture(:stdout) do
         begin
           w.watch
@@ -69,16 +69,16 @@ describe Fontcustom::Watcher do
       end
     end
 
-    it "should call generators when watched templates change" do
-      Fontcustom::Generator::Font.should_receive(:start).once
-      Fontcustom::Generator::Template.should_receive(:start).once
+    it "should call generators when custom templates change" do
+      Fontcustom::Base.any_instance.should_receive(:compile).once
+
       w = watcher(
-        :project_root => fixture,
         :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
         :templates => %w|css preview custom.css|,
         :output => "output",
         :skip_first => true
       )
+
       capture(:stdout) do
         begin
           template = fixture "shared/templates/custom.css"
@@ -97,14 +97,14 @@ describe Fontcustom::Watcher do
     end
 
     it "should do nothing when non-vectors change" do
-      Fontcustom::Generator::Font.should_not_receive(:start)
-      Fontcustom::Generator::Template.should_not_receive(:start)
+      Fontcustom::Base.any_instance.should_not_receive(:compile)
+
       w = watcher(
-        :project_root => fixture,
         :input => "shared/vectors",
         :output => "output",
         :skip_first => true
       )
+
       capture(:stdout) do
         begin
           w.watch
