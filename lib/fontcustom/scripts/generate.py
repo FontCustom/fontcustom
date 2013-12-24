@@ -93,7 +93,7 @@ try:
     manifest['fonts'].append(fontfile + '.svg')
 
     # Hint the TTF file
-    subprocess.call('ttfautohint -s -f -n ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
+    subprocess.call('ttfautohint -s -f -n -W ' + fontfile + '.ttf ' + fontfile + '-hinted.ttf > /dev/null 2>&1 && mv ' + fontfile + '-hinted.ttf ' + fontfile + '.ttf', shell=True)
 
     # Fix SVG header for webkit
     # from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
