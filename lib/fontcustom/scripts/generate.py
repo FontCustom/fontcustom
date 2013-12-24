@@ -17,7 +17,6 @@ try:
 except ImportError:
     import optparse
     parser = optparse.OptionParser()
-    parser.add_option('manifest', help='Path to .fontcustom-manifest.json')
     (nothing, args) = parser.parse_args()
 
 manifestfile = open(args.manifest, 'r+')
