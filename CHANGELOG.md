@@ -1,3 +1,7 @@
+## EDGE
+
+* Add possibility to not use any prefixes for font name inside css files. `preprocessor_path` option can be `false`
+
 ## 1.3.0 (12/24/2013)
 
 **If upgrading from 1.2.0, delete your old `.fontcustom-manifest.json` and output directories first.**

@@ -84,7 +84,7 @@ autowidth: false                      # Automatically size glyphs based on the w
 templates: [ css, preview ]           # List of templates to generate alongside fonts
                                       # Possible values: preview, css, scss, scss-rails
 css_selector: .icon-{{glyph}}         # CSS selector format (`{{glyph}}` is replaced)
-preprocessor_path: ""                 # Font path used in CSS proprocessor templates
+preprocessor_path: ""                 # Font path used in CSS proprocessor templates. Use `false` for just font name without any prefixes
 
 # Custom templates should live in the `input` 
 # or `input[:templates]` directory and be added
