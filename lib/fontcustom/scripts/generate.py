@@ -14,12 +14,13 @@ try:
     parser = argparse.ArgumentParser()
     parser.add_argument('manifest', help='Path to .fontcustom-manifest.json')
     args = parser.parse_args()
+    manifestfile = open(args.manifest, 'r+')
 except ImportError:
     import optparse
     parser = optparse.OptionParser()
     (nothing, args) = parser.parse_args()
+    manifestfile = open(args[0], 'r+')
 
-manifestfile = open(args.manifest, 'r+')
 manifest = json.load(manifestfile)
 options = manifest['options']
 

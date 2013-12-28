@@ -1,3 +1,7 @@
+## 1.3.1 (12/28/2013)
+
+* Fixes syntax error in generate.py that affects Python 2.6
+
 ## 1.3.0 (12/24/2013)
 
 **If upgrading from 1.2.0, delete your old `.fontcustom-manifest.json` and output directories first.**
