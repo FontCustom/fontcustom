@@ -1,3 +1,9 @@
+## 1.3.2 (1/31/2014)
+
+* Fixes `preprocessor_path` for Rails asset pipeline / Sprockets ([#162](https://github.com/FontCustom/fontcustom/pull/162), [#167](https://github.com/FontCustom/fontcustom/pull/167))
+* Fixes bug where `preprocessor_path` was ignored by the scss template ([#171](https://github.com/FontCustom/fontcustom/issues/171))
+* Fixes bug where relative output paths containing ".." would fail to compile
+
 ## 1.3.1 (12/28/2013)
 
 * Fixes syntax error in generate.py that affects Python 2.6

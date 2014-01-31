@@ -85,6 +85,7 @@ templates: [ css, preview ]           # List of templates to generate alongside 
                                       # Possible values: preview, css, scss, scss-rails
 css_selector: .icon-{{glyph}}         # CSS selector format (`{{glyph}}` is replaced)
 preprocessor_path: ""                 # Font path used in CSS proprocessor templates
+                                      # Set to "" or false to use the bare font name
 
 # Custom templates should live in the `input` 
 # or `input[:templates]` directory and be added
