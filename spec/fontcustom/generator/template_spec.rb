@@ -24,19 +24,19 @@ describe Fontcustom::Generator::Template do
     it "should assign @font_path, @font_path_alt, and @font_path_preview" do
       gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
       options = gen.instance_variable_get :@options
-      options[:output] = {:fonts => fixture("foo/fonts"), :css => fixture("output/css"), :preview => fixture("views/")}
+      options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
-      gen.instance_variable_get(:@font_path).should match("../../foo/fonts")
-      gen.instance_variable_get(:@font_path_alt).should match("../../foo/fonts")
-      gen.instance_variable_get(:@font_path_preview).should match("../foo/fonts")
+      gen.instance_variable_get(:@font_path).should match("../fonts")
+      gen.instance_variable_get(:@font_path_alt).should match("../fonts")
+      gen.instance_variable_get(:@font_path_preview).should match(".")
     end
 
     it "should assign @font_path_alt if :preprocessor_font_path is set" do
       gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
       options = gen.instance_variable_get :@options
       options[:preprocessor_font_path] = "fonts/fontcustom"
-      options[:output] = {:fonts => fixture("foo/fonts"), :css => fixture("output/css"), :preview => fixture("views/")}
+      options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
       gen.instance_variable_get(:@font_path_alt).should match("fonts/fontcustom")
@@ -45,7 +45,7 @@ describe Fontcustom::Generator::Template do
     it "should assign '.' when paths are the same" do
       gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
       options = gen.instance_variable_get :@options
-      options[:output] = {:fonts => fixture("foo/fonts"), :css => fixture("foo/fonts"), :preview => fixture("foo/fonts")}
+      options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/fonts"), :preview => fixture("sandbox/test/fonts")}
 
       gen.send :set_relative_paths
       gen.instance_variable_get(:@font_path).should match("./")
