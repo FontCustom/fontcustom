@@ -109,7 +109,7 @@ module Fontcustom
 
       def font_face(style = :normal)
         case style
-        when :rails
+        when :preprocessor
           url = "font-url"
           path = @font_path_alt
         when :preview
