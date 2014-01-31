@@ -36,7 +36,8 @@ module Fontcustom
         css_path = Pathname.new(@options[:output][:css]).realdirpath
         preview_path = Pathname.new(@options[:output][:preview]).realdirpath
         @font_path = File.join fonts_path.relative_path_from(css_path).to_s, name
-        @font_path_alt = @options[:preprocessor_path].nil? ? @font_path : File.join(@options[:preprocessor_path], name)
+        @font_path_alt = @options[:preprocessor_path].nil? ? @font_path : 
+          (@options[:preprocessor_path].empty? ? name : File.join(@options[:preprocessor_path], name))
         @font_path_preview = File.join fonts_path.relative_path_from(preview_path).to_s, name
       end
 
