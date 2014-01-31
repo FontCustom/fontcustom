@@ -32,14 +32,24 @@ describe Fontcustom::Generator::Template do
       gen.instance_variable_get(:@font_path_preview).should match(".")
     end
 
-    it "should assign @font_path_alt if :preprocessor_font_path is set" do
+    it "should assign @font_path_alt if :preprocessor_path is set" do
       gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
       options = gen.instance_variable_get :@options
-      options[:preprocessor_font_path] = "fonts/fontcustom"
+      options[:preprocessor_path] = "fonts/fontcustom"
       options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
       gen.instance_variable_get(:@font_path_alt).should match("fonts/fontcustom")
+    end
+
+    it "should assign @font_path_alt as bare font name if :preprocessor_path is false" do
+      gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
+      options = gen.instance_variable_get :@options
+      options[:preprocessor_path] = false
+      options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
+
+      gen.send :set_relative_paths
+      gen.instance_variable_get(:@font_path_alt).should_not match("../fonts")
     end
 
     it "should assign '.' when paths are the same" do
