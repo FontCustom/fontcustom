@@ -15,6 +15,6 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-spec/fixtures/fontcustom/*
+spec/fixtures/sandbox/*
 .DS_Store
 .ruby-version
