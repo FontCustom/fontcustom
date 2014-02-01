@@ -28,17 +28,19 @@ options = manifest['options']
 # Font
 #
 
+design_px = options['font_em'] / options['font_design_size']
+
 font = fontforge.font()
 font.encoding = 'UnicodeFull'
-font.design_size = 16
-font.em = 512
-font.ascent = 448
-font.descent = 64
+font.design_size = options['font_design_size']
+font.em = options['font_em']
+font.ascent = options['font_ascent']
+font.descent = options['font_descent']
 font.fontname = options['font_name']
 font.familyname = options['font_name']
 font.fullname = options['font_name']
 if options['autowidth']:
-    font.autoWidth(0, 0, 512)
+    font.autoWidth(0, 0, options['font_em'])
 
 # NOTE not referenced anywhere, safe to remove?
 KERNING = 15
@@ -73,7 +75,13 @@ def createGlyph( name, source, code ):
             glyph.left_side_bearing = glyph.right_side_bearing = 0
             glyph.round()
         else:
-            glyph.width = 512
+            glyph.width = options['font_em']
+            width = glyph.width - glyph.left_side_bearing - glyph.right_side_bearing
+            aligned_to_pixel_grid = (width % design_px == 0)
+            if (aligned_to_pixel_grid):
+                shift = glyph.left_side_bearing % design_px
+                glyph.left_side_bearing = glyph.left_side_bearing - shift
+                glyph.right_side_bearing = glyph.right_side_bearing + shift
 
 for glyph, data in manifest['glyphs'].iteritems():
     name = createGlyph(glyph, data['source'], data['codepoint'])
