@@ -1,5 +1,6 @@
 require "json"
 require "pathname"
+require "base64"
 
 module Fontcustom
   module Generator
@@ -36,7 +37,7 @@ module Fontcustom
         css_path = Pathname.new(@options[:output][:css]).realdirpath
         preview_path = Pathname.new(@options[:output][:preview]).realdirpath
         @font_path = File.join fonts_path.relative_path_from(css_path).to_s, name
-        @font_path_alt = if @options[:preprocessor_path].nil? 
+        @font_path_alt = if @options[:preprocessor_path].nil?
           @font_path
         elsif ! @options[:preprocessor_path] || @options[:preprocessor_path].empty?
           name
@@ -129,6 +130,7 @@ module Fontcustom
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
+       #{url}(#{woff_data_uri}),
        #{url}("#{path}.woff") format("woff"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
@@ -142,6 +144,15 @@ module Fontcustom
     src: url("#{path}.svg##{font_name}") format("svg");
   }
 }|
+      end
+
+      def woff_data_uri
+        "data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}"
+      end
+
+      def woff_base64
+        woff_path = File.join(@options[:output][:fonts], "#{@font_path_alt}.woff")
+        Base64.encode64(File.read(File.join(woff_path))).gsub("\n", "")
       end
 
       def glyph_selectors
