@@ -157,6 +157,22 @@ module Fontcustom
         end
         output.join "\n"
       end
+
+      def scss_var(name)
+        "$#{font_name}-#{name.to_s}"
+      end
+
+      def glyph_vars_scss
+        @glyphs.map do |name, value|
+          %Q|#{scss_var(name)}: "\\#{value[:codepoint].to_s(16)}";|
+        end.join "\n"
+      end
+
+      def glyphs_scss
+        glyph_vars_scss + "\n" + @glyphs.map do |name, value|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: #{scss_var(name)}}|
+        end.join("\n")
+      end
     end
   end
 end
