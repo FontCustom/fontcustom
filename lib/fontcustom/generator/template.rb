@@ -139,7 +139,7 @@ module Fontcustom
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "#{font_name}";
-    src: url("#{path}.svg##{font_name}") format("svg");
+    src: #{url}("#{path}.svg##{font_name}") format("svg");
   }
 }|
       end
