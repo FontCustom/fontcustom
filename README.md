@@ -18,11 +18,11 @@ Requires **Ruby 1.9.2+**, **FontForge** with Python scripting.
 
 ```sh
 # On Mac
-brew install fontforge eot-utils ttfautohint
+brew install fontforge eot-utils
 gem install fontcustom
 
 # On Linux
-sudo apt-get install fontforge ttfautohint
+sudo apt-get install fontforge
 wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
 unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
 gem install fontcustom

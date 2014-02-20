@@ -1,3 +1,7 @@
+## Edge
+
+* Removes ttfautohint
+
 ## 1.3.2 (1/31/2014)
 
 * Fixes `preprocessor_path` for Rails asset pipeline / Sprockets ([#162](https://github.com/FontCustom/fontcustom/pull/162), [#167](https://github.com/FontCustom/fontcustom/pull/167))
