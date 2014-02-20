@@ -8,16 +8,7 @@
 
 [data-icon]:before,
 <%= glyph_selectors %> {
-  display: inline-block;
-  font-family: "<%= font_name %>";
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  line-height: 1;
-  text-decoration: inherit;
-  text-transform: none;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+<%= glyph_properties %>
 }
 
 <%= glyphs %>
