@@ -75,6 +75,10 @@ def createGlyph( name, source, code ):
         else:
             glyph.width = 512
 
+# Add valid space glyph to avoid "unknown character" box on IE11
+glyph = font.createChar(32)
+glyph.width = 200
+
 for glyph, data in manifest['glyphs'].iteritems():
     name = createGlyph(glyph, data['source'], data['codepoint'])
 
