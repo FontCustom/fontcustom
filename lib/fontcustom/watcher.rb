@@ -13,17 +13,8 @@ module Fontcustom
       templates = @options[:templates].dup.map { |template| File.basename(template) }
       packaged = %w|preview css scss scss-rails|
       templates.delete_if { |template| packaged.include?(template) }
-
-      if templates.empty?
-        @listener = Listen.to(@options[:input][:vectors])
-      else
-        @listener = Listen.to(@options[:input][:vectors], @options[:input][:templates])
-      end
-
-      @listener = @listener.relative_paths(true)
-      @listener = @listener.filter(/(#{templates.join("|")}|.+\.svg)$/)
-      @listener = @listener.change(&callback)
-      @listener = @listener.polling_fallback_message(false) if @is_test
+      
+      create_listener(templates)
     end
 
     def watch
@@ -34,12 +25,33 @@ module Fontcustom
     end
 
     private
+    
+    def create_listener(templates)
+      listen_options = {}
+      listen_options[:polling_fallback_message] = false if @is_test
+      
+      listen_dirs = [@options[:input][:vectors]]
+      listen_dirs << @options[:input][:templates] unless templates.empty?
+      
+      if listen_eq2
+        listen_options[:only] = /(#{templates.join("|")}|.+\.svg)$/
+        @listener = Listen.to(listen_dirs, listen_options, &callback)
+      else
+        listen_options[:filter] = /(#{templates.join("|")}|.+\.svg)$/
+        listen_options[:relative_paths] = true
+        @listener = Listen::Listener.new(listen_dirs, listen_options,  &callback)
+      end
+    end
 
     def start
       if @is_test # Non-blocking listener
         @listener.start
       else
-        @listener.start!
+        if listen_eq2
+          @listener.start.join
+        else
+          @listener.start!
+        end
       end
     end
 
@@ -64,6 +76,15 @@ module Fontcustom
 
     def compile
       @base.compile
+    end
+    
+    def listen_eq2
+      begin
+        require 'listen/version'      
+        ::Listen::VERSION =~ /^2\./
+      rescue LoadError
+        false
+      end
     end
   end
 end

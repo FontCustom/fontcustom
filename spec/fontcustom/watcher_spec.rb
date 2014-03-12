@@ -86,6 +86,7 @@ describe Fontcustom::Watcher do
           new = content + "\n.bar { color: red; }"
 
           w.watch
+          sleep 1
           File.open(template, "w") { |file| file.write(new) }
           sleep 1
         ensure
