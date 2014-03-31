@@ -48,14 +48,13 @@ KERNING = 15
 #
 
 def removeSwitchFromSvg( file ):
-    svgfile = open(file, 'r+')
-    tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
+    svgfile = open(file, 'r')
     svgtext = svgfile.read()
-    svgfile.seek(0)
+    svgfile.close()
+    tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
     svgtext = svgtext.replace('<switch>', '')
     svgtext = svgtext.replace('</switch>', '')
     tmpsvgfile.file.write(svgtext)
-    svgfile.close()
     tmpsvgfile.file.close()
 
     return tmpsvgfile.name
