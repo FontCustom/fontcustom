@@ -211,15 +211,15 @@ gem install fontcustom</pre>
               <p>The font name used in your templates (automatically normalized to lowercase spinal case). By default, <code>fontcustom</code>. You can also pass this in on the command-line with the <code>-n</code> options (e.g. <code>fontcustom -n "your-awesome-name"</code>)</p>
             </li>
             <li>
-              <h3>file-hash</h3>
-              <p>Generate font files with asset-busting hashes. The hash is based on the file size and filename of each included icon, so when the icons or filenames change, new files with new hashes will be generated. Hashes will not be appended to any of the CSS/SCSS files (though the references to the fonts will be updated), only the fonts. By default, this option is <strong>on</strong>.</p>
+              <h3>no-hash</h3>
+              <p>Do not generate font files with asset-busting hashes. The hash is based on the file size and filename of each included icon, so when the icons or filenames change, new files with new hashes will be generated. Hashes will not be appended to any of the CSS/SCSS files (though the references to the fonts will be updated), only the fonts. By default, this option is <strong>off</strong>.</p>
             </li>
             <li>
-              <h3>css-prefix</h3>
+              <h3>css-selector</h3>
               <p>The prefix for each glyph's CSS class. Default: <code>icon-</code></p>
             </li>
             <li>
-              <h3>font-face-path</h3>
+              <h3>preprocessor-path</h3>
               <p>The http path used in @font-face declarations. <em>Only used in .scss partials.</em> By default, none is set.</p>
             </li>
             <li>
