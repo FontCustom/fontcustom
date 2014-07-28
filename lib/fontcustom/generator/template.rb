@@ -116,22 +116,19 @@ module Fontcustom
       def font_face(style = :normal)
         case style
         when :preprocessor
-          url = "font-url"
           path = @font_path_alt
         when :preview
-          url = "url"
           path = @font_path_preview
         else
-          url = "url"
           path = @font_path
         end
 %Q|@font-face {
   font-family: "#{font_name}";
-  src: #{url}("#{path}.eot");
-  src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
-       #{url}("#{path}.woff") format("woff"),
-       #{url}("#{path}.ttf") format("truetype"),
-       #{url}("#{path}.svg##{font_name}") format("svg");
+  src: url("#{path}.eot");
+  src: url("#{path}.eot?#iefix") format("embedded-opentype"),
+       url("#{path}.woff") format("woff"),
+       url("#{path}.ttf") format("truetype"),
+       url("#{path}.svg##{font_name}") format("svg");
   font-weight: normal;
   font-style: normal;
 }
