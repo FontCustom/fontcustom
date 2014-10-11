@@ -74,12 +74,12 @@ describe Fontcustom::Generator::Template do
 
       # Don't update the manifest based on these options.
       manifest = gen.instance_variable_get :@manifest
-      manifest.should_receive(:set)
+      expect(manifest).to receive(:set)
 
       # Confirm that the output file doesn't include the template path.
-      gen.should_receive(:template).once do |source, target|
-        source.should match("shared/templates")
-        target.should_not match("shared/templates")
+      expect(gen).to receive(:template).once do |source, target|
+        expect(source).to match("shared/templates")
+        expect(target).to_not match("shared/templates")
       end
 
       gen.send :create_files
