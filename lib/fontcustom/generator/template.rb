@@ -52,9 +52,9 @@ module Fontcustom
         existing = @manifest.get :templates
         created = []
         begin
-          @options[:templates].each do |source|
+          @options[:templates].each do |template_name|
             begin
-              source = get_source_path(source)
+              source = get_source_path(template_name)
               target = get_target_path(source)
               template source, target, :verbose => false, :force => true
             end
@@ -90,7 +90,7 @@ module Fontcustom
         packaged = %w|fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss|
 
         target = if @options[:output].keys.include? base.to_sym
-          File.join @options[:output][base.to_sym], source
+          File.join @options[:output][base.to_sym], base
         elsif ext && css_exts.include?(ext)
           File.join @options[:output][:css], base
         elsif source.match(/fontcustom-preview\.html/)

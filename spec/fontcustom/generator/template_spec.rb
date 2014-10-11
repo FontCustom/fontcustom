@@ -61,4 +61,28 @@ describe Fontcustom::Generator::Template do
       expect(gen.instance_variable_get(:@font_path)).to match("./")
     end
   end
+
+  context ".create_files" do
+    it "should not include the template path in custom output file paths" do
+      gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
+
+      # Set options to specify a custom CSS template with a custom output location.
+      options = gen.instance_variable_get :@options
+      options[:input][:templates] = fixture("shared/templates")
+      options[:templates] = ['custom.css']
+      options[:output][:'custom.css'] = fixture("sandbox/test")
+
+      # Don't update the manifest based on these options.
+      manifest = gen.instance_variable_get :@manifest
+      manifest.should_receive(:set)
+
+      # Confirm that the output file doesn't include the template path.
+      gen.should_receive(:template).once do |source, target|
+        source.should match("shared/templates")
+        target.should_not match("shared/templates")
+      end
+
+      gen.send :create_files
+    end
+  end
 end
