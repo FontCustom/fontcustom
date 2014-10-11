@@ -15,7 +15,7 @@ describe Fontcustom::Generator::Template do
         Fontcustom::Generator::Template.new(manifest).generate
 
         content = File.read manifest
-        content.should match(/fontcustom\/fontcustom-preview.html/)
+        expect(content).to match(/fontcustom\/fontcustom-preview.html/)
       end
     end
   end
@@ -27,9 +27,9 @@ describe Fontcustom::Generator::Template do
       options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
-      gen.instance_variable_get(:@font_path).should match("../fonts")
-      gen.instance_variable_get(:@font_path_alt).should match("../fonts")
-      gen.instance_variable_get(:@font_path_preview).should match(".")
+      expect(gen.instance_variable_get(:@font_path)).to match("../fonts")
+      expect(gen.instance_variable_get(:@font_path_alt)).to match("../fonts")
+      expect(gen.instance_variable_get(:@font_path_preview)).to match(".")
     end
 
     it "should assign @font_path_alt if :preprocessor_path is set" do
@@ -39,7 +39,7 @@ describe Fontcustom::Generator::Template do
       options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
-      gen.instance_variable_get(:@font_path_alt).should match("fonts/fontcustom")
+      expect(gen.instance_variable_get(:@font_path_alt)).to match("fonts/fontcustom")
     end
 
     it "should assign @font_path_alt as bare font name if :preprocessor_path is false" do
@@ -49,7 +49,7 @@ describe Fontcustom::Generator::Template do
       options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/css"), :preview => fixture("sandbox/test")}
 
       gen.send :set_relative_paths
-      gen.instance_variable_get(:@font_path_alt).should_not match("../fonts")
+      expect(gen.instance_variable_get(:@font_path_alt)).to_not match("../fonts")
     end
 
     it "should assign '.' when paths are the same" do
@@ -58,7 +58,7 @@ describe Fontcustom::Generator::Template do
       options[:output] = {:fonts => fixture("sandbox/test/fonts"), :css => fixture("sandbox/test/fonts"), :preview => fixture("sandbox/test/fonts")}
 
       gen.send :set_relative_paths
-      gen.instance_variable_get(:@font_path).should match("./")
+      expect(gen.instance_variable_get(:@font_path)).to match("./")
     end
   end
 end

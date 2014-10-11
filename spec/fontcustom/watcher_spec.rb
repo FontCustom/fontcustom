@@ -9,8 +9,8 @@ describe Fontcustom::Watcher do
   #end
 
   def watcher(options)
-    Fontcustom::Manifest.any_instance.stub :write_file
-    Fontcustom::Base.any_instance.stub :compile
+    allow_any_instance_of(Fontcustom::Manifest).to receive(:write_file)
+    allow_any_instance_of(Fontcustom::Base).to receive(:compile)
 
     # undocumented — non-blocking use of watcher for testing
     Fontcustom::Watcher.new options, true
@@ -18,7 +18,7 @@ describe Fontcustom::Watcher do
 
   context "#watch" do
     it "should compile on init" do
-      Fontcustom::Base.any_instance.should_receive(:compile).once
+      expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
 
       w = watcher(
         :input => "shared/vectors",
@@ -33,7 +33,7 @@ describe Fontcustom::Watcher do
     end
 
     it "should not call generators on init if options[:skip_first] is passed" do
-      Fontcustom::Base.any_instance.should_not_receive(:compile)
+      expect_any_instance_of(Fontcustom::Base).to_not receive(:compile).once
 
       w = watcher(
         :input => "shared/vectors",
@@ -48,7 +48,7 @@ describe Fontcustom::Watcher do
     end
 
     it "should call generators when vectors change" do
-      Fontcustom::Base.any_instance.should_receive(:compile).once
+      expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
 
       w = watcher(
         :input => "shared/vectors",
@@ -70,13 +70,13 @@ describe Fontcustom::Watcher do
     end
 
     it "should call generators when custom templates change" do
-      Fontcustom::Base.any_instance.should_receive(:compile).once
+      expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
 
       w = watcher(
         :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
         :templates => %w|css preview custom.css|,
         :output => "output",
-        :skip_first => true
+        :skip_first => false
       )
 
       capture(:stdout) do
@@ -98,7 +98,7 @@ describe Fontcustom::Watcher do
     end
 
     it "should do nothing when non-vectors change" do
-      Fontcustom::Base.any_instance.should_not_receive(:compile)
+      expect_any_instance_of(Fontcustom::Base).to_not receive(:compile).once
 
       w = watcher(
         :input => "shared/vectors",

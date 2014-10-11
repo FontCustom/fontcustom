@@ -13,7 +13,7 @@ module Fontcustom
       templates = @options[:templates].dup.map { |template| File.basename(template) }
       packaged = %w|preview css scss scss-rails|
       templates.delete_if { |template| packaged.include?(template) }
-      
+
       create_listener(templates)
     end
 
@@ -25,21 +25,21 @@ module Fontcustom
     end
 
     private
-    
+
     def create_listener(templates)
       listen_options = {}
       listen_options[:polling_fallback_message] = false if @is_test
-      
+
       listen_dirs = [@options[:input][:vectors]]
       listen_dirs << @options[:input][:templates] unless templates.empty?
-      
+
       if listen_eq2
         listen_options[:only] = /(#{templates.join("|")}|.+\.svg)$/
         @listener = Listen.to(listen_dirs, listen_options, &callback)
       else
         listen_options[:filter] = /(#{templates.join("|")}|.+\.svg)$/
         listen_options[:relative_paths] = true
-        @listener = Listen::Listener.new(listen_dirs, listen_options,  &callback)
+        @listener = Listen::Listener.new(listen_dirs, listen_options, &callback)
       end
     end
 
@@ -77,10 +77,10 @@ module Fontcustom
     def compile
       @base.compile
     end
-    
+
     def listen_eq2
       begin
-        require 'listen/version'      
+        require 'listen/version'
         ::Listen::VERSION =~ /^2\./
       rescue LoadError
         false

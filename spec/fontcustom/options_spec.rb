@@ -8,8 +8,8 @@ describe Fontcustom::Options do
   end
 
   before(:each) do
-    Fontcustom::Options.any_instance.stub :say_message
-    Fontcustom::Options.any_instance.stub :parse_options
+    allow_any_instance_of(Fontcustom::Options).to receive(:say_message)
+    allow_any_instance_of(Fontcustom::Options).to receive(:parse_options)
   end
 
   context ".overwrite_examples" do
@@ -18,7 +18,7 @@ describe Fontcustom::Options do
       o.send :overwrite_examples
       cli = o.instance_variable_get(:@cli_options)
       Fontcustom::EXAMPLE_OPTIONS.keys.each do |key|
-        cli[key].should == Fontcustom::DEFAULT_OPTIONS[key]
+        expect(cli[key]).to eq(Fontcustom::DEFAULT_OPTIONS[key])
       end
     end
   end
@@ -28,13 +28,13 @@ describe Fontcustom::Options do
       it "should use options[:config] if it's a file" do
         o = options :config => "options/any-file-name.yml"
         o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == "options/any-file-name.yml"
+        expect(o.instance_variable_get(:@cli_options)[:config]).to eq("options/any-file-name.yml")
       end
 
       it "should search for fontcustom.yml if options[:config] is a dir" do
         o = options :config => "options/config-is-in-dir"
         o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == "options/config-is-in-dir/fontcustom.yml"
+        expect(o.instance_variable_get(:@cli_options)[:config]).to eq("options/config-is-in-dir/fontcustom.yml")
       end
 
       it "should raise error if :config doesn't exist" do
@@ -48,7 +48,7 @@ describe Fontcustom::Options do
         FileUtils.cd fixture("options") do
           o = options
           o.send :set_config_path
-          o.instance_variable_get(:@cli_options)[:config].should == "fontcustom.yml"
+          expect(o.instance_variable_get(:@cli_options)[:config]).to eq("fontcustom.yml")
         end
       end
 
@@ -56,14 +56,14 @@ describe Fontcustom::Options do
         FileUtils.cd fixture("options/rails-like") do
           o = options
           o.send :set_config_path
-          o.instance_variable_get(:@cli_options)[:config].should == "config/fontcustom.yml"
+          expect(o.instance_variable_get(:@cli_options)[:config]).to eq("config/fontcustom.yml")
         end
       end
 
       it "should be false if nothing is found" do
         o = options :manifest => "options/no-config-here/.fontcustom-manifest.json"
         o.send :set_config_path
-        o.instance_variable_get(:@cli_options)[:config].should == false
+        expect(o.instance_variable_get(:@cli_options)[:config]).to eq(false)
       end
     end
   end
@@ -72,7 +72,7 @@ describe Fontcustom::Options do
     it "should warn if fontcustom.yml is blank" do
       o = options
       o.instance_variable_set :@cli_options, {:config => fixture("options/fontcustom-empty.yml")}
-      o.should_receive(:say_message).with :warn, /was empty/
+      expect(o).to receive(:say_message).with :warn, /was empty/
       o.send :load_config
     end
 
@@ -86,7 +86,7 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@cli_options, {:config => false}
       o.send :load_config
-      o.instance_variable_get(:@config_options).should == {}
+      expect(o.instance_variable_get(:@config_options)).to eq({})
     end
 
     context "when :debug is true" do
@@ -96,7 +96,7 @@ describe Fontcustom::Options do
           :config => fixture("options/any-file-name.yml"),
           :debug => true
         }
-        o.should_receive(:say_message).with :debug, /Using settings/
+        expect(o).to receive(:say_message).with :debug, /Using settings/
         o.send :load_config
       end
     end
@@ -107,7 +107,7 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@config_options, { :input => "config" }
       o.send :merge_options
-      o.options[:input].should == "config"
+      expect(o.options[:input]).to eq("config")
     end
 
     it "should overwrite config file and defaults with CLI options" do
@@ -115,8 +115,8 @@ describe Fontcustom::Options do
       o.instance_variable_set :@config_options, { :input => "config", :output => "output" }
       o.instance_variable_set :@cli_options, { :input => "cli" }
       o.send :merge_options
-      o.options[:input].should == "cli"
-      o.options[:output].should == "output"
+      expect(o.options[:input]).to eq("cli")
+      expect(o.options[:output]).to eq("output")
     end
   end
 
@@ -125,7 +125,7 @@ describe Fontcustom::Options do
       o = options
       o.instance_variable_set :@options, { :font_name => " A_stR4nG3  nAm3 Ø&  " }
       o.send :clean_font_name
-      o.options[:font_name].should == "A_stR4nG3--nAm3---"
+      expect(o.options[:font_name]).to eq("A_stR4nG3--nAm3---")
     end
   end
 
@@ -144,7 +144,7 @@ describe Fontcustom::Options do
           o = options
           o.instance_variable_set :@options, { :input => { :vectors => "vectors" } }
           o.send :set_input_paths
-          o.options[:input][:templates].should == "vectors"
+          expect(o.options[:input][:templates]).to eq("vectors")
         end
       end
 
@@ -153,7 +153,7 @@ describe Fontcustom::Options do
           o = options
           o.instance_variable_set :@options, { :input => { :vectors => "vectors", :templates => "templates" } }
           o.send :set_input_paths
-          o.options[:input][:templates].should == "templates"
+          expect(o.options[:input][:templates]).to eq("templates")
         end
       end
 
@@ -183,8 +183,8 @@ describe Fontcustom::Options do
           o = options
           o.instance_variable_set :@options, { :input => "vectors" }
           o.send :set_input_paths
-          o.options[:input].should have_key(:vectors)
-          o.options[:input].should have_key(:templates)
+          expect(o.options[:input]).to have_key(:vectors)
+          expect(o.options[:input]).to have_key(:templates)
         end
       end
 
@@ -193,7 +193,7 @@ describe Fontcustom::Options do
           o = options
           o.instance_variable_set :@options, { :input => "vectors" }
           o.send :set_input_paths
-          o.options[:input][:templates].should == "vectors"
+          expect(o.options[:input][:templates]).to eq("vectors")
         end
       end
 
@@ -219,7 +219,7 @@ describe Fontcustom::Options do
             :debug => true,
             :font_name => "Test-Font"
           }
-          o.should_receive(:say_message).with :debug, /Test-Font/
+          expect(o).to receive(:say_message).with :debug, /Test-Font/
           o.send :set_output_paths
         end
       end
@@ -230,8 +230,8 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@options, { :output => { :fonts => "output/fonts" } }
         o.send :set_output_paths
-        o.options[:output][:css].should == "output/fonts"
-        o.options[:output][:preview].should == "output/fonts"
+        expect(o.options[:output][:css]).to eq("output/fonts")
+        expect(o.options[:output][:preview]).to eq("output/fonts")
       end
 
       it "should preserve :css and :preview if they do exist" do
@@ -244,8 +244,8 @@ describe Fontcustom::Options do
           }
         }
         o.send :set_output_paths
-        o.options[:output][:css].should == "output/styles"
-        o.options[:output][:preview].should == "output/preview"
+        expect(o.options[:output][:css]).to eq("output/styles")
+        expect(o.options[:output][:preview]).to eq("output/preview")
       end
 
       it "should create additional paths if they are given" do
@@ -257,7 +257,7 @@ describe Fontcustom::Options do
           }
         }
         o.send :set_output_paths
-        o.options[:output][:"special.js"].should == "assets/javascripts"
+        expect(o.options[:output][:"special.js"]).to eq("assets/javascripts")
       end
 
       it "should raise an error if :fonts isn't set" do
@@ -275,18 +275,18 @@ describe Fontcustom::Options do
         o = options
         o.instance_variable_set :@options, { :output => "output/fonts" }
         o.send :set_output_paths
-        o.options[:output].should be_a(Hash)
-        o.options[:output].should have_key(:fonts)
-        o.options[:output].should have_key(:css)
-        o.options[:output].should have_key(:preview)
+        expect(o.options[:output]).to be_a(Hash)
+        expect(o.options[:output]).to have_key(:fonts)
+        expect(o.options[:output]).to have_key(:css)
+        expect(o.options[:output]).to have_key(:preview)
       end
 
       it "should set :css and :preview to match :fonts" do
         o = options
         o.instance_variable_set :@options, { :output => "output/fonts" }
         o.send :set_output_paths
-        o.options[:output][:css].should == "output/fonts"
-        o.options[:output][:preview].should == "output/fonts"
+        expect(o.options[:output][:css]).to eq("output/fonts")
+        expect(o.options[:output][:preview]).to eq("output/fonts")
       end
 
       it "should raise an error if :fonts exists but isn't a directory" do

@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Fontcustom::Generator::Font do
   def generator
-    Fontcustom::Manifest.any_instance.stub :write_file
+    allow_any_instance_of(Fontcustom::Manifest).to receive(:write_file)
     Fontcustom::Generator::Font.new("")
   end
 
@@ -12,9 +12,9 @@ describe Fontcustom::Generator::Font do
         test_manifest
         manifest = File.join Dir.pwd, ".fontcustom-manifest.json"
         gen = Fontcustom::Generator::Font.new manifest
-        gen.stub :create_fonts
+        allow(gen).to receive(:create_fonts)
         gen.generate
-        File.read(manifest).should match(/"glyphs":.+"C":/m)
+        expect(File.read(manifest)).to match(/"glyphs":.+"C":/m)
       end
     end
 
@@ -23,8 +23,8 @@ describe Fontcustom::Generator::Font do
         test_manifest
         manifest = File.join Dir.pwd, ".fontcustom-manifest.json"
         Fontcustom::Generator::Font.new(manifest).generate
-        Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should == 4
-        File.read(manifest).should match(/"fonts":.*fontcustom\/fontcustom_.+\.ttf"/m)
+        expect(Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
+        expect(File.read(manifest)).to match(/"fonts":.*fontcustom\/fontcustom_.+\.ttf"/m)
       end
     end
   end
@@ -37,8 +37,8 @@ describe Fontcustom::Generator::Font do
         :quiet => true
       }
       gen.instance_variable_set :@options, options
-      gen.should_receive(:empty_directory).with("path/fonts", :verbose => false)
-      gen.should_receive(:empty_directory).with("path/vectors", :verbose => false)
+      expect(gen).to receive(:empty_directory).with("path/fonts", :verbose => false)
+      expect(gen).to receive(:empty_directory).with("path/vectors", :verbose => false)
       gen.send :create_output_dirs
     end
   end
@@ -51,9 +51,9 @@ describe Fontcustom::Generator::Font do
 
       gen.send :set_glyph_info
       data = manifest.instance_variable_get(:@data)
-      data[:glyphs][:C].should include(:codepoint => 61696)
-      data[:glyphs][:D].should include(:codepoint => 61697)
-      data[:glyphs][:"a_R3ally-eXotic-f1Le-Name"].should include(:codepoint => 61698)
+      expect(data[:glyphs][:C]).to include(:codepoint => 61696)
+      expect(data[:glyphs][:D]).to include(:codepoint => 61697)
+      expect(data[:glyphs][:"a_R3ally-eXotic-f1Le-Name"]).to include(:codepoint => 61698)
     end
 
     it "should not change codepoints of existing glyphs" do
@@ -64,9 +64,9 @@ describe Fontcustom::Generator::Font do
 
       gen.send :set_glyph_info
       data = manifest.instance_variable_get(:@data)
-      data[:glyphs][:C].should include(:codepoint => 61699)
-      data[:glyphs][:D].should include(:codepoint => 61700)
-      data[:glyphs][:"a_R3ally-eXotic-f1Le-Name"].should include(:codepoint => 61701)
+      expect(data[:glyphs][:C]).to include(:codepoint => 61699)
+      expect(data[:glyphs][:D]).to include(:codepoint => 61700)
+      expect(data[:glyphs][:"a_R3ally-eXotic-f1Le-Name"]).to include(:codepoint => 61701)
     end
   end
 end

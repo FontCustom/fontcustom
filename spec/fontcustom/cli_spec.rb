@@ -7,8 +7,8 @@ describe Fontcustom::CLI do
       live_test do |testdir|
         Fontcustom::CLI.start ["compile", "vectors", "--quiet"]
         manifest = File.join testdir, ".fontcustom-manifest.json"
-        Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should == 4
-        File.read(manifest).should match(/"fonts":.+fontcustom\/fontcustom_.+\.ttf"/m)
+        expect(Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
+        expect(File.read(manifest)).to match(/"fonts":.+fontcustom\/fontcustom_.+\.ttf"/m)
       end
     end
   end

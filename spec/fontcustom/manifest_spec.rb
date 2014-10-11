@@ -10,7 +10,7 @@ describe Fontcustom::Manifest do
           Fontcustom::Manifest.new manifest, options
         end
         content = File.read File.join(testdir, ".fontcustom-manifest.json")
-        content.should match(/"options":.+"input":/m)
+        expect(content).to match(/"options":.+"input":/m)
       end
     end
   end

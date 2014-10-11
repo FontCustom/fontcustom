@@ -14,7 +14,7 @@ describe Fontcustom::Utility do
   it "should include Thor::Action methods" do
     gen = Generator.new
     %w|template add_file remove_file|.each do |method|
-      gen.should respond_to(method.to_sym)
+      expect(gen).to respond_to(method.to_sym)
     end
   end
 
@@ -22,7 +22,7 @@ describe Fontcustom::Utility do
     it "should turn string keys into symbols" do
       gen = Generator.new
       hash = gen.symbolize_hash "foo" => "bar"
-      hash.should == { :foo => "bar" }
+      expect(hash).to eq({ :foo => "bar" })
     end
   end
 
@@ -30,14 +30,14 @@ describe Fontcustom::Utility do
     it "should define getter method" do
       gen = Generator.new
       hash = gen.methodize_hash :foo => "bar"
-      hash.foo.should == "bar"
+      expect(hash.foo).to eq("bar")
     end
 
     it "should define setter method" do
       gen = Generator.new
       hash = gen.methodize_hash :foo => "bar"
       hash.foo = "baz"
-      hash.foo.should == "baz"
+      expect(hash.foo).to eq("baz")
     end
   end
 
@@ -45,8 +45,8 @@ describe Fontcustom::Utility do
     it "should replace the contents of a file" do
       gen = Generator.new
       file = double "file"
-      File.should_receive(:open).with(fixture("shared/test"), "w").and_yield file
-      file.should_receive(:write).with("testing")
+      expect(File).to receive(:open).with(fixture("shared/test"), "w").and_yield file
+      expect(file).to receive(:write).with("testing")
       gen.write_file fixture("shared/test"), "testing"
     end
   end
