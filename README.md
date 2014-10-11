@@ -73,6 +73,10 @@ output:
 ```yml
 font_name: fontcustom                 # Also sets the default output directory and
                                       # the name of generated stock templates
+font_design_size: 16                  # The size of the original glyphs
+font_em: 512                          # Scale font up to this size
+font_ascent: 448                      # Location of font ascent
+font_descent: 64                      # Location of font descent
 no_hash: false                        # Don't add asset-busting hashes to font files
 autowidth: false                      # Automatically size glyphs based on the width of
                                       # their individual vectors
