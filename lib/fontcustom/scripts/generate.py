@@ -42,9 +42,6 @@ font.fullname = options['font_name']
 if options['autowidth']:
     font.autoWidth(0, 0, options['font_em'])
 
-# NOTE not referenced anywhere, safe to remove?
-KERNING = 15
-
 #
 # Glyphs
 #
