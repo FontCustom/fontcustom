@@ -154,7 +154,7 @@
         selector = @options[:css_selector].sub('{{glyph}}', name.to_s) %>
       <div class="glyph">
         <div class="preview-glyphs">
-          <% scale.each do |n| %><span class="step size-<%= n %>"><span class="letters">Pp</span><i id="<%= selector[1..-1] %>" class="<%= selector[1..-1] %>"></i></span><% end %>
+          <% scale.each do |n| %><span class="step size-<%= n %>"><span class="letters">Pp</span><i id="<%= selector[1..-1] %>" class="<%= selector[1..-1].gsub('.', ' ') %>"></i></span><% end %>
         </div>
         <div class="preview-scale">
           <% scale.each do |n| %><span class="step"><%= n %></span><% end %>
