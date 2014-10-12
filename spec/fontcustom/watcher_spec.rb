@@ -70,7 +70,7 @@ describe Fontcustom::Watcher do
     end
 
     it "should call generators when custom templates change" do
-      expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
+      expect_any_instance_of(Fontcustom::Base).to receive(:compile)
 
       w = watcher(
         :input => {:vectors => "shared/vectors", :templates => "shared/templates"},

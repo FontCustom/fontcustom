@@ -16,5 +16,6 @@ test/tmp
 test/version_tmp
 tmp
 spec/fixtures/sandbox/*
+spec/fixtures/.fontcustom-manifest.json
 .DS_Store
 .ruby-version
