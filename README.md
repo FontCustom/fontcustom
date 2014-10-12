@@ -1,6 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/fontcustom.png)](http://badge.fury.io/rb/fontcustom)
 [![Build Status](https://api.travis-ci.org/FontCustom/fontcustom.png)](https://travis-ci.org/FontCustom/fontcustom)
-[![Code Quality](https://codeclimate.com/github/FontCustom/fontcustom.png)](https://codeclimate.com/github/FontCustom/fontcustom)
+[![Code Quality](https://codeclimate.com/github/FontCustom/fontcustom.png)](https://codeclimate.com/github/FontCustom/fontcustom) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=32953)](https://www.bountysource.com/trackers/32953-endtwist-fontcustom?utm_source=32953&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 ## Font Custom
 
