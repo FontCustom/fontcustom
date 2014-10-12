@@ -18,7 +18,8 @@ Requires **Ruby 1.9.2+**, **FontForge** with Python scripting.
 
 ```sh
 # On Mac
-brew install fontforge eot-utils
+brew install fontforge --with-python
+brew install eot-utils
 gem install fontcustom
 
 # On Linux
