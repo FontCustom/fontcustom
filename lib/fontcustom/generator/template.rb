@@ -114,17 +114,23 @@ module Fontcustom
         @options[:font_name]
       end
 
-      def font_face(style = :normal)
-        case style
-        when :preprocessor
-          url = "font-url"
-          path = @font_path_alt
-        when :preview
-          url = "url"
-          path = @font_path_preview
+      def font_face(style = {})
+        if style.is_a?(Symbol)
+          if style == :preprocessor
+            url = "font-url"
+            path = @font_path_alt
+          elsif style == :preview
+            url = "url"
+            path = @font_path_preview
+          else
+            url = "url"
+            path = @font_path
+          end
+          say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          url = "url"
-          path = @font_path
+          style = {:url => "url", :path => @font_path}.merge(style)
+          url = style[:url]
+          path = style[:path]
         end
 %Q|@font-face {
   font-family: "#{font_name}";

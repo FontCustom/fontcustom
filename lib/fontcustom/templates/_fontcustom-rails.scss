@@ -2,7 +2,7 @@
 // Icon Font: <%= font_name %>
 //
 
-<%= font_face(:preprocessor) %>
+<%= font_face(url: "font-url", path: @font_path_alt) %>
 
 [data-icon]:before { content: attr(data-icon); }
 

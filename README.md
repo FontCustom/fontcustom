@@ -102,6 +102,8 @@ Custom templates have access to `@options`, `@manifest`, and the following ERB h
 
 * `font_name` 
 * `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
+  - Font paths can be modified by passing a hash. `font_face(url: "font-url", path: @font_path_alt)`
+  - The `preview`, `scss`, and `scss-rails` templates use modified font paths. Compass users should use the `scss-rails` template.
 * `glyph_selectors`: comma-separated list of all selectors
 * `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
 
