@@ -47,5 +47,5 @@ Some helpful links:
 That's all there is to it. Thanks again, and please don't hesitate to reach out:
 
 [Github Issues](https://github.com/FontCustom/fontcustom/issues)<br>
-[@ezYZ](https://twitter.com/ezYZ)<br>
+[@kaizau](https://twitter.com/kaizau)<br>
 [@endtwist](https://twitter.com/endtwist)

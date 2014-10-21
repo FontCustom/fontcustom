@@ -121,4 +121,4 @@ Custom templates have access to `@options`, `@manifest`, and the following ERB h
 
 [Licenses](https://github.com/FontCustom/fontcustom/blob/master/LICENSES.txt)
 
-Brought to you by [@endtwist](https://github.com/endtwist) and [@ezYZ](https://github.com/ezYZ)
+Brought to you by [@endtwist](https://github.com/endtwist) and [@kaizau](https://github.com/kaizau)
