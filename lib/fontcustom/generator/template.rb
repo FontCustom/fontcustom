@@ -158,7 +158,7 @@ module Fontcustom
 
       def woff_base64
         woff_path = File.join(@options[:output][:fonts], "#{@font_path_alt}.woff")
-        Base64.encode64(File.read(File.join(woff_path))).gsub("\n", "")
+        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
       end
 
       def glyph_selectors
