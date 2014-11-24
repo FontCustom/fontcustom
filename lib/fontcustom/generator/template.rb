@@ -136,7 +136,7 @@ module Fontcustom
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
-       #{url}(#{woff_data_uri}),
+       url(#{woff_data_uri}),
        #{url}("#{path}.woff") format("woff"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
