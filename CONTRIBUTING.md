@@ -6,7 +6,6 @@ on the menu:
 
 * **Ruby on Rails integration**
 * **Compass integration**
-* Base 64 encode fonts into CSS
 * Templates for LESS, stylus, etc.
 * Ligature support
 * Windows support
