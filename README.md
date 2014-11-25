@@ -32,90 +32,77 @@ gem install fontcustom
 ### Quick Start
 
 ```sh
-fontcustom compile path/to/vectors  # Compiles icons into `fontcustom/`
-fontcustom watch path/to/vectors    # Compiles when vectors are changed/added/removed
-fontcustom compile                  # Uses configuration file at `fontcustom.yml`
-                                    # or `config/fontcustom.yml`
-fontcustom config                   # Generate a blank a configuration file
-fontcustom help                     # See all options
+fontcustom compile my/vectors  # Compiles icons into `fontcustom/`
+fontcustom watch my/vectors    # Compiles when vectors are changed/added/removed
+fontcustom compile             # Uses options from `./fontcustom.yml` or `config/fontcustom.yml`
+fontcustom config              # Generate a blank a config file
+fontcustom help                # See all options
 ```
 
 ### Configuration
 
-To preserve options between compiles, create a configuration file with
-`fontcustom config`. This should live in the directory where you run
-all `fontcustom` commands. Each of the following has its own command 
-line flag (`--css-selector`, etc.). Defaults values are shown.
+To manage settings between compiles, run `fontcustom config` to generate a
+`fontcustom.yml` template.
 
-**Basics**
-
-```yml
-project_root: (pwd)                   # Context for all relative paths
-input: (project_root)                 # Where vectors and templates are located
-output: (project_root)/(font name)    # Where generated files will be saved
-config: (pwd)/fontcustom.yml          # Optional path to a configuration file
-debug: false                          # Output raw messages from fontforge
-quiet: false                          # Silence all messages except errors
-
-# For more control over file locations, set
-# input and output as hashes instead of strings
-input:
-  vectors: path/to/vectors            # required
-  templates: path/to/templates
-
-output:
-  fonts: app/assets/fonts             # required
-  css: app/assets/stylesheets
-  preview: app/views/styleguide
-```
-
-**Fonts**
-
-```yml
-font_name: fontcustom                 # Also sets the default output directory and
-                                      # the name of generated stock templates
-font_design_size: 16                  # The size of the original glyphs
-font_em: 512                          # Scale font up to this size
-font_ascent: 448                      # Location of font ascent
-font_descent: 64                      # Location of font descent
-no_hash: false                        # Don't add asset-busting hashes to font files
-autowidth: false                      # Automatically size glyphs based on the width of
-                                      # their individual vectors
-```
-
-**Templates**
-
-```yml
-templates: [ css, preview ]           # List of templates to generate alongside fonts
-                                      # Possible values: preview, css, scss, scss-rails
-css_selector: .icon-{{glyph}}         # CSS selector format (`{{glyph}}` is replaced)
-preprocessor_path: ""                 # Font path used in CSS proprocessor templates
-                                      # Set to "" or false to use the bare font name
-
-# Custom templates should live in the `input` 
-# or `input[:templates]` directory and be added
-# to `templates` as their basename:
-templates: [ preview, VectorIcons.less ]
-```
-
-Custom templates have access to `@options`, `@manifest`, and the following ERB helpers:
-
-* `font_name` 
-* `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
-  - Font paths can be modified by passing a hash. `font_face(url: "font-url", path: @font_path_alt)`
-  - The `preview`, `scss`, and `scss-rails` templates use modified font paths. Compass users should use the `scss-rails` template.
-* `glyph_selectors`: comma-separated list of all selectors
-* `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
+The template will list [all possible options](https://github.com/FontCustom/fontcustom/blob/master/lib/fontcustom/templates/fontcustom.yml).
+Each option is also available as a dash-case command line flag (e.g.
+`--css-selector`) that overrides the config file.
 
 ### SVG Guidelines
 
-* All colors will be rendered identically — including white fills.
-* Make transparent colors solid. SVGs with transparency will be skipped.
-* For greater precision, prefer fills to strokes (especially if your icon includes curves).
-* Keep your icon within a square `viewBox`. Font Custom scales each SVG to fit
-  a 512x512 canvas with a baseline at 448.
-* Setting `autowidth` to true trims horizontal white space from each glyph. This can be much easier
-  than centering dozens of SVGs by hand.
+* All colors will be rendered identically. Watch out for white fills!
+* Use only solid colors. SVGs with transparency will be skipped.
+* For greater precision in curved icons, use fills instead strokes and [try
+  these solutions](https://github.com/FontCustom/fontcustom/issues/85).
+* Setting `autowidth` to true trims horizontal white space from each glyph.
+  This can be much easier than centering dozens of SVGs by hand.
+
+### Advanced
+
+**For use with Compass and/or Rails**
+
+Set `templates` to include `scss-rails` to generate a SCSS partial with the
+compatible font-url() helper. You'll most likely also need to set
+`preprocessor_path` as the relative path from your compiled CSS to your output
+directory.
+
+**Save CSS and fonts to different locations**
+
+Input vectors and templates can live in different places; output fonts, css,
+and the preview document can be saved separately. This is best managed from
+`fontcustom.yml`. Just edit the `input` and `output` YAML hashes and their
+corresponding keys.
+
+**Generate LESS, Stylus, and other files**
+
+Custom templates give you the flexibility to generate just about anything you
+want with Font Custom's output data.
+
+Any non-SVG file in your input directory (or input:templates directory if you
+set it in `fontcustom.yml`) will be available as a custom template to copy into
+the output directory after compilation. You just need to specify the file name
+under the `templates` hash.
+
+Any embedded ruby in the templates will be processed, along with the following
+helpers:
+
+* `font_name`
+* `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
+* `glyph_selectors`: comma-separated list of all icon CSS selectors
+* `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
+* `@options`: a hash of options used during compilation
+* `@manifest`: a hash of options, generated file paths, code points, and just about everything else Font Custom knows.
+* `@font_path`: the path from CSS to font files (without an extension)
+* `@font_path_alt`: if `preprocessor_path` was set, this is the modified path
+
+`font_face` accepts a hash that modifies the CSS url() function and the path of
+the font files (`font_face(url: "font-url", path: @font_path_alt)`).
+
+**Tweak font settings**
+
+By default, Font Custom assumes a square viewBox, 512 by 512, and 16 pica
+points. Change `font_design_size`, `font_em`, `font_ascent`, `font_descent`,
+and `autowidth` to suit your own needs.
 
 ---
 

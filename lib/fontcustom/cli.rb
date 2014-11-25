@@ -47,7 +47,7 @@ module Fontcustom
       :default => DEFAULT_OPTIONS[:css_selector]
 
     class_option :preprocessor_path, :aliases => "-p", :type => :string,
-      :desc => "Optional font path for CSS proprocessor templates."
+      :desc => "For Rails and Compass templates, set this as the relative path from your compiled CSS to your font output directory."
 
     class_option :autowidth, :aliases => "-a", :type => :boolean,
       :desc => "Auto-size glyphs to their individual vector widths."
