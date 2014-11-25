@@ -85,4 +85,15 @@ describe Fontcustom::Generator::Template do
       gen.send :create_files
     end
   end
+  
+  context ".font_face" do
+    it "should return base64 when options are set" do 
+      gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
+      gen.stub(:woff_base64).and_return "3xampled4ta"
+      options = gen.instance_variable_get :@options
+      options[:base64] = true
+
+      expect(gen.send(:font_face)).to match("x-font-woff")
+    end
+  end
 end

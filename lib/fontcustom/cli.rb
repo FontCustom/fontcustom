@@ -55,6 +55,9 @@ module Fontcustom
     class_option :no_hash, :aliases => "-n", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 
+    class_option :base64, :aliases => "-b", :type => :boolean,
+      :desc => "Base64 encode WOFF font into CSS."
+
     class_option :debug, :aliases => "-d", :type => :boolean,
       :desc => "Display debugging messages."
 

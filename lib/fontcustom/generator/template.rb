@@ -114,7 +114,7 @@ module Fontcustom
         @options[:font_name]
       end
 
-      def font_face(style = {})
+     def font_face(style = {})
         if style.is_a?(Symbol)
           if style == :preprocessor
             url = "font-url"
@@ -132,17 +132,40 @@ module Fontcustom
           url = style[:url]
           path = style[:path]
         end
-%Q|@font-face {
+
+        # Bulletproof @Font-Face <http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax>
+        # With and without Base64
+        if @options[:base64]
+          string = %Q|@font-face {
+  font-family: "#{font_name}";
+  src: #{url}("#{path}.eot?") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "#{font_name}";
+  src: url("data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}") format("woff"),
+       #{url}("#{path}.ttf") format("truetype"),
+       #{url}("#{path}.svg##{font_name}") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}|
+        else
+        string = %Q|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
-       url("#{woff_data_uri}"),
        #{url}("#{path}.woff") format("woff"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
   font-weight: normal;
   font-style: normal;
-}
+}|
+        end
+
+        # For Windows/Chrome <http://stackoverflow.com/a/19247378/1202445>
+        string << %Q|
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
@@ -150,14 +173,11 @@ module Fontcustom
     src: #{url}("#{path}.svg##{font_name}") format("svg");
   }
 }|
-      end
-
-      def woff_data_uri
-        "data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}"
+        string
       end
 
       def woff_base64
-        woff_path = File.join(@options[:output][:fonts], "#{@font_path_alt}.woff")
+        woff_path = File.join(@options[:output][:fonts], "#{@font_path}.woff")
         Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
       end
 
