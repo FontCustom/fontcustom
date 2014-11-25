@@ -68,10 +68,11 @@ directory.
 
 **Save CSS and fonts to different locations**
 
-Input vectors and templates can live in different places; output fonts, css,
-and the preview document can be saved separately. This is best managed from
-`fontcustom.yml`. Just edit the `input` and `output` YAML hashes and their
-corresponding keys.
+You can save generated fonts, CSS, and other files to different locations by
+using `fontcustom.yml`. Font Custom can also read input vectors and templates
+from different places. 
+
+Just edit the `input` and `output` YAML hashes and their corresponding keys.
 
 **Generate LESS, Stylus, and other files**
 

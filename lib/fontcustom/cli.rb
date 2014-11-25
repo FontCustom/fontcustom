@@ -27,39 +27,39 @@ module Fontcustom
       :default => DEFAULT_OPTIONS[:font_name]
     
     class_option :font_design_size, :aliases => '-x', :type => :numeric,
-      :desc => "Size (in pica points) for which this font was designed.",
+      :desc => "Size (in pica points) for which this font is designed.",
       :default => DEFAULT_OPTIONS[:font_design_size]
 
     class_option :font_em, :aliases => '-m', :type => :numeric,
-      :desc => "The em size of the font. Setting this will scale the entire font to the given size.",
+      :desc => "The em size. Setting this will scale the entire font to the given size.",
       :default => DEFAULT_OPTIONS[:font_em]
 
     class_option :font_ascent, :aliases => '-a', :type => :numeric,
-      :desc => "The font's ascent.",
+      :desc => "The font's ascent. Used to calculate the baseline.",
       :default => DEFAULT_OPTIONS[:font_ascent]
 
     class_option :font_descent, :aliases => '-z', :type => :numeric,
-      :desc => "The font's descent.",
+      :desc => "The font's descent. Used to calculate the baseline.",
       :default => DEFAULT_OPTIONS[:font_descent]
 
     class_option :css_selector, :aliases => "-s", :type => :string,
-      :desc => "Format of generated CSS selector. \"{{glyph}}\" is substituted for the glyph name.",
+      :desc => "Format of CSS selectors. \"{{glyph}}\" is substituted for the glyph name.",
       :default => DEFAULT_OPTIONS[:css_selector]
 
     class_option :preprocessor_path, :aliases => "-p", :type => :string,
       :desc => "For Rails and Compass templates, set this as the relative path from your compiled CSS to your font output directory."
 
     class_option :autowidth, :aliases => "-a", :type => :boolean,
-      :desc => "Auto-size glyphs to their individual vector widths."
+      :desc => "Horizontally fit glyphs to their individual vector widths."
 
     class_option :no_hash, :aliases => "-n", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 
     class_option :base64, :aliases => "-b", :type => :boolean,
-      :desc => "Base64 encode WOFF font into CSS."
+      :desc => "Encode WOFF fonts into the generated CSS."
 
     class_option :debug, :aliases => "-d", :type => :boolean,
-      :desc => "Display debugging messages."
+      :desc => "Display (possibly useful) debugging messages."
 
     class_option :force, :aliases => "-F", :type => :boolean,
       :desc => "Forces compilation, even if inputs have not changed."
