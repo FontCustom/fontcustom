@@ -17,12 +17,13 @@ describe Fontcustom::CLI do
 
     it "should generate fonts and templates according to passed options (integration)", :integration => true do
       live_test do |testdir|
-        Fontcustom::CLI.start ["compile", "vectors", "--font-name", "example", "--no-hash", "--base64", "--quiet"]
+        Fontcustom::CLI.start ["compile", "vectors", "--font-name", "example", "--preprocessor-path", "../foo/bar", "--templates", "scss-rails", "preview", "--no-hash", "--base64", "--quiet"]
         manifest = File.join testdir, ".fontcustom-manifest.json"
-        css = Dir.glob(File.join("example", "*.css")).first
+        css = Dir.glob(File.join("example", "*.scss")).first
 
         expect(File.read(manifest)).to match(/"fonts":.+example\/example\.ttf"/m)
         expect(File.read(css)).to match("x-font-woff")
+        expect(File.read(css)).to match("../foo/bar/")
       end
     end
   end
