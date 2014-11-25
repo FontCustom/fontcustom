@@ -22,31 +22,31 @@ module Fontcustom
       :enum => %w|preview css scss scss-rails|,
       :default => EXAMPLE_OPTIONS[:templates]
 
-    class_option :font_name, :aliases => %w|name -n|, :type => :string,
+    class_option :font_name, :aliases => %w|--name -n|, :type => :string,
       :desc => "The font's name. Also determines the file names of generated templates.",
       :default => DEFAULT_OPTIONS[:font_name]
     
-    class_option :font_design_size, :aliases => %s|size -s|, :type => :numeric,
+    class_option :font_design_size, :aliases => %s|--size -s|, :type => :numeric,
       :desc => "Size (in pica points) for which this font is designed.",
       :default => DEFAULT_OPTIONS[:font_design_size]
 
-    class_option :font_em, :aliases => %w|em -e|, :type => :numeric,
+    class_option :font_em, :aliases => %w|--em -e|, :type => :numeric,
       :desc => "The em size. Setting this will scale the entire font to the given size.",
       :default => DEFAULT_OPTIONS[:font_em]
 
-    class_option :font_ascent, :aliases => %w|ascent -a|, :type => :numeric,
+    class_option :font_ascent, :aliases => %w|--ascent -a|, :type => :numeric,
       :desc => "The font's ascent. Used to calculate the baseline.",
       :default => DEFAULT_OPTIONS[:font_ascent]
 
-    class_option :font_descent, :aliases => %w|descent -d|, :type => :numeric,
+    class_option :font_descent, :aliases => %w|--descent -d|, :type => :numeric,
       :desc => "The font's descent. Used to calculate the baseline.",
       :default => DEFAULT_OPTIONS[:font_descent]
 
-    class_option :css_selector, :aliases => %w|selector -S|, :type => :string,
+    class_option :css_selector, :aliases => %w|--selector -S|, :type => :string,
       :desc => "Format of CSS selectors. \"{{glyph}}\" is substituted for the glyph name.",
       :default => DEFAULT_OPTIONS[:css_selector]
 
-    class_option :preprocessor_path, :aliases => %w|prepath -p|, :type => :string,
+    class_option :preprocessor_path, :aliases => %w|--prepath -p|, :type => :string,
       :desc => "For Rails and Compass templates, set this as the relative path from your compiled CSS to your font output directory."
 
     class_option :autowidth, :aliases => "-A", :type => :boolean,
