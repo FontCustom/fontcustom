@@ -114,7 +114,7 @@ module Fontcustom
         @options[:font_name]
       end
 
-     def font_face(style = {})
+      def font_face(style = {})
         if style.is_a?(Symbol)
           if style == :preprocessor
             url = "font-url"
