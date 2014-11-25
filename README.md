@@ -6,7 +6,9 @@
 
 **Icon fonts from the command line.**
 
-Generate cross-browser icon fonts and supporting files (@font-face CSS, etc.) from a collection of SVGs.
+Generate cross-browser icon fonts and supporting files (@font-face CSS, etc.)
+from a collection of SVGs 
+([example](https://rawgit.com/FontCustom/fontcustom/master/spec/fixtures/example/example-preview.html)).
 
 [Changelog](https://github.com/FontCustom/fontcustom/blob/master/CHANGELOG.md)<br>
 [Bugs/Support](https://github.com/FontCustom/fontcustom/issues)<br>
@@ -42,9 +44,7 @@ fontcustom help                # See all options
 ### Configuration
 
 To manage settings between compiles, run `fontcustom config` to generate a
-`fontcustom.yml` template.
-
-The template will list [all possible options](https://github.com/FontCustom/fontcustom/blob/master/lib/fontcustom/templates/fontcustom.yml).
+config file. Inside, you'll find a list of [**all possible options**](https://github.com/FontCustom/fontcustom/blob/master/lib/fontcustom/templates/fontcustom.yml).
 Each option is also available as a dash-case command line flag (e.g.
 `--css-selector`) that overrides the config file.
 
@@ -54,8 +54,8 @@ Each option is also available as a dash-case command line flag (e.g.
 * Use only solid colors. SVGs with transparency will be skipped.
 * For greater precision in curved icons, use fills instead strokes and [try
   these solutions](https://github.com/FontCustom/fontcustom/issues/85).
-* Setting `autowidth` to true trims horizontal white space from each glyph.
-  This can be much easier than centering dozens of SVGs by hand.
+* Activating `autowidth` trims horizontal white space from each glyph. This
+  can be much easier than centering dozens of SVGs by hand.
 
 ### Advanced
 
@@ -74,7 +74,13 @@ from different places.
 
 Just edit the `input` and `output` YAML hashes and their corresponding keys.
 
-**Generate LESS, Stylus, and other files**
+**Tweak font settings**
+
+By default, Font Custom assumes a square viewBox, 512 by 512, and 16 pica
+points. Change `font_design_size`, `font_em`, `font_ascent`, `font_descent`,
+and `autowidth` to suit your own needs.
+
+**Generate LESS, Stylus, and other text files**
 
 Custom templates give you the flexibility to generate just about anything you
 want with Font Custom's output data.
@@ -88,7 +94,7 @@ Any embedded ruby in the templates will be processed, along with the following
 helpers:
 
 * `font_name`
-* `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
+* `font_face`: [FontSpring's Bulletproof @Font-Face Syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
 * `glyph_selectors`: comma-separated list of all icon CSS selectors
 * `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
 * `@options`: a hash of options used during compilation
@@ -98,12 +104,6 @@ helpers:
 
 `font_face` accepts a hash that modifies the CSS url() function and the path of
 the font files (`font_face(url: "font-url", path: @font_path_alt)`).
-
-**Tweak font settings**
-
-By default, Font Custom assumes a square viewBox, 512 by 512, and 16 pica
-points. Change `font_design_size`, `font_em`, `font_ascent`, `font_descent`,
-and `autowidth` to suit your own needs.
 
 ---
 
