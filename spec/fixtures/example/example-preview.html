@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>example glyphs preview</title>
+
+    <style>
+      /* Page Styles */
+
+      * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #fff;
+        color: #444;
+        font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      a,
+      a:visited {
+        color: #888;
+        text-decoration: underline;
+      }
+      a:hover,
+      a:focus { color: #000; }
+
+      header {
+        border-bottom: 2px solid #ddd;
+        margin-bottom: 20px;
+        overflow: hidden;
+        padding: 20px 0;
+      }
+
+      header h1 {
+        color: #888;
+        float: left;
+        font-size: 36px;
+        font-weight: 300;
+      }
+
+      header a {
+        float: right;
+        font-size: 14px;
+      }
+
+      .container {
+        margin: 0 auto;
+        max-width: 1200px;
+        min-width: 960px;
+        padding: 0 40px;
+        width: 90%;
+      }
+
+      .glyph {
+        border-bottom: 1px dotted #ccc;
+        padding: 10px 0 20px;
+        margin-bottom: 20px;
+      }
+
+      .preview-glyphs { vertical-align: bottom; }
+
+      .preview-scale {
+        color: #888;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      .step {
+        display: inline-block;
+        line-height: 1;
+        position: relative;
+        width: 10%;
+      }
+
+      .step .letters,
+      .step i {
+        -webkit-transition: opacity .3s;
+        -moz-transition: opacity .3s;
+        -ms-transition: opacity .3s;
+        -o-transition: opacity .3s;
+        transition: opacity .3s;
+      }
+
+      .step:hover .letters { opacity: 1; }
+      .step:hover i { opacity: .3; }
+
+      .letters {
+        opacity: .3;
+        position: absolute;
+      }
+
+      .characters-off .letters { display: none; }
+      .characters-off .step:hover i { opacity: 1; }
+
+      
+      .size-12 { font-size: 12px; }
+      
+      .size-14 { font-size: 14px; }
+      
+      .size-16 { font-size: 16px; }
+      
+      .size-18 { font-size: 18px; }
+      
+      .size-21 { font-size: 21px; }
+      
+      .size-24 { font-size: 24px; }
+      
+      .size-36 { font-size: 36px; }
+      
+      .size-48 { font-size: 48px; }
+      
+      .size-60 { font-size: 60px; }
+      
+      .size-72 { font-size: 72px; }
+      
+
+      .usage { margin-top: 10px; }
+
+      .usage input {
+        font-family: monospace;
+        margin-right: 3px;
+        padding: 2px 5px;
+        text-align: center;
+      }
+
+      .usage .point { width: 150px; }
+
+      .usage .class { width: 250px; }
+
+      footer {
+        color: #888;
+        font-size: 12px;
+        padding: 20px 0;
+      }
+
+      /* Icon Font: example */
+
+      @font-face {
+  font-family: "example";
+  src: url("./example.eot?") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "example";
+  src: url("data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAY4AA0AAAAACLwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAGHAAAABkAAAAccaHi/09TLzIAAAGgAAAASgAAAGBA1V1oY21hcAAAAgAAAABCAAABQgAP9K1jdnQgAAACRAAAAAQAAAAEABEBRGdhc3AAAAYUAAAACAAAAAj//wADZ2x5ZgAAAlgAAAJsAAADNM9iHgNoZWFkAAABMAAAAC4AAAA2Ala4AWhoZWEAAAFgAAAAIAAAACQD8wHEaG10eAAAAewAAAATAAAAFAYAABJsb2NhAAACSAAAAA4AAAAOAiAA/m1heHAAAAGAAAAAIAAAACAASwDqbmFtZQAABMQAAAEdAAAB+O5hv99wb3N0AAAF5AAAAC0AAABG3Z3qEXjaY2BkYGAA4tvSRxji+W2+MnAzMYDAhVm7DyHo/weYmBgPALkcDGBpAEM3C8UAAHjaY2BkYGA88P8Agx4TAwPD//9MTAxAERTAAgB7jwS5AAEAAAAGALkAAwAAAAAAAgAAAAEAAQAAAEAALgAAAAB42mNgYWJgnMDAysDA6MOYxsDA4A6lvzJIMrQwMDAxsHIywIEAgskQkOaawnDgI8NHJsYD/w8w6DEeYHAACjMiKVFgYAQAEe8L0gAAeNpjYmAQZAACJigGAkYAAYYAGQB42mNgYGBmgGAZBkYGELAB8hjBfBYGBSDNAoRA/kem//+BJMP///zMUJUMjGwMMCYDIxOQYGJABYwMwx4AAD6CBq4AAAARAUQAAAAqACoAKgBcAKoBmgAAeNpVkE1PE1EUhs+53zO3wzBTpqUfDKGlH2mESmfaolaDiawElUUTE6KJkrBgiQtZunTRlQsS+wM00RVduWDRlTt2Lv0LBn+AAe+UgnFz7z3vOXnP814g4AHAR+wDBQmrJwjN3kgy+NU6Efxnb0SJecIJTWSeyCMp8E9vhIkeeZFXi7yy9/7t/j72L756GBk3CnA5JoBj4+jCIoDfygTekhdjO66WxAKaegFr00K24+MfxxeA54Pvg+GXo2HYCIc4Pj64BISDi8/ne4PB3jmeHvXPhlEQhkE0POub1vWONkCllZkTpWo77tZE+d8dd6JWZhEfYNTKdo3aScbKpZrMBHMy28FxoVLpVPirYr2+TratlJNOO9qj26mVQpg/tE2vUnC9Q99+7W9U42o1r1ObxfU6t3MqnU/P6Hy26B967sTFfpMLg2DThUl+hIgQfAEf4BN8A0CzM3vN2G6iKAdXCNGNWJuAmWMVp/g1F83QpJskiLpr5nUfp8nMj84F2XZiMcnW/U/vJPNXiafl5L6RZlBOl8hrkGw37ranRrfLibxmvug3Z1GXSanEnUeMzfMy59KyZqxlZXvWDvelLcmy7SpJi0RpRSUlGNo9oaTWrr6LdqDtBqOPpW05ju885ZKQkFkpdU8ISz+MUc9ork7lc+kI0ZBsWSqfP8m52KPMGL1kCPTWllkvGCHP6myX5ZRcopZj24JgSczmfKElY3nNeJ1RoZQwDCvaJRQLwiBohVhATIuGEIKXlIFwLELKdINxqZRE0mQpRUlthVLDLLni77S1pWnD0krluDdPwl06y0mTbEiNOwTgL1Uedf542nWPwWrCQBRF72hUupHuup1CFwomTAbduKwQCu5cSJcdZIiBmIQxgv5UP6I/00/osr0Tx0UXBibvvJeXe+8AGOMTAtfnCSqwwAjvgXvkJnAfL/gKHHH+E3iAR/EceIiReOWmiB7YJd1fngW93gL3yB+B+5yeA0ecfwceQOI38BBjobFCzSQXOBTIsUfLjQl2mLJqZk8xx4y8huEGVnVzcUW+b+VkN5VapfOZXBt+sPQzOFCrJMOezaEpCRt2OU6cGnpgY/NTaQgZfSu6+eq4YTu/hI4SS57/eteZxgIxE6V837Ihq6s2q11upU6UXMrgTNKLOE1jn/F+vC07hyOv5uNIinrZpKs+CrbWHYu6kkqliVJK3pX6A9Z1SrEAAAB42mNgYgCD/wcYJIEUIwM6YAOLMjEyMTIzsrCX5mW6GRoYQGlDKG0EAMecCHIAAAAAAAAB//8AAnjaY2BgYGQAggs52VVgetbuQzAaAE3dB/EAAAA=") format("woff"),
+       url("./example.ttf") format("truetype"),
+       url("./example.svg#example") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "example";
+    src: url("./example.svg#example") format("svg");
+  }
+}
+
+      [data-icon]:before { content: attr(data-icon); }
+
+      [data-icon]:before,
+      .icon-C:before,
+.icon-D:before,
+.icon-a_R3ally-eXotic-f1Le-Name:before {
+        display: inline-block;
+  font-family: "example";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+      }
+
+      .icon-C:before { content: "\f100"; }
+.icon-D:before { content: "\f101"; }
+.icon-a_R3ally-eXotic-f1Le-Name:before { content: "\f102"; }
+    </style>
+
+    <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script>
+      function toggleCharacters() {
+        var body = document.getElementsByTagName('body')[0];
+        body.className = body.className === 'characters-off' ? '' : 'characters-off';
+      }
+    </script>
+  </head>
+
+  <body class="characters-off">
+    <div id="page" class="container">
+      <header>
+        <h1>example contains 3 glyphs:</h1>
+        <a onclick="toggleCharacters(); return false;" href="#">Toggle Preview Characters</a>
+      </header>
+
+      
+      <div class="glyph">
+        <div class="preview-glyphs">
+          <span class="step size-12"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-14"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-16"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-18"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-21"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-24"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-36"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-48"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-60"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span><span class="step size-72"><span class="letters">Pp</span><i id="icon-C" class="icon-C"></i></span>
+        </div>
+        <div class="preview-scale">
+          <span class="step">12</span><span class="step">14</span><span class="step">16</span><span class="step">18</span><span class="step">21</span><span class="step">24</span><span class="step">36</span><span class="step">48</span><span class="step">60</span><span class="step">72</span>
+        </div>
+        <div class="usage">
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".icon-C" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#xf100;" />
+        </div>
+      </div>
+      
+      <div class="glyph">
+        <div class="preview-glyphs">
+          <span class="step size-12"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-14"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-16"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-18"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-21"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-24"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-36"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-48"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-60"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span><span class="step size-72"><span class="letters">Pp</span><i id="icon-D" class="icon-D"></i></span>
+        </div>
+        <div class="preview-scale">
+          <span class="step">12</span><span class="step">14</span><span class="step">16</span><span class="step">18</span><span class="step">21</span><span class="step">24</span><span class="step">36</span><span class="step">48</span><span class="step">60</span><span class="step">72</span>
+        </div>
+        <div class="usage">
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".icon-D" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#xf101;" />
+        </div>
+      </div>
+      
+      <div class="glyph">
+        <div class="preview-glyphs">
+          <span class="step size-12"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-14"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-16"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-18"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-21"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-24"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-36"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-48"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-60"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span><span class="step size-72"><span class="letters">Pp</span><i id="icon-a_R3ally-eXotic-f1Le-Name" class="icon-a_R3ally-eXotic-f1Le-Name"></i></span>
+        </div>
+        <div class="preview-scale">
+          <span class="step">12</span><span class="step">14</span><span class="step">16</span><span class="step">18</span><span class="step">21</span><span class="step">24</span><span class="step">36</span><span class="step">48</span><span class="step">60</span><span class="step">72</span>
+        </div>
+        <div class="usage">
+          <input class="class" type="text" readonly="readonly" onClick="this.select();" value=".icon-a_R3ally-eXotic-f1Le-Name" />
+          <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#xf102;" />
+        </div>
+      </div>
+      
+
+      <footer>
+        Made with love using <a href="http://fontcustom.com">Font Custom</a>.
+      </footer>
+    </div>
+  </body>
+</html>
