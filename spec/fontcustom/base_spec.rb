@@ -34,9 +34,8 @@ describe Fontcustom::Base do
     it "should return hash of all vectors and templates" do
       pending "SHA2 is different on CI servers. Why?"
       allow(Fontcustom::Base).to receive(:check_fontforge)
-      base = Fontcustom::Base.new({})
+      base = Fontcustom::Base.new(:input => {:vectors => fixture("shared/vectors")})
       base.instance_variable_set :@options, {
-        :input => {:vectors => fixture("shared/vectors")},
         :templates => Dir.glob(File.join(fixture("shared/templates"), "*"))
       }
       hash = base.send :checksum

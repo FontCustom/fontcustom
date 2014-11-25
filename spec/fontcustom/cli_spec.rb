@@ -9,9 +9,9 @@ describe Fontcustom::CLI do
         manifest = File.join testdir, ".fontcustom-manifest.json"
         preview = File.join testdir, "fontcustom", "fontcustom-preview.html"
 
-        Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length.should eq(4)
-        File.read(manifest).should match(/"fonts":.+fontcustom\/fontcustom_.+\.ttf"/m)
-        File.exists?(preview).should be_true
+        expect(Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
+        expect(File.read(manifest)).to match(/"fonts":.+fontcustom\/fontcustom_.+\.ttf"/m)
+        expect(File.exists?(preview)).to be_truthy
       end
     end
 
@@ -21,8 +21,8 @@ describe Fontcustom::CLI do
         manifest = File.join testdir, ".fontcustom-manifest.json"
         css = Dir.glob(File.join("example", "*.css")).first
 
-        File.read(manifest).should match(/"fonts":.+example\/example\.ttf"/m)
-        File.read(css).should match("x-font-woff")
+        expect(File.read(manifest)).to match(/"fonts":.+example\/example\.ttf"/m)
+        expect(File.read(css)).to match("x-font-woff")
       end
     end
   end
