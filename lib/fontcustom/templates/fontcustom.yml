@@ -93,4 +93,4 @@
 #font_descent: 64
 
 # Horizontally fit glyphs to their individual vector widths.
-#autowidth: true
+#autowidth: false
