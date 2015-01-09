@@ -96,4 +96,21 @@ describe Fontcustom::Generator::Template do
       expect(gen.send(:font_face)).to match("x-font-woff")
     end
   end
+
+  context ".get_target_path" do
+    it "should generate the correct preview target when using default font_name" do
+      gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
+      options = gen.instance_variable_get :@options
+      options[:output] = {:fonts => fixture("sandbox/test/fonts"), :preview => fixture("sandbox/test")}
+      expect(gen.send(:get_target_path, "sandbox/test/fontcustom-preview.html")).to match("/sandbox/test/fontcustom-preview.html")
+    end
+    it "should generate the correct preview target when using custom font_name with output directory containing 'fontcustom'" do
+      gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
+      options = gen.instance_variable_get :@options
+      options[:font_name] = 'custom'
+      options[:output] = {:fonts => fixture("sandbox/test-fontcustom/fonts"), :preview => fixture("sandbox/test-fontcustom")}
+      expect(gen.send(:get_target_path, "sandbox/test/fontcustom-preview.html")).to match("/sandbox/test-fontcustom/custom-preview.html")
+    end
+  end
+
 end
