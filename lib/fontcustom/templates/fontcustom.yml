@@ -88,7 +88,7 @@
 # The em size. Setting this will scale the entire font to the given size.
 #font_em: 512
 
-# The font's descent and descent. Used to calculate the baseline.
+# The font's ascent and descent. Used to calculate the baseline.
 #font_ascent: 448
 #font_descent: 64
 
