@@ -100,7 +100,7 @@ module Fontcustom
         end
 
         if packaged.include?(base) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
-          target.sub! DEFAULT_OPTIONS[:font_name], @options[:font_name]
+          target = File.join(File.dirname(target), File.basename(target).sub(DEFAULT_OPTIONS[:font_name], @options[:font_name]))
         end
 
         target
