@@ -48,7 +48,8 @@ module Fontcustom
         @listener.start
       else
         if listen_eq2
-          @listener.start.join
+          @listener.start
+          sleep
         else
           @listener.start!
         end
