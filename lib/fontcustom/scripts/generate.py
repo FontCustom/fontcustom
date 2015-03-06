@@ -3,7 +3,6 @@ import os
 import subprocess
 import tempfile
 import json
-import re
 
 #
 # Manifest / Options
@@ -96,9 +95,6 @@ try:
     if not options['no_hash']:
         fontfile += '_' + manifest['checksum']['current'][:32]
 
-    # Escape brackets
-    fontfile = re.sub(r'([()])', r'\\\1', fontfile)
-
     # Generate TTF and SVG
     font.generate(fontfile + '.ttf')
     font.generate(fontfile + '.svg')
@@ -125,8 +121,8 @@ try:
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
-    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-    subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    subprocess.call('python ' + scriptPath + '/eotlitetool.py \'' + fontfile + '.ttf\' -o \'' + fontfile + '.eot\'', shell=True)
+    subprocess.call('mv \'' + fontfile + '.eotlite\' \'' + fontfile + '.eot\'', shell=True)
     manifest['fonts'].append(fontfile + '.eot')
 
 finally:
