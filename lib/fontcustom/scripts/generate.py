@@ -97,7 +97,7 @@ try:
         fontfile += '_' + manifest['checksum']['current'][:32]
 
     # Escape brackets
-    fontfile.sub(r'([()])', r'\\\1', s)
+    re.sub(r'([()])', r'\\\1', fontfile)
 
     # Generate TTF and SVG
     font.generate(fontfile + '.ttf')
