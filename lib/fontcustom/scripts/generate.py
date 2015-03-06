@@ -96,14 +96,14 @@ try:
         fontfile += '_' + manifest['checksum']['current'][:32]
 
     # Generate TTF and SVG
-    font.generate(fontfile + '.ttf')
-    font.generate(fontfile + '.svg')
-    manifest['fonts'].append(fontfile + '.ttf')
-    manifest['fonts'].append(fontfile + '.svg')
+    font.generate('\'' + fontfile + '.ttf\'')
+    font.generate('\'' + fontfile + '.svg\'')
+    manifest['fonts'].append('\'' + fontfile + '.ttf\'')
+    manifest['fonts'].append('\'' + fontfile + '.svg\'')
 
     # Fix SVG header for webkit
     # from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
-    svgfile = open(fontfile + '.svg', 'r+')
+    svgfile = open('\'' + fontfile + '.svg\'', 'r+')
     svgtext = svgfile.read()
     svgfile.seek(0)
     svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
@@ -112,13 +112,13 @@ try:
     # Convert WOFF
     scriptPath = os.path.dirname(os.path.realpath(__file__))
     try:
-        subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+        subprocess.Popen([scriptPath + '/sfnt2woff', '\'' + fontfile + '.ttf\''], stdout=subprocess.PIPE)
     except OSError:
         # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
         # global version. This allows us to avoid forcing OS X users to compile
         # sfnt2woff from source, simplifying install.
-        subprocess.call(['sfnt2woff', fontfile + '.ttf'])
-    manifest['fonts'].append(fontfile + '.woff')
+        subprocess.call(['sfnt2woff', '\'' + fontfile + '.ttf\''])
+    manifest['fonts'].append('\'' + fontfile + '.woff\'')
 
     # Convert EOT for IE7
     subprocess.call('python ' + scriptPath + '/eotlitetool.py \'' + fontfile + '.ttf\' -o \'' + fontfile + '.eot\'', shell=True)
