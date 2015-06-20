@@ -40,7 +40,7 @@ module Fontcustom
       rescue JSON::ParserError
         raise Fontcustom::Error,
           "Couldn't parse `#{@manifest}`. Fix any invalid "\
-          "JSON or delete the file to start from scratch."
+          'JSON or delete the file to start from scratch.'
       end
     end
 
@@ -63,7 +63,7 @@ module Fontcustom
 
     def create_manifest(options)
       defaults = {
-        checksum: { current: "", previous: "" },
+        checksum: { current: '', previous: '' },
         fonts: [],
         glyphs: {},
         options: options,

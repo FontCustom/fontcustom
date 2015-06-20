@@ -1,5 +1,5 @@
-require "yaml"
-require "pp"
+require 'yaml'
+require 'pp'
 
 module Fontcustom
   class Options
@@ -41,16 +41,16 @@ module Fontcustom
         path = @cli_options[:config]
         if File.exists?(path) && ! File.directory?(path)
           path
-        elsif File.exists? File.join(path, "fontcustom.yml")
-          File.join path, "fontcustom.yml"
+        elsif File.exists? File.join(path, 'fontcustom.yml')
+          File.join path, 'fontcustom.yml'
         else
           raise Fontcustom::Error, "No configuration file found at `#{path}`."
         end
       else
-        if File.exists? "fontcustom.yml"
-          "fontcustom.yml"
-        elsif File.exists? File.join("config", "fontcustom.yml")
-          File.join "config", "fontcustom.yml"
+        if File.exists? 'fontcustom.yml'
+          'fontcustom.yml'
+        elsif File.exists? File.join('config', 'fontcustom.yml')
+          File.join 'config', 'fontcustom.yml'
         else
           false
         end
@@ -82,15 +82,15 @@ module Fontcustom
     end
 
     def clean_font_name
-      @options[:font_name] = @options[:font_name].strip.gsub(/\W/, "-")
+      @options[:font_name] = @options[:font_name].strip.gsub(/\W/, '-')
     end
 
     def clean_css_selector
-      unless @options[:css_selector].include? "{{glyph}}"
+      unless @options[:css_selector].include? '{{glyph}}'
         raise Fontcustom::Error,
           "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
       end
-      @options[:css_selector] = @options[:css_selector].strip.gsub(/[^&%=\[\]\.#\{\}""\d\w]/, "-")
+      @options[:css_selector] = @options[:css_selector].strip.gsub(/[^&%=\[\]\.#\{\}""\d\w]/, '-')
     end
 
     def set_input_paths
@@ -100,7 +100,7 @@ module Fontcustom
           check_input @options[:input][:vectors]
         else
           raise Fontcustom::Error,
-            "Input paths (assigned as a hash) should have a :vectors key. Check your options."
+            'Input paths (assigned as a hash) should have a :vectors key. Check your options.'
         end
 
         if @options[:input].has_key? :templates
@@ -112,14 +112,14 @@ module Fontcustom
         if @options[:input]
           input = @options[:input]
         else
-          input = "."
-          say_message :warn, "No input directory given. Using present working directory."
+          input = '.'
+          say_message :warn, 'No input directory given. Using present working directory.'
         end
         check_input input
         @options[:input] = { vectors: input, templates: input }
       end
 
-      if Dir[File.join(@options[:input][:vectors], "*.svg")].empty?
+      if Dir[File.join(@options[:input][:vectors], '*.svg')].empty?
         raise Fontcustom::Error, "`#{@options[:input][:vectors]}` doesn't contain any SVGs."
       end
     end
@@ -129,7 +129,7 @@ module Fontcustom
         @options[:output] = symbolize_hash(@options[:output])
         unless @options[:output].has_key? :fonts
           raise Fontcustom::Error,
-            "Output paths (assigned as a hash) should have a :fonts key. Check your options."
+            'Output paths (assigned as a hash) should have a :fonts key. Check your options.'
         end
 
         @options[:output].each do |key, val|
@@ -165,7 +165,7 @@ module Fontcustom
     def check_template_paths
       @options[:templates].each do |template|
         next if %w|preview css scss scss-rails|.include? template
-        path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
+        path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == '/'
         unless File.exists? path
           raise Fontcustom::Error,
             "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."

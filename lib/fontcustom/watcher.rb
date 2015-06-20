@@ -1,5 +1,5 @@
-require "fontcustom"
-require "listen"
+require 'fontcustom'
+require 'listen'
 
 module Fontcustom
   class Watcher
@@ -64,9 +64,9 @@ module Fontcustom
     def callback
       Proc.new do |modified, added, removed|
         begin
-          say_message :changed, modified.join(", ") unless modified.empty?
-          say_message :added, added.join(", ") unless added.empty?
-          say_message :removed, removed.join(", ") unless removed.empty?
+          say_message :changed, modified.join(', ') unless modified.empty?
+          say_message :added, added.join(', ') unless added.empty?
+          say_message :removed, removed.join(', ') unless removed.empty?
           changed = modified + added + removed
           compile unless changed.empty?
         rescue Fontcustom::Error => e

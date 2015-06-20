@@ -1,8 +1,8 @@
-require "json"
-require "thor/actions"
-require "thor/shell"
-require "thor/shell/basic"
-require "thor/shell/color"
+require 'json'
+require 'thor/actions'
+require 'thor/shell'
+require 'thor/shell/basic'
+require 'thor/shell/color'
 
 # Requires access to:
 #   @options or @cli_options
@@ -37,7 +37,7 @@ module Fontcustom
     end
 
     def source_paths
-      @source_paths ||= [File.join(Fontcustom.gem_lib, "templates"), Dir.pwd]
+      @source_paths ||= [File.join(Fontcustom.gem_lib, 'templates'), Dir.pwd]
     end
 
     #
@@ -46,7 +46,7 @@ module Fontcustom
 
     module HashWithMethodAccess
       def method_missing(method, arg = nil)
-        if method[-1, 1] == "="
+        if method[-1, 1] == '='
           self[method[0...-1].to_sym] = arg
         else
           self[method.to_sym]
@@ -78,8 +78,8 @@ module Fontcustom
     # File Manipulation
     #
 
-    def write_file(file, content = "", message = nil, message_body = nil)
-      File.open(file, "w") { |f| f.write(content) }
+    def write_file(file, content = '', message = nil, message_body = nil)
+      File.open(file, 'w') { |f| f.write(content) }
       if message
         body = message_body || file
         say_message message, body

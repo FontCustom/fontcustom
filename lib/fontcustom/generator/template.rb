@@ -1,6 +1,6 @@
-require "json"
-require "pathname"
-require "base64"
+require 'json'
+require 'pathname'
+require 'base64'
 
 module Fontcustom
   module Generator
@@ -20,7 +20,7 @@ module Fontcustom
           set_relative_paths
           create_files
         else
-          raise Fontcustom::Error, "No generated fonts were detected - aborting template generation."
+          raise Fontcustom::Error, 'No generated fonts were detected - aborting template generation.'
         end
       end
 
@@ -67,17 +67,17 @@ module Fontcustom
       end
 
       def get_source_path(template)
-        template_path = File.join Fontcustom.gem_lib, "templates"
+        template_path = File.join Fontcustom.gem_lib, 'templates'
 
         case template
-        when "preview"
-          File.join template_path, "fontcustom-preview.html"
-        when "css"
-          File.join template_path, "fontcustom.css"
-        when "scss"
-          File.join template_path, "_fontcustom.scss"
-        when "scss-rails"
-          File.join template_path, "_fontcustom-rails.scss"
+        when 'preview'
+          File.join template_path, 'fontcustom-preview.html'
+        when 'css'
+          File.join template_path, 'fontcustom.css'
+        when 'scss'
+          File.join template_path, '_fontcustom.scss'
+        when 'scss-rails'
+          File.join template_path, '_fontcustom-rails.scss'
         else
           File.join @options[:input][:templates], template
         end
@@ -117,18 +117,18 @@ module Fontcustom
       def font_face(style = {})
         if style.is_a?(Symbol)
           if style == :preprocessor
-            url = "font-url"
+            url = 'font-url'
             path = @font_path_alt
           elsif style == :preview
-            url = "url"
+            url = 'url'
             path = @font_path_preview
           else
-            url = "url"
+            url = 'url'
             path = @font_path
           end
           say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          style = {url: "url", path: @font_path}.merge(style)
+          style = {url: 'url', path: @font_path}.merge(style)
           url = style[:url]
           path = style[:path]
         end
@@ -178,12 +178,12 @@ module Fontcustom
 
       def woff_base64
         woff_path = File.join(@options[:output][:fonts], "#{@font_path}.woff")
-        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
+        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", '')
       end
 
       def glyph_selectors
         output = @glyphs.map do |name, value|
-          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+          @options[:css_selector].sub('{{glyph}}', name.to_s) + ':before'
         end
         output.join ",\n"
       end

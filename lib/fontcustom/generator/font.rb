@@ -1,5 +1,5 @@
-require "json"
-require "open3"
+require 'json'
+require 'open3'
 
 module Fontcustom
   module Generator
@@ -47,13 +47,13 @@ module Fontcustom
           0xf100
         end
 
-        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+        files = Dir.glob File.join(@options[:input][:vectors], '*.svg')
         glyphs = {}
         files.each do |file|
-          name = File.basename file, ".svg"
-          name = name.strip.gsub(/\W/, "-")
+          name = File.basename file, '.svg'
+          name = name.strip.gsub(/\W/, '-')
           glyphs[name.to_sym] = { source: file }
-          if File.read(file).include? "rgba"
+          if File.read(file).include? 'rgba'
             say_message :warn, "`#{file}` contains transparency and will be skipped."
           end
         end
@@ -76,13 +76,13 @@ module Fontcustom
         cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@manifest.manifest}"
         stdout, stderr, status = Open3::capture3(cmd)
         stdout = stdout.split("\n")
-        stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
+        stdout = stdout[1..-1] if stdout[0] == 'CreateAllPyModules()'
 
-        debug_msg = " Try again with --debug for more details."
+        debug_msg = ' Try again with --debug for more details.'
         if @options[:debug]
           messages = stderr.split("\n") + stdout
           say_message :debug, messages.join(line_break)
-          debug_msg = ""
+          debug_msg = ''
         end
 
         if status.success?
