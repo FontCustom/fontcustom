@@ -56,12 +56,6 @@ Metrics/PerceivedComplexity:
 Style/AlignHash:
   Enabled: false
 
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AlignParameters:
-  Enabled: false
-
 # Offense count: 1
 Style/AsciiComments:
   Enabled: false

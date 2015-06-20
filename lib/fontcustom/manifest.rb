@@ -39,8 +39,8 @@ module Fontcustom
         @data = JSON.parse json, symbolize_names: true
       rescue JSON::ParserError
         raise Fontcustom::Error,
-          "Couldn't parse `#{@manifest}`. Fix any invalid "\
-          'JSON or delete the file to start from scratch.'
+              "Couldn't parse `#{@manifest}`. Fix any invalid "\
+              'JSON or delete the file to start from scratch.'
       end
     end
 
