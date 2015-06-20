@@ -15,55 +15,55 @@ RSpec.configure do |c|
 
   def manifest_contents
     {
-      :checksum => {
-        :current => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c", 
-        :previous => "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c"
+      checksum: {
+        current: "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c", 
+        previous: "82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c"
       },
-      :fonts => [
+      fonts: [
         "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.ttf",
         "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.svg",
         "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.woff",
         "fontcustom/fontcustom_82a59e769bc60192484f2620570bbb59.eot"
       ],
-      :glyphs => {
+      glyphs: {
         :"a_r3ally-exotic-f1le-name" => {
-          :codepoint => 61696,
-          :source => "vectors/a_R3ally-eXotic f1Le Name.svg"
+          codepoint: 61696,
+          source: "vectors/a_R3ally-eXotic f1Le Name.svg"
         },
         :c => {
-          :codepoint => 61697,
-          :source => "vectors/C.svg"
+          codepoint: 61697,
+          source: "vectors/C.svg"
         },  
         :d => {
-          :codepoint => 61698,
-          :source => "vectors/D.svg"}
+          codepoint: 61698,
+          source: "vectors/D.svg"}
       },
-      :options => {
-        :autowidth => false,
-        :config => false,
-        :css_selector => ".icon-{{glyph}}",
-        :debug => false,
-        :font_name => "fontcustom",
-        :force => true,
-        :input => {
-          :templates => "vectors",
-          :vectors => "vectors"
+      options: {
+        autowidth: false,
+        config: false,
+        css_selector: ".icon-{{glyph}}",
+        debug: false,
+        font_name: "fontcustom",
+        force: true,
+        input: {
+          templates: "vectors",
+          vectors: "vectors"
         },
-        :no_hash => false,
-        :output => {
-          :css => "fontcustom",
-          :fonts => "fontcustom",
-          :preview => "fontcustom"
+        no_hash: false,
+        output: {
+          css: "fontcustom",
+          fonts: "fontcustom",
+          preview: "fontcustom"
         },
-        :preprocessor_path => nil,
-        :quiet => true,
-        :templates => [
+        preprocessor_path: nil,
+        quiet: true,
+        templates: [
           "css",
           "scss",
           "preview"
         ]
       },
-      :templates => []
+      templates: []
     }
   end
 
@@ -93,11 +93,11 @@ RSpec.configure do |c|
     end
   end
 
-  def test_manifest(options = { :input => "vectors", :quiet => true })
+  def test_manifest(options = { input: "vectors", quiet: true })
     base = Fontcustom::Base.new options
     manifest = base.instance_variable_get :@manifest
     checksum = base.send :checksum
-    manifest.set :checksum, { :current => checksum, :previous => "" }
+    manifest.set :checksum, { current: checksum, previous: "" }
     manifest
   end
 end

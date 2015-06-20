@@ -26,7 +26,7 @@ module Fontcustom
         dirs = @options[:output].values.uniq
         dirs.each do |dir|
           unless File.directory? dir
-            empty_directory dir, :verbose => false
+            empty_directory dir, verbose: false
             say_message :create, dir
           end
         end
@@ -52,7 +52,7 @@ module Fontcustom
         files.each do |file|
           name = File.basename file, ".svg"
           name = name.strip.gsub(/\W/, "-")
-          glyphs[name.to_sym] = { :source => file }
+          glyphs[name.to_sym] = { source: file }
           if File.read(file).include? "rgba"
             say_message :warn, "`#{file}` contains transparency and will be skipped."
           end

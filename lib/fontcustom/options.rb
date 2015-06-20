@@ -116,7 +116,7 @@ module Fontcustom
           say_message :warn, "No input directory given. Using present working directory."
         end
         check_input input
-        @options[:input] = { :vectors => input, :templates => input }
+        @options[:input] = { vectors: input, templates: input }
       end
 
       if Dir[File.join(@options[:input][:vectors], "*.svg")].empty?
@@ -155,9 +155,9 @@ module Fontcustom
         end
 
         @options[:output] = {
-          :fonts => output,
-          :css => output,
-          :preview => output
+          fonts: output,
+          css: output,
+          preview: output
         }
       end
     end

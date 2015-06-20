@@ -6,7 +6,7 @@ describe Fontcustom::Utility do
     attr_accessor :options, :manifest
 
     def initialize
-      @options = { :quiet => false }
+      @options = { quiet: false }
       @manifest = fixture ".fontcustom-manifest.json"
     end
   end
@@ -22,20 +22,20 @@ describe Fontcustom::Utility do
     it "should turn string keys into symbols" do
       gen = Generator.new
       hash = gen.symbolize_hash "foo" => "bar"
-      expect(hash).to eq({ :foo => "bar" })
+      expect(hash).to eq({ foo: "bar" })
     end
   end
 
   context "#methodize_hash" do
     it "should define getter method" do
       gen = Generator.new
-      hash = gen.methodize_hash :foo => "bar"
+      hash = gen.methodize_hash foo: "bar"
       expect(hash.foo).to eq("bar")
     end
 
     it "should define setter method" do
       gen = Generator.new
-      hash = gen.methodize_hash :foo => "bar"
+      hash = gen.methodize_hash foo: "bar"
       hash.foo = "baz"
       expect(hash.foo).to eq("baz")
     end

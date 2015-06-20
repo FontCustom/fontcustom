@@ -56,7 +56,7 @@ module Fontcustom
             begin
               source = get_source_path(template_name)
               target = get_target_path(source)
-              template source, target, :verbose => false, :force => true
+              template source, target, verbose: false, force: true
             end
             created << target
           end
@@ -128,7 +128,7 @@ module Fontcustom
           end
           say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          style = {:url => "url", :path => @font_path}.merge(style)
+          style = {url: "url", path: @font_path}.merge(style)
           url = style[:url]
           path = style[:path]
         end

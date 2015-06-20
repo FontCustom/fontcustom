@@ -36,7 +36,7 @@ module Fontcustom
     def reload
       begin
         json = File.read @manifest
-        @data = JSON.parse json, :symbolize_names => true
+        @data = JSON.parse json, symbolize_names: true
       rescue JSON::ParserError
         raise Fontcustom::Error,
           "Couldn't parse `#{@manifest}`. Fix any invalid "\
@@ -50,7 +50,7 @@ module Fontcustom
       begin
         deleted = []
         files.each do |file|
-          remove_file file, :verbose => false
+          remove_file file, verbose: false
           deleted << file
         end
       ensure
@@ -63,11 +63,11 @@ module Fontcustom
 
     def create_manifest(options)
       defaults = {
-        :checksum => { :current => "", :previous => "" },
-        :fonts => [],
-        :glyphs => {},
-        :options => options,
-        :templates => []
+        checksum: { current: "", previous: "" },
+        fonts: [],
+        glyphs: {},
+        options: options,
+        templates: []
       }
       set :all, defaults, :create
     end
