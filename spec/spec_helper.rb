@@ -37,7 +37,7 @@ RSpec.configure do |c|
         :d => {
           :codepoint => 61698,
           :source => "vectors/D.svg"}
-        },
+      },
       :options => {
         :autowidth => false,
         :config => false,
