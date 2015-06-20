@@ -28,7 +28,7 @@ module Fontcustom
     end
 
     def say_status(*args)
-      shell.say_status *args
+      shell.say_status(*args)
     end
 
     def destination_root
