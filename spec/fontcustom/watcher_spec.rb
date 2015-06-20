@@ -64,7 +64,7 @@ describe Fontcustom::Watcher do
         ensure
           w.send :stop
           new = fixture('shared/vectors/test.svg')
-          FileUtils.rm(new) if File.exists?(new)
+          FileUtils.rm(new) if File.exist?(new)
         end
       end
     end
@@ -113,7 +113,7 @@ describe Fontcustom::Watcher do
         ensure
           w.send :stop
           new = fixture('shared/vectors/non-vector-file')
-          FileUtils.rm(new) if File.exists?(new)
+          FileUtils.rm(new) if File.exist?(new)
         end
       end
     end

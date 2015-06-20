@@ -39,17 +39,17 @@ module Fontcustom
     def set_config_path
       @cli_options[:config] = if @cli_options[:config]
         path = @cli_options[:config]
-        if File.exists?(path) && ! File.directory?(path)
+        if File.exist?(path) && ! File.directory?(path)
           path
-        elsif File.exists? File.join(path, 'fontcustom.yml')
+        elsif File.exist? File.join(path, 'fontcustom.yml')
           File.join path, 'fontcustom.yml'
         else
           raise Fontcustom::Error, "No configuration file found at `#{path}`."
         end
       else
-        if File.exists? 'fontcustom.yml'
+        if File.exist? 'fontcustom.yml'
           'fontcustom.yml'
-        elsif File.exists? File.join('config', 'fontcustom.yml')
+        elsif File.exist? File.join('config', 'fontcustom.yml')
           File.join 'config', 'fontcustom.yml'
         else
           false
@@ -134,7 +134,7 @@ module Fontcustom
 
         @options[:output].each do |key, val|
           @options[:output][key] = val
-          if File.exists?(val) && ! File.directory?(val)
+          if File.exist?(val) && ! File.directory?(val)
             raise Fontcustom::Error,
               "Output `#{@options[:output][key]}` exists but isn't a directory. Check your options."
           end
@@ -145,7 +145,7 @@ module Fontcustom
       else
         if @options[:output].is_a? String
           output = @options[:output]
-          if File.exists?(output) && ! File.directory?(output)
+          if File.exist?(output) && ! File.directory?(output)
             raise Fontcustom::Error,
               "Output `#{output}` exists but isn't a directory. Check your options."
           end
@@ -166,7 +166,7 @@ module Fontcustom
       @options[:templates].each do |template|
         next if %w|preview css scss scss-rails|.include? template
         path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == '/'
-        unless File.exists? path
+        unless File.exist? path
           raise Fontcustom::Error,
             "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."
         end
@@ -174,7 +174,7 @@ module Fontcustom
     end
 
     def check_input(dir)
-      if ! File.exists? dir
+      if ! File.exist? dir
         raise Fontcustom::Error,
           "Input `#{dir}` doesn't exist. Check your options."
       elsif ! File.directory? dir

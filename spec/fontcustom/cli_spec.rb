@@ -11,7 +11,7 @@ describe Fontcustom::CLI do
 
         expect(Dir.glob(File.join(testdir, 'fontcustom', "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
         expect(File.read(manifest)).to match(/"fonts":.+fontcustom\/fontcustom_.+\.ttf"/m)
-        expect(File.exists?(preview)).to be_truthy
+        expect(File.exist?(preview)).to be_truthy
       end
     end
 

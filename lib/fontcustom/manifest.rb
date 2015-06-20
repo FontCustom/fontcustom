@@ -7,7 +7,7 @@ module Fontcustom
     def initialize(manifest, cli_options = {})
       @manifest = manifest
       @cli_options = symbolize_hash cli_options
-      if File.exists? @manifest
+      if File.exist? @manifest
         reload
         if ! @cli_options.empty? && get(:options) != @cli_options
           set :options, @cli_options
