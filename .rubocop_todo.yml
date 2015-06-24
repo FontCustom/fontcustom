@@ -127,11 +127,6 @@ Style/IndentHash:
 Style/IndentationWidth:
   Enabled: false
 
-# Offense count: 29
-# Cop supports --auto-correct.
-Style/LeadingCommentSpace:
-  Enabled: false
-
 # Offense count: 10
 # Cop supports --auto-correct.
 Style/NumericLiterals:
