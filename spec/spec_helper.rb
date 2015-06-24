@@ -57,11 +57,7 @@ RSpec.configure do |c|
         },
         preprocessor_path: nil,
         quiet: true,
-        templates: [
-          'css',
-          'scss',
-          'preview'
-        ]
+        templates: %w(css scss preview)
       },
       templates: []
     }
