@@ -35,9 +35,7 @@ describe Fontcustom::Base do
       pending 'SHA2 is different on CI servers. Why?'
       allow(Fontcustom::Base).to receive(:check_fontforge)
       base = Fontcustom::Base.new(input: { vectors: fixture('shared/vectors') })
-      base.instance_variable_set :@options, {
-        templates: Dir.glob(File.join(fixture('shared/templates'), '*'))
-      }
+      base.instance_variable_set :@options,         templates: Dir.glob(File.join(fixture('shared/templates'), '*'))
       hash = base.send :checksum
       hash.should == '81ffd2f72877be02aad673fdf59c6f9dbfee4cc37ad0b121b9486bc2923b4b36'
     end

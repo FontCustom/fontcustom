@@ -60,7 +60,7 @@ describe Fontcustom::Generator::Font do
       gen = generator
       gen.instance_variable_set :@options, input: { vectors: fixture('shared/vectors') }
       manifest = gen.instance_variable_get(:@manifest)
-      manifest.set :glyphs, { C: { source: 'foo', codepoint: 61699 } }
+      manifest.set :glyphs, C: { source: 'foo', codepoint: 61699 }
 
       gen.send :set_glyph_info
       data = manifest.instance_variable_get(:@data)

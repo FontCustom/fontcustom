@@ -55,12 +55,6 @@ Style/AlignHash:
 Style/AsciiComments:
   Enabled: false
 
-# Offense count: 31
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/BracesAroundHashParameters:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/ColonMethodCall:

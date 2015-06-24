@@ -93,7 +93,7 @@ RSpec.configure do |c|
     base = Fontcustom::Base.new options
     manifest = base.instance_variable_get :@manifest
     checksum = base.send :checksum
-    manifest.set :checksum, { current: checksum, previous: '' }
+    manifest.set :checksum, current: checksum, previous: ''
     manifest
   end
 end

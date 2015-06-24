@@ -22,7 +22,7 @@ describe Fontcustom::Utility do
     it 'should turn string keys into symbols' do
       gen = Generator.new
       hash = gen.symbolize_hash 'foo' => 'bar'
-      expect(hash).to eq({ foo: 'bar' })
+      expect(hash).to eq(foo: 'bar')
     end
   end
 
