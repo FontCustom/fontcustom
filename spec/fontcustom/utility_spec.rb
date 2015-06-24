@@ -52,31 +52,31 @@ describe Fontcustom::Utility do
   end
 
   # context "#say_message" do
-    # it "should not respond if :quiet is true" do
-      # pending
-      # gen = Generator.new
-      # gen.options[:quiet] = true
-      # output = capture(:stdout) { gen.say_message(:test, "Hello") }
-      # output.should == ""
-    # end
+  # it "should not respond if :quiet is true" do
+  # pending
+  # gen = Generator.new
+  # gen.options[:quiet] = true
+  # output = capture(:stdout) { gen.say_message(:test, "Hello") }
+  # output.should == ""
+  # end
   # end
 
   # context "#say_changed" do
-    # it "should strip :project_root from changed paths" do
-      # pending
-      # changed = %w|a b c|.map { |file| fixture(file) }
-      # gen = Generator.new
-      # output = capture(:stdout) { gen.say_changed(:success, changed) }
-      # output.should_not match(fixture)
-    # end
+  # it "should strip :project_root from changed paths" do
+  # pending
+  # changed = %w|a b c|.map { |file| fixture(file) }
+  # gen = Generator.new
+  # output = capture(:stdout) { gen.say_changed(:success, changed) }
+  # output.should_not match(fixture)
+  # end
 
-    # it "should not respond if :quiet is true " do
-      # pending
-      # changed = %w|a b c|.map { |file| fixture(file) }
-      # gen = Generator.new
-      # gen.options[:quiet] = true
-      # output = capture(:stdout) { gen.say_changed(:success, changed) }
-      # output.should == ""
-    # end
+  # it "should not respond if :quiet is true " do
+  # pending
+  # changed = %w|a b c|.map { |file| fixture(file) }
+  # gen = Generator.new
+  # gen.options[:quiet] = true
+  # output = capture(:stdout) { gen.say_changed(:success, changed) }
+  # output.should == ""
+  # end
   # end
 end

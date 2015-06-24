@@ -96,14 +96,14 @@ module Fontcustom
     def set_input_paths
       if @options[:input].is_a? Hash
         @options[:input] = symbolize_hash(@options[:input])
-        if @options[:input].has_key? :vectors
+        if @options[:input].key? :vectors
           check_input @options[:input][:vectors]
         else
           raise Fontcustom::Error,
                 'Input paths (assigned as a hash) should have a :vectors key. Check your options.'
         end
 
-        if @options[:input].has_key? :templates
+        if @options[:input].key? :templates
           check_input @options[:input][:templates]
         else
           @options[:input][:templates] = @options[:input][:vectors]
@@ -127,7 +127,7 @@ module Fontcustom
     def set_output_paths
       if @options[:output].is_a? Hash
         @options[:output] = symbolize_hash(@options[:output])
-        unless @options[:output].has_key? :fonts
+        unless @options[:output].key? :fonts
           raise Fontcustom::Error,
                 'Output paths (assigned as a hash) should have a :fonts key. Check your options.'
         end

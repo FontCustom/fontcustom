@@ -60,16 +60,6 @@ Style/AsciiComments:
 Style/CommentAnnotation:
   Enabled: false
 
-# Offense count: 13
-# Cop supports --auto-correct.
-Style/CommentIndentation:
-  Enabled: false
-
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/DeprecatedHashMethods:
-  Enabled: false
-
 # Offense count: 12
 Style/Documentation:
   Enabled: false

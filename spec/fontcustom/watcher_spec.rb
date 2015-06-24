@@ -5,7 +5,7 @@ require 'fontcustom/watcher'
 describe Fontcustom::Watcher do
   # Silence messages without passing :quiet => true to everything
   # before(:each) do
-    # Fontcustom::Options.any_instance.stub :say_message
+  # Fontcustom::Options.any_instance.stub :say_message
   # end
 
   def watcher(options)
