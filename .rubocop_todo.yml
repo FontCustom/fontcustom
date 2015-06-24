@@ -208,8 +208,3 @@ Style/SpecialGlobalVars:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/StringLiteralsInInterpolation:
   Enabled: false
-
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/TrailingWhitespace:
-  Enabled: false

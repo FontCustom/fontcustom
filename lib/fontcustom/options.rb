@@ -184,7 +184,7 @@ module Fontcustom
     end
 
     def print_debug
-      message = line_break(16) 
+      message = line_break(16)
       message << @options.pretty_inspect.split("\n ").join(line_break(16))
       say_message :debug, "Using options:#{message}"
     end

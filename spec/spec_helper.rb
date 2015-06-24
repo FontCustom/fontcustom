@@ -16,7 +16,7 @@ RSpec.configure do |c|
   def manifest_contents
     {
       checksum: {
-        current: '82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c', 
+        current: '82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c',
         previous: '82a59e769bc60192484f2620570bbb59e225db97c1aac3f242a2e49d6060a19c'
       },
       fonts: [
@@ -33,7 +33,7 @@ RSpec.configure do |c|
         :c => {
           codepoint: 61697,
           source: 'vectors/C.svg'
-        },  
+        },
         :d => {
           codepoint: 61698,
           source: 'vectors/D.svg'}

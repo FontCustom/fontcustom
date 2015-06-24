@@ -25,7 +25,7 @@ module Fontcustom
     class_option :font_name, aliases: %w|--name -n|, type: :string,
       desc: "The font's name. Also determines the file names of generated templates.",
       default: DEFAULT_OPTIONS[:font_name]
-    
+
     class_option :font_design_size, aliases: %s|--size -s|, type: :numeric,
       desc: 'Size (in pica points) for which this font is designed.',
       default: DEFAULT_OPTIONS[:font_design_size]
