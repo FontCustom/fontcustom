@@ -136,7 +136,7 @@ module Fontcustom
         # Bulletproof @Font-Face <http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax>
         # With and without Base64
         if @options[:base64]
-          string = %Q|@font-face {
+          string = %|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot?") format("embedded-opentype");
   font-weight: normal;
@@ -152,7 +152,7 @@ module Fontcustom
   font-style: normal;
 }|
         else
-        string = %Q|@font-face {
+        string = %|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
@@ -165,7 +165,7 @@ module Fontcustom
         end
 
         # For Windows/Chrome <http://stackoverflow.com/a/19247378/1202445>
-        string << %Q|
+        string << %|
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
@@ -189,7 +189,7 @@ module Fontcustom
       end
 
       def glyph_properties
-%Q|  display: inline-block;
+%|  display: inline-block;
   font-family: "#{font_name}";
   font-style: normal;
   font-weight: normal;
@@ -205,7 +205,7 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
       end
