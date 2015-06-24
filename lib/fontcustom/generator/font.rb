@@ -74,7 +74,7 @@ module Fontcustom
 
       def create_fonts
         cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@manifest.manifest}"
-        stdout, stderr, status = Open3::capture3(cmd)
+        stdout, stderr, status = Open3.capture3(cmd)
         stdout = stdout.split("\n")
         stdout = stdout[1..-1] if stdout[0] == 'CreateAllPyModules()'
 

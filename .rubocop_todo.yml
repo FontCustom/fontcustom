@@ -55,11 +55,6 @@ Style/AlignHash:
 Style/AsciiComments:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ColonMethodCall:
-  Enabled: false
-
 # Offense count: 4
 # Configuration parameters: Keywords.
 Style/CommentAnnotation:
