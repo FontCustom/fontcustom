@@ -86,7 +86,7 @@ module Fontcustom
       default: false
     def watch(input = nil)
       say 'Font Custom is watching your icons. Press Ctrl + C to stop.', :yellow unless options[:quiet]
-      opts = options.merge input: input, skip_first: !! options[:skip_first]
+      opts = options.merge input: input, skip_first: !!options[:skip_first]
       Watcher.new(opts).watch
     rescue Fontcustom::Error => e
       say_status :error, e.message, :red

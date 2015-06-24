@@ -38,7 +38,7 @@ module Fontcustom
 
       def set_glyph_info
         manifest_glyphs = @manifest.get :glyphs
-        codepoint = if ! manifest_glyphs.empty?
+        codepoint = if !manifest_glyphs.empty?
           codepoints = manifest_glyphs.values.map { |data| data[:codepoint] }
           codepoints.max + 1
         else

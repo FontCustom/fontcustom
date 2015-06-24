@@ -39,7 +39,7 @@ module Fontcustom
     def set_config_path
       @cli_options[:config] = if @cli_options[:config]
         path = @cli_options[:config]
-        if File.exist?(path) && ! File.directory?(path)
+        if File.exist?(path) && !File.directory?(path)
           path
         elsif File.exist? File.join(path, 'fontcustom.yml')
           File.join path, 'fontcustom.yml'
@@ -134,7 +134,7 @@ module Fontcustom
 
         @options[:output].each do |key, val|
           @options[:output][key] = val
-          if File.exist?(val) && ! File.directory?(val)
+          if File.exist?(val) && !File.directory?(val)
             raise Fontcustom::Error,
                   "Output `#{@options[:output][key]}` exists but isn't a directory. Check your options."
           end
@@ -145,7 +145,7 @@ module Fontcustom
       else
         if @options[:output].is_a? String
           output = @options[:output]
-          if File.exist?(output) && ! File.directory?(output)
+          if File.exist?(output) && !File.directory?(output)
             raise Fontcustom::Error,
                   "Output `#{output}` exists but isn't a directory. Check your options."
           end
@@ -174,10 +174,10 @@ module Fontcustom
     end
 
     def check_input(dir)
-      if ! File.exist? dir
+      if !File.exist? dir
         raise Fontcustom::Error,
               "Input `#{dir}` doesn't exist. Check your options."
-      elsif ! File.directory? dir
+      elsif !File.directory? dir
         raise Fontcustom::Error,
               "Input `#{dir}` isn't a directory. Check your options."
       end

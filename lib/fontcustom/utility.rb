@@ -97,7 +97,7 @@ module Fontcustom
     end
 
     def say_changed(status, changed)
-      return if options[:quiet] || ! options[:debug] && status == :delete
+      return if options[:quiet] || !options[:debug] && status == :delete
       say_status status, changed.join(line_break)
     end
 
