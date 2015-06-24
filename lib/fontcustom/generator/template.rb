@@ -182,7 +182,7 @@ module Fontcustom
       end
 
       def glyph_selectors
-        output = @glyphs.map do |name, value|
+        output = @glyphs.map do |name, _value|
           @options[:css_selector].sub('{{glyph}}', name.to_s) + ':before'
         end
         output.join ",\n"

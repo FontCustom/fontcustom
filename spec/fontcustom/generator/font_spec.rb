@@ -8,7 +8,7 @@ describe Fontcustom::Generator::Font do
 
   context '#generate' do
     it 'should set manifest[:glyphs] (integration)', integration: true do
-      live_test do |testdir|
+      live_test do
         test_manifest
         manifest = File.join Dir.pwd, '.fontcustom-manifest.json'
         gen = Fontcustom::Generator::Font.new manifest

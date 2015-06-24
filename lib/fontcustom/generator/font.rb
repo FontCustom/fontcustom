@@ -60,7 +60,7 @@ module Fontcustom
 
         # Dir.glob returns a different order depending on ruby
         # version/platform, so we have to sort it first
-        glyphs = Hash[glyphs.sort_by { |key, val| key.to_s }]
+        glyphs = Hash[glyphs.sort_by { |key, _val| key.to_s }]
         glyphs.each do |name, data|
           if manifest_glyphs.has_key? name
            data[:codepoint] = manifest_glyphs[name][:codepoint]
