@@ -128,7 +128,7 @@ module Fontcustom
           end
           say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          style = {url: 'url', path: @font_path}.merge(style)
+          style = { url: 'url', path: @font_path }.merge(style)
           url = style[:url]
           path = style[:path]
         end

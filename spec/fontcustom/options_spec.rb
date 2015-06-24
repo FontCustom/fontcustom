@@ -71,20 +71,20 @@ describe Fontcustom::Options do
   context '.load_config' do
     it 'should warn if fontcustom.yml is blank' do
       o = options
-      o.instance_variable_set :@cli_options, {config: fixture('options/fontcustom-empty.yml')}
+      o.instance_variable_set :@cli_options, { config: fixture('options/fontcustom-empty.yml') }
       expect(o).to receive(:say_message).with :warn, /was empty/
       o.send :load_config
     end
 
     it "should raise error if fontcustom.yml isn't valid" do
       o = options
-      o.instance_variable_set :@cli_options, {config: fixture('options/fontcustom-malformed.yml')}
+      o.instance_variable_set :@cli_options, { config: fixture('options/fontcustom-malformed.yml') }
       expect { o.send :load_config }.to raise_error Fontcustom::Error, /Error parsing/
     end
 
     it 'should assign empty hash :config is false' do
       o = options
-      o.instance_variable_set :@cli_options, {config: false}
+      o.instance_variable_set :@cli_options, { config: false }
       o.send :load_config
       expect(o.instance_variable_get(:@config_options)).to eq({})
     end

@@ -18,10 +18,10 @@ module Fontcustom
 
       say_message :status, 'Forcing compile.' if @options[:force]
       if @options[:force] || current != previous
-        @manifest.set :checksum, {previous: previous, current: current}
+        @manifest.set :checksum, { previous: previous, current: current }
         start_generators
         @manifest.reload
-        @manifest.set :checksum, {previous: current, current: current}
+        @manifest.set :checksum, { previous: current, current: current }
       else
         say_message :status, 'No changes detected. Skipping compile.'
       end

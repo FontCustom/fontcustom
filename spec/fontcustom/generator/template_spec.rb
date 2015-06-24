@@ -24,7 +24,7 @@ describe Fontcustom::Generator::Template do
     it 'should assign @font_path, @font_path_alt, and @font_path_preview' do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
-      options[:output] = {fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test')}
+      options[:output] = { fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test') }
 
       gen.send :set_relative_paths
       expect(gen.instance_variable_get(:@font_path)).to match('../fonts')
@@ -36,7 +36,7 @@ describe Fontcustom::Generator::Template do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
       options[:preprocessor_path] = 'fonts/fontcustom'
-      options[:output] = {fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test')}
+      options[:output] = { fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test') }
 
       gen.send :set_relative_paths
       expect(gen.instance_variable_get(:@font_path_alt)).to match('fonts/fontcustom')
@@ -46,7 +46,7 @@ describe Fontcustom::Generator::Template do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
       options[:preprocessor_path] = false
-      options[:output] = {fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test')}
+      options[:output] = { fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/css'), preview: fixture('sandbox/test') }
 
       gen.send :set_relative_paths
       expect(gen.instance_variable_get(:@font_path_alt)).to_not match('../fonts')
@@ -55,7 +55,7 @@ describe Fontcustom::Generator::Template do
     it "should assign '.' when paths are the same" do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
-      options[:output] = {fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/fonts'), preview: fixture('sandbox/test/fonts')}
+      options[:output] = { fonts: fixture('sandbox/test/fonts'), css: fixture('sandbox/test/fonts'), preview: fixture('sandbox/test/fonts') }
 
       gen.send :set_relative_paths
       expect(gen.instance_variable_get(:@font_path)).to match('./')
@@ -101,14 +101,14 @@ describe Fontcustom::Generator::Template do
     it 'should generate the correct preview target when using default font_name' do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
-      options[:output] = {fonts: fixture('sandbox/test/fonts'), preview: fixture('sandbox/test')}
+      options[:output] = { fonts: fixture('sandbox/test/fonts'), preview: fixture('sandbox/test') }
       expect(gen.send(:get_target_path, 'sandbox/test/fontcustom-preview.html')).to match('/sandbox/test/fontcustom-preview.html')
     end
     it "should generate the correct preview target when using custom font_name with output directory containing 'fontcustom'" do
       gen = Fontcustom::Generator::Template.new fixture('generators/.fontcustom-manifest.json')
       options = gen.instance_variable_get :@options
       options[:font_name] = 'custom'
-      options[:output] = {fonts: fixture('sandbox/test-fontcustom/fonts'), preview: fixture('sandbox/test-fontcustom')}
+      options[:output] = { fonts: fixture('sandbox/test-fontcustom/fonts'), preview: fixture('sandbox/test-fontcustom') }
       expect(gen.send(:get_target_path, 'sandbox/test/fontcustom-preview.html')).to match('/sandbox/test-fontcustom/custom-preview.html')
     end
   end

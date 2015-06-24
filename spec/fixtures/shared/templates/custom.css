@@ -2,4 +2,3 @@
 <%= @glyphs.inspect %>
 */
 .foo { color: black; }
-.bar { color: red; }

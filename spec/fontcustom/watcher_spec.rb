@@ -73,7 +73,7 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to receive(:compile)
 
       w = watcher(
-        input: {vectors: 'shared/vectors', templates: 'shared/templates'},
+        input: { vectors: 'shared/vectors', templates: 'shared/templates' },
         templates: %w|css preview custom.css|,
         output: 'output',
         skip_first: false

@@ -33,7 +33,7 @@ describe Fontcustom::Generator::Font do
     it "should create empty dirs if they don't exist" do
       gen = generator
       options = {
-        output: {fonts: 'path/fonts', vectors: 'path/vectors'},
+        output: { fonts: 'path/fonts', vectors: 'path/vectors' },
         quiet: true
       }
       gen.instance_variable_set :@options, options
@@ -46,7 +46,7 @@ describe Fontcustom::Generator::Font do
   context '.set_glyph_info' do
     it 'should set :glyphs in manifest' do
       gen = generator
-      gen.instance_variable_set :@options, input: {vectors: fixture('shared/vectors')}
+      gen.instance_variable_set :@options, input: { vectors: fixture('shared/vectors') }
       manifest = gen.instance_variable_get(:@manifest)
 
       gen.send :set_glyph_info
@@ -58,9 +58,9 @@ describe Fontcustom::Generator::Font do
 
     it 'should not change codepoints of existing glyphs' do
       gen = generator
-      gen.instance_variable_set :@options, input: {vectors: fixture('shared/vectors')}
+      gen.instance_variable_set :@options, input: { vectors: fixture('shared/vectors') }
       manifest = gen.instance_variable_get(:@manifest)
-      manifest.set :glyphs, {C: {source: 'foo', codepoint: 61699}}
+      manifest.set :glyphs, { C: { source: 'foo', codepoint: 61699 } }
 
       gen.send :set_glyph_info
       data = manifest.instance_variable_get(:@data)
