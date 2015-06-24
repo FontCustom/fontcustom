@@ -195,11 +195,6 @@ Style/SpaceInsideHashLiteralBraces:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/SpecialGlobalVars:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/StringLiteralsInInterpolation:
   Enabled: false
