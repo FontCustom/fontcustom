@@ -20,7 +20,7 @@ module Fontcustom
           set_relative_paths
           create_files
         else
-          raise Fontcustom::Error, 'No generated fonts were detected - aborting template generation.'
+          fail Fontcustom::Error, 'No generated fonts were detected - aborting template generation.'
         end
       end
 

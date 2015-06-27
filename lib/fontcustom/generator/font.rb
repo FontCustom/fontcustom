@@ -89,7 +89,7 @@ module Fontcustom
           @manifest.reload
           say_changed :create, @manifest.get(:fonts)
         else
-          raise Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
+          fail Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
         end
       end
     end

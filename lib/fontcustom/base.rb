@@ -32,7 +32,7 @@ module Fontcustom
     def check_fontforge
       fontforge = `which fontforge`
       if fontforge == '' || fontforge == 'fontforge not found'
-        raise Fontcustom::Error, 'Please install fontforge first. Visit <http://fontcustom.com> for instructions.'
+        fail Fontcustom::Error, 'Please install fontforge first. Visit <http://fontcustom.com> for instructions.'
       end
     end
 

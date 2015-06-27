@@ -44,7 +44,7 @@ module Fontcustom
         elsif File.exist? File.join(path, 'fontcustom.yml')
           File.join path, 'fontcustom.yml'
         else
-          raise Fontcustom::Error, "No configuration file found at `#{path}`."
+          fail Fontcustom::Error, "No configuration file found at `#{path}`."
         end
       else
         if File.exist? 'fontcustom.yml'
@@ -87,8 +87,8 @@ module Fontcustom
 
     def clean_css_selector
       unless @options[:css_selector].include? '{{glyph}}'
-        raise Fontcustom::Error,
-              "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
+        fail Fontcustom::Error,
+             "CSS selector `#{@options[:css_selector]}` should contain the \"{{glyph}}\" placeholder."
       end
       @options[:css_selector] = @options[:css_selector].strip.gsub(/[^&%=\[\]\.#\{\}""\d\w]/, '-')
     end
@@ -99,8 +99,8 @@ module Fontcustom
         if @options[:input].key? :vectors
           check_input @options[:input][:vectors]
         else
-          raise Fontcustom::Error,
-                'Input paths (assigned as a hash) should have a :vectors key. Check your options.'
+          fail Fontcustom::Error,
+               'Input paths (assigned as a hash) should have a :vectors key. Check your options.'
         end
 
         if @options[:input].key? :templates
@@ -120,7 +120,7 @@ module Fontcustom
       end
 
       if Dir[File.join(@options[:input][:vectors], '*.svg')].empty?
-        raise Fontcustom::Error, "`#{@options[:input][:vectors]}` doesn't contain any SVGs."
+        fail Fontcustom::Error, "`#{@options[:input][:vectors]}` doesn't contain any SVGs."
       end
     end
 
@@ -128,15 +128,15 @@ module Fontcustom
       if @options[:output].is_a? Hash
         @options[:output] = symbolize_hash(@options[:output])
         unless @options[:output].key? :fonts
-          raise Fontcustom::Error,
-                'Output paths (assigned as a hash) should have a :fonts key. Check your options.'
+          fail Fontcustom::Error,
+               'Output paths (assigned as a hash) should have a :fonts key. Check your options.'
         end
 
         @options[:output].each do |key, val|
           @options[:output][key] = val
           if File.exist?(val) && !File.directory?(val)
-            raise Fontcustom::Error,
-                  "Output `#{@options[:output][key]}` exists but isn't a directory. Check your options."
+            fail Fontcustom::Error,
+                 "Output `#{@options[:output][key]}` exists but isn't a directory. Check your options."
           end
         end
 
@@ -146,8 +146,8 @@ module Fontcustom
         if @options[:output].is_a? String
           output = @options[:output]
           if File.exist?(output) && !File.directory?(output)
-            raise Fontcustom::Error,
-                  "Output `#{output}` exists but isn't a directory. Check your options."
+            fail Fontcustom::Error,
+                 "Output `#{output}` exists but isn't a directory. Check your options."
           end
         else
           output = @options[:font_name]
@@ -167,19 +167,19 @@ module Fontcustom
         next if %w|preview css scss scss-rails|.include? template
         path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == '/'
         unless File.exist? path
-          raise Fontcustom::Error,
-                "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."
+          fail Fontcustom::Error,
+               "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."
         end
       end
     end
 
     def check_input(dir)
       if !File.exist? dir
-        raise Fontcustom::Error,
-              "Input `#{dir}` doesn't exist. Check your options."
+        fail Fontcustom::Error,
+             "Input `#{dir}` doesn't exist. Check your options."
       elsif !File.directory? dir
-        raise Fontcustom::Error,
-              "Input `#{dir}` isn't a directory. Check your options."
+        fail Fontcustom::Error,
+             "Input `#{dir}` isn't a directory. Check your options."
       end
     end
 

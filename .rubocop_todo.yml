@@ -137,9 +137,3 @@ Style/SelfAssignment:
 # Configuration parameters: AllowAsExpressionSeparator.
 Style/Semicolon:
   Enabled: false
-
-# Offense count: 13
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/SignalException:
-  Enabled: false
