@@ -80,12 +80,10 @@ module Fontcustom
     end
 
     def listen_eq2
-      begin
-        require 'listen/version'
-        ::Listen::VERSION =~ /^2\./
-      rescue LoadError
-        false
-      end
+      require 'listen/version'
+      ::Listen::VERSION =~ /^2\./
+    rescue LoadError
+      false
     end
   end
 end
