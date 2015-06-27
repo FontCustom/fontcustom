@@ -154,9 +154,3 @@ Style/SpaceAfterComma:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/SpaceBeforeBlockBraces:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/StringLiteralsInInterpolation:
-  Enabled: false
