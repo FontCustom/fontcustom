@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.post_install_message = '>> Thanks for installing Font Custom! Please ensure that fontforge is installed before compiling any icons. Visit <http://fontcustom.com> for instructions.'
 
   gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
