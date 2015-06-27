@@ -129,11 +129,7 @@ Style/RegexpLiteral:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/SelfAssignment:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: AllowAsExpressionSeparator.
 Style/Semicolon:
   Enabled: false
+

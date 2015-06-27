@@ -66,7 +66,7 @@ module Fontcustom
            data[:codepoint] = manifest_glyphs[name][:codepoint]
           else
             data[:codepoint] = codepoint
-            codepoint = codepoint + 1
+            codepoint += 1
           end
         end
         @manifest.set :glyphs, glyphs
