@@ -13,7 +13,7 @@ describe Fontcustom::Utility do
 
   it 'should include Thor::Action methods' do
     gen = Generator.new
-    %w|template add_file remove_file|.each do |method|
+    %w(template add_file remove_file).each do |method|
       expect(gen).to respond_to(method.to_sym)
     end
   end

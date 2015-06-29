@@ -290,7 +290,7 @@ describe Fontcustom::Options do
     it 'should raise an error if a template does not exist' do
       o = options
       o.instance_variable_set :@options,         input: { templates: fixture('shared/templates') },
-        templates: %w|fake-template.txt|
+        templates: %w(fake-template.txt)
       expect { o.send :check_template_paths }.to raise_error Fontcustom::Error, /wasn't found/
     end
   end

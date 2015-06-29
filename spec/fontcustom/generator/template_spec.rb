@@ -8,7 +8,7 @@ describe Fontcustom::Generator::Template do
         test_manifest(
           input: 'vectors',
           quiet: true,
-          templates: %w|preview css scss scss-rails|
+          templates: %w(preview css scss scss-rails)
         )
         manifest = File.join testdir, '.fontcustom-manifest.json'
         Fontcustom::Generator::Font.new(manifest).generate

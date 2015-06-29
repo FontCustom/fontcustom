@@ -74,7 +74,7 @@ describe Fontcustom::Watcher do
 
       w = watcher(
         input: { vectors: 'shared/vectors', templates: 'shared/templates' },
-        templates: %w|css preview custom.css|,
+        templates: %w(css preview custom.css),
         output: 'output',
         skip_first: false
       )

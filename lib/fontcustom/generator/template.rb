@@ -86,8 +86,8 @@ module Fontcustom
       def get_target_path(source)
         ext = File.extname source
         base = File.basename source
-        css_exts = %w|.css .scss .sass .less .stylus|
-        packaged = %w|fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss|
+        css_exts = %w(.css .scss .sass .less .stylus)
+        packaged = %w(fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss)
 
         target = if @options[:output].keys.include? base.to_sym
           File.join @options[:output][base.to_sym], base
@@ -189,7 +189,7 @@ module Fontcustom
       end
 
       def glyph_properties
-%|  display: inline-block;
+%(  display: inline-block;
   font-family: "#{font_name}";
   font-style: normal;
   font-weight: normal;
@@ -200,12 +200,12 @@ module Fontcustom
   text-transform: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;|
+  font-smoothing: antialiased;)
       end
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %(#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; })
         end
         output.join "\n"
       end

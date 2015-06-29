@@ -11,7 +11,7 @@ module Fontcustom
       @is_test = is_test
 
       templates = @options[:templates].dup.map { |template| File.basename(template) }
-      packaged = %w|preview css scss scss-rails|
+      packaged = %w(preview css scss scss-rails)
       templates.delete_if { |template| packaged.include?(template) }
 
       create_listener(templates)
