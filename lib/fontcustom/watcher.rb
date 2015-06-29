@@ -62,7 +62,7 @@ module Fontcustom
     end
 
     def callback
-      Proc.new do |modified, added, removed|
+      proc do |modified, added, removed|
         begin
           say_message :changed, modified.join(', ') unless modified.empty?
           say_message :added, added.join(', ') unless added.empty?

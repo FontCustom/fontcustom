@@ -95,11 +95,6 @@ Style/IndentationWidth:
 Style/NumericLiterals:
   MinDigits: 6
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Proc:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerSlashes.
