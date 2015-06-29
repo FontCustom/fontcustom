@@ -12,7 +12,7 @@ describe Fontcustom::Watcher do
     allow_any_instance_of(Fontcustom::Manifest).to receive(:write_file)
     allow_any_instance_of(Fontcustom::Base).to receive(:compile)
 
-    # undocumented — non-blocking use of watcher for testing
+    # undocumented - non-blocking use of watcher for testing
     Fontcustom::Watcher.new options, true
   end
 
