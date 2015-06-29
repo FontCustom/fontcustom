@@ -94,7 +94,6 @@ describe Fontcustom::Watcher do
           File.open(template, 'w') { |file| file.write(content) }
         end
       end
-
     end
 
     it 'should do nothing when non-vectors change' do

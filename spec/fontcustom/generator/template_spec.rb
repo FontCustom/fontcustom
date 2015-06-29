@@ -112,5 +112,4 @@ describe Fontcustom::Generator::Template do
       expect(gen.send(:get_target_path, 'sandbox/test/fontcustom-preview.html')).to match('/sandbox/test-fontcustom/custom-preview.html')
     end
   end
-
 end

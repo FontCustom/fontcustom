@@ -73,12 +73,6 @@ Style/EachWithObject:
 Style/ElseAlignment:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundBlockBody:
-  Enabled: false
-
 # Offense count: 4
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
