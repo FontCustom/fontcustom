@@ -7,7 +7,7 @@ module Fontcustom
     def initialize(manifest, cli_options = {})
       @manifest = manifest
       @cli_options = symbolize_hash cli_options
-      if File.exists? @manifest
+      if File.exist? @manifest
         reload
         if ! @cli_options.empty? && get(:options) != @cli_options
           set :options, @cli_options
@@ -34,14 +34,12 @@ module Fontcustom
     end
 
     def reload
-      begin
-        json = File.read @manifest
-        @data = JSON.parse json, :symbolize_names => true
-      rescue JSON::ParserError
-        raise Fontcustom::Error,
-          "Couldn't parse `#{@manifest}`. Fix any invalid "\
-          "JSON or delete the file to start from scratch."
-      end
+      json = File.read @manifest
+      @data = JSON.parse json, symbolize_names: true
+    rescue JSON::ParserError
+      raise Fontcustom::Error,
+            "Couldn't parse `#{@manifest}`. Fix any invalid "\
+            'JSON or delete the file to start from scratch.'
     end
 
     def delete(key)
@@ -50,7 +48,7 @@ module Fontcustom
       begin
         deleted = []
         files.each do |file|
-          remove_file file, :verbose => false
+          remove_file file, verbose: false
           deleted << file
         end
       ensure
@@ -63,11 +61,11 @@ module Fontcustom
 
     def create_manifest(options)
       defaults = {
-        :checksum => { :current => "", :previous => "" },
-        :fonts => [],
-        :glyphs => {},
-        :options => options,
-        :templates => []
+        checksum: { current: '', previous: '' },
+        fonts: [],
+        glyphs: {},
+        options: options,
+        templates: []
       }
       set :all, defaults, :create
     end

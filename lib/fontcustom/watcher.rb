@@ -1,5 +1,5 @@
-require "fontcustom"
-require "listen"
+require 'fontcustom'
+require 'listen'
 
 module Fontcustom
   class Watcher
@@ -11,7 +11,7 @@ module Fontcustom
       @is_test = is_test
 
       templates = @options[:templates].dup.map { |template| File.basename(template) }
-      packaged = %w|preview css scss scss-rails|
+      packaged = %w(preview css scss scss-rails)
       templates.delete_if { |template| packaged.include?(template) }
 
       create_listener(templates)
@@ -62,11 +62,11 @@ module Fontcustom
     end
 
     def callback
-      Proc.new do |modified, added, removed|
+      proc do |modified, added, removed|
         begin
-          say_message :changed, modified.join(", ") unless modified.empty?
-          say_message :added, added.join(", ") unless added.empty?
-          say_message :removed, removed.join(", ") unless removed.empty?
+          say_message :changed, modified.join(', ') unless modified.empty?
+          say_message :added, added.join(', ') unless added.empty?
+          say_message :removed, removed.join(', ') unless removed.empty?
           changed = modified + added + removed
           compile unless changed.empty?
         rescue Fontcustom::Error => e
@@ -80,12 +80,10 @@ module Fontcustom
     end
 
     def listen_eq2
-      begin
-        require 'listen/version'
-        ::Listen::VERSION =~ /^2\./
-      rescue LoadError
-        false
-      end
+      require 'listen/version'
+      ::Listen::VERSION =~ /^2\./
+    rescue LoadError
+      false
     end
   end
 end

@@ -1,5 +1,5 @@
-require "json"
-require "open3"
+require 'json'
+require 'open3'
 
 module Fontcustom
   module Generator
@@ -26,7 +26,7 @@ module Fontcustom
         dirs = @options[:output].values.uniq
         dirs.each do |dir|
           unless File.directory? dir
-            empty_directory dir, :verbose => false
+            empty_directory dir, verbose: false
             say_message :create, dir
           end
         end
@@ -38,7 +38,7 @@ module Fontcustom
 
       def set_glyph_info
         manifest_glyphs = @manifest.get :glyphs
-        codepoint = if ! manifest_glyphs.empty?
+        codepoint = if !manifest_glyphs.empty?
           codepoints = manifest_glyphs.values.map { |data| data[:codepoint] }
           codepoints.max + 1
         else
@@ -47,26 +47,26 @@ module Fontcustom
           0xf100
         end
 
-        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+        files = Dir.glob File.join(@options[:input][:vectors], '*.svg')
         glyphs = {}
         files.each do |file|
-          name = File.basename file, ".svg"
-          name = name.strip.gsub(/\W/, "-")
-          glyphs[name.to_sym] = { :source => file }
-          if File.read(file).include? "rgba"
+          name = File.basename file, '.svg'
+          name = name.strip.gsub(/\W/, '-')
+          glyphs[name.to_sym] = { source: file }
+          if File.read(file).include? 'rgba'
             say_message :warn, "`#{file}` contains transparency and will be skipped."
           end
         end
 
         # Dir.glob returns a different order depending on ruby
         # version/platform, so we have to sort it first
-        glyphs = Hash[glyphs.sort_by { |key, val| key.to_s }]
+        glyphs = Hash[glyphs.sort_by { |key, _val| key.to_s }]
         glyphs.each do |name, data|
-          if manifest_glyphs.has_key? name
+          if manifest_glyphs.key? name
            data[:codepoint] = manifest_glyphs[name][:codepoint]
           else
             data[:codepoint] = codepoint
-            codepoint = codepoint + 1
+            codepoint += 1
           end
         end
         @manifest.set :glyphs, glyphs
@@ -74,22 +74,22 @@ module Fontcustom
 
       def create_fonts
         cmd = "fontforge -script #{Fontcustom.gem_lib}/scripts/generate.py #{@manifest.manifest}"
-        stdout, stderr, status = Open3::capture3(cmd)
+        stdout, stderr, status = Open3.capture3(cmd)
         stdout = stdout.split("\n")
-        stdout = stdout[1..-1] if stdout[0] == "CreateAllPyModules()"
+        stdout = stdout[1..-1] if stdout[0] == 'CreateAllPyModules()'
 
-        debug_msg = " Try again with --debug for more details."
+        debug_msg = ' Try again with --debug for more details.'
         if @options[:debug]
           messages = stderr.split("\n") + stdout
           say_message :debug, messages.join(line_break)
-          debug_msg = ""
+          debug_msg = ''
         end
 
         if status.success?
           @manifest.reload
           say_changed :create, @manifest.get(:fonts)
         else
-          raise Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
+          fail Fontcustom::Error, "`fontforge` compilation failed.#{debug_msg}"
         end
       end
     end

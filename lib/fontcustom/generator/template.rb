@@ -1,6 +1,6 @@
-require "json"
-require "pathname"
-require "base64"
+require 'json'
+require 'pathname'
+require 'base64'
 
 module Fontcustom
   module Generator
@@ -20,7 +20,7 @@ module Fontcustom
           set_relative_paths
           create_files
         else
-          raise Fontcustom::Error, "No generated fonts were detected - aborting template generation."
+          fail Fontcustom::Error, 'No generated fonts were detected - aborting template generation.'
         end
       end
 
@@ -56,7 +56,7 @@ module Fontcustom
             begin
               source = get_source_path(template_name)
               target = get_target_path(source)
-              template source, target, :verbose => false, :force => true
+              template source, target, verbose: false, force: true
             end
             created << target
           end
@@ -67,17 +67,17 @@ module Fontcustom
       end
 
       def get_source_path(template)
-        template_path = File.join Fontcustom.gem_lib, "templates"
+        template_path = File.join Fontcustom.gem_lib, 'templates'
 
         case template
-        when "preview"
-          File.join template_path, "fontcustom-preview.html"
-        when "css"
-          File.join template_path, "fontcustom.css"
-        when "scss"
-          File.join template_path, "_fontcustom.scss"
-        when "scss-rails"
-          File.join template_path, "_fontcustom-rails.scss"
+        when 'preview'
+          File.join template_path, 'fontcustom-preview.html'
+        when 'css'
+          File.join template_path, 'fontcustom.css'
+        when 'scss'
+          File.join template_path, '_fontcustom.scss'
+        when 'scss-rails'
+          File.join template_path, '_fontcustom-rails.scss'
         else
           File.join @options[:input][:templates], template
         end
@@ -86,8 +86,8 @@ module Fontcustom
       def get_target_path(source)
         ext = File.extname source
         base = File.basename source
-        css_exts = %w|.css .scss .sass .less .stylus|
-        packaged = %w|fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss|
+        css_exts = %w(.css .scss .sass .less .stylus)
+        packaged = %w(fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss)
 
         target = if @options[:output].keys.include? base.to_sym
           File.join @options[:output][base.to_sym], base
@@ -117,18 +117,18 @@ module Fontcustom
       def font_face(style = {})
         if style.is_a?(Symbol)
           if style == :preprocessor
-            url = "font-url"
+            url = 'font-url'
             path = @font_path_alt
           elsif style == :preview
-            url = "url"
+            url = 'url'
             path = @font_path_preview
           else
-            url = "url"
+            url = 'url'
             path = @font_path
           end
           say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          style = {:url => "url", :path => @font_path}.merge(style)
+          style = { url: 'url', path: @font_path }.merge(style)
           url = style[:url]
           path = style[:path]
         end
@@ -136,7 +136,7 @@ module Fontcustom
         # Bulletproof @Font-Face <http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax>
         # With and without Base64
         if @options[:base64]
-          string = %Q|@font-face {
+          string = %|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot?") format("embedded-opentype");
   font-weight: normal;
@@ -152,7 +152,7 @@ module Fontcustom
   font-style: normal;
 }|
         else
-        string = %Q|@font-face {
+        string = %|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
@@ -165,7 +165,7 @@ module Fontcustom
         end
 
         # For Windows/Chrome <http://stackoverflow.com/a/19247378/1202445>
-        string << %Q|
+        string << %|
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
@@ -178,18 +178,18 @@ module Fontcustom
 
       def woff_base64
         woff_path = File.join(@options[:output][:fonts], "#{@font_path}.woff")
-        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
+        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", '')
       end
 
       def glyph_selectors
-        output = @glyphs.map do |name, value|
-          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+        output = @glyphs.map do |name, _value|
+          @options[:css_selector].sub('{{glyph}}', name.to_s) + ':before'
         end
         output.join ",\n"
       end
 
       def glyph_properties
-%Q|  display: inline-block;
+%(  display: inline-block;
   font-family: "#{font_name}";
   font-style: normal;
   font-weight: normal;
@@ -200,12 +200,12 @@ module Fontcustom
   text-transform: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;|
+  font-smoothing: antialiased;)
       end
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %(#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; })
         end
         output.join "\n"
       end

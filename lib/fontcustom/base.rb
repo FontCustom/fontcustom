@@ -1,4 +1,4 @@
-require "digest/sha2"
+require 'digest/sha2'
 
 module Fontcustom
   class Base
@@ -6,7 +6,7 @@ module Fontcustom
 
     def initialize(raw_options)
       check_fontforge
-      manifest = ".fontcustom-manifest.json"
+      manifest = '.fontcustom-manifest.json'
       raw_options[:manifest] = manifest
       @options = Fontcustom::Options.new(raw_options).options
       @manifest = Fontcustom::Manifest.new(manifest, @options)
@@ -16,14 +16,14 @@ module Fontcustom
       current = checksum
       previous = @manifest.get(:checksum)[:previous]
 
-      say_message :status, "Forcing compile." if @options[:force]
+      say_message :status, 'Forcing compile.' if @options[:force]
       if @options[:force] || current != previous
-        @manifest.set :checksum, {:previous => previous, :current => current}
+        @manifest.set :checksum, previous: previous, current: current
         start_generators
         @manifest.reload
-        @manifest.set :checksum, {:previous => current, :current => current}
+        @manifest.set :checksum, previous: current, current: current
       else
-        say_message :status, "No changes detected. Skipping compile."
+        say_message :status, 'No changes detected. Skipping compile.'
       end
     end
 
@@ -31,15 +31,15 @@ module Fontcustom
 
     def check_fontforge
       fontforge = `which fontforge`
-      if fontforge == "" || fontforge == "fontforge not found"
-        raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
+      if fontforge == '' || fontforge == 'fontforge not found'
+        fail Fontcustom::Error, 'Please install fontforge first. Visit <http://fontcustom.com> for instructions.'
       end
     end
 
     # Calculates a hash of vectors, options, and templates (content and filenames)
     def checksum
-      files = Dir.glob(File.join(@options[:input][:vectors], "*.svg")).select { |fn| File.file?(fn) }
-      files += Dir.glob(File.join(@options[:input][:templates], "*")).select { |fn| File.file?(fn) }
+      files = Dir.glob(File.join(@options[:input][:vectors], '*.svg')).select { |fn| File.file?(fn) }
+      files += Dir.glob(File.join(@options[:input][:templates], '*')).select { |fn| File.file?(fn) }
       content = files.map { |file| File.read(file) }.join
       content << files.join
       content << @options.flatten(2).join
