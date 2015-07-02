@@ -39,7 +39,7 @@ module Fontcustom
       else
         listen_options[:filter] = /(#{templates.join("|")}|.+\.svg)$/
         listen_options[:relative_paths] = true
-        @listener = Listen::Listener.new(listen_dirs, listen_options, &callback)
+        @listener = Listen::Listener.new(*listen_dirs, listen_options, &callback)
       end
     end
 

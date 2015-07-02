@@ -6,6 +6,7 @@ before_install:
   - unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
   - bundle
 rvm:
+  - 2.2.2
   - 2.1.1
   - 2.0.0
   - 1.9.3
@@ -13,8 +14,13 @@ rvm:
 gemfile:
   - Gemfile
   - gemfiles/Gemfile.listen_1
+  - gemfiles/Gemfile.listen_2
 matrix:
   exclude:
     - gemfile: Gemfile
+      rvm: 1.9.2
+    - gemfile: Gemfile
+      rvm: 1.9.3
+    - gemfile: gemfiles/Gemfile.listen_2
       rvm: 1.9.2
 script: bundle exec rake
