@@ -63,7 +63,7 @@ def createGlyph( name, source, code ):
 
     if ext == '.svg':
         temp = removeSwitchFromSvg(source)
-        glyph = font.createChar(code)
+        glyph = font.createChar(code, name)
         glyph.importOutlines(temp)
         os.unlink(temp)
 
