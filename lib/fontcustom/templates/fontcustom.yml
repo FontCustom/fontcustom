@@ -30,6 +30,9 @@
 # Hide status messages.
 #quiet: true
 
+# Copyright information.
+#copyright: 
+
 
 # -----------------------------------------------------------------------------
 # Input / Output Locations
