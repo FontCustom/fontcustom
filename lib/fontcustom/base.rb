@@ -30,7 +30,11 @@ module Fontcustom
     private
 
     def check_fontforge
-      fontforge = `which fontforge`
+        if !Gem.win_platform?
+            fontforge = `which fontforge`
+        else
+            fontforge = `where fontforge`
+        end
       if fontforge == "" || fontforge == "fontforge not found"
         raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
       end
