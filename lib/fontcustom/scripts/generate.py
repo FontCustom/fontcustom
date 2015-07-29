@@ -126,7 +126,11 @@ try:
 
     # Convert EOT for IE7
     subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-    subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    # check if windows
+    if os.name == 'nt':
+        subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    else:
+        subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
     manifest['fonts'].append(fontfile + '.eot')
 
 finally:
