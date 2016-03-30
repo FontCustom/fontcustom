@@ -125,6 +125,10 @@ try:
     subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
     manifest['fonts'].append(fontfile + '.eot')
 
+    # Convert TTF to WOFF2
+    subprocess.call('woff2_compress \'' + fontfile + '.ttf\'', shell=True)
+    manifest['fonts'].append(fontfile + '.woff2')
+
 finally:
     manifestfile.seek(0)
     manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True))

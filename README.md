@@ -16,10 +16,14 @@ from a collection of SVGs
 
 ### Installation
 
-Requires **Ruby 1.9.2+**, **FontForge** with Python scripting.
+Requires **Ruby 1.9.2+**, **WOFF2**, **FontForge** with Python scripting.
 
 ```sh
 # On Mac
+brew tap bramstein/webfonttools
+brew update
+brew install woff2
+
 brew install fontforge --with-python
 brew install eot-utils
 gem install fontcustom
@@ -28,6 +32,7 @@ gem install fontcustom
 sudo apt-get install fontforge
 wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
 unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
+git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
 gem install fontcustom
 ```
 
