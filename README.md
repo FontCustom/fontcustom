@@ -7,7 +7,7 @@
 **Icon fonts from the command line.**
 
 Generate cross-browser icon fonts and supporting files (@font-face CSS, etc.)
-from a collection of SVGs 
+from a collection of SVGs
 ([example](https://rawgit.com/FontCustom/fontcustom/master/spec/fixtures/example/example-preview.html)).
 
 [Changelog](https://github.com/FontCustom/fontcustom/blob/master/CHANGELOG.md)<br>
@@ -150,7 +150,7 @@ Now the font is adjustable to css 'font-size' and 'color'.
 
 You can save generated fonts, CSS, and other files to different locations by
 using `fontcustom.yml`. Font Custom can also read input vectors and templates
-from different places. 
+from different places.
 
 Just edit the `input` and `output` YAML hashes and their corresponding keys.
 
@@ -181,6 +181,7 @@ helpers:
 * `@manifest`: a hash of options, generated file paths, code points, and just about everything else Font Custom knows.
 * `@font_path`: the path from CSS to font files (without an extension)
 * `@font_path_alt`: if `preprocessor_path` was set, this is the modified path
+* `pseudo_element`: if `css3` was set to true, then it will print `::before`. Otherwise the PseudoElement will be `:before`
 
 `font_face` accepts a hash that modifies the CSS url() function and the path of
 the font files (`font_face(url: "font-url", path: @font_path_alt)`).
