@@ -211,7 +211,7 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element}{ content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element} { content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
       end
