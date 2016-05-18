@@ -12,6 +12,12 @@ module Fontcustom
       def initialize(manifest)
         @manifest = Fontcustom::Manifest.new manifest
         @options = @manifest.get :options
+
+        @pseudo_element = ':before';
+        if @options[:css3]
+          @pseudo_element = '::before';
+        end
+
       end
 
       def generate
@@ -183,7 +189,7 @@ module Fontcustom
 
       def glyph_selectors
         output = @glyphs.map do |name, value|
-          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+          @options[:css_selector].sub("{{glyph}}", name.to_s) + @pseudo_element
         end
         output.join ",\n"
       end
@@ -205,7 +211,7 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element}{ content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
       end
