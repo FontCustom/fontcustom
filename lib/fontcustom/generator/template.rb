@@ -215,6 +215,10 @@ module Fontcustom
         end
         output.join "\n"
       end
+
+      def pseudo_element
+        @pseudo_element
+      end
     end
   end
 end
