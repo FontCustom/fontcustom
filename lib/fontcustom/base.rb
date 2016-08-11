@@ -50,7 +50,7 @@ module Fontcustom
 
     # Calculates a hash of vectors, options, and templates (content and filenames)
     def checksum
-      files = Dir.glob(File.join(@options[:input][:vectors], "*.svg")).select { |fn| File.file?(fn) }
+      files = Dir.glob(File.join(@options[:input][:vectors], "**/*.svg")).select { |fn| File.file?(fn) }
       files += Dir.glob(File.join(@options[:input][:templates], "*")).select { |fn| File.file?(fn) }
       content = files.map { |file| File.read(file) }.join
       content << files.join
