@@ -137,28 +137,28 @@ module Fontcustom
         # With and without Base64
         if @options[:base64]
           string = %Q|@font-face {
-  font-family: "#{font_name}";
-  src: #{url}("#{path}.eot?") format("embedded-opentype");
+  font-family: #{quote}#{font_name}#{quote};
+  src: #{url}(#{quote}#{path}.eot?#{quote}) format(#{quote}embedded-opentype#{quote});
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "#{font_name}";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}") format("woff"),
-       #{url}("#{path}.ttf") format("truetype"),
-       #{url}("#{path}.svg##{font_name}") format("svg");
+  font-family: #{quote}#{font_name}#{quote};
+  src: url(#{quote}data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}#{quote}) format(#{quote}woff#{quote}),
+       #{url}(#{quote}#{path}.ttf#{quote}) format(#{quote}truetype#{quote}),
+       #{url}(#{quote}#{path}.svg##{font_name}#{quote}) format(#{quote}svg#{quote});
   font-weight: normal;
   font-style: normal;
 }|
         else
         string = %Q|@font-face {
-  font-family: "#{font_name}";
-  src: #{url}("#{path}.eot");
-  src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
-       #{url}("#{path}.woff") format("woff"),
-       #{url}("#{path}.ttf") format("truetype"),
-       #{url}("#{path}.svg##{font_name}") format("svg");
+  font-family: #{quote}#{font_name}#{quote};
+  src: #{url}(#{quote}#{path}.eot#{quote});
+  src: #{url}(#{quote}#{path}.eot?#iefix#{quote}) format(#{quote}embedded-opentype#{quote}),
+       #{url}(#{quote}#{path}.woff#{quote}) format(#{quote}woff#{quote}),
+       #{url}(#{quote}#{path}.ttf#{quote}) format(#{quote}truetype#{quote}),
+       #{url}(#{quote}#{path}.svg##{font_name}#{quote}) format(#{quote}svg#{quote});
   font-weight: normal;
   font-style: normal;
 }|
@@ -169,8 +169,8 @@ module Fontcustom
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: "#{font_name}";
-    src: #{url}("#{path}.svg##{font_name}") format("svg");
+    font-family: #{quote}#{font_name}#{quote};
+    src: #{url}(#{quote}#{path}.svg##{font_name}#{quote}) format(#{quote}svg#{quote});
   }
 }|
         string
@@ -183,14 +183,14 @@ module Fontcustom
 
       def glyph_selectors
         output = @glyphs.map do |name, value|
-          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+          @options[:css_selector].sub("{{glyph}}", name.to_s) + "::before"
         end
         output.join ",\n"
       end
 
       def glyph_properties
 %Q|  display: inline-block;
-  font-family: "#{font_name}";
+  font-family: #{quote}#{font_name}#{quote};
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -205,9 +205,13 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}::before { content: #{quote}\\#{value[:codepoint].to_s(16)}#{quote}; }|
         end
         output.join "\n"
+      end
+
+      def quote
+        @quote ||= @options[:single_quotes] ? "'" : '"'
       end
     end
   end
