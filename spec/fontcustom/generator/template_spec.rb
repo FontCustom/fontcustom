@@ -6,7 +6,7 @@ describe Fontcustom::Generator::Template do
       live_test do |testdir|
         FileUtils.cp_r fixture("generators/mixed-output"), "fontcustom"
         test_manifest(
-          :input => "vectors", 
+          :input => "vectors",
           :quiet => true,
           :templates => %w|preview css scss scss-rails|
         )
@@ -85,9 +85,9 @@ describe Fontcustom::Generator::Template do
       gen.send :create_files
     end
   end
-  
+
   context ".font_face" do
-    it "should return base64 when options are set" do 
+    it "should return base64 when options are set" do
       gen = Fontcustom::Generator::Template.new fixture("generators/.fontcustom-manifest.json")
       allow(gen).to receive(:woff_base64).and_return("3xampled4ta")
       options = gen.instance_variable_get :@options

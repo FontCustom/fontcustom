@@ -30,6 +30,9 @@
 # Hide status messages.
 #quiet: true
 
+# Use single quotes in generated CSS and SCSS templates (default false)
+# single_quotes: true
+
 
 # -----------------------------------------------------------------------------
 # Input / Output Locations
