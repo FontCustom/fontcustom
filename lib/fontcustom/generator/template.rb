@@ -138,29 +138,29 @@ module Fontcustom
         if @options[:base64]
           string = %Q|@font-face {
   font-family: #{quote}#{font_name}#{quote};
-  src: #{url}(#{quote}#{path}.eot?#{quote}) format(#{quote}embedded-opentype#{quote});
-  font-weight: normal;
   font-style: normal;
+  font-weight: normal;
+  src: #{url}(#{quote}#{path}.eot?#{quote}) format(#{quote}embedded-opentype#{quote});
 }
 
 @font-face {
   font-family: #{quote}#{font_name}#{quote};
+  font-style: normal;
+  font-weight: normal;
   src: url(#{quote}data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}#{quote}) format(#{quote}woff#{quote}),
        #{url}(#{quote}#{path}.ttf#{quote}) format(#{quote}truetype#{quote}),
        #{url}(#{quote}#{path}.svg##{font_name}#{quote}) format(#{quote}svg#{quote});
-  font-weight: normal;
-  font-style: normal;
 }|
         else
         string = %Q|@font-face {
   font-family: #{quote}#{font_name}#{quote};
+  font-style: normal;
+  font-weight: normal;
   src: #{url}(#{quote}#{path}.eot#{quote});
   src: #{url}(#{quote}#{path}.eot?#iefix#{quote}) format(#{quote}embedded-opentype#{quote}),
        #{url}(#{quote}#{path}.woff#{quote}) format(#{quote}woff#{quote}),
        #{url}(#{quote}#{path}.ttf#{quote}) format(#{quote}truetype#{quote}),
        #{url}(#{quote}#{path}.svg##{font_name}#{quote}) format(#{quote}svg#{quote});
-  font-weight: normal;
-  font-style: normal;
 }|
         end
 
@@ -191,16 +191,16 @@ module Fontcustom
       def glyph_properties
 %Q|  display: inline-block;
   font-family: #{quote}#{font_name}#{quote};
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
   font-style: normal;
-  font-weight: normal;
   font-variant: normal;
+  font-weight: normal;
   line-height: 1;
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
-  text-transform: none;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;|
+  text-transform: none;|
       end
 
       def glyphs
