@@ -38,6 +38,8 @@ module Fontcustom
     :no_hash => false,
     :debug => false,
     :force => false,
-    :quiet => false
+    :quiet => false,
+    :single_quotes => false,
+    :css3 => false
   }
 end

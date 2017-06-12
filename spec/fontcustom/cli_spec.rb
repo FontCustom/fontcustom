@@ -26,5 +26,41 @@ describe Fontcustom::CLI do
         expect(File.read(css)).to match("../foo/bar/")
       end
     end
+
+    context 'single quotes' do
+      it "should generate fonts and templates with single quotes" do
+        live_test do |testdir|
+          Fontcustom::CLI.start ["compile", "vectors", "--templates", "preview", "css", "scss-rails", "--single-quotes"]
+          preview = File.join testdir, "fontcustom", "fontcustom-preview.html"
+
+          expect(Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
+          expect(File.exists?(preview)).to be_truthy
+
+          generated_css = File.read Dir.glob(File.join(testdir, "fontcustom", "*.css")).first
+          expect(generated_css.scan('"').count).to be 0
+
+          generated_scss = File.read Dir.glob(File.join(testdir, "fontcustom", "*.scss")).first
+          expect(generated_scss.scan('"').count).to be 0
+        end
+      end
+    end
+
+    context 'css3' do
+      it "should generate css3 stylesheets" do
+        live_test do |testdir|
+          Fontcustom::CLI.start ["compile", "vectors", "--templates", "preview", "css", "scss-rails", "--css3"]
+          preview = File.join testdir, "fontcustom", "fontcustom-preview.html"
+
+          expect(Dir.glob(File.join(testdir, "fontcustom", "fontcustom_*\.{ttf,svg,woff,eot}")).length).to eq(4)
+          expect(File.exists?(preview)).to be_truthy
+
+          generated_css = File.read Dir.glob(File.join(testdir, "fontcustom", "*.css")).first
+          expect(generated_css.scan(/[^\:]\:before/).count).to be 0
+
+          generated_scss = File.read Dir.glob(File.join(testdir, "fontcustom", "*.scss")).first
+          expect(generated_scss.scan(/[^\:]\:before/).count).to be 0
+        end
+      end
+    end
   end
 end

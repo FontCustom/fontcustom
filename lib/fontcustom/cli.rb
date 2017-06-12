@@ -25,7 +25,7 @@ module Fontcustom
     class_option :font_name, :aliases => %w|--name -n|, :type => :string,
       :desc => "The font's name. Also determines the file names of generated templates.",
       :default => DEFAULT_OPTIONS[:font_name]
-    
+
     class_option :font_design_size, :aliases => %s|--size -s|, :type => :numeric,
       :desc => "Size (in pica points) for which this font is designed.",
       :default => DEFAULT_OPTIONS[:font_design_size]
@@ -63,6 +63,12 @@ module Fontcustom
 
     class_option :force, :aliases => "-F", :type => :boolean,
       :desc => "Forces compilation, even if inputs have not changed."
+
+    class_option :single_quotes, :aliases => %w|--signle-quotes -Q|, :type => :boolean,
+      :desc => "Use single quotes in generated CSS and SCSS templates"
+
+    class_option :css3, :type => :boolean,
+      :desc => "Ensure CSS3 compliant css/scss"
 
     class_option :quiet, :aliases => "-q", :type => :boolean,
       :desc => "Hide status messages."
