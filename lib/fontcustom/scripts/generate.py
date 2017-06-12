@@ -39,6 +39,7 @@ font.descent = options['font_descent']
 font.fontname = options['font_name']
 font.familyname = options['font_name']
 font.fullname = options['font_name']
+font.copyright = options['copyright']
 if options['autowidth']:
     font.autoWidth(0, 0, options['font_em'])
 

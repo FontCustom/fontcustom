@@ -67,6 +67,9 @@ module Fontcustom
     class_option :quiet, :aliases => "-q", :type => :boolean,
       :desc => "Hide status messages."
 
+    class_option :copyright, :aliases => %w|--copyright -r|, :type => :string,
+      :desc => "Copyright information."
+
     # Required for Thor::Actions#template
     def self.source_root
       File.join Fontcustom.gem_lib, "templates"
