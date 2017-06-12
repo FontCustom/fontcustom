@@ -1,9 +1,13 @@
+sudo: false
 language: ruby
+addons:
+  apt:
+    packages:
+    - fontforge-nox
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq fontforge
   - wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
-  - unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
+  - unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && mkdir -p bin && mv sfnt2woff bin && cd ..
+  - export PATH=$PATH:$PWD/sfnt2woff/bin/
   - bundle
 rvm:
   - 2.2.2
