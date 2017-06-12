@@ -113,7 +113,11 @@ try:
     # Convert WOFF
     scriptPath = os.path.dirname(os.path.realpath(__file__))
     try:
-        subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+        # check if on windows
+        if os.name == 'nt':
+            subprocess.Popen([scriptPath + '/sfnt2woff.exe', fontfile + '.ttf'], stdout=subprocess.PIPE)
+        else:
+            subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
     except OSError:
         # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
         # global version. This allows us to avoid forcing OS X users to compile
@@ -123,7 +127,11 @@ try:
 
     # Convert EOT for IE7
     subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-    subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    # check if windows
+    if os.name == 'nt':
+        subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    else:
+        subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
     manifest['fonts'].append(fontfile + '.eot')
 
 finally:
