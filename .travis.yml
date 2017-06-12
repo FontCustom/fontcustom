@@ -26,5 +26,9 @@ matrix:
     - gemfile: Gemfile
       rvm: 1.9.3
     - gemfile: gemfiles/Gemfile.listen_2
+      rvm: 2.0.0
+    - gemfile: gemfiles/Gemfile.listen_2
+      rvm: 1.9.3
+    - gemfile: gemfiles/Gemfile.listen_2
       rvm: 1.9.2
 script: bundle exec rake
