@@ -50,12 +50,24 @@ module Fontcustom
         files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
         glyphs = {}
         files.each do |file|
+          next if File.symlink?(file)
           name = File.basename file, ".svg"
           name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
           if File.read(file).include? "rgba"
             say_message :warn, "`#{file}` contains transparency and will be skipped."
           end
+        end
+
+        files.each do |file|
+          next unless File.symlink?(file)
+          linked_name = File.readlink(file)
+          linked_name = File.basename linked_name, ".svg"
+          linked_name = linked_name.strip.gsub(/\W/, "-")
+          glyphs[linked_name.to_sym][:aliases] ||= []
+          alias_name = File.basename file, ".svg"
+          alias_name = alias_name.strip.gsub(/\W/, "-")
+          glyphs[linked_name.to_sym][:aliases] << alias_name
         end
 
         # Dir.glob returns a different order depending on ruby
