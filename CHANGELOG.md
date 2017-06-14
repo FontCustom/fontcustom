@@ -1,3 +1,18 @@
+## 2.0.0 (6/14/2017)
+
+* Adds support for Woff2 ([#313](https://github.com/FontCustom/fontcustom/pull/313))
+* Minimum ruby version bumped to 1.9.3
+* Support listen 3 ([#283](https://github.com/FontCustom/fontcustom/pull/283))
+* Support Python 3 ([#276](https://github.com/FontCustom/fontcustom/pull/276))
+* Compatible with Windows ([#289](https://github.com/FontCustom/fontcustom/pull/289))
+* Set glyph name when creating char in fontforge ([#286](https://github.com/FontCustom/fontcustom/pull/286))
+* Allow specification of copyright information ([#287](https://github.com/FontCustom/fontcustom/pull/287))
+* Enable CSS3 pseudo selectors '::' vs ':' ([#310](https://github.com/FontCustom/fontcustom/pull/310))
+* Update installation instructions with zlib for linux machines ([#224](https://github.com/FontCustom/fontcustom/pull/224))
+* Works with updated Travis CI configuration
+* Fix issue with relative paths in check_template_paths
+* Be more Unix-y and fail when there is an error ([#295](https://github.com/FontCustom/fontcustom/pull/295))
+
 ## 1.3.4 (10/11/2014)
 
 * Updates rspec tests to be compatible with rspec v3.1.6
