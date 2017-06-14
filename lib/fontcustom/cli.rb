@@ -84,6 +84,7 @@ module Fontcustom
     rescue Fontcustom::Error => e
       say_status :error, e.message, :red
       puts e.backtrace.join("\n") if options[:debug]
+      exit 1
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
@@ -96,6 +97,7 @@ module Fontcustom
       Watcher.new(opts).watch
     rescue Fontcustom::Error => e
       say_status :error, e.message, :red
+      exit 1
     end
 
     desc "config [DIR]", "Generates a starter configuration file (fontcustom.yml) in DIR. Default: `pwd`"
