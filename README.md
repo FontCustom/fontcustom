@@ -16,7 +16,7 @@ from a collection of SVGs
 
 ### Installation
 
-Requires **Ruby 1.9.2+**, **WOFF2**, **FontForge** with Python scripting.
+Requires **Ruby 1.9.3+**, **WOFF2**, **FontForge** with Python scripting.
 
 ```sh
 # On Mac
@@ -37,7 +37,7 @@ gem install fontcustom
 ```
 ####Note for windows:
 
-1. Install fontforge:  http://fontforge.github.io/en-US/downloads/windows/ 
+1. Install fontforge:  http://fontforge.github.io/en-US/downloads/windows/
 -  Install to a path without spaces, eg c:\FontForgeBuilds
 -  At the end of the installer check the 'run fontforge' box. It finishes some set up.
 2. Add the installation path to your System PATH variable (c:\FontForgeBuilds\bin)
@@ -86,7 +86,7 @@ Add `gem 'fontcustom'` to your gem file.
 ```
 bundle
 ```
-Create a `fontcustom.yml` file with something like this: 
+Create a `fontcustom.yml` file with something like this:
 ```yml
 # config/fontcustom.yml
 
@@ -125,7 +125,7 @@ end
 
 Load up the icons directory and test it out.
 
-Run this command with 
+Run this command with
 ```sh
 rake icons:compile
 ```
@@ -141,15 +141,15 @@ Compiling icons...
               app/assets/fonts/icons.woff
               app/assets/fonts/icons.eot
       create  app/assets/stylesheets/_icons.scss
-``` 
+```
 Access these new icons by creating a tag with the class `icon-{{glyph}}` where the {{glyph}} is the name of the svg you put in the icon folder.
 For example, if you added a file called 'cars54' icon would look something like this:
 
 ```html
 <i class="icon-cars54"</i>
 ```
- 
-Now the font is adjustable to css 'font-size' and 'color'. 
+
+Now the font is adjustable to css 'font-size' and 'color'.
 
 **Save CSS and fonts to different locations**
 
