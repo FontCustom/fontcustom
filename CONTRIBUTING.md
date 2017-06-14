@@ -30,7 +30,7 @@ us know. No such thing as too small of an improvement.
 You'll need:
 
 * Fontforge with Python scripting (easiest via [Homebrew](http://brew.sh/) on Mac)
-* Ruby 1.9.2+ (via [rbenv](https://github.com/sstephenson/rbenv), [RVM](https://rvm.io/), etc.)
+* Ruby 1.9.3+ (via [rbenv](https://github.com/sstephenson/rbenv), [RVM](https://rvm.io/), etc.)
 * Rubygems
   * Bundler
   * Rake
