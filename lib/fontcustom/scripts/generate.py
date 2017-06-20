@@ -48,7 +48,7 @@ if options['autowidth']:
 #
 
 def removeSwitchFromSvg( file ):
-    svgfile = open(file, 'r')
+    svgfile = open(file, 'rt', encoding='latin1')
     svgtext = svgfile.read()
     svgfile.close()
     tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
