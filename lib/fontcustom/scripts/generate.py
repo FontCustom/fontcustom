@@ -3,6 +3,7 @@ import os
 import subprocess
 import tempfile
 import json
+from io import open
 
 #
 # Manifest / Options
@@ -14,12 +15,12 @@ try:
     parser = argparse.ArgumentParser()
     parser.add_argument('manifest', help='Path to .fontcustom-manifest.json')
     args = parser.parse_args()
-    manifestfile = open(args.manifest, 'r+')
+    manifestfile = open(args.manifest, 'r+', encoding='latin1')
 except ImportError:
     import optparse
     parser = optparse.OptionParser()
     (nothing, args) = parser.parse_args()
-    manifestfile = open(args[0], 'r+')
+    manifestfile = open(args[0], 'r+', encoding='latin1')
 
 manifest = json.load(manifestfile)
 options = manifest['options']
@@ -48,7 +49,7 @@ if options['autowidth']:
 #
 
 def removeSwitchFromSvg( file ):
-    svgfile = open(file, 'r')
+    svgfile = open(file, 'r', encoding='latin1')
     svgtext = svgfile.read()
     svgfile.close()
     tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
@@ -104,7 +105,7 @@ try:
 
     # Fix SVG header for webkit
     # from: https://github.com/fontello/font-builder/blob/master/bin/fontconvert.py
-    svgfile = open(fontfile + '.svg', 'r+')
+    svgfile = open(fontfile + '.svg', 'r+', encoding='latin1')
     svgtext = svgfile.read()
     svgfile.seek(0)
     svgfile.write(svgtext.replace('''<svg>''', '''<svg xmlns="http://www.w3.org/2000/svg">'''))
@@ -140,6 +141,6 @@ try:
 
 finally:
     manifestfile.seek(0)
-    manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True))
+    manifestfile.write(json.dumps(manifest, indent=2, sort_keys=True).encode('utf-8').decode('utf-8'))
     manifestfile.truncate()
     manifestfile.close()
