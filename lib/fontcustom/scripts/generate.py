@@ -47,29 +47,21 @@ if options['autowidth']:
 # Glyphs
 #
 
-def resolveGlyphName( c ):
-    if c == "0":
-        c = "zero"
-    elif c == "1":
-        c = "one"
-    elif c == "2":
-        c = "two"
-    elif c == "3":
-        c = "three"
-    elif c == "4":
-        c = "four"
-    elif c == "5":
-        c = "five"
-    elif c == "6":
-        c = "six"
-    elif c == "7":
-        c = "seven"
-    elif c == "8":
-        c = "eight"
-    elif c == "9":
-        c = "nine"
+NUMBER_GLYPH_NAMES = {
+        "0": "zero",
+        "1": "one",
+        "2": "two",
+        "3": "three",
+        "4": "four",
+        "5": "five",
+        "6": "six",
+        "7": "seven",
+        "8": "eight",
+        "9": "nine"
+}
 
-    return c;
+def resolveGlyphName( c ):
+    return NUMBER_GLYPH_NAMES[c] if c in NUMBER_GLYPH_NAMES else c
 
 def removeSwitchFromSvg( file ):
     svgfile = open(file, 'r')
