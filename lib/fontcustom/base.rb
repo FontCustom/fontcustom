@@ -4,7 +4,7 @@ module Fontcustom
   class Base
     include Utility
     
-    private which_command 
+    private $which_command 
     
     def initialize(raw_options)
       set_which_command
