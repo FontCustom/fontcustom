@@ -3,8 +3,11 @@ require "digest/sha2"
 module Fontcustom
   class Base
     include Utility
-
+    
+    private which_command 
+    
     def initialize(raw_options)
+      set_which_command
       check_fontforge
       check_woff2
       manifest = '.fontcustom-manifest.json'
@@ -12,6 +15,14 @@ module Fontcustom
       @options = Fontcustom::Options.new(raw_options).options
       @manifest = Fontcustom::Manifest.new(manifest, @options)
     end
+
+    def set_which_command
+      if !Gem.win_platform?
+        which_command = 'which'
+      else # on windows 
+        which_command = 'where'
+      end
+    end 
 
     def compile
       current = checksum
@@ -31,18 +42,14 @@ module Fontcustom
     private
 
     def check_fontforge
-        if !Gem.win_platform?
-            fontforge = `which fontforge`
-        else
-            fontforge = `where fontforge`
-        end
+      fontforge = `#{which_command} fontforge`
       if fontforge == "" || fontforge == "fontforge not found"
         raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
       end
     end
 
     def check_woff2
-      woff2 = `which woff2_compress`
+      woff2 = `#{which_command} woff2_compress`
       if woff2 == "" || woff2 == "woff2_compress not found"
         fail Fontcustom::Error, "Please install woff2 first. Visit <https://github.com/google/woff2> for instructions."
       end
