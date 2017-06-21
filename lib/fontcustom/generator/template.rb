@@ -12,6 +12,12 @@ module Fontcustom
       def initialize(manifest)
         @manifest = Fontcustom::Manifest.new manifest
         @options = @manifest.get :options
+
+        @pseudo_element = ':before';
+        if @options[:css3]
+          @pseudo_element = '::before';
+        end
+
       end
 
       def generate
@@ -146,6 +152,7 @@ module Fontcustom
 @font-face {
   font-family: "#{font_name}";
   src: url("data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}") format("woff"),
+       #{url}("#{path}.woff2") format("woff2"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
   font-weight: normal;
@@ -156,6 +163,7 @@ module Fontcustom
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
+       #{url}("#{path}.woff2") format("woff2"),
        #{url}("#{path}.woff") format("woff"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
@@ -183,7 +191,7 @@ module Fontcustom
 
       def glyph_selectors
         output = @glyphs.map do |name, value|
-          @options[:css_selector].sub("{{glyph}}", name.to_s) + ":before"
+          @options[:css_selector].sub("{{glyph}}", name.to_s) + @pseudo_element
         end
         output.join ",\n"
       end
@@ -205,9 +213,13 @@ module Fontcustom
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element} { content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
+      end
+
+      def pseudo_element
+        @pseudo_element
       end
     end
   end

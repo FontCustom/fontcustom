@@ -39,6 +39,7 @@ font.descent = options['font_descent']
 font.fontname = options['font_name']
 font.familyname = options['font_name']
 font.fullname = options['font_name']
+font.copyright = options['copyright']
 if options['autowidth']:
     font.autoWidth(0, 0, options['font_em'])
 
@@ -53,7 +54,7 @@ def removeSwitchFromSvg( file ):
     tmpsvgfile = tempfile.NamedTemporaryFile(suffix=".svg", delete=False)
     svgtext = svgtext.replace('<switch>', '')
     svgtext = svgtext.replace('</switch>', '')
-    tmpsvgfile.file.write(svgtext)
+    tmpsvgfile.file.write(svgtext.encode('utf-8'))
     tmpsvgfile.file.close()
 
     return tmpsvgfile.name
@@ -63,7 +64,7 @@ def createGlyph( name, source, code ):
 
     if ext == '.svg':
         temp = removeSwitchFromSvg(source)
-        glyph = font.createChar(code)
+        glyph = font.createChar(code, name)
         glyph.importOutlines(temp)
         os.unlink(temp)
 
@@ -83,7 +84,7 @@ def createGlyph( name, source, code ):
 glyph = font.createChar(32)
 glyph.width = 200
 
-for glyph, data in manifest['glyphs'].iteritems():
+for glyph, data in manifest['glyphs'].items():
     name = createGlyph(glyph, data['source'], data['codepoint'])
 
 #
@@ -132,6 +133,10 @@ try:
     else:
         subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
     manifest['fonts'].append(fontfile + '.eot')
+
+    # Convert TTF to WOFF2
+    subprocess.call('woff2_compress \'' + fontfile + '.ttf\'', shell=True)
+    manifest['fonts'].append(fontfile + '.woff2')
 
 finally:
     manifestfile.seek(0)

@@ -25,7 +25,7 @@ module Fontcustom
     class_option :font_name, :aliases => %w|--name -n|, :type => :string,
       :desc => "The font's name. Also determines the file names of generated templates.",
       :default => DEFAULT_OPTIONS[:font_name]
-    
+
     class_option :font_design_size, :aliases => %s|--size -s|, :type => :numeric,
       :desc => "Size (in pica points) for which this font is designed.",
       :default => DEFAULT_OPTIONS[:font_design_size]
@@ -52,6 +52,9 @@ module Fontcustom
     class_option :autowidth, :aliases => "-A", :type => :boolean,
       :desc => "Horizontally fit glyphs to their individual vector widths."
 
+    class_option :css3, :type => :boolean,
+      :desc => "Use CSS3 Pseudo Elements"
+
     class_option :no_hash, :aliases => "-h", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 
@@ -67,6 +70,9 @@ module Fontcustom
     class_option :quiet, :aliases => "-q", :type => :boolean,
       :desc => "Hide status messages."
 
+    class_option :copyright, :aliases => %w|--copyright -r|, :type => :string,
+      :desc => "Copyright information."
+
     # Required for Thor::Actions#template
     def self.source_root
       File.join Fontcustom.gem_lib, "templates"
@@ -78,6 +84,7 @@ module Fontcustom
     rescue Fontcustom::Error => e
       say_status :error, e.message, :red
       puts e.backtrace.join("\n") if options[:debug]
+      exit 1
     end
 
     desc "watch [INPUT] [OPTIONS]", "Watches INPUT for changes and regenerates files automatically. Ctrl + C to stop. Default: `pwd`"
@@ -90,6 +97,7 @@ module Fontcustom
       Watcher.new(opts).watch
     rescue Fontcustom::Error => e
       say_status :error, e.message, :red
+      exit 1
     end
 
     desc "config [DIR]", "Generates a starter configuration file (fontcustom.yml) in DIR. Default: `pwd`"

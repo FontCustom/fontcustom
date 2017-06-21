@@ -36,8 +36,10 @@ module Fontcustom
     :preprocessor_path => nil,
     :autowidth => false,
     :no_hash => false,
+    :css3 => false,
     :debug => false,
     :force => false,
-    :quiet => false
+    :quiet => false,
+    :copyright => ''
   }
 end

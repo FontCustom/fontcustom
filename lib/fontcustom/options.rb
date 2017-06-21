@@ -165,7 +165,11 @@ module Fontcustom
     def check_template_paths
       @options[:templates].each do |template|
         next if %w|preview css scss scss-rails|.include? template
-        path = File.expand_path File.join(@options[:input][:templates], template) unless template[0] == "/"
+        if template[0] == "/"
+          path = template
+        else
+          path = File.expand_path File.join(@options[:input][:templates], template)
+        end
         unless File.exists? path
           raise Fontcustom::Error,
             "Custom template `#{template}` wasn't found in `#{@options[:input][:templates]}/`. Check your options."
@@ -184,7 +188,7 @@ module Fontcustom
     end
 
     def print_debug
-      message = line_break(16) 
+      message = line_break(16)
       message << @options.pretty_inspect.split("\n ").join(line_break(16))
       say_message :debug, "Using options:#{message}"
     end
