@@ -144,31 +144,31 @@ module Fontcustom
         if @options[:base64]
           string = %Q|@font-face {
   font-family: "#{font_name}";
-  src: #{url}("#{path}.eot?") format("embedded-opentype");
-  font-weight: normal;
   font-style: normal;
+  font-weight: normal;
+  src: #{url}("#{path}.eot?") format("embedded-opentype");
 }
 
 @font-face {
   font-family: "#{font_name}";
+  font-style: normal;
+  font-weight: normal;
   src: url("data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}") format("woff"),
        #{url}("#{path}.woff2") format("woff2"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
-  font-weight: normal;
-  font-style: normal;
 }|
         else
         string = %Q|@font-face {
   font-family: "#{font_name}";
+  font-style: normal;
+  font-weight: normal;
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
        #{url}("#{path}.woff2") format("woff2"),
        #{url}("#{path}.woff") format("woff"),
        #{url}("#{path}.ttf") format("truetype"),
        #{url}("#{path}.svg##{font_name}") format("svg");
-  font-weight: normal;
-  font-style: normal;
 }|
         end
 
@@ -199,16 +199,16 @@ module Fontcustom
       def glyph_properties
 %Q|  display: inline-block;
   font-family: "#{font_name}";
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
   font-style: normal;
-  font-weight: normal;
   font-variant: normal;
+  font-weight: normal;
   line-height: 1;
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
-  text-transform: none;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;|
+  text-transform: none;|
       end
 
       def glyphs
