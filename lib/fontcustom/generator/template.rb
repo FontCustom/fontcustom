@@ -18,6 +18,10 @@ module Fontcustom
           @pseudo_element = '::before';
         end
 
+        @quote = '"'
+        if @options[:single_quotes]
+          @quote = "'"
+        end
       end
 
       def generate
@@ -223,7 +227,7 @@ module Fontcustom
       end
 
       def quote
-        @_quote = options[:single_quotes] ? '\'' : '"'
+        @quote
       end
     end
   end
