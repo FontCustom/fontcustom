@@ -47,7 +47,11 @@ module Fontcustom
           0xf100
         end
 
-        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+        files = if @options[:input][:deep]
+                  Dir.glob File.join(@options[:input][:vectors], "**/*.svg")
+                else
+                  Dir.glob File.join(@options[:input][:vectors], "*.svg")
+                end
         glyphs = {}
         files.each do |file|
           name = File.basename file, ".svg"
