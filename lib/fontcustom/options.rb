@@ -119,7 +119,7 @@ module Fontcustom
         @options[:input] = { :vectors => input, :templates => input }
       end
 
-      if Dir[File.join(@options[:input][:vectors], "*.svg")].empty?
+      if Dir.glob(File.join(@options[:input][:vectors], "**/*.svg")).empty?
         raise Fontcustom::Error, "`#{@options[:input][:vectors]}` doesn't contain any SVGs."
       end
     end
