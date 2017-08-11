@@ -197,7 +197,7 @@ module Fontcustom
       end
 
       def glyph_properties
-%Q|  display: inline-block;
+        properties = %Q|  display: inline-block;
   font-family: "#{font_name}";
   font-style: normal;
   font-weight: normal;
@@ -209,11 +209,22 @@ module Fontcustom
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;|
+        if @options[:ligature]
+          properties += %Q|
+  -webkit-text-rendering: optimizeLegibility;
+  -moz-text-rendering: optimizeLegibility;
+  -ms-text-rendering: optimizeLegibility;
+  -o-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;|
+        end
+
+        properties
       end
 
       def glyphs
         output = @glyphs.map do |name, value|
-          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element} { content: "\\#{value[:codepoint].to_s(16)}"; }|
+          content = @options[:ligature] ? name.to_s : "\\#{value[:codepoint].to_s(16)}"
+          %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}#{@pseudo_element} { content: "\\#{content}"; }|
         end
         output.join "\n"
       end

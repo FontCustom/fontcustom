@@ -68,6 +68,10 @@ module Fontcustom
             data[:codepoint] = codepoint
             codepoint = codepoint + 1
           end
+
+          if @options[:ligature]
+            data[:ligature] = name.to_s.gsub(/[^a-zA-Z0-9]+/, '')
+          end
         end
         @manifest.set :glyphs, glyphs
       end

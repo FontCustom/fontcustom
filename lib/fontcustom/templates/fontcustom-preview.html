@@ -109,7 +109,7 @@
         text-align: center;
       }
 
-      .usage .point { width: 150px; }
+      .usage .point, .usage .liagture { width: 150px; }
 
       .usage .class { width: 250px; }
 
@@ -162,6 +162,9 @@
         <div class="usage">
           <input class="class" type="text" readonly="readonly" onClick="this.select();" value="<%= selector %>" />
           <input class="point" type="text" readonly="readonly" onClick="this.select();" value="&amp;#x<%= value[:codepoint].to_s(16) %>;" />
+          <% if @options[:ligature] %>
+          <input class="ligature" type="text" readonly="readonly" onClick="this.select();" value="<%= value[:ligature].to_s %>" />
+          <% end %>
         </div>
       </div>
       <% end %>
