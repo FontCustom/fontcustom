@@ -19,7 +19,7 @@ module Fontcustom
   EXAMPLE_OPTIONS = {
     :output => "./FONT_NAME",
     :config => "./fontcustom.yml -or- ./config/fontcustom.yml",
-    :templates => "css preview"
+    :templates => %w|css preview|
   }
 
   DEFAULT_OPTIONS = {
