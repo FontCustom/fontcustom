@@ -30,8 +30,7 @@ gem install fontcustom
 
 # On Linux
 sudo apt-get install zlib1g-dev fontforge
-wget http://people.mozilla.com/~jkew/woff/woff-code-latest.zip
-unzip woff-code-latest.zip -d sfnt2woff && cd sfnt2woff && make && sudo mv sfnt2woff /usr/local/bin/
+git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
 git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
 gem install fontcustom
 ```
