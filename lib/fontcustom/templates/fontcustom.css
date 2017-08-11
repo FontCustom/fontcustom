@@ -11,4 +11,9 @@
 <%= glyph_properties %>
 }
 
+[data-icon],
+<%= glyph_container_selectors %> {
+<%= glyph_container_properties %>
+}
+
 <%= glyphs %>
