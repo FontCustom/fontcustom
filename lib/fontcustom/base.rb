@@ -13,6 +13,14 @@ module Fontcustom
       @manifest = Fontcustom::Manifest.new(manifest, @options)
     end
 
+    def which
+      if !Gem.win_platform?
+        "which"
+      else # on windows
+        "where"
+      end
+    end
+
     def compile
       current = checksum
       previous = @manifest.get(:checksum)[:previous]
@@ -31,18 +39,14 @@ module Fontcustom
     private
 
     def check_fontforge
-        if !Gem.win_platform?
-            fontforge = `which fontforge`
-        else
-            fontforge = `where fontforge`
-        end
+        fontforge = `#{which} fontforge`
       if fontforge == "" || fontforge == "fontforge not found"
         raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
       end
     end
 
     def check_woff2
-      woff2 = `which woff2_compress`
+      woff2 = `#{which} woff2_compress`
       if woff2 == "" || woff2 == "woff2_compress not found"
         fail Fontcustom::Error, "Please install woff2 first. Visit <https://github.com/google/woff2> for instructions."
       end
