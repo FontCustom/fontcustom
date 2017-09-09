@@ -17,6 +17,7 @@ before_install:
       export LINKXX="g++-4.8";
     fi
   - git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
+  - gem install bundler # https://github.com/travis-ci/travis-ci/issues/5239
   - bundle
 rvm:
   - 2.2.2
