@@ -42,9 +42,9 @@
 
 # OpenType file structure
 # http://www.microsoft.com/typography/otspec/otff.htm
-# 
+#
 # Types:
-# 
+#
 # BYTE            8-bit unsigned integer.
 # CHAR            8-bit signed integer.
 # USHORT          16-bit unsigned integer.
@@ -52,111 +52,111 @@
 # ULONG           32-bit unsigned integer.
 # Fixed           32-bit signed fixed-point number (16.16)
 # LONGDATETIME    Date represented in number of seconds since 12:00 midnight, January 1, 1904. The value is represented as a signed 64-bit integer.
-# 
+#
 # SFNT Header
-# 
+#
 # Fixed   sfnt version         // 0x00010000 for version 1.0.
 # USHORT  numTables            // Number of tables.
 # USHORT  searchRange          // (Maximum power of 2 <= numTables) x 16.
 # USHORT  entrySelector        // Log2(maximum power of 2 <= numTables).
 # USHORT  rangeShift           // NumTables x 16-searchRange.
-# 
+#
 # Table Directory
-# 
+#
 # ULONG   tag                  // 4-byte identifier.
 # ULONG   checkSum             // CheckSum for this table.
 # ULONG   offset               // Offset from beginning of TrueType font file.
 # ULONG   length               // Length of this table.
-# 
+#
 # OS/2 Table (Version 4)
-# 
+#
 # USHORT  version              // 0x0004
-# SHORT   xAvgCharWidth 
-# USHORT  usWeightClass    
-# USHORT  usWidthClass     
-# USHORT  fsType   
-# SHORT   ySubscriptXSize      
-# SHORT   ySubscriptYSize      
-# SHORT   ySubscriptXOffset    
-# SHORT   ySubscriptYOffset    
-# SHORT   ySuperscriptXSize    
-# SHORT   ySuperscriptYSize    
-# SHORT   ySuperscriptXOffset      
-# SHORT   ySuperscriptYOffset      
-# SHORT   yStrikeoutSize   
-# SHORT   yStrikeoutPosition   
-# SHORT   sFamilyClass     
-# BYTE    panose[10]   
+# SHORT   xAvgCharWidth
+# USHORT  usWeightClass
+# USHORT  usWidthClass
+# USHORT  fsType
+# SHORT   ySubscriptXSize
+# SHORT   ySubscriptYSize
+# SHORT   ySubscriptXOffset
+# SHORT   ySubscriptYOffset
+# SHORT   ySuperscriptXSize
+# SHORT   ySuperscriptYSize
+# SHORT   ySuperscriptXOffset
+# SHORT   ySuperscriptYOffset
+# SHORT   yStrikeoutSize
+# SHORT   yStrikeoutPosition
+# SHORT   sFamilyClass
+# BYTE    panose[10]
 # ULONG   ulUnicodeRange1      // Bits 0-31
 # ULONG   ulUnicodeRange2      // Bits 32-63
 # ULONG   ulUnicodeRange3      // Bits 64-95
 # ULONG   ulUnicodeRange4      // Bits 96-127
-# CHAR    achVendID[4]     
-# USHORT  fsSelection      
-# USHORT  usFirstCharIndex     
-# USHORT  usLastCharIndex      
-# SHORT   sTypoAscender    
-# SHORT   sTypoDescender   
-# SHORT   sTypoLineGap     
-# USHORT  usWinAscent      
-# USHORT  usWinDescent     
+# CHAR    achVendID[4]
+# USHORT  fsSelection
+# USHORT  usFirstCharIndex
+# USHORT  usLastCharIndex
+# SHORT   sTypoAscender
+# SHORT   sTypoDescender
+# SHORT   sTypoLineGap
+# USHORT  usWinAscent
+# USHORT  usWinDescent
 # ULONG   ulCodePageRange1      // Bits 0-31
 # ULONG   ulCodePageRange2      // Bits 32-63
-# SHORT   sxHeight     
-# SHORT   sCapHeight   
-# USHORT  usDefaultChar    
-# USHORT  usBreakChar      
-# USHORT  usMaxContext     
-# 
-# 
+# SHORT   sxHeight
+# SHORT   sCapHeight
+# USHORT  usDefaultChar
+# USHORT  usBreakChar
+# USHORT  usMaxContext
+#
+#
 # The Naming Table is organized as follows:
-# 
+#
 # [name table header]
 # [name records]
 # [string data]
-# 
+#
 # Name Table Header
-# 
+#
 # USHORT  format               // Format selector (=0).
 # USHORT  count                // Number of name records.
 # USHORT  stringOffset         // Offset to start of string storage (from start of table).
-# 
+#
 # Name Record
-# 
+#
 # USHORT  platformID           // Platform ID.
 # USHORT  encodingID           // Platform-specific encoding ID.
 # USHORT  languageID           // Language ID.
 # USHORT  nameID               // Name ID.
 # USHORT  length               // String length (in bytes).
 # USHORT  offset               // String offset from start of storage area (in bytes).
-# 
+#
 # head Table
-# 
+#
 # Fixed   tableVersion         // Table version number     0x00010000 for version 1.0.
 # Fixed   fontRevision         // Set by font manufacturer.
 # ULONG   checkSumAdjustment   // To compute: set it to 0, sum the entire font as ULONG, then store 0xB1B0AFBA - sum.
 # ULONG   magicNumber          // Set to 0x5F0F3CF5.
-# USHORT  flags   
+# USHORT  flags
 # USHORT  unitsPerEm           // Valid range is from 16 to 16384. This value should be a power of 2 for fonts that have TrueType outlines.
 # LONGDATETIME    created      // Number of seconds since 12:00 midnight, January 1, 1904. 64-bit integer
 # LONGDATETIME    modified     // Number of seconds since 12:00 midnight, January 1, 1904. 64-bit integer
 # SHORT   xMin                 // For all glyph bounding boxes.
-# SHORT   yMin    
-# SHORT   xMax    
-# SHORT   yMax    
+# SHORT   yMin
+# SHORT   xMax
+# SHORT   yMax
 # USHORT  macStyle
 # USHORT  lowestRecPPEM        // Smallest readable size in pixels.
 # SHORT   fontDirectionHint
 # SHORT   indexToLocFormat     // 0 for short offsets, 1 for long.
 # SHORT   glyphDataFormat      // 0 for current format.
-# 
-# 
-# 
+#
+#
+#
 # Embedded OpenType (EOT) file format
 # http://www.w3.org/Submission/EOT/
-# 
+#
 # EOT version 0x00020001
-# 
+#
 # An EOT font consists of a header with the original OpenType font
 # appended at the end.  Most of the data in the EOT header is simply a
 # copy of data from specific tables within the font data.  The exceptions
@@ -165,15 +165,15 @@
 # used.  A null root string implies the font data can be used anywhere.
 # The EOT header is in little-endian byte order but the font data remains
 # in big-endian order as specified by the OpenType spec.
-# 
+#
 # Overall structure:
-# 
+#
 #   [EOT header]
 #   [EOT name records]
 #   [font data]
-# 
+#
 # EOT header
-# 
+#
 # ULONG   eotSize              // Total structure length in bytes (including string and font data)
 # ULONG   fontDataSize         // Length of the OpenType font (FontData) in bytes
 # ULONG   version              // Version number of this format - 0x00020001
@@ -193,32 +193,33 @@
 # ULONG   checkSumAdjustment   // head Table CheckSumAdjustment
 # ULONG   reserved[4]          // Reserved - must be 0
 # USHORT  padding1             // Padding - must be 0
-# 
+#
 # EOT name records
-# 
+#
 # USHORT  FamilyNameSize       // Font family name size in bytes
 # BYTE    FamilyName[FamilyNameSize] // Font family name (name ID = 1), little-endian UTF-16
 # USHORT  Padding2             // Padding - must be 0
-# 
+#
 # USHORT  StyleNameSize        // Style name size in bytes
 # BYTE    StyleName[StyleNameSize]  // Style name (name ID = 2), little-endian UTF-16
 # USHORT  Padding3             // Padding - must be 0
-# 
+#
 # USHORT  VersionNameSize      // Version name size in bytes
 # bytes   VersionName[VersionNameSize]  // Version name (name ID = 5), little-endian UTF-16
 # USHORT  Padding4             // Padding - must be 0
-# 
+#
 # USHORT  FullNameSize         // Full name size in bytes
 # BYTE    FullName[FullNameSize]  // Full name (name ID = 4), little-endian UTF-16
 # USHORT  Padding5             // Padding - must be 0
-# 
+#
 # USHORT  RootStringSize       // Root string size in bytes
 # BYTE    RootString[RootStringSize]  // Root string, little-endian UTF-16
 
 
 
-import optparse
+import os
 import struct
+import sys
 
 class FontError(Exception):
     """Error related to font handling"""
@@ -240,28 +241,28 @@ class EOT:
     EOT_VERSION_NAME_INDEX = 2
     EOT_FULL_NAME_INDEX = 3
     EOT_NUM_NAMES = 4
-    
+
     EOT_HEADER_PACK = '<4L10B2BL2H7L18x'
 
 class OpenType:
     SFNT_CFF = multichar('OTTO')            # Postscript CFF SFNT version
     SFNT_TRUE = 0x10000                     # Standard TrueType version
     SFNT_APPLE = multichar('true')          # Apple TrueType version
-    
+
     SFNT_UNPACK = '>I4H'
     TABLE_DIR_UNPACK = '>4I'
-    
+
     TABLE_HEAD = multichar('head')          # TrueType table tags
     TABLE_NAME = multichar('name')
     TABLE_OS2 = multichar('OS/2')
     TABLE_GLYF = multichar('glyf')
     TABLE_CFF = multichar('CFF ')
-    
+
     OS2_FSSELECTION_ITALIC = 0x1
     OS2_UNPACK = '>4xH2xH22x10B4L4xH14x2L'
-    
+
     HEAD_UNPACK = '>8xL'
-    
+
     NAME_RECORD_UNPACK = '>6H'
     NAME_ID_FAMILY = 1
     NAME_ID_STYLE = 2
@@ -275,14 +276,12 @@ class OpenType:
     LANG_ID_MICROSOFT_EN_US = 0x0409         # with Microsoft platformID EN US lang code
 
 def eotname(ttf):
-    i = ttf.rfind('.')
-    if i != -1:
-        ttf = ttf[:i]
-    return ttf + '.eotlite'
+    name, ext = os.path.splitext(ttf)
+    return name + '.eotlite'
 
 def readfont(f):
-    data = open(f, 'rb').read()
-    return data
+    with open(f, 'rb') as fp:
+        return fp.read()
 
 def get_table_directory(data):
     """read the SFNT header and table directory"""
@@ -293,11 +292,11 @@ def get_table_directory(data):
     sfntvers, numTables = struct.unpack(OpenType.SFNT_UNPACK, data[:sfntsize])[:2]
     if sfntvers != OpenType.SFNT_CFF and sfntvers != OpenType.SFNT_TRUE:
         raise FontError('invalid font type')
-    
+
     font = {}
     font['version'] = sfntvers
     font['numTables'] = numTables
-    
+
     # create set of offsets, lengths for tables
     table_dir_size = struct.calcsize(OpenType.TABLE_DIR_UNPACK)
     if sfntsize + table_dir_size * numTables > datalen:
@@ -308,9 +307,9 @@ def get_table_directory(data):
         end = start + table_dir_size
         tag, check, bongo, dirlen = struct.unpack(OpenType.TABLE_DIR_UNPACK, data[start:end])
         table_dir[tag] = {'offset': bongo, 'length': dirlen, 'checksum': check}
-    
+
     font['tableDir'] = table_dir
-    
+
     return font
 
 def get_name_records(nametable):
@@ -324,7 +323,7 @@ def get_name_records(nametable):
         raise FontError('names exceed size of name table')
     name['count'] = count
     name['strOffset'] = strOffset
-    
+
     # read through the name records
     namerecs = {}
     for i in range(0, count):
@@ -336,7 +335,7 @@ def get_name_records(nametable):
            languageID != OpenType.LANG_ID_MICROSOFT_EN_US:
             continue
         namerecs[nameID] = {'offset': offset, 'length': namelen}
-        
+
     name['namerecords'] = namerecs
     return name
 
@@ -347,7 +346,7 @@ def make_eot_name_headers(fontdata, nameTableDir):
     name = get_name_records(fontdata[nameoffset : nameoffset + namelen])
     namestroffset = name['strOffset']
     namerecs = name['namerecords']
-    
+
     eotnames = (OpenType.NAME_ID_FAMILY, OpenType.NAME_ID_STYLE, OpenType.NAME_ID_VERSION, OpenType.NAME_ID_FULL)
     nameheaders = []
     for nameid in eotnames:
@@ -362,7 +361,7 @@ def make_eot_name_headers(fontdata, nameTableDir):
             nameheaders.append(struct.pack('<H' + nformat + '2x', nlen, *nstr))
         else:
             nameheaders.append(struct.pack('4x'))  # len = 0, padding = 0
-    
+
     return b''.join(nameheaders)
 
 # just return a null-string (len = 0)
@@ -373,94 +372,93 @@ def make_eot_header(fontdata):
     """given ttf font data produce an EOT header"""
     fontDataSize = len(fontdata)
     font = get_table_directory(fontdata)
-    
+
     # toss out .otf fonts, t2embed library doesn't support these
     tableDir = font['tableDir']
-    
+
     # check for required tables
     required = (OpenType.TABLE_HEAD, OpenType.TABLE_NAME, OpenType.TABLE_OS2)
     for table in required:
         if not (table in tableDir):
             raise FontError('missing required table ' + multicharval(table))
-            
+
     # read name strings
-    
+
     # pull out data from individual tables to construct fixed header portion
     # need to calculate eotSize before packing
     version = EOT.EOT_VERSION
     flags = 0
     charset = EOT.EOT_DEFAULT_CHARSET
     magicNumber = EOT.EOT_MAGIC_NUMBER
-    
+
     # read values from OS/2 table
     os2Dir = tableDir[OpenType.TABLE_OS2]
     os2offset = os2Dir['offset']
     os2size = struct.calcsize(OpenType.OS2_UNPACK)
-    
+
     if os2size > os2Dir['length']:
         raise FontError('OS/2 table invalid length')
-    
+
     os2fields = struct.unpack(OpenType.OS2_UNPACK, fontdata[os2offset : os2offset + os2size])
-    
+
     panose = []
     urange = []
     codepage = []
-    
+
     weight, fsType = os2fields[:2]
     panose[:10] = os2fields[2:12]
     urange[:4] = os2fields[12:16]
     fsSelection = os2fields[16]
     codepage[:2] = os2fields[17:19]
-    
+
     italic = fsSelection & OpenType.OS2_FSSELECTION_ITALIC
-    
+
     # read in values from head table
     headDir = tableDir[OpenType.TABLE_HEAD]
     headoffset = headDir['offset']
     headsize = struct.calcsize(OpenType.HEAD_UNPACK)
-    
+
     if headsize > headDir['length']:
         raise FontError('head table invalid length')
-        
+
     headfields = struct.unpack(OpenType.HEAD_UNPACK, fontdata[headoffset : headoffset + headsize])
     checkSumAdjustment = headfields[0]
-    
+
     # make name headers
     nameheaders = make_eot_name_headers(fontdata, tableDir[OpenType.TABLE_NAME])
     rootstring = make_root_string()
-    
+
     # calculate the total eot size
     eotSize = struct.calcsize(EOT.EOT_HEADER_PACK) + len(nameheaders) + len(rootstring) + fontDataSize
     fixed = struct.pack(EOT.EOT_HEADER_PACK,
                         *([eotSize, fontDataSize, version, flags] + panose + [charset, italic] +
                           [weight, fsType, magicNumber] + urange + codepage + [checkSumAdjustment]))
-    
+
     return b''.join((fixed, nameheaders, rootstring))
- 
-    
+
 def write_eot_font(eot, header, data):
-    open(eot,'wb').write(b''.join((header, data)))
-    return
+    with open(eot, 'wb') as fp:
+        fp.write(b''.join((header, data)))
+
+def ttf_to_eot(ttf, output):
+    data = readfont(ttf)
+    if len(data) == 0:
+        print('Error reading %s' % ttf)
+    else:
+        header = make_eot_header(data)
+        write_eot_font(output, header, data)
 
 def main():
-
-    # deal with options
-    p = optparse.OptionParser()
-    p.add_option('--output', '-o', default="world")
-    options, args = p.parse_args()
-    
+    if len(sys.argv) < 2:
+        print('Usage: %s input.ttf [inputs.ttf...]' % sys.argv[0])
+        return
     # iterate over font files
-    for f in args:
-        data = readfont(f)
-        if len(data) == 0:
-            print('Error reading %s' % f)
-        else:
-            eot = eotname(f)
-            header = make_eot_header(data)
-            write_eot_font(eot, header, data)
-        
+    for f in sys.argv[1:]:
+        output = eotname(f)
+        ttf_to_eot(f, output)
+
 
 if __name__ == '__main__':
     main()
-    
-    
+
+

@@ -34,6 +34,7 @@ git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && 
 git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
 gem install fontcustom
 ```
+
 ####Note for windows:
 
 1. Install fontforge:  http://fontforge.github.io/en-US/downloads/windows/

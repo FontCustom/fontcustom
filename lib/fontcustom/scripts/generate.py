@@ -3,6 +3,9 @@ import os
 import subprocess
 import tempfile
 import json
+import sys
+
+from eotlitetool import ttf_to_eot
 
 #
 # Manifest / Options
@@ -113,29 +116,24 @@ try:
     # Convert WOFF
     scriptPath = os.path.dirname(os.path.realpath(__file__))
     try:
-        # check if on windows
-        if os.name == 'nt':
-            subprocess.Popen([scriptPath + '/sfnt2woff.exe', fontfile + '.ttf'], stdout=subprocess.PIPE)
-        else:
-            subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+        # Attempt to use the bundled sfnt2woff
+        # Windows: For absolute paths, the executable requires '.exe'
+        exe = '.exe' if os.name == 'nt' else ''
+        proc = os.path.join(scriptPath, 'sfnt2woff' + exe)
+        subprocess.check_call([proc, fontfile + '.ttf'])
     except OSError:
         # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
         # global version. This allows us to avoid forcing OS X users to compile
         # sfnt2woff from source, simplifying install.
-        subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+        subprocess.check_call(['sfnt2woff', fontfile + '.ttf'])
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
-    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-    # check if windows
-    if os.name == 'nt':
-        subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
-    else:
-        subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    ttf_to_eot(fontfile + '.ttf', fontfile + '.eot')
     manifest['fonts'].append(fontfile + '.eot')
 
     # Convert TTF to WOFF2
-    subprocess.call('woff2_compress \'' + fontfile + '.ttf\'', shell=True)
+    subprocess.check_call(['woff2_compress', fontfile + '.ttf'])
     manifest['fonts'].append(fontfile + '.woff2')
 
 finally:
