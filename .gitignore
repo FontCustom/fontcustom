@@ -19,3 +19,4 @@ spec/fixtures/sandbox/*
 spec/fixtures/.fontcustom-manifest.json
 .DS_Store
 .ruby-version
+__pycache__
