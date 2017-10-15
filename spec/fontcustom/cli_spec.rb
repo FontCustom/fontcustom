@@ -38,9 +38,11 @@ describe Fontcustom::CLI do
 
           generated_css = File.read Dir.glob(File.join(testdir, "fontcustom", "*.css")).first
           expect(generated_css.scan('"').count).to be 0
+          expect(generated_css.scan("'").count).to be > 0
 
           generated_scss = File.read Dir.glob(File.join(testdir, "fontcustom", "*.scss")).first
           expect(generated_scss.scan('"').count).to be 0
+          expect(generated_css.scan("'").count).to be > 0
         end
       end
     end
