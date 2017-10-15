@@ -33,6 +33,8 @@
 # Copyright information.
 #copyright: 
 
+# Use single quotes in generated CSS and SCSS templates (default false)
+# single_quotes: true
 
 # -----------------------------------------------------------------------------
 # Input / Output Locations

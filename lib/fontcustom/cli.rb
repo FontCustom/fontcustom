@@ -55,6 +55,9 @@ module Fontcustom
     class_option :css3, :type => :boolean,
       :desc => "Use CSS3 Pseudo Elements"
 
+    class_option :single_quotes, :aliases => %w|--signle-quotes -Q|, :type => :boolean,
+      :desc => "Use single quotes in generated CSS and SCSS templates"
+
     class_option :no_hash, :aliases => "-h", :type => :boolean,
       :desc => "Generate fonts without asset-busting hashes."
 
