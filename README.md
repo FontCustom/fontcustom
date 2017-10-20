@@ -29,8 +29,11 @@ brew install eot-utils
 gem install fontcustom
 
 # On Linux
+# Ensure you have a newer version of FontForge (>=2017), some distros may still ship with older versions!
+# They could also not having fontforge compiled with python
+# see http://fontforge.github.io/en-US/downloads/gnulinux-dl/ for an alternate install methods of fontforge if needed
 sudo apt-get install zlib1g-dev fontforge
-git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
+git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && sudo mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
 git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
 gem install fontcustom
 ```
