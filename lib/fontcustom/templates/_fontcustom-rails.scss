@@ -12,3 +12,6 @@
 }
 
 <%= glyphs %>
+<% @glyphs.each do |name, value| %>
+$font-<%= font_name.gsub(/[^\w\d_]/, '-') %>-<%= name.to_s %>: "\<%= value[:codepoint].to_s(16) %>";<% end %>
+                                                                                                     
