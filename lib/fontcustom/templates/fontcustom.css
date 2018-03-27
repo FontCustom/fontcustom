@@ -4,9 +4,6 @@
 
 <%= font_face %>
 
-[data-icon]<%= pseudo_element %> { content: attr(data-icon); }
-
-[data-icon]<%= pseudo_element %>,
 <%= glyph_selectors %> {
 <%= glyph_properties %>
 }
