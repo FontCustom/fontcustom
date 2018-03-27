@@ -4,9 +4,7 @@
 
 <%= font_face(url: "font-url", path: @font_path_alt) %>
 
-[data-icon]<%= pseudo_element %> { content: attr(data-icon); }
 
-[data-icon]<%= pseudo_element %>,
 <%= glyph_selectors %> {
 <%= glyph_properties %>
 }
