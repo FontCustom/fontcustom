@@ -185,7 +185,7 @@ module Fontcustom
       end
 
       def woff_base64
-        woff_path = File.join(@options[:output][:fonts], "#{@font_path}.woff")
+        woff_path = File.join(@options[:output][:css], "#{@font_path}.woff")
         Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
       end
 
