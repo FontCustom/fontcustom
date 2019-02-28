@@ -3,6 +3,10 @@ import os
 import subprocess
 import tempfile
 import json
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 #
 # Manifest / Options
