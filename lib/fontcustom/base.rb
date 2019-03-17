@@ -31,20 +31,21 @@ module Fontcustom
     private
 
     def check_fontforge
-        if !Gem.win_platform?
-            fontforge = `which fontforge`
-        else
-            fontforge = `where fontforge`
-        end
-      if fontforge == "" || fontforge == "fontforge not found"
-        raise Fontcustom::Error, "Please install fontforge first. Visit <http://fontcustom.com> for instructions."
-      end
+      require_dependency("fontforge", "Please install fontforge first. Visit <http://fontcustom.com> for instructions.")
     end
 
     def check_woff2
-      woff2 = `which woff2_compress`
-      if woff2 == "" || woff2 == "woff2_compress not found"
-        fail Fontcustom::Error, "Please install woff2 first. Visit <https://github.com/google/woff2> for instructions."
+      require_dependency("woff2_compress", "Please install woff2 first. Visit <https://github.com/google/woff2> for instructions.")
+    end
+
+    def require_dependency(executable, instructions)
+      if Gem.win_platform?
+        path = %x`where #{executable}`
+      else # assume unix
+        path = %x`which #{executable}`
+      end
+      if path == "" || path == "$executable not found"
+        raise Fontcustom::Error, instructions
       end
     end
 
