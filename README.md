@@ -16,10 +16,10 @@ from a collection of SVGs
 
 ### Installation
 
-Requires **Ruby 1.9.3+**, **WOFF2**, **FontForge** with Python scripting.
+Requires **Ruby 1.9.3+**, **WOFF2**, **FontForge** with **Python** scripting.
 
+#### Mac
 ```sh
-# On Mac
 brew tap bramstein/webfonttools
 brew update
 brew install woff2
@@ -27,22 +27,37 @@ brew install woff2
 brew install fontforge --with-python
 brew install eot-utils
 gem install fontcustom
+```
 
-# On Linux
+#### Linux
+```sh
 sudo apt-get install zlib1g-dev fontforge
 git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
 git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
 gem install fontcustom
 ```
-####Note for windows:
 
-1. Install fontforge:  http://fontforge.github.io/en-US/downloads/windows/
--  Install to a path without spaces, eg c:\FontForgeBuilds
--  At the end of the installer check the 'run fontforge' box. It finishes some set up.
-2. Add the installation path to your System PATH variable (c:\FontForgeBuilds\bin)
-3. Open up a new command prompt and test it. `fontforge -help`
-4. gem install fontcustom
+#### Windows
 
+1. Install Ruby: https://rubyinstaller.org/downloads/
+  - `+Devkit` version recommended for included MinGW/msys
+1. Install Python: https://www.python.org/downloads/windows/
+1. Install FontForge:  http://fontforge.github.io/en-US/downloads/windows/
+  - Install to a path without spaces (e.g. `c:\dev\fontforge`)
+  - At the end of the installer check the 'run fontforge' box. It finishes some set up.
+  - Add the installation path's `bin` folder to your System `PATH` variable (`c:\dev\fontforge\bin`)
+  - Open up a new command prompt and test it: `fontforge -help`
+1. Install WOFF2: currently there are no published Windows binaries
+  - Create a folder for WOFF2 (e.g. `c:\dev\woff2`)
+  - in that folder: `git clone --recursive https://github.com/google/woff2.git .`
+  - using MinGW or MSYS2 bash (your Ruby installation may contain a `msys64` folder):
+    ```sh
+    cd /c/dev/woff2
+    LFLAGS="--static -s" make clean all
+    ```
+  - Add the WOFF2 folder to your System `PATH` variable
+  - Open up a new command prompt and test it: `woff2_compress`
+1. `gem install fontcustom`
 
 ### Quick Start
 
