@@ -1,5 +1,6 @@
 import fontforge
 import os
+import shutil
 import subprocess
 import tempfile
 import json
@@ -126,16 +127,12 @@ try:
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
-    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
-    # check if windows
-    if os.name == 'nt':
-        subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
-    else:
-        subprocess.call('mv ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
+    subprocess.call(['python', scriptPath + '/eotlitetool.py', fontfile + '.ttf', '-o', fontfile + '.eot'])
+    shutil.move(fontfile + '.eotlite', fontfile + '.eot')
     manifest['fonts'].append(fontfile + '.eot')
 
     # Convert TTF to WOFF2
-    subprocess.call('woff2_compress \'' + fontfile + '.ttf\'', shell=True)
+    subprocess.call(['woff2_compress', fontfile + '.ttf'])
     manifest['fonts'].append(fontfile + '.woff2')
 
 finally:
