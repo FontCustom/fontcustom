@@ -23,6 +23,7 @@ Requires **Ruby 1.9.3+**, **WOFF2**, **FontForge** with Python scripting.
 brew tap bramstein/webfonttools
 brew update
 brew install woff2
+brew install sfnt2woff
 
 brew install fontforge --with-python
 brew install eot-utils
