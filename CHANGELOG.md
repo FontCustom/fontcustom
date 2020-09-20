@@ -1,3 +1,7 @@
+## 2.1.0 (9/20/2020)
+
+* Minimum JSON version bumped to 2.0.0
+
 ## 2.0.0 (6/14/2017)
 
 * Adds support for Woff2 ([#313](https://github.com/FontCustom/fontcustom/pull/313))
