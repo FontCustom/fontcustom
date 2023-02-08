@@ -126,7 +126,12 @@ try:
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
-    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
+    command_args = scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot'
+    process = subprocess.run('python ' + command_args, shell=True)
+    # Catch command not found error for python vs python3
+    if process.returncode == 127:
+        subprocess.run('python3 ' + command_args, shell=True, check=True)
+
     # check if windows
     if os.name == 'nt':
         subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)
