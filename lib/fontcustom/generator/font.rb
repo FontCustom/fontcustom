@@ -38,24 +38,38 @@ module Fontcustom
 
       def set_glyph_info
         manifest_glyphs = @manifest.get :glyphs
-        codepoint = if ! manifest_glyphs.empty?
+        codepoint, glyphs = if ! manifest_glyphs.empty?
           codepoints = manifest_glyphs.values.map { |data| data[:codepoint] }
-          codepoints.max + 1
+          codepoint = codepoints.max + 1
+
+          glyphs = {}
+          basename = @options[:input][:vectors]
+          manifest_glyphs.each do |name, glyph|
+            source = glyph[:source]
+            file = if ! source.empty?
+               source
+            else
+              "#{basename}/#{name}.svg"
+            end
+            glyphs[name.to_sym] = { :source => file }
+          end
+
+          [ codepoint, glyphs ]
         else
+          glyphs = {}
+          files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+          files.each do |file|
+            name = File.basename file, ".svg"
+            name = name.strip.gsub(/\W/, "-")
+            glyphs[name.to_sym] = { :source => file }
+            if File.read(file).include? "rgba"
+              say_message :warn, "`#{file}` contains transparency and will be skipped."
+            end
+          end
+
           # Offset to work around Chrome Windows bug
           # https://github.com/FontCustom/fontcustom/issues/1
-          0xf100
-        end
-
-        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
-        glyphs = {}
-        files.each do |file|
-          name = File.basename file, ".svg"
-          name = name.strip.gsub(/\W/, "-")
-          glyphs[name.to_sym] = { :source => file }
-          if File.read(file).include? "rgba"
-            say_message :warn, "`#{file}` contains transparency and will be skipped."
-          end
+          [ 0xf100, glyphs ]
         end
 
         # Dir.glob returns a different order depending on ruby
