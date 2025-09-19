@@ -30,11 +30,11 @@ gem install fontcustom
 
 # On Linux
 sudo apt-get install zlib1g-dev fontforge
-git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
+git clone https://github.com/bramstein/sfnt2woff-zopfli.git sfnt2woff-zopfli && cd sfnt2woff-zopfli && make && sudo mv sfnt2woff-zopfli /usr/local/bin/sfnt2woff
 git clone --recursive https://github.com/google/woff2.git && cd woff2 && make clean all && sudo mv woff2_compress /usr/local/bin/ && sudo mv woff2_decompress /usr/local/bin/
-gem install fontcustom
+sudo apt install ruby-dev && gem install fontcustom
 ```
-####Note for windows:
+#### Note for windows:
 
 1. Install fontforge:  http://fontforge.github.io/en-US/downloads/windows/
 -  Install to a path without spaces, eg c:\FontForgeBuilds
