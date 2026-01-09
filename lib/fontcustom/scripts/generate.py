@@ -1,6 +1,7 @@
 import fontforge
 import os
 import subprocess
+import sys
 import tempfile
 import json
 
@@ -115,9 +116,9 @@ try:
     try:
         # check if on windows
         if os.name == 'nt':
-            subprocess.Popen([scriptPath + '/sfnt2woff.exe', fontfile + '.ttf'], stdout=subprocess.PIPE)
+            subprocess.Popen([scriptPath + '/sfnt2woff.exe', fontfile + '.ttf'], stdout=subprocess.PIPE).wait()
         else:
-            subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE)
+            subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE).wait()
     except OSError:
         # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
         # global version. This allows us to avoid forcing OS X users to compile
@@ -126,7 +127,8 @@ try:
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
-    subprocess.call('python ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
+    python_cmd = sys.executable
+    subprocess.call(python_cmd + ' ' + scriptPath + '/eotlitetool.py ' + fontfile + '.ttf -o ' + fontfile + '.eot', shell=True)
     # check if windows
     if os.name == 'nt':
         subprocess.call('move ' + fontfile + '.eotlite ' + fontfile + '.eot', shell=True)

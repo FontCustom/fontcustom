@@ -16,16 +16,12 @@ from a collection of SVGs
 
 ### Installation
 
-Requires **Ruby 1.9.3+**, **WOFF2**, **FontForge** with Python scripting.
+Requires **Ruby 2.6+**, **WOFF2**, **FontForge** with Python scripting.
 
 ```sh
 # On Mac
 brew tap bramstein/webfonttools
-brew update
-brew install woff2
-
-brew install fontforge --with-python
-brew install eot-utils
+brew install woff2 sfnt2woff fontforge eot-utils
 gem install fontcustom
 
 # On Linux
