@@ -1,6 +1,15 @@
-[![Gem Version](https://badge.fury.io/rb/fontcustom.png)](http://badge.fury.io/rb/fontcustom)
-[![Build Status](https://api.travis-ci.org/FontCustom/fontcustom.png)](https://travis-ci.org/FontCustom/fontcustom)
-[![Code Quality](https://codeclimate.com/github/FontCustom/fontcustom.png)](https://codeclimate.com/github/FontCustom/fontcustom) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=32953)](https://www.bountysource.com/trackers/32953-endtwist-fontcustom?utm_source=32953&utm_medium=shield&utm_campaign=TRACKER_BADGE)
+> [!WARNING]
+> This project is over a decade old. It has served its purpose well, but modern browser SVG support makes icon fonts largely unncessary. It remains available for existing users but is no longer actively maintained.
+>
+> **Alternatives:**
+> - Inline SVG or SVG sprites with `<use>` elements
+> - [Font Awesome](https://fontawesome.com/)
+> - [Heroicons](https://heroicons.com/)
+> - [Lucide](https://lucide.dev/)
+> - [Feather Icons](https://feathericons.com/)
+> - [Material Symbols](https://fonts.google.com/icons)
+
+---
 
 ## Font Custom
 
