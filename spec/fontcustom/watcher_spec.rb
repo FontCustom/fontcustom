@@ -21,8 +21,8 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
 
       w = watcher(
-        :input => "shared/vectors",
-        :output => "output"
+        :input => fixture("shared/vectors"),
+        :output => fixture("output")
       )
 
       # silence output
@@ -36,8 +36,8 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to_not receive(:compile).once
 
       w = watcher(
-        :input => "shared/vectors",
-        :output => "output",
+        :input => fixture("shared/vectors"),
+        :output => fixture("output"),
         :skip_first => true
       )
 
@@ -51,8 +51,8 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to receive(:compile).once
 
       w = watcher(
-        :input => "shared/vectors",
-        :output => "output",
+        :input => fixture("shared/vectors"),
+        :output => fixture("output"),
         :skip_first => true
       )
 
@@ -73,9 +73,9 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to receive(:compile)
 
       w = watcher(
-        :input => {:vectors => "shared/vectors", :templates => "shared/templates"},
+        :input => {:vectors => fixture("shared/vectors"), :templates => fixture("shared/templates")},
         :templates => %w|css preview custom.css|,
-        :output => "output",
+        :output => fixture("output"),
         :skip_first => false
       )
 
@@ -101,8 +101,8 @@ describe Fontcustom::Watcher do
       expect_any_instance_of(Fontcustom::Base).to_not receive(:compile).once
 
       w = watcher(
-        :input => "shared/vectors",
-        :output => "output",
+        :input => fixture("shared/vectors"),
+        :output => fixture("output"),
         :skip_first => true
       )
 

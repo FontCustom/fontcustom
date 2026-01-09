@@ -1,3 +1,10 @@
+## 3.0.0 (1/9/2026)
+
+* Minimum Ruby version bumped to 2.6
+* Updated dependencies: thor ~> 1.0, listen ~> 3.0, rake ~> 13.0, rspec ~> 3.0
+* Removed json dependency (now part of Ruby stdlib)
+* Fixed Python script to use `sys.executable` for correct interpreter path
+
 ## 2.0.0 (6/14/2017)
 
 * Adds support for Woff2 ([#313](https://github.com/FontCustom/fontcustom/pull/313))

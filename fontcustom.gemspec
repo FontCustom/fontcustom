@@ -17,12 +17,13 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+  gem.required_ruby_version = ">= 2.6"
 
-  gem.add_dependency "json", "~>1.4"
-  gem.add_dependency "thor", "~>0.14"
-  gem.add_dependency "listen", ">=1.0","<4.0"
+  gem.add_dependency "thor", "~> 1.0"
+  gem.add_dependency "listen", "~> 3.0"
+  gem.add_dependency "ffi", "~> 1.15.0"
 
-  gem.add_development_dependency "rake", "~> 10"
+  gem.add_development_dependency "rake", "~> 13.0"
   gem.add_development_dependency "bundler"
-  gem.add_development_dependency "rspec", "~>3.1.0"
+  gem.add_development_dependency "rspec", "~> 3.0"
 end
