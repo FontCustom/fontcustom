@@ -97,3 +97,6 @@
 
 # Horizontally fit glyphs to their individual vector widths.
 #autowidth: false
+
+# Activate ligature mode.
+#ligature: false

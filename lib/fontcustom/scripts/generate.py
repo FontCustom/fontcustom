@@ -48,6 +48,22 @@ if options['autowidth']:
 # Glyphs
 #
 
+NUMBER_GLYPH_NAMES = {
+        "0": "zero",
+        "1": "one",
+        "2": "two",
+        "3": "three",
+        "4": "four",
+        "5": "five",
+        "6": "six",
+        "7": "seven",
+        "8": "eight",
+        "9": "nine"
+}
+
+def resolveGlyphName( c ):
+    return NUMBER_GLYPH_NAMES[c] if c in NUMBER_GLYPH_NAMES else c
+
 def removeSwitchFromSvg( file ):
     svgfile = open(file, 'r')
     svgtext = svgfile.read()
@@ -60,30 +76,57 @@ def removeSwitchFromSvg( file ):
 
     return tmpsvgfile.name
 
+def setGlyphWidth( glyph ):
+    if options['autowidth']:
+        glyph.left_side_bearing = glyph.right_side_bearing = 0
+        glyph.round()
+    else:
+        glyph.width = options['font_em']
+        width = glyph.width - glyph.left_side_bearing - glyph.right_side_bearing
+        aligned_to_pixel_grid = (width % design_px == 0)
+        if (aligned_to_pixel_grid):
+            shift = glyph.left_side_bearing % design_px
+            glyph.left_side_bearing = glyph.left_side_bearing - shift
+            glyph.right_side_bearing = glyph.right_side_bearing + shift
+
+def createEmptyGlyph(code):
+    glyph = font.createChar(ord(code), resolveGlyphName(code))
+    pen = glyph.glyphPen()
+    pen.moveTo(0, 0)
+    pen = None
+
 def createGlyph( name, source, code ):
     frag, ext = os.path.splitext(source)
 
     if ext == '.svg':
         temp = removeSwitchFromSvg(source)
-        glyph = font.createChar(code, name)
+        if options['ligature']:
+            glyph = font.createChar(code, str(name))
+        else:
+            glyph = font.createChar(code)
         glyph.importOutlines(temp)
         os.unlink(temp)
 
-        if options['autowidth']:
-            glyph.left_side_bearing = glyph.right_side_bearing = 0
-            glyph.round()
-        else:
-            glyph.width = options['font_em']
-            width = glyph.width - glyph.left_side_bearing - glyph.right_side_bearing
-            aligned_to_pixel_grid = (width % design_px == 0)
-            if (aligned_to_pixel_grid):
-                shift = glyph.left_side_bearing % design_px
-                glyph.left_side_bearing = glyph.left_side_bearing - shift
-                glyph.right_side_bearing = glyph.right_side_bearing + shift
+        setGlyphWidth(glyph)
+
+        if options['ligature']:
+            liganame = str(data['ligature'])
+            chars = []
+            for char in liganame:
+                createEmptyGlyph(char)
+                charName = resolveGlyphName(char)
+                chars.append(charName)
+            liga = tuple(chars)
+            print liga
+            glyph.addPosSub('liga', liga)
 
 # Add valid space glyph to avoid "unknown character" box on IE11
 glyph = font.createChar(32)
 glyph.width = 200
+
+if options['ligature']:
+    font.addLookup('liga', 'gsub_ligature', (), (('liga', (('latn', ('dflt')), )), ))
+    font.addLookupSubtable('liga', 'liga')
 
 for glyph, data in manifest['glyphs'].items():
     name = createGlyph(glyph, data['source'], data['codepoint'])
@@ -92,14 +135,20 @@ for glyph, data in manifest['glyphs'].items():
 # Generate Files
 #
 
+def generateFont( filename ):
+    if options['ligature']:
+        font.generate(filename, flags=('opentype'))
+    else:
+        font.generate(filename)
+
 try:
     fontfile = options['output']['fonts'] + '/' + options['font_name']
     if not options['no_hash']:
         fontfile += '_' + manifest['checksum']['current'][:32]
 
     # Generate TTF and SVG
-    font.generate(fontfile + '.ttf')
-    font.generate(fontfile + '.svg')
+    generateFont(fontfile + '.ttf')
+    generateFont(fontfile + '.svg')
     manifest['fonts'].append(fontfile + '.ttf')
     manifest['fonts'].append(fontfile + '.svg')
 
