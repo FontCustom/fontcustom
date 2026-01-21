@@ -121,9 +121,12 @@ try:
             subprocess.Popen([scriptPath + '/sfnt2woff', fontfile + '.ttf'], stdout=subprocess.PIPE).wait()
     except OSError:
         # If the local version of sfnt2woff fails (i.e., on Linux), try to use the
-        # global version. This allows us to avoid forcing OS X users to compile
-        # sfnt2woff from source, simplifying install.
-        subprocess.call(['sfnt2woff', fontfile + '.ttf'])
+        # global version of sfnt2woff or sfnt2woff-zopfli. This allows us to avoid
+        # forcing OS X users to compile sfnt2woff from source, simplifying install.
+        try:
+            subprocess.call(['sfnt2woff-zopfli', fontfile + '.ttf'])
+        except OSError:
+            subprocess.call(['sfnt2woff', fontfile + '.ttf'])
     manifest['fonts'].append(fontfile + '.woff')
 
     # Convert EOT for IE7
