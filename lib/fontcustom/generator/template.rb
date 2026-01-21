@@ -189,11 +189,22 @@ module Fontcustom
         Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
       end
 
+      def glyph_container_selectors
+        output = @glyphs.map do |name, value|
+          @options[:css_selector].sub("{{glyph}}", name.to_s)
+        end
+        output.join ",\n"
+      end
+
       def glyph_selectors
         output = @glyphs.map do |name, value|
           @options[:css_selector].sub("{{glyph}}", name.to_s) + @pseudo_element
         end
         output.join ",\n"
+      end
+
+      def glyph_container_properties
+%Q|  line-height: 1;|
       end
 
       def glyph_properties
