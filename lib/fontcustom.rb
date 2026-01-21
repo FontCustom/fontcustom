@@ -37,6 +37,7 @@ module Fontcustom
     :autowidth => false,
     :no_hash => false,
     :css3 => false,
+    :single_quotes => false,
     :debug => false,
     :force => false,
     :quiet => false,
