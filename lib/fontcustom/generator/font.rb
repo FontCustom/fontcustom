@@ -47,10 +47,10 @@ module Fontcustom
           0xf100
         end
 
-        files = Dir.glob File.join(@options[:input][:vectors], "*.svg")
+        files = Dir.glob File.join(@options[:input][:vectors], "**/*.svg")
         glyphs = {}
         files.each do |file|
-          name = File.basename file, ".svg"
+          name = file.sub(/^#{@options[:input][:vectors]}\/?/, '').sub(/\.svg$/, '')
           name = name.strip.gsub(/\W/, "-")
           glyphs[name.to_sym] = { :source => file }
           if File.read(file).include? "rgba"
