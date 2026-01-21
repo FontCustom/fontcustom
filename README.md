@@ -91,7 +91,7 @@ Add `gem 'fontcustom'` to your gem file.
 ```
 bundle
 ```
-Create a `fontcustom.yml` file with something like this:
+Create a `fontcustom.yml` file with something like this: 
 ```yml
 # config/fontcustom.yml
 
@@ -153,8 +153,7 @@ For example, if you added a file called 'cars54' icon would look something like 
 ```html
 <i class="icon-cars54"</i>
 ```
-
-Now the font is adjustable to css 'font-size' and 'color'.
+Now the font is adjustable to css 'font-size' and 'color'. 
 
 **Save CSS and fonts to different locations**
 
