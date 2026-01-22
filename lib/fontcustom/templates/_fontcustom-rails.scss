@@ -7,8 +7,15 @@
 [data-icon]<%= pseudo_element %> { content: attr(data-icon); }
 
 [data-icon]<%= pseudo_element %>,
+<%= @options[:css_selector].sub("{{glyph}}", "") %><%= pseudo_element %>,
 <%= glyph_selectors %> {
 <%= glyph_properties %>
 }
 
 <%= glyphs %>
+
+<% @glyphs.each do |name, value| %>
+$font-<%= font_name.gsub(/[^\w\d_]/, '-') %>-<%= name.to_s %>: "\<%= value[:codepoint].to_s(16) %>";<% end %>
+$font-<%= font_name.gsub(/[^\w\d_]/, '-') %>: (<% @glyphs.each do |name, value| %>
+  <%= name.to_s %>: "\<%= value[:codepoint].to_s(16) %>",<% end %>
+);
